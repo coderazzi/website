@@ -1,0 +1,135 @@
+<html>
+<!-- Creation date: 12/04/2002 -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Filesplit: split utility in Java</title>
+<meta name="Description" content="filesplit">
+<meta name="Keywords" content="java application to split files into chunks">
+<meta name="Author" content="Luis Pena">
+<meta name="Generator" content="AceHTML 4 Pro">
+</head>
+<body>
+
+<table width="95%" border="0">
+    <tr>
+      <td width="150" align="left" valign="top" bgcolor="#BBBBFF">
+	  	<center><br>
+	    <p><font color="#4444ff"><b>FileSplit</b></font></p>		
+		<hr size="1" color="#7777FF" width="80%">				
+		<br>
+    	<p><a href="../index.htm">Home</a></p>
+    	<p><a href="../idldepend/index.htm">IDL depend</a></p>
+    	<p><a href="../menu/index.htm">Menu Applet</a></p>
+    	<p><a href="http://grasia.fdi.ucm.es/sensei">Sensei</a></p>
+    	<p><a href="../splitimage/index.htm">SplitImage</a></p>
+    	<p><a href="../virtualnet/index.htm">VirtualNet</a></p>
+    	<p><a href="../virtualnet2/index.htm">VirtualNet 2</a></p>
+		
+		<hr size="1" color="#7777FF" width="60%">		
+    	<a href="../humour.htm">humour</a>
+		
+		<hr size="1" color="#7777FF" width="80%">		
+		<a href="mailto:java_lmp@yahoo.co.uk?subject=webpage"><font size="-1">java_lmp@yahoo.co.uk</font></a><br><br>
+		<font size="-1"><b><i><font color="#4444ff">Last Updated:<br> 3rd September 2003</font></i></b></font>		
+		<hr size="1" color="#7777FF" width="80%">		
+	    </center>
+	  </td>
+		
+      <td width="4">
+	  </td>
+
+	  
+	  <td valign="top">
+		<hr size="2" color="#663366" width="250">
+        <center><font size="+3" color="#663366"><b><i>FileSplit</i></b></font></center>
+		<hr size="2" color="#663366" width="250">
+		
+	     <table border="0"><tr><td>
+		 <ul type="disc">
+            <li><a href="#install">Installation</a></li>
+            <li><a href="#availability">Availability</a></li>
+            <li><a href="#instructions">Instructions</a></li>
+            <li><a href="#using">Using FileSplit</a></li>
+         </ul></td><td width="50"></td><td><IMG SRC="jarsregistered.gif" align="right"></td></tr></table>		 
+         
+		 <table border="0"><tr><td width="5"></td><td>
+         <p>File Split is a java application that allows to split a file (this file is not modified) in a number of smaller files, specifying the maximum size for each of this chunks.<br>
+         Its main application is, or at least it was my purpose, to be able to save a big file in some floppys, to carry them out.
+		 It is an AWT application, written in 1997, without the nice appearance brought later by Swing.
+         </p>
+         </td></tr></table>
+
+		<hr size="1" color="#333399">
+		<table border="0"><tr><td width="5"></td><td>
+		<a name="install"><h2><font color="#333399">Installation</font></h2></a>
+
+         <p>
+         File Split is available in a .jar file, that must be appended to the classpath. <br>
+         For example, in a Windows System, if the file has been copied in C:\JAVA\LIB\SplitFile.jar, the classpath must be something like:<br>
+         <pre>CLASSPTH=…….;C:\JAVA\LIB\SplitFile.jar</pre>
+         SplitFile is a java file compiled with JDK1.1.4; to use it, you must have a java virtual machine 1.1.x: the JDK 1.1.x or the JRE 1.1.x (the java rutime environment), for example.
+         </p>
+
+		</td></tr></table>
+		<hr size="1" color="#333399">
+		<table border="0"><tr><td width="5"></td><td>
+		<a name="availability"><h2><font color="#333399">Availability</font></h2></a>
+
+         <p>
+         SplitFile is <STRONG>freeware</STRONG>. There is no warranty in the program, but you can use with complete freedom, or
+		 or modify it, as the source code is available as well.
+         <ul>
+         <li>bytecode distribution: <a href="SplitFile.jar">SplitFile.jar</a> (54 KB)
+         <li>source code: <a href="SplitFile.zip">SplitFile.zip</a> (30 KB). It compiles with JDK 1.4 showing some deprecated API usage.
+         </ul>
+		</td></tr></table>
+		<hr size="1" color="#333399">
+		<table border="0"><tr><td width="5"></td><td>
+		<a name="instructions"><h2><font color="#333399">Instructions</font></h2></a>
+
+         <p>
+         To split a file, it is needed to specify:
+         <ul>
+         <li>The file to split. (it is not modified)
+         <li>The target path; where to create these chunks; these chunks will have the name <EM>targetpath.X</EM>, being X the chunk number.
+         <li>Maximum size for each chunk.
+         </ul>
+         The application also creates a batch file that allows to the user to merge the created chunks and get the original file. It is possible to specify the kind of batch to create:
+         <ul>
+         <li>Windows platform: it creates a <EM>.bat</EM> file, with name <EM>targetpath.bat</EM>
+         <li>Unix platform: it creates a <EM>sh</EM> script with name <EM>targetpath.merger</EM>
+         </ul>
+         </p>
+         <p>To make easier the use of Split File, it uses –only in the window interface- a settings file. This file is stored in the directory given by the HOME property, with the name <EM>SplitFile.properties</EM>.</p> 
+
+		</td></tr></table>
+		<hr size="1" color="#333399">
+		<table border="0"><tr><td width="5"></td><td>
+		<a name="using"><h2><font color="#333399">Using File Split</font></h2></a>
+
+         <p>
+         To start SplitFile, it is needed to have properly set the classpath, as is explained in the installation section. File Split is started with:
+         <pre>java SplitFile.Prg.fs [arguments]</pre>
+         There are two ways to use SplitFile:
+         <ul>
+         <li>With arguments: it is executed from the command line, without any window interface. In this case, the allowed arguments are:
+         <pre>[options] File_to_split [Target_path=File_to_split]</pre>
+         Where options are:
+         <ul>
+         <li><EM>noecho</EM>: no information will be displayed
+         <li><EM>script</EM>: a script file (and not a bat file) is created
+         <li><EM>size=xxx</EM>: defines de max size of each chunk (by default is a 3"1/2 floppy size)
+         </ul>
+		 </p>
+		 <p>
+         <li>Without arguments: it presents a window interface to get the parameters needed.
+         <center><br><IMG SRC="filesplit.jpg"></center>
+         </ul>
+         </p>
+
+		</td></tr></table>
+	 </td>
+    </tr>
+</table>
+</body>
+</html>

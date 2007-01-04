@@ -1,0 +1,156 @@
+<html>
+<!-- Creation date: 12/04/2002 -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Menu Applet</title>
+<meta name="Description" content="Menu Applet">
+<meta name="Keywords" content="java applet menu">
+<meta name="Author" content="Luis Pena">
+<meta name="Generator" content="AceHTML 4 Pro">
+</head>
+<body>
+
+<table width="95%" border="0">
+    <tr>
+      <td width="150" align="left" valign="top" bgcolor="#BBBBFF">
+	  	<center><br>
+	    <p><font color="#4444ff"><b>Menu Applet</b></font></p>		
+		<hr size="1" color="#7777FF" width="80%">				
+		<br>
+    	<p><a href="../index.htm">Home</a></p>
+    	<p><a href="../filesplit/index.htm">FileSplit</a></p>
+    	<p><a href="../idldepend/index.htm">IDL depend</a></p>
+    	<p><a href="http://grasia.fdi.ucm.es/sensei">Sensei</a></p>
+    	<p><a href="../splitimage/index.htm">SplitImage</a></p>
+    	<p><a href="../virtualnet/index.htm">VirtualNet</a></p>
+    	<p><a href="../virtualnet2/index.htm">VirtualNet 2</a></p>
+		
+		<hr size="1" color="#7777FF" width="60%">		
+    	<a href="../humour.htm">humour</a>
+		
+		<hr size="1" color="#7777FF" width="80%">		
+		<a href="mailto:java_lmp@yahoo.co.uk?subject=webpage"><font size="-1">java_lmp@yahoo.co.uk</font></a><br><br>
+		<font size="-1"><b><i><font color="#4444ff">Last Updated:<br> 3rd September 2003</font></i></b></font>		
+		<hr size="1" color="#7777FF" width="80%">		
+	    </center>
+	  </td>
+		
+
+      <td  valign="top">
+		<hr size="2" color="#663366" width="400">
+         <center><font size="+3" color="#663366"><b><i>Menu Applet</i></b></font></center>
+		<hr size="2" color="#663366" width="400">
+		<br>
+        <table width="100%" border="0"><tr><td width="5"></td><td>
+          <table border="0"><tr><td><ul type="disc" compact>
+            <li><a href="#source">Source code</a></li>
+            <li><a href="#parameters">Applet parameters</a></li>
+            <li><a href="#example">An example</a></li>		
+          </ul></td><td width="50"></td><td><IMG SRC="top25.jpg" align="top"></td></tr></table>		 
+
+          <p>I was just developping my own class, and I has the idea to have, in my left frame, a menu system. I am an OO consultant, my first idea was <b><i>Reuse</i></b>: ok; a couple of visits to <i>Gamelan</i> and <i>Jars</i>, and no doubt, there were some applets I could have used. The problem is that the source code was not available, and I would have liked to touch those applets, I wanted to have my own design, and, more important, I had some time.</p>		  
+          <p>Finally, I have more problems developping it, but I really like the result, you can see it on my right side. Note that most
+   		  of the links point out to nowhere.</p>
+   		  <p>It is very simple, but is very easy to modify its look because:
+          <ul type=square>
+            <li> It draws the image you pass it as a parameter: just change the image, and you will have a new look.
+            <li> The <b>source code</b> is available. Just a condition: if you modify it and get a better result, please send me your solution.
+          </ul></p>
+       </td><td width="150" >
+         <center> <font color="#10a0a0">
+         <b>Applet in action</b>
+         <br>
+         <applet code=Menu.class  width=150 height=120>
+           <param name=image value="workmenu.jpg">
+           <param name=items value=3>
+           <param name=dst1 value="../virtualnet/index.htm">
+           <param name=dst2 value="index.htm">
+           <param name=dst3 value="../filesplit/index.htm">
+           <img src="halfMenuB.jpg">
+         </applet>
+         <applet code=Menu.class width=150 height=200>
+           <param name=image value="menu.jpg">
+           <param name=items value=5>
+           <param name=dst1 value="../index.htm">
+           <param name=dst2 value="index.htm">
+           <param name=dst3 value="index.htm">
+           <param name=dst4 value="index.htm">
+           <param name=dst5 value="index.htm">
+           <img src="halfMenuA.jpg">
+         </applet>
+         </font></center>
+        </td></tr></table>
+				  
+    		<hr size="1" color="#333399">
+    		<table border="0"><tr><td width="5"></td><td>
+    		<a name="source"><h2><font color="#333399">The source code</font></h2></a>
+		  
+          <p>The idea for this applet is very simple: having two images for each menu item, and just draw one of them depending on the user selection. Therefore, it is some work on graphics and to get the mouse events, more or less. <br>
+          But:
+          <ul>
+          <li>To speed it up, it is needed to load one image only, and not one for each
+          item in the menu. But to split an image is not directly supported in the
+          awt, and I have had to develop my own SplitImage class.
+          <li>The event model has changed in the JDK 1.1; therefore, my nice 1.1 class didn't 
+          work on any of the current browsers, and I have to use the deprecated API.
+          That's the reason because some parts of the code are inside comments: is the
+          JDK 1.1 compliant part.
+          </ul>
+		  </p>
+		  <p>
+          The SplitImage class allows to split an image in as many parts as the user decides, all of them with the same size. The implementation of this applet could have been much simpler, using
+          the class PixelGrabber, whose purpose is to retrieve an image, or a part of it
+          as a map of bytes, but, I don't know yet the reason, this class was not
+          properly working (??). This class is slightly better described on its <a href="../splitimage/index.htm">own page</a>.
+		  </p>
+		  <p>
+          Therefore, this class is an ImageConsumer, that receives the list of pixels, and construct as many ImageProducers as needed (for this, it has properly worked the class MemoryImageSource (uf!). 
+          </p>
+		  <p>
+          And here is finally the source code:
+          <ul>
+          <li><a href="Menu.java">Menu.java</a> (7 KB)
+          <li><a href="../splitimage/SplitImage.java">SplitImage.java</a> (6 KB)
+          </ul>
+		  </p>
+
+		</td></tr></table>
+		<hr size="1" color="#333399">
+		<table border="0"><tr><td width="5"></td><td>
+		<a name="parameters"><h2><font color="#333399">Applet parameters</font></h2></a>
+
+          <p>
+          <ul>
+          <li>frame : [optional] the frame to use to lunch the URL
+          <li>items : [mandatory] number of items in the menu
+          <li>image : [mandatory] the image (jpg or gif) that represents the menu. If the applet has a size of (width x height), the image should have, although this is not checked, the size (2*width x height). The left side of the image contains the menu in its normal state, and the right side,
+          in its highlighted state. See the example, for more details. <b>Note:<i>it is much better to use gif images, because the applet uses the RGB color model</i></b>
+          <li>For each item, it is also mandatory to give a parameter called 'dst%', with the
+          destin URL.
+          </ul>
+          </p>
+
+		</td></tr></table>
+		<hr size="1" color="#333399">
+		<table border="0"><tr><td width="5"></td><td>
+		<a name="example"><h2><font color="#333399">An example</font></h2></a>
+          
+          <p>First, it is needed to create the image (just have time enough!)<br></p>
+          <center><img src="halfMenuB.jpg"></center>
+          <br><p>This image can be used with the following html:</p>
+          <pre>
+          &lt;APPLET CODE=Menu.class WIDTH=150 HEIGHT=80&gt;
+          &lt;param name=image value="img/ownmenu.gif"&gt;
+          &lt;param name=items value=3&gt;
+          &lt;param name=dst1 value="virtualnet/virtualnet.htm"&gt;
+          &lt;param name=dst2 value="menu/menu.htm"&gt;
+          &lt;param name=dst3 value="filesplit/filesplit.htm"&gt;
+          &lt;param name=frame value="main"&gt;
+          &lt;/APPLET&gt;
+          </pre>
+		</td></tr></table>		  
+	  </td>
+    </tr>
+</table>
+</body>
+</html>

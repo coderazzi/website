@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="yes"?>
+
+<wsm>
+
+<propertiesSet>
+	<properties id='luicpend' template='default' hierarchical='top'/>
+	<properties name='VirtualNet' template='default' hierarchical='alone'/>
+	<properties name='Packages' template='default' hierarchical='through'/>
+</propertiesSet>
+
+<hierarchy properties="luicpend">
+  <page name='Home' location='index.htm'/>
+  <page name='FileSplit' location='filesplit/index.htm'/>
+  <page name='Menu Applet' location='menu/index.htm'/>
+  <page name='Sensei' href='http://grasia.fdi.ucm.es/sensei'/>
+  <page name='SplitImage' location='splitimage/index.htm'/>
+  <folder name='VirtualNet' location='virtualnet'>
+	<page name='Overview' location='index.htm' properties='luicpend' template='other'/>
+	<page name='Availability' location='availability.htm'/>
+	<page name='Packages' location='packages.htm'/>
+	<page name='Interface' location='interface.htm'/>
+	<page name='Local example' location='localExample.htm'/>
+	<page name='RMI example' location='rmiExample.htm'/>
+	<page name='Executables' location='executables.htm'/>
+	<page name='Versions' location='versions.htm'/>
+  </folder>
+  <page name='VirtualNet2' location='virtualnet2/index.htm'/>
+</hierarchy>
+
+</wsm>
