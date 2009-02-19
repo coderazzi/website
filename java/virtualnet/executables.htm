@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+ <title>VirtualNet: network simulation with JavaRMI.
+ Executables</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <link rel="stylesheet" type="text/css" href="virtualnet.css">
+ <meta name="Description" content="VirtualNet">
+ <meta name="Keywords" content="java RMI network simulation">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+ <h1>VirtualNet (over RMI)</h1>
+ <h2>Executables</h2>
+ <div class='hr'>&nbsp;</div>
+
+ <p>There are two programs that allows you to open a RMI remote
+ virtual net session:</p>
+
+ <ul type="square">
+  <li><a href="#graphmain">vnet.remote.prg.GraphMain</a></li>
+
+  <li><a href="#main">vnet.remote.prg.Main</a></li>
+ </ul>
+
+ <h3><a name="graphmain" id=
+ "graphmain">vnet.remote.prg.GraphMain</a></h3>
+ <div class='hr'>&nbsp;</div>
+
+ <p><em>In general, all the programs on this package have been
+ carefully programmed, and the result is, in general, quite good
+ (ok, it's me who has programmed it, I'm not going to speak bad
+ about myself). The exception (and big) is this program. Please
+ don't be very critic if you read this program's code, it is not
+ good at all, but I couldn't spent too much time on it.</em></p>
+
+ <p>The arguments for this program are:</p>
+ <pre>
+Arguments: [options] [VirtualNetName]
+Options:
+          -start       : initialize the virtual net
+          -delay=n     : time(ms) of delay in each node and link
+          -bsize=w,h   : size of the BindServers window
+          -csize=w,h   : size of the Console Window
+          -gsize=w,h   : size of the Graph Windows
+          -gupdate=n   : time(ms) to update the graphs
+          -gremain=m   : number of times needed to change the state
+
+If start is present, next options are also available
+          -init=cad    : initialize the VirtualNet with the cad info
+          -gconsole    : display all the VirtualNet events in a window
+          -binds       : display the servers binded to the VirtualNet
+          -graphcircle : display the VirtualNet as a round graph
+          -graphnet    : display the VirtualNet as a net graph 
+</pre>
+
+ <p>This program opens a window where it is possible to create new
+ virtual nets, to configure them, and to open different views of
+ the net.</p>
+
+ <h3><a name="main" id="main">vnet.remote.prg.Main</a></h3>
+ <div class='hr'>&nbsp;</div>
+
+ <p>The arguments for this program are:</p>
+ <pre>
+ Arguments: [options] [VirtualNetName]
+Options:
+          -noecho      : not display initialization information
+          -help        : shows this window
+
+          -console     : display all the VirtualNet events
+          -gconsole    : display all the VirtualNet events in a window
+          -csize=w,h   : size of the Console Window
+
+          -binds       : display the servers binded to the VirtualNet
+          -bsize=w,h   : size of the BindServers window
+
+          -graphcircle : display the VirtualNet as a round graph
+          -graphnet    : display the VirtualNet as a net graph
+          -gsize=w,h   : size of the Graph Windows
+          -gupdate=n   : time(ms) to update the graphs
+          -gremain=m   : number of times needed to change the state
+
+          -delay=n     : time(ms) of delay in each node and link
+
+          -init=cad    : initializacion string.
+          -initfile=file : file to read the initialization. By default, the file 
+                                   is name.net
+</pre>
+</div>
+</div>
+</body>
+</html>

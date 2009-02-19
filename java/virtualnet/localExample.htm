@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+ <title>VirtualNet: network simulation with JavaRMI. Local
+ example</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <link rel="stylesheet" type="text/css" href="virtualnet.css">
+ <meta name="Description" content="VirtualNet">
+ <meta name="Keywords" content="java RMI network simulation">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+ <h1>VirtualNet (over RMI)</h1>
+ <h2>Local example</h2>
+ <div class='hr'>&nbsp;</div>
+
+ <ul type="square">
+  <li><a href="#Interface">Declaring the interface</a></li>
+
+  <li><a href="#Implementation">Implementing the interface</a></li>
+
+  <li><a href="#Program">How to use virtual net and the
+  server</a></li>
+
+  <li><a href="#Execution">Executing the application</a></li>
+
+  <li><a href="#Download">Download the example</a></li>
+ </ul>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Interface" id="Interface">Declaring the
+ interface</a></h3>
+
+ <p>The local version of <em>Virtual Net</em> requires every server
+ to implement an interface where it declares its services. This
+ interface has to extend the <em>vnet.local.VirtualRemote</em>
+ interface. There is another requirement: each of the methods of
+ the interface has to throw the exception
+ <em>vnet.local.VirtualNetException</em></p>
+
+ <p>It is also possible that the server implements more than one
+ interface; in this case, all these interfaces have to extend the
+ <em>vnet.local.VirtualRemote</em> interface.</p>
+
+ <p>For this example, the server is going to give only one service:
+ it returns a phone number, those used for its initialization.</p>
+
+ <p>The code for this interface is:</p>
+ <pre>
+import vnet.*;
+import vnet.local.*;
+           
+public interface PhoneNumbersIntf extends VirtualRemote
+{
+ public String getNumber() throws VirtualNetException;
+}
+</pre>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Implementation" id="Implementation">Implementing the
+ interface</a></h3>
+ Here is the code for a server that implements the previous
+ interface:
+ <pre>
+import vnet.*;
+import vnet.local.*;
+           
+public class PhoneNumbersServer implements PhoneNumbersIntf
+{
+ public PhoneNumbersServer(String number)
+ {
+  Number=number;
+ }
+ public String getNumber() throws vnet.VirtualNetException
+ {
+  return Number;
+ }
+ String Number;
+}
+</pre>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Program" id="Program">How to use virtual net and the
+ server</a></h3>
+
+ <p>The following is a very small apllication using the previous
+ server. It creates some windows to follow the net state, and will
+ finish with a communication exception.</p>
+ <pre>
+import java.awt.Dimension;
+           
+import vnet.*;
+import vnet.display.*;
+import vnet.local.*;
+           
+public class PhoneProof
+{
+ public static void main(String args[])
+ {
+  try
+  {
+   System.out.println("Initializing");
+   VirtualNet net=new VirtualNet();
+   new BuildNetLayout("+a+e+i+m+o+a1e+e2i+e3m+i4m+m5o",net);
+   new GraphNetFrame(new GraphNet(net,new GraphGeometryCircle()), 
+     "Local test", new Dimension(200,200));
+   new ConsoleNetFrame(net,"Local Test",new Dimension(300,300));
+   new ListBindsFrame(new ListBindsNet(net),"Binded servers",
+     new Dimension(200,300));
+                                
+   System.out.println("Creating servers");
+   PhoneNumbersIntf pLmp=new PhoneNumbersServer("763.27.17");
+   PhoneNumbersIntf pSLmp=new PhoneNumbersServer("859.82.94");
+                                
+   System.out.println("Creating nodes");
+   NodeId a=new NodeId("a");
+   NodeId d=new NodeId("m");
+   NodeId e=new NodeId("o");
+                        
+   System.out.println("Binding servers");
+   net.bind(d,"LMP phone",pLmp);
+   net.bind(e,"LMP phone",pSLmp);
+                                
+   PhoneNumbersIntf found;
+   String lookFor;
+                                
+   lookFor=new String("LMP phone12");
+   System.out.println("Looking for "+lookFor);
+   found=(PhoneNumbersIntf)net.lookup(a,lookFor);
+   if (found==null)
+    System.out.println("Not found");
+           
+   lookFor=new String("LMP phone");
+   System.out.println("Looking for "+lookFor);
+   found=(PhoneNumbersIntf)net.lookup(a,lookFor);
+   if (found==null)
+    System.out.println("Not found");
+   else
+    System.out.println("telephone: "+found.getNumber());
+           
+   System.out.println("Looking for "+lookFor+" in node specific");
+   found=(PhoneNumbersIntf)net.lookup(a,lookFor,e);
+   if (found==null)
+    System.out.println("Not found");
+   else
+    System.out.println("telephone: "+found.getNumber());
+           
+   System.out.println("Removing the link 5");
+   new BuildNetLayout("-5",net);
+   System.out.println("Looking for "+lookFor+" in node specific");
+   found=(PhoneNumbersIntf)net.lookup(a,lookFor,e);
+   if (found==null)
+    System.out.println("Not found");
+   }
+   catch(Exception e)
+   {
+    e.printStackTrace();
+   }
+  }           
+ }
+
+</pre>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Execution" id="Execution">Executing the
+ application</a></h3>
+
+ <p>Before executing the application, the stub must be compiled and
+ generated</p>
+ <pre>
+javac PhoneNumbersIntf.java
+javac PhoneNumbersServer.java
+javac PhoneProof.java
+           
+java vnet.local.vnc PhoneNumbersServer
+javac PhoneNumbersServer_VNet.java
+
+</pre>
+
+ <p>It you get any compiler error, probably the <em>classpath</em>
+ has not been properly set. In this case, go to the page on
+ <a href="availability.htm">Availability</a> to know how to set it.
+ Now, to execute the application:</p>
+ <pre>
+java PhoneProof
+</pre>
+
+ <p>The console output for this small program will be:</p>
+ <pre>
+Initializing
+Creating servers
+Creating nodes
+Binding servers
+Looking for LMP phone12
+Not found
+Looking for LMP phone
+telephone: 763.27.17
+Looking for LMP phone in node specific
+telephone: 859.82.94
+Removing the link 5
+Looking for LMP phone in node specific
+vnet.CommException: Communication failure
+   at vnet.NetNode.checkWay(NetNode.java:277)
+   at vnet.NetNode.lookup(NetNode.java:234)
+   at vnet.local.VirtualNet.lookup(VirtualNet.java:131)
+   at PhoneProof.main(PhoneProof.java:60)
+</pre>
+
+ <p>It also generates three windows. Here there are some snapshots
+ (they don't correspond exactly to this example):</p><img src=
+ "vnlt1.jpg">    <img src="vnlt2.jpg"> <img src="vnlt3.jpg"></p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Download" id="Download">Download the example</a></h3>
+
+ <p><a href="vnetexloc.zip">vnetexloc.zip</a> (5 KB)</p>
+ <p>Once unzipped this file -and having correctly set the
+ <em>classpath</em>-, to execute the example one simply needs
+ to:</p>
+ <pre>
+java PhoneProof
+</pre>
+ </div>
+ </div>
+</body>
+</html>

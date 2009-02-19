@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+ <title>VirtualNet: network simulation with JavaRMI.
+ Packages</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <link rel="stylesheet" type="text/css" href="virtualnet.css">
+ <meta name="Description" content="VirtualNet">
+ <meta name="Keywords" content="java RMI network simulation">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+ <h1>VirtualNet (over RMI)</h1>
+ <h2>Packages</h2>
+ <div class='hr'>&nbsp;</div>
+
+ <p>There are five packages in Virtual Net:</p>
+
+ <ul type="square">
+  <li><a href="#vnet">vnet</a></li>
+
+  <li><a href="#display">vnet.display</a></li>
+
+  <li><a href="#local">vnet.local</a></li>
+
+  <li><a href="#remote">vnet.remote</a></li>
+
+  <li><a href="#prg">vnet.remote.prg</a></li>
+ </ul>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="vnet" id="vnet">package vnet;</a></h3>
+
+ <p>This is the implementation of the basic net layout.</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="display" id="display">package vnet.display;</a></h3>
+
+ <p>Classes that can be used for a graphical display of the net
+ (its graph), of the events in the virtual net, or just a list of
+ binded servers.</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="local" id="local">package vnet.local;</a></h3>
+
+ <p>Here are the classes to develop a local client/server
+ application, that is, the virtual net, the clients and the servers
+ are all of them being executed in the same virtual machine.</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="remote" id="remote">package vnet.remote;</a></h3>
+
+ <p>Here are the classes to develop a remote client/server
+ application using RMI; that is, the clients, the servers and the
+ virtual net can be being executed in different java sessions,
+ communicating between them using RMI.</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="prg" id="prg">package vnet.remote.prg;</a></h3>
+
+ <p>With this package it is possible to execute a Virtual Net
+ program (only for the package remote, of course).</p>
+ </div>
+ </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+#note    {display: none;}
+
+h1 
+{ 
+	font-size: 40px;
+}
+
+table 
+{
+	width: 90%; 
+	border-collapse: collapse; 
+	font-size: 0.95em;
+}
+
+th 
+{
+	padding: 4px; 
+	border: 3px solid #bbbbff; 
+	background-color: #e0e0ff;
+	color: #5555ff
+}
+
+td 
+{
+	padding: 4px; 
+	border: 2px solid #bbbbff;
+	color: #696969;
+}
+
+.itable 
+{
+	width: 100%; 
+	font-size: 0.95em; 
+	margin: 0.6em 0 0.6em 0;
+}
+
+.itable th 
+{
+	padding: 4px; 
+	border: 2px solid #bbbbff; 
+	background-color: #f0f0ff;
+}
+
+.mark 
+{
+	font-weight: bold; 
+	font-style: italic;
+}
+
+.options 
+{
+	font-weight: bold; 
+	font-style: italic; 
+	font-size: 0.90em;
+}
+
+.code 
+{
+	display: inline; 
+	font-family: monospace;
+}

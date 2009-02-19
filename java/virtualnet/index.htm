@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+ <title>VirtualNet: network simulation with JavaRMI.
+ Overview</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <link rel="stylesheet" type="text/css" href="virtualnet.css">
+ <meta name="Description" content="VirtualNet">
+ <meta name="Keywords" content="java RMI network simulation">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+ <h1>VirtualNet (over RMI)</h1>
+ <h2>Overview</h2>
+ <div class='hr'>&nbsp;</div>
+
+ <img src="top5.gif" class="right">
+ <ul type="disc">
+  <li><a href="#WhatIs">What is Virtual Net</a></li>
+  <li><a href="#IsUseful">Is it useful?</a></li>
+  <li><a href="#Philosophy">Its philosophy: how to work with
+  Virtual Net</a></li>
+  <li><a href="#CS">Client/Server application with Virtual
+  Net</a></li>
+  <li><a href="#TRMI">Transparency with RMI</a></li>
+  <li><a href="#Example">An small example with RMI</a></li>
+  <li><a href="#Compiler">The Virtual Net Compiler</a></li>
+  <li><a href="#Graphics">Graphics</a></li>
+ </ul>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="WhatIs" id="WhatIs">What is Virtual Net</a></h3>
+ 
+ <p>Virtual Net is an application that allows the user to make a
+ simulation of a network topology, and to run and test
+ Client/Server programs on this net.</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="IsUseful" id="IsUseful">Is it useful?</a></h3>
+
+ <p>Everybody can develop an RMI or CORBA Client/Server application
+ and test it just on one machine, with the only difference of the
+ access times; but, in this case, you can not just simulate network
+ problems. This has been my main reason to develop this
+ application, to be able to simulate network partitions.</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Philosophy" id="Philosophy">How to work
+ with Virtual Net</a></h3>
+
+ <p>In Virtual Net, the net is defined by the nodes (the machines)
+ and the links (its communication channels) between them.</p>
+
+ <p>On a real net, the servers and the client are attached to the
+ machine where its process is being executed; is that hosting
+ relation which is needed to simulate under <em>Virtual Net</em>.
+ Therefore, any server or client, before giving or requesting any
+ service, first has to get attached to any of the nodes. From that
+ moment, the communications between the server and its clients are
+ done throught the virtual net, using its defined nodes and
+ links.</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="CS" id="CS">Client/Server applications with Virtual
+ Net</a></h3>
+
+ <p>On a client/server application, the server first has to be
+ known; to do that, it has to register itself, and depending on the
+ middleware, it can do it in very different ways. When it becomes
+ registered, with a public name, any client could link to that
+ server and therefore it could start making service requests.</p>
+
+ <p>To do this, there are three basic operations on Virtual
+ Net:</p>
+
+ <ul type="square">
+  <li><em>-Binding</em>: the server is binded with an unique name
+  to a host</li>
+
+  <li><em>-Unbinding</em>: the server is unbinded from the
+  host</li>
+
+  <li><em>-Lookup</em>: the client looks for a server with an
+  specified name</li>
+ </ul>
+
+ <p>By now, vnet only allows to develop local C/S applications,
+ and, much more interesting, RMI C/S applications.</p>
+
+ <p><a href="../virtualnet2/index.htm">VirtualNet2</a> is a port of
+ this application to cover the same functionality under CORBA. In
+ fact, VirtualNet2 addresses the problem under a different
+ perspective and the result is much more effective.</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="TRMI" id="TRMI">Transparency with RMI</a></h3>
+
+ <p>There is an additional feature that makes very interesting the
+ use of this virtual net with RMI: its transparency, the changes to
+ make to your C/S application is truly very small. You only have to
+ think that any client or server first has to say in with node it
+ is hosted. From that moment, no extra changes are needed.</p>
+
+ <p>Even the exceptions that can be thrown by Virtual Net have
+ being mapped to the analogue RMI exceptions.</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Example" id="Example">An small example with
+ RMI</a></h3>
+
+ <p>This is an small RMI program.</p>
+
+ <p>The interface:</p>
+ <pre>
+public interface PhoneNumbersIntf extends java.rmi.Remote
+{
+  public String getNumber() throws java.rmi.RemoteException;
+}
+</pre>
+
+ <p>The implementation:</p>
+ <pre>
+public class PhoneNumbersServer implements PhoneNumbersIntf
+{
+  public PhoneNumbersServer(String number) 
+  {
+    Number=number;
+  }
+  public String getNumber() throws java.rmi.RemoteException
+  {
+    return Number;
+  }
+  String Number;
+}
+</pre>
+
+ <p>To use this server with Virtual Net, <em>no changes are
+ needed</em></p>
+
+ <p>In RMI, the implementation has to be compiled with
+ <em>rmic</em>, which generates the stub and skeleton for the
+ server. In VNet, it is still needed to execute rmic; but it is
+ needed also an stub for the vnet, that is generated automatically
+ by the <span class='mark'>virtual net</span> compiler.</p>
+
+ <p>The only difference between an RMI and an RMI vnet application,
+ is that, in the latter, the servers and clients have to be
+ attached first (using the Naming service) to a node in the net
+ (that is, they reside on a machine). From that moment, they will
+ use the attached Host -that has the same interface as the Naming
+ service- to bind, unbind or lookup a server.</p>
+
+ <p><strong>RMI:</strong></p>
+ <pre>
+ Naming.bind("LMP",new PhoneNumbersServer("763271"));
+ PhoneNumbersIntf p=(PhoneNumbersIntf)Naming.lookup("LMP");
+ 
+</pre>
+
+ <p><strong>RMI Vnet:</strong></p>
+ <pre>
+ Host host=(Host) Naming.lookup("/TestA/HostY");
+ host.bind("LMP",new PhoneNumbersServer("763271"));
+ PhoneNumbersIntf p=(PhoneNumbersIntf)host.lookup("LMP");
+ 
+</pre>
+
+ <p>And that's all!!</p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Compiler" id="Compiler">The Virtual Net
+ Compiler</a></h3>
+
+ <p>To get the stub, I have developped a very simple compiler that
+ makes this task automatic.</p>
+
+ <p>There is a compiler for the local version, that needs as the
+ only argument the <em>class</em> of the server, and that generates
+ a <em>java</em> file that has to be compiled. This file has the
+ same name as the server, with the suffix <em>_VNet</em>.</p>
+
+ <p>In the remote version, a stub is not needed for the server, but
+ for its RMI stub. The compiler still needs to have the server
+ itself, but it generates the stub directly for the RMI stub; in
+ this case, the suffix is <em>_Stub_VNet</em></p>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Graphics" id="Graphics">Graphics</a></h3>
+
+ <p>To follow the net state, it is possible to open the following
+ windows:</p>
+
+ <ul type="disc">
+  <li>A console that shows all the events in the net.</li>
+
+  <li>A list of binded servers.</li>
+
+  <li>A graph representation. By now, there are two
+  representations, one called net, and the another one, in circle.
+  This representation even shows the messages passing, changing the
+  colour of the affected nodes.</li>
+ </ul><img src="net.jpg" class='centered'>
+ </div>
+ </div>
+</body>
+</html>

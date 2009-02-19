@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+
+<html>
+<head>
+ <title>SplitImage class</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta name="Description" content="SplitImage">
+ <meta name="Keywords" content="java class">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <h1>SplitImage class</h1>
+ <hr class='title'>
+
+ <p>This class allows to do a very simple task: to split an image
+ in different images, all of them with the same size, which can be
+ used for lot of purposes. I needed it, for example, to develop the
+ <a href="../menu/index.htm">Menu</a> applet.</p>
+
+ <p>Its implementation is based on the CropImageFilter class, whose
+ purpose is to filter only a portion of an image. Using this class,
+ the implementation becomes really very simple.</p>
+
+ <p>To use the class, it is needed to create an <em>SplitImage</em>
+ object, passing the image to split, and the number of rows and
+ columns in which the image will be splitted.</p>
+
+ <p>After this, it is possible to get an <em>Image Producer</em>
+ for any valid row and column, using the <em>getImageProducer</em>
+ method. It is also possible to obtain the height and the width of
+ the splitted images using the <em>getHeight</em> and
+ <em>getWidth</em> methods. That's all!</p>
+ <p><a href="SplitImage.java">SplitImage.java</a> (5 KB)</p>
+ </div>
+ </div>
+</body>
+</html>

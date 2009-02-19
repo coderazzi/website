@@ -1,0 +1,198 @@
+<html>
+
+<head>
+ <title>GAC: Windows and Mono</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="c# .Net Mono GAC">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>&gt; 31th January 2008, 00:36 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>  
+
+<p class='note'>A detail on the notation used: Mono is a .Net implementation, available for several operative systems. 
+But, in this page, .Net, unless otherwise stated, refers to the Microsoft implementation for Windows.</p>
+
+<h1>GAC: Windows and Mono</h1>
+
+<ul>
+<li><a href='#gacinmono'>GAC in Mono</a></li>
+<li><a href='#mononet'>Mono and .Net</a></li>
+<li><a href='#monomono'>Mono and Mono</a></li>
+<li><a href='#onlygac'>One only GAC for .Net and Mono?</a></li>
+<li><a href='#nunit'>NUnit case</a></li>
+<li><a href='#links'>Related links</a></li>
+</ul>
+
+<p>The GAC, the global assembly cache, is the solution in .Net to hold shared assemblies (libraries) 
+with multiple versions.</p>
+
+<p>Basically .Net defines one location -a directory- where these assemblies are stored. 
+Note that assemblies do not need to be installed in the GAC, and that there could be multiple GAC directories; 
+it is, anyway, a global repository.</p>
+
+<p>Logically, a library called LIBRARY, with versions 1.0 and 2.0, would be stored, under the GAC, as:<ul>
+<li>LIBRARY\1.0\library.dll</li>
+<li>LIBRARY\2.0\library.dll</li></ul><p>
+
+<p>The implementation is a bit more complicated; version numbers include 4 figures, 
+the directory name for each version includes a public key and digital signature, 
+and there is also support for 'cultures', so that a version of the same library for Spanish and English, 
+for example, can coexist.</p>
+
+<p>For example, a -quite old- version of Nunit is installed as:</p>
+<div class='scode'>c:\WINDOWS\assembly\GAC_MSIL\nunit.framework\2.2.9.0__96d09a1eb7f44a77\nunit.framework.dll</div>
+
+<p>When a library or executable is created, it must include references to any external used assemblies. 
+There is no magic here; if I intend to use the version 2.2.9.0 of the Nunit framework, my compilation must 
+include, somehow, the previous location.</p>
+
+<p>This location is not harcoded in the generated library/executable. 
+Instead, it will contain a manifest that references the strong version name of the referenced library. 
+Something like:</p>
+
+<pre class='code'>.assembly extern nunit.framework
+{
+  .publickeytoken = (96 D0 9A 1E B7 F4 4A 77 )
+  .ver 2:2:9:0
+}</pre>
+
+<p>Now, when this assembly/executable is used, the .Net runtime knows that it requires a library called 
+nunit.frameword, with version 2.2.9.0 and token 96d09a1eb7f44a77, and it will look for this library in the 
+GAC (in fact, it looks as well other places, like the current directory). Unless there is any specific 
+versioning policy, this <b>exact</b> assembly version must be found in the GAC, or the execution will fail.</p>
+
+
+<h2><a name='gacinmono'>GAC in Mono</a></h2>
+
+<p>Mono uses a similar approach. If MONO_HOME is the location where Mono was installed, the GAC is initially 
+located under:</p>
+
+<div class='scode'>MONO_HOME/lib/mono/gac</div>
+
+<p>In this location, the structure is exacly as defined for .Net; you could find the nunit.framework.dll under:</p>
+
+<div class='scode'>MONO_HOME/lib/mono/gac/nunit.framework/2.2.9.0__96d09a1eb7f44a77/nunit.framework.dll</div>
+
+<p>The directory MONO_HOME/lib/mono, in addition to the GAC, contains a set of directories named 
+1.0, 2.0, and 2.1 -as of Mono 1.2.6-. These are the directories where the Mono compilers will look 
+for shared assemblies if they cannot find them in the other default locations -directory of the executing 
+assembly or the MONO_PATH directory, if defined-.</p>
+
+<p>There are, with Mono 1.2.6, three C# compilers: mcs (version 1.0), gmcs 
+(version 2.0, supporting generics) and smcs (version 2.1, supporting Silverlight). 
+For example, mcs will use the directory MONO_HOME/lib/mono/1.0 to find global assemblies. 
+Obviously, this means that we cannot have multiple versions of the same library to be used by default 
+-just the one version located in this directory-.</p>
+
+
+<h2><a name='mononet'>Mono and .Net</a></h2>
+
+<p>So, what happens if you try to compile or use an assembly -that works properly in .Net- under Mono? 
+Letting aside probably compatibily issues, in case that the assembly uses a feature not yet ported into Mono, 
+there is the problem of using the GAC. Mono and .Net define different GACs, so an assembly located in the 
+.Net GAC will not be available for Mono. </p>
+
+<p>This can be easily solved: just copy the assembly, with all directory names, from one GAC to the another. 
+But note that this operation cannot be done from Windows Explorer, as a shell extension hides the internal 
+GAC structure. However, it can be done from the command line.</p>
+
+<p>For example, to copy the version 2.2.9.0 of nunit.framework.dll from .Net to Mono GAC's, do:</p>
+
+<pre class='code'><b>C:\WINDOWS\assembly\GAC_MSIL\nunit.framework>
+xcopy . "\Program Files\Mono-1.2.6\lib\mono\gac\nunit.framework" /s</b>
+.\2.2.9.0__96d09a1eb7f44a77\nunit.framework.dll
+1 File(s) copied</pre>
+
+<p>If you want to make this specific version available for the gmcs compiler, it is needed now to 
+copy that dll into the associated directory:</p>
+
+<pre class='code'><b>C:\Program Files\Mono-1.2.6\lib\mono>
+copy gac\nunit.framework\2.2.9.0__96d09a1eb7f44a77\nunit.framework.dll 2.0</b>
+        1 file(s) copied.</pre> 
+        
+        
+<h2><a name='monomono'>Mono and Mono</a></h2>
+
+<p>The previous point covered the case where an assembly is available under the .Net GAC but not under 
+the Mono GAC; but, as it happens, there can be problems on the way Mono is distributed.</p>
+
+<p>For example, Mono 1.2.6 is delivered with NUnit, versions 2.2.0.0 and 2.2.8.0:</p>
+
+<pre class='code'><b>C:\Program Files\Mono-1.2.6\lib\mono>dir gac\nunit.framework</b>
+ Volume in drive C is Programs
+ Volume Serial Number is F8BC-7489
+
+ Directory of C:\Program Files\Mono-1.2.6\lib\mono\gac\nunit.framework
+
+01/18/2008  01:15 AM    &lt;DIR&gt;          .
+01/18/2008  01:15 AM    &lt;DIR&gt;          ..
+12/20/2007  09:24 AM    &lt;DIR&gt;          2.2.0.0__96d09a1eb7f44a77
+12/20/2007  09:24 AM    &lt;DIR&gt;          2.2.8.0__96d09a1eb7f44a77
+               0 File(s)              0 bytes
+               4 Dir(s)  23,652,917,248 bytes free</pre>
+               
+<p>But if you try to compile a project referencing the nunit.framework assembly using gmcs, it will fail, 
+stating that it cannot find that assembly. However, using the mcs compiler, it will find that assembly. 
+Unfortunately, gmcs is the compiler required when using generics.</p>
+
+<p>The problem is that the directory MONO_HOME/lib/mono/1.0 contains a copy of the nunit.framework.dll 
+(one of the two available versions, that is), and this copy is not present in MONO_HOME/lib/mono/2.0</p>
+
+<p>The solution is to make that copy available under 2.0:</p>
+
+<pre class='code'><b>C:\Program Files\Mono-1.2.6\lib\mono>xcopy 1.0\nunit.framework.dll 2.0</b>
+1.0\nunit.framework.dll
+1 File(s) copied
+</pre>
+
+<p>Please note that there can be reasons why an assembly is available to one compiler's version but not the other.</p>
+
+
+<h2><a name='onlygac'>One only GAC for .Net and Mono?</a></h2>
+
+<p>As both GACs share the same structure, I would expect that it would be possible to setup a machine with 
+both .Net versions using a single GAC. Mono supports the environment variable MONO_GAC_PREFIX to define 
+a different GAC location, but it is not possible to setup this variable to the .Net GAC, because Mono 
+automatically appends /lib/mono/gac to this environment variable.</p>
+
+<p>In any case, the operation would not be that simple. .Net has 3 different GAC locations, all 
+under \windows\assembly. There is GAC, GAC_32 and GAC_MSIL, depending on whether the assembly run in 32 or 64 bits, 
+or on both. and even if there would be just one .Net location, it would be probably not such a good idea to 
+let both runtimes deal with this structure. </p>
+
+<h2><a name='nunit'>NUnit case</a></h2>
+
+<p>Although this note uses NUnit as example, the information shown so far does not really solve the problem of
+using .Net on Mono 1.2.6 with generics. That is, on a fresh Mono 1.2.6 installation, a compilation requiring
+gmcs and NUnit will fail as:</p>
+
+<pre class='code'>error CS0006: cannot find metadata file `nunit.framework.dll'</pre>
+
+<p>The solution is not so simple as to copy a valid nunit.framework.dll into the mono gac. 
+Mono is deployed with a NUnit executable (launched via nunit-console2) which relies itself on nunit.core.dll,
+nunit.framework.dll and nutil.util.dll, all of them in version 2.2.0.0. So, if that is the executable on use to
+test Nunit, the previous dlls must be made available on the gac and compiler's areas.</p>
+
+<p>Unfortunately, version 2.2 is a bit old (August 2004), so you can run into different compatibility problems;
+in this case, the best would be to install NUnit from source.</p>
+
+<h2><a name='links'>Related links</a></h2>
+
+<ul>
+<li>
+<a href='http://www.codeproject.com/KB/dotnet/demystifygac.aspx'>Demystifying the .NET Global Assembly Cache</a>
+</li>
+<li>
+<a href='http://www.mono-project.com/Assemblies_and_the_GAC'>Assemblies and the GAC</a>
+</li>
+<li>
+<a href='http://discuss.joelonsoftware.com/default.asp?dotnet.12.383883.5'>GAC_32, GAC_MSIL, GAC_64 - Why?</a>
+</li>
+</ul>
+</div></div>
+</body>

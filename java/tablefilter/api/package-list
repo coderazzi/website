@@ -1,0 +1,7 @@
+com.byteslooser.filters
+com.byteslooser.filters.gui
+com.byteslooser.filters.gui.editors
+com.byteslooser.filters.parser
+com.byteslooser.filters.parser.generic
+com.byteslooser.filters.parser.re
+com.byteslooser.filters.resources

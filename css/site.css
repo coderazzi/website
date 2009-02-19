@@ -1,0 +1,28 @@
+#menu
+{
+	position:absolute;
+	top:195px;
+	left:0px;
+	padding-left:10px;
+	background-color:#eee;
+	line-height:17px;
+	voice-family: "\"}\"";
+	voice-family:inherit;
+}
+
+#header
+{
+	width: 800px;
+	height: 140px;
+	margin: 0px;
+	padding: 0px;
+	background: url(byteslooser.jpg);
+}
+
+.wsmContent
+{
+	margin-left: 225px;
+	padding-left:10px;
+	background-color: #eee;
+}
+

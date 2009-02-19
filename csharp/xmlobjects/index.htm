@@ -1,0 +1,384 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Xml mapping for C#</title>
+
+<style type="text/css">
+<!--
+  body  { background: white; padding: 0px;  font-family: Verdana, Helvetica, Trebuchet MS, Trebuchet, Arial;}
+  #content {margin: 0 4em 4em 9em; background: white; font-size: 0.90em;}
+  #note    {Float: right; font-size: 0.8em;}
+  h1 { background: #6666ff; margin: 0px 10px 20px 0px; padding: 10px; 
+       font-size: 2em; color: #f0f0ff;}
+  h2 { background: #8888ff; margin: 30px 10px 20px 40px; padding: 8px; 
+       font-size: 1.6em}
+  h3 { background: #aaaaff; margin: 25px 10px 20px 50px; padding: 6px; 
+       font-size: 1.4em}
+  h4 { background: #bbbbff; margin: 20px 10px 20px 60px; padding: 4px; 
+       font-size: 1.2em}
+  table {width: 90%; border-collapse: collapse; font-size: 0.95em;}
+  th {padding: 4px; border: 3px solid #bbbbff; background-color: #e0e0ff;
+      color: #5555ff}
+  td {padding: 4px; border: 2px solid #bbbbff;}
+  .itable {width: 100%; font-size: 0.95em; margin: 0.6em 0 0.6em 0}
+  .itable th {padding: 4px; border: 2px solid #bbbbff; background-color: #f0f0ff;}
+  .mark {font-weight: bold; font-style: italic;}
+  .options {font-weight: bold; font-style: italic; font-size: 0.90em;}
+  .code {display: inline; font-family: monospace;}
+  pre {padding: 10px;background-color: #eee;}
+
+#navigation {float:left; width:7em; background: #bbbbff; font-size: 0.9em;}
+  
+-->
+</style>
+</head>
+
+<body>
+
+<div id='content'>
+
+<div id='note'>Latest version of this page, available in <a
+	href="http://www.byteslooser.com/csharp/xmlobjects">Luismi Pena's
+Home page</a>; Author: <a href="mailto:byteslooser@gmail.com?subject=xmlobjects">byteslooser@gmail.com</a></div>
+
+<br>
+
+
+<h1>xmlobjects - Xml mapping for C#</h1>
+
+<ul type="disc">
+	<li><a href="#Description">Description</a></li>
+	<li><a href="#LicenseAndDownload">License and download</a> -new version 1.10 delivered the 5th May 2008</li>
+	<li><a href="#Usefulness">Usefulness of xmlobjects</a></li>
+	<li><a href="#Interface">Interface</a></li>
+	<ul>
+		<li><a href="#type">Type attributes</a></li>
+		<li><a href="#field">Field attributes</a></li>
+	</ul>
+	<li><a href="#serialization">Xml serialization</a></li>
+	<li><a href="#polymorphism">Polymorphism support</a></li>
+	<li><a href="#provided">Provided support</a></li>
+    <li><a href="#docgeneration">Generating documentation</a></li>
+</ul>	
+
+<h2><a name='Description'>Description</a></h2>
+<p><span class='mark'>xmlobjects</span> is a lightweight library to map Xml documents to C# classes, whose
+  main purpose is to simplify the handling of simple Xml files; its objective
+  is not the serialization of objects in Xml (this functionality is built in
+  .Net).</p>
+
+<p>The mention of simple Xml files applies to two restrictions:
+<ul>
+  <li>Size: the file is mapped to C# classes, all the required information 
+    maps to structures in memory.</li>
+  <li>Definition: currently, namespaces are not supported.</li>
+</ul></p>  
+
+<p>With <span class='mark'>xmlobjects</span>, the programmer must create a hierarchy of classes that represents
+directly the Xml instances; my main objective is to facilitate the handling of
+configuration files, although it can obviously read any Xml files -and write them-.</p>
+
+<h2><a name='LicenseAndDownload'>License and download</a></h2>
+<p><span class='mark'>xmlobjects</span> is delivered as it, without
+any responsabilities on the author. It is open source, it can be used or
+modified without any limitations.</p>
+
+<p>The library is only available in source format. 
+<ul>
+	<li>Version 1.10. (05/05/08). This version adds minimum support to
+        be used by <a href='http://www.byteslooser.com/csharp/xmlobjectsdocgui'>XmlObjectsDocGui</a>, by exposing some previously private methods. The functionality is
+        the same as in version 1.00.
+	<ul><li><a href="xmlobjects-1-1.zip">xmlobjects-1-1.zip</a></li></ul>
+	</li>
+	<li>Version 1.00. (11/02/07).
+	<ul><li><a href="xmlobjects-1-0.zip">xmlobjects-1-0.zip</a></li></ul>
+	</li>
+</ul>
+</p>
+
+
+<h2><a name='Usefulness'>Usefulness of xmlobjects</a></h2>
+
+<p>In many cases -even most cases-, the support provided by <span class='mark'>xmlobjects</span> is redundant,
+as quite an equivalent functionality is directly build in the .Net framework.</p>
+
+<p>The Xml Serialization support in the framework -defined in the namespace
+<span class='code'>System.Xml.Serialization</span>- already provides a mapping between
+C# classes and Xml instances. And the <span class='code'>System.Configuration</span>
+namespace provides the required support for handling configuration files in client
+applications; explanations of these mechanisms can be found in the following URLs:
+<ul><li><a href='http://www.pluralsight.com/wiki/default.aspx/Craig/XmlSerializerSectionHandler.html'>Xml Serialization Section Handler</a></li>
+<li><a href='http://www.eggheadcafe.com/articles/20060622.asp'>Creating an Object Configuration Section in .Net 2.0</a></li></ul></p>
+
+<p>I wrote <span class='mark'>xmlobjects</span> beacuse I needed a specific feature, not covered directly in the
+Xml serialization .Net support: knowing the specific order on which subelements are
+defined. I know that such functionality can be indirectly covered, adding extra information
+in the Xml file, or providing my custom reader/writer for the specific Xml class; however,
+modifying the schema is not always an option, and customizing the reader/writer already
+requires some effort. Obviously, such effort would always be lesser than writing the
+<span class='mark'>xmlobjects</span> library, but having my own implementation could facilitate introducing further
+requirements.</p>
+
+<p>Specific features supported in <span class='mark'>xmlobjects</span>:
+<ul>
+ <li>It can provide the order on which elements are defined.</li>
+ <li>It supports building a complete hierarchy of objects to represent the Xml instance, with parent and
+ child relationships.</li>
+ <li>It supports <span class='code'>List&lt;T&gt;</span> fields; arrays of elements can be associated to basic arrays or generic lists.</li>
+ <li>For primitive types, mapped to Xml attributes, the library can provided extended knowledge on
+ whether those attributes have been specified or not in the Xml file.</li>
+ <li>C# classes can define methods that are called when the reading or writing is performed.</li>
+ <li>It supports generic elements, arrays to store subelements not directly mapped to class attributes.</li>
+ <li>It supports easy configuration of the default behaviour.</li>
+ <li>Source is fully available, together with a complete set of unit tests.</li>
+</ul> 
+</p>
+
+
+<h2><a name='Interface'>Interface</a></h2>
+<p>The main objective of <span class='mark'>xmlobjects</span> is the reading of simple files; the programmer defines one or more classes that map the Xml schema, and triggers the creation of C# instances by reading the Xml file.
+For example, a class with the following fields:
+<pre>
+	public class Example {
+		public string name;
+		public Subname subs;
+	}
+	
+	public class Subname {...}
+</pre>	
+	has the Xml representation as:
+<pre>
+	&lt;Example name='...'&gt;
+		&lt;Subname ... &gt; ... &lt;/Subname&gt;
+		...
+	&lt;/Example&gt;
+</pre>
+</p>
+
+<p>As with the <span class='code'>System.Xml.Serialization</span> namespace, <span class='mark'>xmlobjects</span> rely on
+custom attributes to modify the default behaviour.</p>
+
+<p>Any class can be mapped to a Xml type. By default, any public field is mapped to an attribute or a nested element of the Xml type. Note that this differs from the <span class='code'>System.Xml.Serialization</span> namespace, where public fields or properties can be mapped.</p>
+
+<p>If the field's type is a primitive, an enumeration or a string, the mapping defaults to Xml attributes; in the rest of the cases, they map to Xml nested elements, as shown on the example above.
+This behaviour can be customized, for all the fields or for each individual field. The exception is the array fields, mapped always as attributes.</p>
+
+<p>The library knows how to map automatically arrays, and has built-in support
+for <span class='code'>List&lt;T&gt;</span> elements, where T is not a <span class='code'>List&lt;T&gt;</span> itself. This means that having an ArrayList field, for example, will not have the expected result (replacing an array of objects)</p>
+	
+<h3><a name='type'>Type attributes</a></h3>
+<p>A type can be decorated with the XmlType attribute, which allows the following modifiers:</p>
+<ul>
+	<li><span class='options'>AttributeFields</span>:
+	<ul>
+		<li>By default is true, meaning that basic public fields 
+	  associated to non-array types are mapped to Xml attributes.
+		Setting it to true maps those fields to nested elements.</li>
+	</ul>
+	<li><span class='options'>ChildsFields</span>:
+	<ul>
+		<li>If specified, the given field will contain 
+	  the references to all the child nodes, in the order found in the Xml file.
+		This property is important when the order of the nested elements makes a 
+		difference.</li>
+	</ul>
+	<li><span class='options'>ExplicitFields</span>:
+	<ul>
+		<li>By default is false, meaning that all the public fields have
+	  Xml associations (unless a specific field includes the attribute 
+	  XmlNoField). If it is set to true, the mapping fields must include the attribute 
+		XmlField.</li>
+	</ul>
+	<li><span class='options'>GenericElementField</span>:
+	<ul>
+		<li>If specified, the given field will contain the
+	  references to all the element not directly defined.</li>
+	</ul>
+	<li><span class='options'>InnerTextField</span>:
+	<ul>
+		<li>If specified, the given field will receive the inner text 
+	  for a given Xml definition (if any).
+		For example: 
+		<pre>&lt;Subname&gt;Dog&lt;/Subname&gt;</pre> 
+		has <span class='code'>Dog</span> as inner text. 
+		If a Xml type has a given inner text and the type does not define an inner 
+		  field, it is checked if the type defines a static Parse(string) method.
+			If it does not, a Xml reading error is raised. Otherwise, the Parse 
+			method is invoked, but the type cannot then define any nested elements 
+			or attributes.</li>
+	</ul>
+	<li><span class='options'>ParentField</span>:
+	<ul>
+		<li>If specified, the given field (which must be public) will 
+	  contain the reference to the parent node in the Xml file.
+		This field will allow then full hierarchical navigation.</li>
+	</ul>
+	<li><span class='options'>ProvidedFieldsSupport</span>:
+	<ul>
+		<li>boolean value, related to the support of 
+	  <a href='#provided'>provided</a> attributes or elements.</li>
+	</ul>
+	<li><span class='options'>TypeAttribute</span>:
+	<ul>
+		<li>This attribute relates to the support of
+	  <a href='#polymorphism'>polymorphism</a>.</li>
+	</ul>
+	<li><span class='options'>XmlReadCompletedMethod</span>:
+	<ul>
+		<li>If specified, the given method (no parameters), is called
+	  when the whole Xml has been parsed.</li>
+	</ul>
+	<li><span class='options'>XmlWritePrepareMethod</span>:
+	<ul>
+		<li>If specified, the given method (no parameters), is called
+	  when the Xml is to be written.</li>
+	</ul>
+	<li><span class='options'>XmlWriteCompletedMethod</span>:
+	<ul>
+		<li>If specified, the given method (no parameters), is called
+	  when the Xml writting is completed.</li>
+	</ul>
+</ul></p>
+			
+<p>The XmlType attribute is not inherited, affects only to the declaring class.
+A subclass could define different settings for this attribute, but the
+  redefined settings do not affect the parent classes.</p>
+<p>For example, if the parent class defines the innerTextField, the subclass
+    can define another innerTextField, and both fields will be set.</p>
+<p>There is a limitation on the fields that can be specified in the type
+    attribute: they can only refer to the declaring class. That is, a
+    subclass cannot define its InnerTextField as a field defined above
+    in its hierarchy.</p>
+
+<h3><a name='field'>Field attributes</a></h3>
+<p>The fields in a type can have two attributes: XmlNoField, meaning that the 
+  field has no Xml representation, and XmlField, which has the opposite meaning.</p>
+
+<p>XmlField allows the following modifiers:
+<ul>
+	<li><span class='options'>Name</span>:
+	<ul>
+		<li>specifies the name of the associated attribute/element. 
+	  If not specified, the Xml name is the variable name (case is not important)</li>
+	</ul>
+	<li><span class='options'>AsElement</span>:
+	<ul>
+		<li>A boolean value, it defines, for non-array types, whether the mapping is to an 
+	  attribute or to a nested element.</li>
+	</ul>
+</ul></p>	
+	
+<p>The mapping is always case unsensitive. This implies that it is an error to define a class with two fields differing only in case.</p>
+
+<h2><a name='serialization'>Xml serialization</a></h2>
+  
+<p>The library allows as well to save an instance as Xml, using the same 
+  specifications described for the loading. The objective of the library
+  is to read / store Xml files, not to serialize the passed objects. In
+  special, recursive definitions are not allowed.</p>
+  
+  
+<h2><a name='polymorphism'>Polymorphism support</a></h2>
+  
+<p>The library supports polymorphism on the Xml elements. For example, in the
+  following C# classes:
+<pre>  
+  class File { 
+    public string name;
+  }
+  class Folder : File  {
+    public File[] file;
+  }
+</pre>  
+  when a Folder is stored, if any of the referenced files is itself a folder,
+  it will be stored as a folder (with subfiles). On this example, the stored
+  Xml could look like:
+<pre>  
+  &lt;File name='\'&gt;
+    &lt;File name='.' /&gt;
+    &lt;File name='..' /&gt;
+  &lt;/File&gt;
+</pre>  
+  That is, even when a File object is being stored, information on the fields
+    defined it its real type (Folder), are used in the output (in this case,
+    all the File subelements).</p>
+    
+<p>In some cases, this can be all that is needed, specially if the library is
+    only used to save Xml files. However, if the produced file is read again
+    by <span class='mark'>xmlobjects</span>, using the same C# classes, there will be an error: a File
+    is created with name '\', and then a subelement with name 'File' is
+    required, but a File instance knows nothing about any 'File' field!</p>
+    
+<p>As mentioned above, <span class='mark'>xmlobjects</span> does not intend to do objects serialization,
+    but supporting this scenario makes perfect sense when the same 
+    polymorphism ideas are applied to the Xml definitions. In particular, this
+    enables scenarios where the user or 3rd party libraries can extend 
+    predefined Xml (configuration or not) files.</p>
+    
+<p>To enable this support, the Xml element can include an optional element
+    describing its real type, like in the following <span class='mark'>uncomplete</span>
+	example:     
+<pre>
+  &lt;File name='\' type='Folder'&gt;
+    &lt;File name='.' /&gt;
+    &lt;File name='..' /&gt;
+  &lt;/File&gt;
+</pre>  
+  In this case, the  'type' attribute is used to specify the real type. It has
+    no representation on the C# classes, there is no need to specify a field
+    with that name (in fact, it would raise an error).</p>
+    
+<p>It is possible to specify the name of the type attribute in the 
+    XmlTypeAttribute associated to a class, or in a general way for all the
+    classes. The following restrictions apply:
+<ul>	
+    <li>The type must be the same type (or subclass) of the expected type.</li>
+    <li>When storing the Xml objects, the type is only output if needed (if 
+       the type is different from the expected type)</li>
+</ul>	   
+</p>
+<p>The type attribute must include the full class type specification; and, if it is
+defined outside the assembly of the original type, the assembly is required as well.
+An example without assembly is:
+<pre>
+&lt;file name='aname' type='XmlObjectsTestUnits.TestB02TypeAssembly+NewFile&gt;
+</pre>
+And the following example shows the assembly information as well:
+<pre>
+&lt;file name='aname' type='XmlObjectsTestUnits.TestB02TypeAssembly+NewFile, 
+NunitTests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'/&gt;
+</pre>
+</p>  
+  
+    
+<h2><a name='provided'>Provided support</a></h2>
+
+<p>In some cases, it is needed to know when the Xml specifies one attribute or
+  not; for example
+
+<pre>  
+  &lt;given times='0'/&gt;
+</pre>
+can be indistinguable from 
+<pre>
+&lt;given/&gt;
+</pre>
+when times is handled as an integer attribute.</p>
+    
+<p>If the class defines a boolean type named 'timesAttributeProvided', <span class='mark'>after</span>
+the type 'times' is specified, and has no associated [XmlField] attribute, it is handled as a support field, that will contain true or false depending on whether the attribute is specified or not.</p>
+   
+<p>If the main type is an element, not an attribute, but is not an array, it can use the same functionality, but the support field must be named like in 'timesElementProvided'</p>
+   
+<h2><a name='docgeneration'>Generating documentation</a></h2>
+    
+<p>From version 1.10, it is possible to generate automatically HTML documentation from the XML schema.</p>
+
+<p>The generation is done by an external program, this functionality is not implemented directly 
+in <span class='mark'>xmlobjects</span>, as different generation models could be used.</p>
+
+<p>The project <a href='http://www.byteslooser.com/csharp/xmlobjectsdocgui'>XmlObjectsDocGui</a> performs this task.</p>
+   
+</div>   
+</body>
+</html>  

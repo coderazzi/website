@@ -1,0 +1,22 @@
+#myinfo
+{
+	background-color: #eee;
+	font-style: italic;
+	padding-bottom: 5px;
+}
+
+
+#copyright
+{
+	text-align: right;
+	font-size: 12px;
+}
+
+
+#hostinfo
+{
+	padding-bottom: 5px;
+	text-align: left;
+	font-style: italic;
+	font-size: 10px;
+}

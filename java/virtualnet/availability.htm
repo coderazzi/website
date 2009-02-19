@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+ <title>VirtualNet: network simulation with JavaRMI.
+ Availability</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <link rel="stylesheet" type="text/css" href="virtualnet.css">
+ <meta name="Description" content="VirtualNet">
+ <meta name="Keywords" content="java RMI network simulation">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <h1>VirtualNet (over RMI)</h1>
+ <h2>Availability</h2>
+ <div class='hr'>&nbsp;</div>
+
+ <p>The virtual net application is provided in its source form. The
+ documentation can be generated using javadoc.</p>
+
+ <p>The application has not been fully tested; if you find any bug,
+ please let me known. If you modify any of the files, I would like
+ to enjoy your improvements: please let me know about the
+ changes.</p>
+
+ <p>Finally, the application has been written using JDK 1.1, and
+ tested with the 1.1.3 version. It won't work with JDK 1.0</p>
+
+ <ul type="square">
+  <li><a href="vnetjava.zip">vnetjava.zip</a> (57 KB): the java
+  files (they are directly unzipped in a directory called
+  <em>vnet</em>). With this files is possible to generate the
+  documentation and the library file.</li>
+
+  <li><a href="vnetdoc.zip">vnetdoc.zip</a> (75 KB): the
+  documentation (it has been generated form the java files using
+  <em>javadoc</em>)</li>
+
+  <li><a href="vnetjar.zip">vnetjar.zip</a> (95 KB): the final
+  library (it was generated with the -0 option, and zipped
+  later)</li>
+ </ul>
+ <div class='hr'>&nbsp;</div>
+
+ <p>If you get the <em>java</em> files, you will have to generate
+ the <em>class</em> files using <em>javac</em>. In addition, it is
+ needed to generate the stubs and skeleton for the RMI servers. To
+ do that, from the parent directory where you have unzipped the
+ <em>zip</em> file, execute:</p>
+ <pre>
+rmic -dstub . -dskel . vnet.remote.HostImpl
+rmic -dstub . -dskel . vnet.remote.VirtualNetRemote
+</pre>
+
+ <p>If you don't generate now the <em>jar</em> file, you need to
+ modify the <em>classpath</em> to include the directory parent
+ where the <em>class</em> files have been generated. For example,
+ if the <em>java</em> and <em>class</em> files are in the directory
+ <em>vnet</em> under the directory <em>Java</em>, the
+ <em>classpath</em> should be something like:</p>
+ <pre>
+CLASSPATH=.;f:\java\lib\classes.zip;f:\java
+</pre>
+ <div class='hr'>&nbsp;</div>
+
+ <p>If you get the <em>vnetjar.zip</em> file, it is needed to unzip
+ it to any directory, and include the file <em>vnet.jar</em> in the
+ <em>classpath</em>. For example, my <em>classpath</em> is, under
+ Windows 95:</p>
+ <pre>
+CLASSPATH=.;f:\java\lib\classes.zip;f:\java\virtualnet\vnet.jar
+</pre>
+ </div>
+ </div>
+</body>
+</html>

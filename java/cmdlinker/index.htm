@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html>
+<head>
+<title>CmdLinker</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta name="Description" content="cmdlinker">
+</head>
+<body>
+ <div id='body'>
+ <div id='content'>
+ <h1>CmdLinker</h1>
+ <h2>Tool to handle multiple command line programs</h2>
+
+ 
+ <ul type="disc">
+	<li><a href="#Description">Description</a></li>
+	<li><a href="#Version">Version / Requirements</a></li>
+	<li><a href="#LicenseAndDownload">License and download</a></li>
+	<li><a href="#Functionality">Functionality</a></li>
+	<li><a href="#Scripts">Scripts</a></li>
+	<li><a href="#usage">Usage</a></li>
+	<li><a href="#commandline">Command line arguments</a></li>
+	<li><a href="#uninstall">Uninstall</a></li>
+</ul>	
+
+<h2><a name='Description'>Description</a></h2>
+<p><span class='mark'>CmdLinker</span> is a quite simple program to execute multiple command-line programs, keeping them together in one only window.<p>
+<p>It allows keeping those programs linked under a simple GUI, supporting operations like resetting the working
+programs, stopping all at once, etc.</p>
+
+<p><span class='mark'>CmdLinker</span> is mainly useful to programmers and users who must spawn a set of 
+non interactive command-line programs in order to achieve some predefined functionality.</p>
+
+<p>For example, I use a proxy server, 
+where I must setup two open virtual networks, and run a set of delegate scripts that allow me to forward 
+network connections between the two virtual networks.
+Without <span class='mark'>CmdLinker</span>, such setup requires opening 4 command line windows, where I
+execute the scripts that start the open virtual network conenctions, plus the scripts to run the delegate 
+scripts that perform the network forwarding. Then , my desktop becomes cluttered with 4 windows or icons 
+that are logically associated together!</p>
+<p><span class='mark'>CmdLinker</span> allows me to keep those linked commands under one only window. 
+It does not only improves my desktop, it improves my interaction with
+those programs, as I can stop all of them at once, or just restart them if needed.</p>
+
+<p><img src='./cmdlinker.jpg' class='centered'/></p>
+
+<p>The previous figure shows <span class='mark'>CmdLinker</span> in action: each console/command application is
+run on its own tab window.</p>
+
+<h2><a name='Version'>Version / Requirements</a></h2>
+<p>The current version of <span class='mark'>CmdLinker</span>, is the 0.9.7. 
+This version includes all the functionality that I considered required for a 1.0 version.
+This is a well tested version, run in Windows XP, Mac Os X 10.4 and Linux (Ubuntu 7.0.4).
+Would you run into problems, please send me a mail to my <b>byteslooser</b> address listed
+at the top of this page.</p>
+<p>The current version is developed in Java. I use Eclipse with JDK 1.6, and you will need at least JDK 1.5
+to run or execute it. If you plan to edit / modify the code, note that <span class='mark'>CmdLinker</span>
+does not have further dependencies, it is just a simple Swing application.</p>
+
+<p>I am not sure whether future versions will be developed in Java, or I will 
+return to my initial approach using .Net with IronPython. Please not that all the consoles are used directly by
+the operative system, and CmdLinker only displays the produced output, in a really optimised way, so there is
+not real performance problem on using Java; my idea to use eventually Python is just based 
+on possible improvements to the scripting support.</p>
+
+<h2><a name='LicenseAndDownload'>License and download</a></h2>
+<p><span class='mark'>CmdLinker</span> is delivered as it, without
+any responsabilities on the author. It is open source, it can be used or
+modified without any limitations.</p>
+
+<p>The program is provided as .zip or .jar format. If you plan to just run the application, use the .jar format.
+The .zip format allows you to browse/edit the source code (it includes project files to access it from Eclipse).</p>
+<ul>
+	<li>Version 0.97. (22/07/07).
+	<ul>
+		<li><a href="cmdlinker-0-97.zip">cmdlinker-0-97.zip</a></li>
+		<li><a href="cmdlinker-0-97.jar">cmdlinker-0-97.jar</a></li>
+	</ul>
+	</li>
+</ul>
+</p>
+
+
+<h2><a name='Functionality'>Functionality</a></h2>
+
+<p>What can you do with <span class='mark'>CmdLinker</span>? Mainly, just run sets of command line programs
+under a common, umbrella graphical interface:</p>
+
+<ul>
+ <li>Execute any command line program, that should not require any interaction.</li>
+ <li>Close/Terminate/Restart any running program.</li>
+ <li>Group programs: each group is shown on a separate <span class='mark'>CmdLinker</span> window.</li>
+ <li>Typical GUI controls: apply specific background/foreground colors and fonts.</li>
+ <li>Good GUI interaction, using popup menus / menus when required.</li>
+ <li>Run specific <span class='mark'>CmdLinker</span> scripts, detailed below.</li>
+</ul>
+
+<h2><a name='Scripts'>Scripts</a></h2>
+<p><span class='mark'>CmdLinker</span> supports basic scripts to drive its operations; that is, it is possible
+to provide <span class='mark'>CmdLinker</span> with a text script that instructs it to perform a set of 
+basic operations:
+<ul>
+ <li>Setup default colors and font.</li>
+ <li>Create a new console.</li>
+ <li>Apply specific colors and font to each console.</li>
+ <li>Execute a command line application.</li>
+</ul>
+</p>
+
+<p>The script is kept purposely simple. It is possible to execute any set of commands without knowing
+the specific script syntax. For example, the following script executes 3 different .sh scripts on 3 consoles:</p>
+
+<pre>
+/home/users/luismi/batch1.sh
+/home/users/luismi/openvpn/asConnect.sh
+/home/users/luismi/openvpn/viConnect.sh
+</pre>
+
+<p>Easy, not? This script could be customized as follows, to use specific font size, and different colors on each
+console:</p>
+
+<pre>
+font monospaced bold 12
+createTab CheckConnection
+colors white black
+/home/users/luismi/batch1.sh
+createTab Basic conenction
+colors white blue
+/home/users/luismi/openvpn/asConnect.sh
+/home/users/luismi/openvpn/viConnect.sh
+colors cyan blue
+</pre>
+
+
+<h2><a name='usage'>Usage</a></h2>
+<p>Each tab displays the command being executed, and, if finished, and status line is added at the top. It is possible
+to check quickly the status of each command by the icon on the tab. The icons are:</p>
+<ul>
+  <li><img src='running.gif'>&nbsp:&nbsp The command is still on execution</li>
+  <li><img src='ok.gif'>&nbsp:&nbsp The command has finalized, with error code 0</li>
+  <li><img src='warning.gif'>&nbsp:&nbsp The command has finalized, with error code differente from zero</li>
+  <li><img src='error.gif'>&nbsp:&nbsp There was some error that prevented the execution of the command</li>
+  <li><img src='terminated.gif'>&nbsp:&nbsp The user stopped the command execution</li>
+</ul>
+
+<p>The program should be easily used through the intuitive graphical interface. It must be specifically noted
+that, to mofify the font size and colors used by the program on each tab, it is needed to use the Options.. Display
+menu element. Changing the font size on the main window only modifies the font size of the tab console being displayed.</p>
+
+<p>Under options, it is possible to specify whether to save the options or not. When saved, the options are kept
+among multiple program executions, including some default values, like last command executed, etc. In this case,
+a file with name <span class='mark'>cmdlinker.conf</span> is stored in the home user directory.</p>
+
+<h2><a name='commandline'>Command line arguments</a></h2>
+
+<p>It is possible to provide <span class='mark'>CmdLinker</span> with command line arguments:</p>
+<ul>
+	<li>-bg modifies the default background color. It can be provided as a well known color, like white, etc, or
+	as a RGB value, using the notation #RRGGBB.</li>
+	<li>-fg modifies the default foreground color</li>
+	<li>-font modifies the font size. It expects, therefore, an integer, as the family font is always monospaced</li>
+	<li>-c expects one or more additional arguments, that specify the command to execute, and, optionally, the expected arguments.
+	     If provided, this must be the last argument</li>
+	<li>-check expects one additional argument, that specify the script to check</li>
+</ul>
+
+<p>It is allowed to specify a script to execute by providing it as the last command line argument, if -c and -check are not
+specified</p>
+
+<h2><a name='uninstall'>Uninstall</a></h2>
+
+<p>Uninstalling <span class='mark'>CmdLinker</span>is as easy as removing the associated jar file, and, if options where
+saved, the file <span class='mark'>cmdlinker.conf</span> stored in the home user directory; the easiest way to remove this
+file is by unsetting the checkbox Save options in the options menu.<p>
+
+ </div>
+ </div>
+
+</body>
+</html>  

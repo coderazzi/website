@@ -1,30 +1,99 @@
 <?xml version="1.0" standalone="yes"?>
 
-<wsm>
+<wsm path='website'>
 
-<propertiesSet>
-	<properties id='luicpend' template='default' hierarchical='top'/>
-	<properties name='VirtualNet' template='default' hierarchical='alone'/>
-	<properties name='Packages' template='default' hierarchical='through'/>
-</propertiesSet>
+<transform source='.'>
+    <alltemplates cssMoldClass='wsmreplace'>
+        <replace what='cssdir' withdir='css'/>
+        <replace what='wsmdoc' withdoc='full'/>
+    </alltemplates>
+    <location source='Java' target='.'>
+        <template mold='../mold.htm'/>
+    </location>       
+    <location source='css'/>
+    <location source='Java/idldepend' target='idldepend'>
+        <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
+    </location>
+    <location source='csharp/xmlobjects'>
+        <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
+    </location>
+    <location source='csharp/xmlobjectsdocgui'>
+        <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
+    </location>
+    <location source='Java/tablefilter' target='tablefilter'>
+        <template mold='../../tfilter.mold.htm' />
+        <exclude pattern='api'/>
+        <exclude pattern='api5'/>
+    </location>
+    <location source='Java/tablefilter/api' target='tablefilter/api'>
+        <template mold='../../../javadoc.mold.htm'>
+            <exclude pattern='index.html'/>
+            <exclude pattern='*-frame.html'/>
+        </template>
+    </location>
+    <location source='Java/tablefilter/api5' target='tablefilter/api5'>
+        <template mold='../../../javadoc.mold.htm'>
+            <exclude pattern='index.html'/>
+            <exclude pattern='*-frame.html'/>
+        </template>
+    </location>
+    <location source='tnotes'>
+        <template mold='../mold.htm'/>
+    </location>
+    <exclude pattern='.svn'/>
+    <exclude pattern='*.mold.htm'/>
+</transform>
 
-<hierarchy properties="luicpend">
-  <page name='Home' location='index.htm'/>
-  <page name='FileSplit' location='filesplit/index.htm'/>
-  <page name='Menu Applet' location='menu/index.htm'/>
-  <page name='Sensei' href='http://grasia.fdi.ucm.es/sensei'/>
-  <page name='SplitImage' location='splitimage/index.htm'/>
-  <folder name='VirtualNet' location='virtualnet'>
-	<page name='Overview' location='index.htm' properties='luicpend' template='other'/>
-	<page name='Availability' location='availability.htm'/>
-	<page name='Packages' location='packages.htm'/>
-	<page name='Interface' location='interface.htm'/>
-	<page name='Local example' location='localExample.htm'/>
-	<page name='RMI example' location='rmiExample.htm'/>
-	<page name='Executables' location='executables.htm'/>
-	<page name='Versions' location='versions.htm'/>
-  </folder>
-  <page name='VirtualNet2' location='virtualnet2/index.htm'/>
-</hierarchy>
+
+
+
+<navigation>
+    <menu id='menu'>
+        <item name='Home' file='index.htm'/>
+        <group name='Java'>
+            <item name='CmdLinker' file='cmdlinker/index.htm'/>
+            <item name='FileSplit' file='filesplit/index.htm'/>
+            <item name='IdlDepend' file='idldepend/index.htm'/>
+            <item name='Menu Applet' file='menu/index.htm'/>
+            <item name='Sensei' href='http://grasia.fdi.ucm.es/sensei'/>
+            <item name='SplitImage' file='splitimage/index.htm'/>
+            <group name='Table filter'>
+                <item name='Overview' file='tablefilter/index.html'/>
+                <item name='Table header' file='tablefilter/header.html'/>
+                <item name='Text expressions' file='tablefilter/parsers.html'/>
+                <item name='Filter editors' file='tablefilter/editors.html'/>
+                <item name='Standalone mode' file='tablefilter/standalone.html'/>
+                <item name='Java 5 support' file='tablefilter/java5.html'/>
+                <item name='Download' file='tablefilter/download.html'/>
+                <item name='Examples' file='tablefilter/examples.html'/>
+                <item name='Javadoc' file='tablefilter/javadoc.html'/>
+            </group>
+            <group name='VirtualNet'>
+                <item name='Overview' file='virtualnet/index.htm'/>
+                <item name='Availability' file='virtualnet/availability.htm'/>
+                <item name='Packages' file='virtualnet/packages.htm'/>
+                <item name='Interface' file='virtualnet/interface.htm'/>
+                <item name='Local example' file='virtualnet/localExample.htm'/>
+                <item name='RMI example' file='virtualnet/rmiExample.htm'/>
+                <item name='Executables' file='virtualnet/executables.htm'/>
+                <item name='Versions' file='virtualnet/versions.htm'/>
+            </group>
+            <item name='VirtualNet2' file='virtualnet2/index.htm'/>
+        </group>
+        <group name='C#'>
+            <item name='XmlObjects' file='csharp/xmlobjects/index.htm'/>
+            <item name='XmlObjectsDocGui' file='csharp/xmlobjectsdocgui/index.htm'/>
+        </group>
+        <group name='Technical notes'>
+            <group name='C#'>
+                <item name='GAC and mono' file='tnotes/csharp/gacWMono.html'/>
+            </group>
+        </group>
+    </menu>
+</navigation>
+
+<postTransform>
+    <htmhtml mode='HtmToHtml'/>
+</postTransform>
 
 </wsm>

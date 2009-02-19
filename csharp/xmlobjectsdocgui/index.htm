@@ -1,0 +1,130 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Documenting XmlObjects schemas</title>
+
+<style type="text/css">
+<!--
+  body  { background: white; padding: 0px;  font-family: Verdana, Helvetica, Trebuchet MS, Trebuchet, Arial;}
+  #content {margin: 0 4em 4em 9em; background: white; font-size: 0.90em;}
+  #note    {Float: right; font-size: 0.8em;}
+  h1 { background: #6666ff; margin: 0px 10px 20px 0px; padding: 10px; 
+       font-size: 2em; color: #f0f0ff;}
+  h2 { background: #8888ff; margin: 30px 10px 20px 40px; padding: 8px; 
+       font-size: 1.6em}
+  h3 { background: #aaaaff; margin: 25px 10px 20px 50px; padding: 6px; 
+       font-size: 1.4em}
+  h4 { background: #bbbbff; margin: 20px 10px 20px 60px; padding: 4px; 
+       font-size: 1.2em}
+  table {width: 90%; border-collapse: collapse; font-size: 0.95em;}
+  th {padding: 4px; border: 3px solid #bbbbff; background-color: #e0e0ff;
+      color: #5555ff}
+  td {padding: 4px; border: 2px solid #bbbbff;}
+  .itable {width: 100%; font-size: 0.95em; margin: 0.6em 0 0.6em 0}
+  .itable th {padding: 4px; border: 2px solid #bbbbff; background-color: #f0f0ff;}
+  .mark {font-weight: bold; font-style: italic;}
+  .options {font-weight: bold; font-style: italic; font-size: 0.90em;}
+  .code {display: inline; font-family: monospace;}
+  pre {padding: 10px;background-color: #eee;}
+
+#navigation {float:left; width:7em; background: #bbbbff; font-size: 0.9em;}
+  
+-->
+</style>
+</head>
+
+<body>
+
+<div id='content'>
+
+<div id='note'>Latest version of this page, available in <a
+	href="http://www.byteslooser.com/csharp/xmlobjectsdocgui">Luismi Pena's
+Home page</a>; Author: <a href="mailto:byteslooser@gmail.com?subject=xmlobjectsdocgui">byteslooser@gmail.com</a></div>
+
+<br>
+
+
+<h1>XmlObjectsDocGui</h1>
+<h1>Documenting XmlObjects</h1>
+
+<ul type="disc">
+	<li><a href="#Description">Description</a></li>
+	<li><a href="#LicenseAndDownload">License and download</a> -version 1.00 delivered the 5th May 2008</li>
+	<li><a href="#xmlobjects">Dependency on XmlObjects</a></li>
+</ul>	
+
+<h2><a name='Description'>Description</a></h2>
+<p><span class='mark'>XmlObjectsDocGui</span> is a tool that complements 
+<a href='http://www.byteslooser.com/csharp/xmlobjects'>xmlobjects</a>, supporting the automatic
+generation of Html documentation from the information in the Xml schema used in 
+<span class='mark'>xmlobjects</span>.</p>
+
+<p>It extracts the comments embedded in the C# definition of the Xml schema, and uses the 
+Xml hierarchy definition to generate the final Html pages.
+Currently, it only supports Gui handling, and the user cannot choose among different schemas.
+Specially interesting, on a future version, would be the generation of the full documentation in
+a single document.</p>
+
+<p>
+      <img src="xmlobjectsdocgui.png" class="centered">
+</p>
+
+<p>The idea behind <span class='mark'>XmlObjectsDocGui</span> is to use the normal C# documentation
+accompanying the C# definition of the Xml Schema, to provide comprehensive documentation for
+that schema. <span class='mark'>Microsoft</span> has defined the 
+<a href='http://msdn.microsoft.com/en-us/library/b2s063f7(VS.80).aspx'>format of those comments</a>,
+but the only way to extracting them is by using the C# compiler. This tool requires, therefore:
+<ul>
+<li>
+The C# compiler, which will be invoked with the /doc argument.
+</li>
+<li>
+The list of C# files defining the Xml schema.
+</li>
+<li>
+Any DLL file referenced by those C# files.
+</li>
+</ul>
+</p>
+
+<p>
+It is needed also the target directory to store the generated documentation; this documentation
+is, as Xml, hierarchical, and needs the root type. It is possible to define this root type in
+the main application form, or require the application to show the list of types from where to 
+select that type.
+</p>
+
+<h2><a name='LicenseAndDownload'>License and download</a></h2>
+<p><span class='mark'>XmlObjectsDocGui</span> is delivered as it, without
+any responsabilities on the author. It is open source, it can be used or
+modified without any limitations.</p>
+
+<p>This application is only available in source format. 
+<ul>
+	<li>Version 1.00. (05/05/08).
+	<ul><li><a href="xmlobjectsdocgui-1-0.zip">xmlobjectsdocgui-1-0.zip</a></li></ul>
+	</li>
+</ul>
+</p>
+
+
+<h2><a name='xmlobjects'>Dependency on XmlObjects</a></h2>
+
+<p><span class='mark'>XmlObjectsDocGui</span> is designed to be independent of the <span class='mark'>xmlobjects</span>
+library. Better explained, it is designed to be independent of the library version.</p>
+
+<p>The motivation is that the generation of the documentation of the schema depends on how <span class='mark'>xmlobjects</span>
+interpretates that schema; it is therefore possible that the same C# structures defines different Xml schemas depending
+on the version of the library that is used. <span class='mark'>XmlObjectsDocGui</span> allows therefore to provide 
+the exact library associated to an schema. This requirements has complicated the implementation of this application,
+but is also a good exercise on dynamic load of libraries.</p>
+
+<p>In any case, <span class='mark'>XmlObjectsDocGui</span> still requires <span class='mark'>xmlobjects</span>: 
+to facilitate the usage of the application, it stores information on the last run as 
+a configuration file. This is a Xml configuration file, and it is, obviously, loaded and stored using the 
+<span class='mark'>xmlobjects</span> library.</p>
+</p>
+
+</div>   
+</body>
+</html>  

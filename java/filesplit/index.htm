@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+
+<html>
+
+<head>
+ <title>Filesplit: split utility in Java</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta name="Description" content="filesplit">
+ <meta name="Keywords" content=
+ "java application to split files into chunks">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+ <h1>FileSplit</h1>
+ <div class='hr'>&nbsp;</div>
+
+ <img src="jarsregistered.gif" class="right">
+
+ <ul type="disc">
+  <li><a href="#install">Installation</a></li>
+
+  <li><a href="#availability">Availability</a></li>
+
+  <li><a href="#instructions">Instructions</a></li>
+
+  <li><a href="#using">Using FileSplit</a></li>
+ </ul>
+ 
+ <p><span class='mark'>FileSplit</span> is a java application that allows to split a file
+ (this file is not modified) in a number of smaller files,
+ specifying the maximum size for each of this chunks.</p>
+ <p>Its main application is, or at least it was my purpose, to be able
+ to save a big file in some floppys, to carry them out. It is an
+ AWT application, written in 1997, without the nice appearance
+ brought later by Swing.</p>
+ <p>I updated the application again in 2007, to remove some unused source code, and to
+ avoid clashes with language changes introduced in JDK 1.5 (I used the new enum keyword).
+ But these were the only changes since the original OLD code! 
+ I didn't even the reference to the original web site or my old email (call it nostalgy?)</p>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="install" id="install">Installation</a></h2>
+
+ <p><span class='mark'>FileSplit</span> is available in a .jar file, that must be appended
+ to the classpath.</p>
+ <p>For example, in a Windows System, if the file has been copied in
+ C:\JAVA\LIB\SplitFile.jar, the classpath must be something
+ like:</p>
+ <pre>
+CLASSPATH=&hellip;&hellip;.;C:\JAVA\LIB\SplitFile.jar
+</pre>
+
+ <p>SplitFile is a java file compiled with JDK1.1.4; to use it, you
+ must have a java virtual machine 1.1.x: the JDK 1.1.x or the JRE
+ 1.1.x (the java rutime environment), for example.</p>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="availability" id="availability">Availability</a></h2>
+
+ <p>SplitFile is <strong>freeware</strong>. There is no warranty in
+ the program, but you can use with complete freedom, or or modify
+ it, as the source code is available as well.</p>
+
+ <ul>
+  <li>bytecode distribution: <a href=
+  "SplitFile.jar">SplitFile.jar</a> (54 KB)</li>
+
+  <li>source code: <a href="SplitFile.zip">SplitFile.zip</a> (30
+  KB). It compiles with JDK 1.4 showing some deprecated API
+  usage.</li>
+ </ul>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="instructions" id="instructions">Instructions</a></h2>
+
+ <p>To split a file, it is needed to specify:</p>
+
+ <ul>
+  <li>The file to split. (it is not modified)</li>
+
+  <li>The target path; where to create these chunks; these chunks
+  will have the name <em>targetpath.X</em>, being X the chunk
+  number.</li>
+
+  <li>Maximum size for each chunk.</li>
+ </ul>The application also creates a batch file that allows to the
+ user to merge the created chunks and get the original file. It is
+ possible to specify the kind of batch to create:
+
+ <ul>
+  <li>Windows platform: it creates a <em>.bat</em> file, with name
+  <em>targetpath.bat</em></li>
+
+  <li>Unix platform: it creates a <em>sh</em> script with name
+  <em>targetpath.merger</em></li>
+ </ul>
+
+ <p>To make easier the use of Split File, it uses -only in the
+ window interface- a settings file. This file is stored in the
+ directory given by the HOME property, with the name
+ <em>SplitFile.properties</em>.</p>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="using" id="using">Using FileSplit</a></h2>
+
+ <p>To start SplitFile, it is needed to have properly set the
+ classpath, as is explained in the installation section. <span class='mark'>FileSplit</span>
+ is started with:</p>
+ <pre>
+java SplitFile.Prg.fs [arguments]
+</pre>
+
+ <p>There are two ways to use SplitFile:</p>
+
+ <ul>
+  <li>With arguments: it is executed from the command line, without
+  any window interface. In this case, the allowed arguments are:
+   <pre>
+[options] File_to_split [Target_path=File_to_split]
+</pre>
+   <p>Where options are:
+   <ul>
+    <li><em>noecho</em>: no information will be displayed</li>
+
+    <li><em>script</em>: a script file (and not a bat file) is
+    created</li>
+
+    <li><em>size=xxx</em>: defines de max size of each chunk (by
+    default is a 3"1/2 floppy size)</li>
+   </ul>
+  </li></p>
+
+  <li>Without arguments: it presents a window interface to get the
+  parameters needed.</li>
+ </ul>
+ <img class='centered' src="filesplit.jpg">
+ </div>
+ </div>
+</body>
+</html>

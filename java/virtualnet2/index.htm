@@ -1,0 +1,445 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+
+<html>
+<head>
+ <title>VirtualNet2: network simulation with CORBA.</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <link rel="stylesheet" type="text/css" href="virtualnet2.css"
+ <meta name="Description" content="VirtualNet">
+ <meta name="Keywords" content="CORBA network simulation">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+
+ <div id='body'>
+ <div id='content'>
+ <h1>VirtualNet 2</h1>
+ <div class='hr'>&nbsp;</div>
+
+ <p>
+ <img src="icon.gif" alt="virtualnet screen capture" class="right border">
+ <ul type="disc">
+  <li><a href="#History">History</a></li>
+
+  <li><a href="#CreateAVirtualNet">Create a virtual net</a></li>
+
+  <li><a href="#UseVirtualNet">Use the virtual net</a></li>
+
+  <li><a href="#ClientProtocol">Client protocol</a></li>
+
+  <li><a href="#VersionAndBugs">Version and bugs</a></li>
+
+  <li><a href="#LicenseAndDownload">License and download</a></li>
+
+  <li><a href="#Example">Example</a></li>
+ </ul>
+ </p>
+
+ <p><span class='mark'>VirtualNet<span class=
+ 'markp'>2</span></span> is an application that simulates a network
+ on a standalone computer.</p>
+
+ <p>A CORBA application -by introducing <strong>one</strong> line
+ of code before initializing the ORB- uses automatically the
+ VirtualNet: it is hosted on one of the virtual computers, and its
+ communications with other CORBA objects are only possible as far
+ as there is any valid virtual path to its host.</p>
+
+ <p>It works with any application CORBA, and with any ORB
+ implementing interceptors. I have succesfully used it with the Sun
+ ORB included with JDK1.4, Orbacus 4 and Jacorb 1.4. The
+ application is written in Java, but the application using the
+ virtual net can be written on any language, provided it has a
+ CORBA mapping.</p>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="History" id="History">History</a></h2>
+
+ <p>This application is the evolution of <a href=
+ "../virtualnet/index.htm">VirtualNet</a>, an application I
+ designed in 1997 to be able to simulate a network topology on a
+ single computer. Using most of the communication systems, being
+ sockets, JavaRMI, CORBA, etc, allows the testing of the
+ application on just one computer, but this test lacks the problems
+ that happen on real cases on a network, like:</p>
+
+ <ul compact type="disc">
+  <li>Slower communications: delays</li>
+
+  <li>Problems on links, giving way to unreachable nodes</li>
+ </ul>
+
+ <p>On the first approach, VirtualNet only worked with JavaRMI,
+ replacing the <strong>rmiregistry</strong>. It had its own
+ compiler, parallel to the <strong>rmic</strong> compiler, to
+ create stubs and skeletons that intercepted the communications,
+ and checked when that communication was possible and which delay
+ had it associated. Although the approach was quite transparent,
+ the application still had to change slightly the code, but the
+ main drawback was that JavaRMI applications not using the registry
+ could not take advantage of the application. And I never tried to
+ change the application to simulate the more advanced capabilities
+ included in JavaRMI with Java2.</p>
+
+ <p><span class='mark'>VirtualNet<span class=
+ 'markp'>2</span></span> works only over CORBA, using 
+ <strong>interceptors</strong>. It has two parts, the server,
+ written in Java, which creates the virtual net. It has a nice
+ graphical interface, lets the user to modify the virtual net on
+ any moment, and listens on a specific port for virtual paths
+ checking. The protocol to check for virtual paths is very simple,
+ easy to implement on any language.</p>
+
+ <p>The client part is so far written on Java, but I'm now written
+ as well a C++ client. The interesting client is a CORBA
+ interceptor that automatically accesses the VirtualNet to verify
+ wether the target node is reachable or not. If it's not reachable,
+ a CORBA COMM_FAILURE exception is raised, simulating completely
+ the real case behaviour. This checking is done twice: when the
+ remote object is accessed, and when the answer is sent.</p>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="CreateAVirtualNet" id="CreateAVirtualNet">Create a
+ virtual net</a></h2>
+
+ <p>The server program is conceptvnet2.VirtualNetconcept, which can
+ be invoked (attention to the classpath) as:</p>
+ <pre>
+java vnet2.VirtualNet
+</pre>This application has several command line
+ <pre>
+Use [-help] [-nograph] [-verbose] [-port=xxx] file
+</pre>
+
+ <p>The <em>-nograph</em> option is interesting to launch existing
+ virtual nets without a graphical interface.</p>
+
+ <p>To create a virtual net, it is needed to give a port, where it
+ will listen for client requests. At any moment, the graphical
+ interface lets the user save or load any other virtual net.</p>
+
+ <p>To create nodes, links, etc, there is currently just one
+ possibility: go to NetLayout-&gt;Modify, and introduce an string
+ with the modifications. I have been working on a nice interface to
+ make it easier, but I really find the current input quite
+ flexible. For example, to create a node 'A', a node 'B', and a
+ link '1' between them, the input is:</p>
+ <pre>
++A+B+A&lt;1&gt;B
+</pre>
+
+ <p>Following are the sintactic rules:</p>
+
+ <ol compact>
+  <li>A node or a link is specified by a string that contains no
+  spaces or any of the following characters: '-', '+', '&lt;',
+  '&gt;', '(', ')','/'</li>
+
+  <li>A node is created by prepending the character '+' to the name
+  of the node. For example: <strong>+Machine_1</strong></li>
+
+  <li>To remove a node, the same notation as to created is used,
+  but using the character '-'. For example
+  <strong>-Machine_1</strong></li>
+
+  <li>A node can de activated/deactivated temporary using '+.' or
+  '-.' For example <strong>-.Machine_1</strong></li>
+
+  <li>A link is created specifying '+', the first node, then a
+  character '&lt;', the link id, again a character '&gt;' and then
+  the second node. For example:
+  <strong>+Machine_1&lt;link1&gt;Machine_2</strong>. To do the link
+  unidirectional, use '&lt;' before the second node:
+  <strong>+Machine_1&lt;link1&lt;Machine_2</strong></li>
+
+  <li>A link is removed specifying '-&lt;' before the node name,
+  like <strong>-&lt;link1</strong></li>
+
+  <li>A link can de activated/deactivated temporary using '+.' or
+  '-.;. For example <strong>-.&lt;link1</strong></li>
+
+  <li>delays (in millseconds) can be specified to nodes or links by
+  appending to its name "(delay)", on creation. For example:
+  <strong>+Node(100)</strong> or
+  <strong>+Node&lt;Link(100)&gt;OtherNode</strong></li>
+
+  <li>A node delay can be changed using /node(delay), like in
+  <strong>/node(100)</strong></li>
+
+  <li>A link delay can be changed using /&lt;link(delay), like in
+  <strong>/&lt;link(100)</strong></li>
+
+  <li>The delay for every link can be changed using /&lt;(delay),
+  like <strong>/&lt;(100)</strong></li>
+
+  <li>Every node delay can be changed using /(delay), like in
+  <strong>/(100)</strong></li>
+
+  <li>In the previous cases, if the delay is not specified, default
+  values are assumed</li>
+
+   <p>For example:</p>
+   <pre>
++ A + B + C + D + E + A&lt;1&gt;B + A&lt;5&gt;D + B&lt;2&gt;C
+</pre>
+   <pre>
++ B&lt;10&gt;E + E&lt;11&gt;D + C&lt;3&gt;D + C&lt;20&lt;E
+</pre>
+
+   <p>Creates the next layout:</p>
+   <img src="createA.gif" class='centered border' alt="original layout">
+
+   <p>It is possible to move around the nodes and the links, to get
+   a clearer picture:</p>
+   <img src="createB.gif" class='centered border' alt="moved layout">
+
+   <p>Using the mouse, it is possible to activate / deactivate or
+   destroy the nodes and links. Following are the used
+   icons:</p>
+   
+   <table>
+   <tr><td><img src="nodeActive.gif"></td><td>Node active</td>
+	   <td><img src="nodeDeactivated.gif"></td><td>Node deactivated</td>
+       <td><img src="nodeInUse.gif"></td><td>Node in use</td>
+    </tr>
+    <tr><td><img src="linkActive.gif"></td><td>Link active</td>
+		<td><img src="linkDeactivated.gif"></td><td>Link deactivated</td>
+        <td><img src="linkInUse.gif"></td><td>Link in use</td>
+	</tr>
+    <tr><td><img src="linkMonoActive.gif"></td><td>Link mono active</td>
+		<td><img src="linkMonoDeactivated.gif"></td><td>Link mono deactivated</td>
+        <td><img src="linkMonoInUse.gif"></td><td>Link mono in use</td>
+    </tr></table>
+   
+   
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="UseVirtualNet" id="UseVirtualNet">Use the virtual
+ net</a></h2>
+
+ <p>The server program is located in the package
+ <strong>vnet2</strong>, but not so the client side. There are
+ several reasons for it. The first is that any application can use
+ the virtual net as a client, and the second one, that the client
+ does not have to be written in Java</p>
+
+ <p>Said this, the package <em>vnet2user</em> contains a client
+ that implements the interceptor behaviour for CORBA.</p>
+
+ <p>On Java, the ORB is usually initialized with:</p>
+ <pre>
+ORB orb = ORB.init(args, props);
+</pre>
+
+ <p>Where <em>args</em> are the command line arguments and
+ <em>props</em> the list of properties, as a
+ <em>java.util.Properties</em>. Before doing this step, it can be
+ written:</p>
+ <pre>
+args=vnet2user.Interceptor.setup(user, args, props);
+</pre>
+
+ <p>This method installs the interceptor, using some of the
+ arguments. It expects the following arguments:</p>
+
+ <ul compact>
+  <li><strong>-virtualHostName</strong>: the name of the virtual
+  host where this ORB is to be simulated. It must exist on the
+  virtual net, and it is mandatory.</li>
+
+  <li><strong>-virtualNetHost</strong>: the name of the host
+  containing the virtual net. It is the local host by default</li>
+
+  <li><strong>-virtualNetPort</strong>: the port where the virtual
+  net is installed. It is mandatory</li>
+ </ul>
+ <p>When the interceptor reads the arguments, it returns another
+ list of arguments where the virtualNet arguments are excluded. If
+ some of the mandatory parameters is not present, the program is
+ executed without using the virtual net.</p>
+
+ <p>The first argument for <strong>setup</strong> is an object
+ implementing the interface <em>vnet2user.InterceptorUser</em>,
+ which receives any message from the interceptor. It can be null,
+ but in that case any error is dumped on the normal output, and the
+ program exited.</p>
+
+ <p>The distribution includes a client/server program, a counter,
+ showing the use of this interceptor.</p>
+
+ <p>Another interceptor for C++ will be included shortly.</p>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="ClientProtocol" id="ClientProtocol">Client
+ protocol</a></h2>
+
+ <p><em>Note that this section is not needed to use the
+ application</em></p>
+
+ <p>The package <em>vnet2user</em> includes as well a program
+ called <em>TestClient</em> that shows the client protocol. This
+ program requires a virtual host name, and then verifies wether
+ there is a virtual path to any other host.</p>
+
+ <p>The VirtualNet server listens continuosly on a port, where the
+ client can request wether a virtual path is possible. This path is
+ calculated every time, applying the delays that have been
+ specified for each node and link: this process can be observed on
+ the screen, as the icons change their colour.</p>
+
+ <p>To work, the virtualNet server stablishes a session for each
+ client:</p>
+
+ <ol>
+  <li>It receives the name of the node to host; this node is
+  specified as an array of bytes, holding the first byte the number
+  of bytes to read. The node name must be in UTF-8 format:
+  byte order specified by a mandatory initial byte-order mark.</li>
+
+  <li>A byte is returned. Return value can be 0 to indicate success
+  or FF to indicate error. In this case, a return value of FF means
+  that the node given is not existing in the current netlayout.
+  This is not a real error, further requests are still valid.</li>
+
+  <li>After this session is started, each new request must just
+  contain the target node, and the return value will indicate
+  wether there is a virtual path bertween both nodes or not.</li>
+
+  <li>The format for the request is the same as for the session
+  creation, now including just the target node name (UTF-8...)</li>
+
+  <li>The return value contains 0 if a path exists and FF if not.
+  This specification can change to show some extended information
+  about the error. For example FE could mean that there is no
+  virtual path because the target node does not exist, etc.
+  Anycase, a value 0 will always means success and any other value
+  is an error flag</li>
+ </ol>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="VersionAndBugs" id="VersionAndBugs">Version and
+ bugs</a></h2>
+
+ <p>Current version is 0.3; it works without problems, although it
+ contains some minor errors that I will solve as soon as
+ possible:</p>
+
+ <ul>
+  <li>If a node is destroyed, its links are destroyed as well. But
+  if there is a monodirectional link <strong>to</strong> the node,
+  that link stays, and must be destroyed separately. The server is
+  still able to calculate correctly paths, it is only the screen
+  that looks <em>bad</em></li>
+
+  <li>Once a server is shutdown (virtualnet is closed), if a new
+  one is going to be created, the applications keeps on asking if
+  the current virtual net (which one?) must be saved.</li>
+
+  <li>It does not update the display on the Swing thread, resulting
+  in refresh problems. This is the most awful problem (at least it
+  does not always appear).</li>
+
+  <li>The interceptors does not behave correctly if the VirtualNet
+  server is shutdown.</li>
+ </ul>
+
+ <p>In addition, the C++ interceptor will be included with the next
+ version.</p>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="LicenseAndDownload" id="LicenseAndDownload">License
+ and download</a></h2>
+
+ <p><span class='mark'>VirtualNet<span class=
+ 'markp'>2</span></span> is delivered as it, without any
+ responsabilities on the author. It is open source, it can be used
+ or modified without any limitations. If some bug is found or the
+ behaviour is not as expected, please send me a mail (<a href=
+ "mailto:java_lmp@yahoo.co.uk?subject=virtualnet2">java_lmp@yahoo.co.uk</a>)
+ and I will promptly introduce the modifications. The task is
+ distributed with source, and therefore you can make by your own
+ any changes.</p>
+
+ <p>There are three downloadable files (plus another three on the
+ <a href="#Example">example</a> section):</p>
+
+ <ul type="disc">
+  <li>Source code. It includes the packages vnet2, vnet2user, and
+  the <em>counter</em> example. To compile, please use the JDK 1.4,
+  with the option -source 1.4. It is in .zip format (57 KB):
+  <a href="vnet2.zip">vnet2.zip</a></li>
+
+  <li>vnet2 binary code (.jar file, 111 KB): <a href=
+  "vnet2.jar">vnet2.jar</a>. It includes a manifest file it is
+  possible to start the server using:
+   <pre>
+java -jar vnet2.jar
+</pre>
+  </li>
+
+  <li>vnet2user binary code (.jar file, 11 KB): <a href=
+  "vnet2user.jar">vnet2user.jar</a></li>
+ </ul>
+ <div class='hr'>&nbsp;</div>
+
+ <h2><a name="Example" id="Example">Example</a></h2>
+
+ <p>To see the following example, it is required to download the
+ <em>jar</em> files shown on the <a href=
+ "#LicenseAndDownload">previous section</a>, plus the following 2
+ files:</p>
+
+ <ul type="disc">
+  <li>A virtual net layout (text file): <a href=
+  "example.vnet">example.vnet</a></li>
+
+  <li>The example in binary format (.jar, 24 KB): <a href=
+  "counter.jar">counter.jar</a></li>
+ </ul>
+
+ <p>You can download as well the source for the example (9 KB):
+ <a href="counter.zip">counter.zip</a>.</p>
+
+ <p>The first step is to start the virtual net server. This can be
+ done with:</p>
+ <pre>
+java -jar vnet2.jar example.vnet
+</pre>
+
+ <p>This should show a netlayout like the shown before, with some
+ nodes and links deactivated. This example uses the port 3456.</p>
+
+ <p>Now, the server of the example is started. Please introduce the
+ next info (just one line), which contacts with the virtual net on
+ the port <strong>3456</strong>, and simulates the server on the
+ node <strong>E</strong>. An additional argument is given, with the
+ name of the server (a file is written with this name containing
+ the server's reference).</p>
+ <pre>
+java -classpath vnet2.jar:vnet2user.jar:counter.jar counter.Server
+     -virtualHostName E -virtualNetPort 3456 ServerExample
+</pre>
+
+ <p>One or more clients can now be started. Please introduce the
+ next info (just one line), which contacts with the virtual net on
+ the port <strong>3456</strong>, and simulates the client on the
+ node <strong>A</strong>. An additional argument is given, with the
+ name of the server.</p>
+ <pre>
+java -classpath vnet2.jar:vnet2user.jar:counter.jar counter.Client
+     -virtualHostName A -virtualNetPort 3456 ServerExample
+</pre>
+
+ <p>On the layout given, I have included long delays; for this
+ reason, any request can take much longuer than expected. It is
+ possible to see on the screen the events on the net; try to
+ deactivate any node or link to check that the client receives
+ indeed the appropiated exception. Note on the source code that no
+ special adaptations have been added (only the already mentioned
+ one-line setup).</p>
+ </div>
+ </div>
+</body>
+</html>

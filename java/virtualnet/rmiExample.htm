@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+ <title>VirtualNet: network simulation with JavaRMI. RMI
+ example</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <link rel="stylesheet" type="text/css" href="virtualnet.css">
+ <meta name="Description" content="VirtualNet">
+ <meta name="Keywords" content="java RMI network simulation">
+ <meta name="Author" content="Luis Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <h1>VirtualNet (over RMI)</h1>
+ <h2>RMI example</h2>
+ <div class='hr'>&nbsp;</div>
+
+ <ul type="square">
+  <li><a href="#Server">Creating the server</a></li>
+
+  <li><a href="#ServerApp">Generating servers</a></li>
+
+  <li><a href="#ClientApp">Generating clients</a></li>
+
+  <li><a href="#Execution">Executing the applications</a></li>
+
+  <li><a href="#Download">Download the example</a></li>
+ </ul>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Server" id="Server">Creating the server</a></h3>
+
+ <p>The remote version of Virtual Net just need a RMI server; there
+ are no special requirements of Virtual Net on the server.</p>
+
+ <p>For this example, the server is going to give only one service:
+ it returns a phone number, those used for its initialization.</p>
+
+ <p>The code for this interface is:</p>
+ <pre>
+public interface PhoneNumbersIntf extends java.rmi.Remote
+{
+ public String getNumber() throws java.rmi.RemoteException;
+}
+</pre>
+
+ <p>The code for the server is:</p>
+ <pre>
+public class PhoneNumbersServer extends java.rmi.server.UnicastRemoteObject 
+  implements PhoneNumbersIntf
+{
+ public PhoneNumbersServer(String number)  throws java.rmi.RemoteException
+ {
+  Number=number;
+ }
+ public String getNumber() throws java.rmi.RemoteException
+ {
+  return Number;
+ }
+ String Number;
+}
+</pre>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="ServerApp" id="ServerApp">Generating servers</a></h3>
+
+ <p>The following is the code that generates several servers:</p>
+ <pre>
+import java.rmi.Naming;
+          
+import vnet.remote.Host;
+          
+public class InsertServers
+{
+ public static void main(String args[])
+ {
+  try
+  {
+   System.out.println("This test expects to have a virtualNet called "
+    +"TestA, with 4 nodes C,M,U,Y, with links between C-M, M-U, V-Y");
+   System.out.println();
+   System.out.println("Getting the hosts...");
+   Host C=(Host) Naming.lookup("/TestA/HostC");
+   Host M=(Host) Naming.lookup("/TestA/HostM");
+   Host U=(Host) Naming.lookup("/TestA/HostU");
+   Host Y=(Host) Naming.lookup("/TestA/HostY");
+   System.out.println("Binding the servers");
+   System.out.println("In M there is a server called LMP");
+   M.bind("LMP",new PhoneNumbersServer("763271"));
+   System.out.println("In Y there is the same server ,but with a "+
+    "different number");
+   Y.bind("LMP",new PhoneNumbersServer("859829"));
+   System.out.println("In C there is a server, hosted in U, called "+
+    "BELLMP (/TestA/HostC/BELLMP");
+   U.bind("/TestA/HostC/BELLMP", new PhoneNumbersServer("213207"));
+   System.out.println();
+   System.out.println();
+   System.out.println("Ready");
+  }
+  catch(Exception ex)
+  {
+   System.out.println(ex);
+  }
+ }
+}
+</pre>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="ClientApp" id="ClientApp">Generating clients</a></h3>
+
+ <p>The following is a very small apllication that acts as a client
+ for the previous generated clients.</p>
+ <pre>
+import java.rmi.Naming;
+          
+import vnet.remote.Host;
+          
+public class CheckServers
+{
+ public static void main(String args[])
+ {
+  System.out.println("This test expects to have a virtualNet called TestA, with " +
+    " 4 nodes C,M,U,Y, with links between C-M, M-U, V-Y");
+  if (args.length!=1)
+   System.out.println("This test need an argument: The letter of the host from "+
+    "where the tests are done");
+  else 
+   try
+   {
+    System.out.println("Getting the host");
+    Host host=(Host) Naming.lookup("/TestA/Host"+args[0]);
+    PhoneNumbersIntf phone=null;
+    System.out.println("getting LMP");
+    phone=(PhoneNumbersIntf)host.lookup("LMP");
+    System.out.println("phone: "+phone.getNumber());
+    System.out.println("getting /TestA/HostY/LMP");
+    phone=(PhoneNumbersIntf)host.lookup("/TestA/HostY/LMP");
+    System.out.println("phone: "+phone.getNumber());
+    System.out.println("getting /TestA/HostM/LMP");
+    phone=(PhoneNumbersIntf)host.lookup("/TestA/HostM/LMP");
+    System.out.println("phone: "+phone.getNumber());
+    System.out.println("getting BELLMP");
+    phone=(PhoneNumbersIntf)host.lookup("BELLMP");
+    System.out.println("phone: "+phone.getNumber());
+    System.out.println("getting /TestA/HostC/BELLMP");
+    phone=(PhoneNumbersIntf)host.lookup("/TestA/HostC/BELLMP");
+    System.out.println("phone: "+phone.getNumber());
+    System.out.println("getting /TestA/HostU/BELLMP");
+    phone=(PhoneNumbersIntf)host.lookup("/TestA/HostU/BELLMP");
+    System.out.println("phone: "+phone.getNumber());
+   }
+   catch(Exception ex)
+   {
+    System.out.println(ex);
+   }
+ }
+}
+</pre>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Execution" id="Execution">Executing the
+ application</a></h3>
+
+ <p>In the RMI remote case, there are four parts:</p>
+
+ <ul type="square">
+  <li>The RMI system</li>
+
+  <li>The Virtual Net application</li>
+
+  <li>One or more servers</li>
+
+  <li>One or more clients</li>
+ </ul>
+
+ <p>First one has to compile the <em>java</em> files:</p>
+ <pre>
+javac PhoneNumbersIntf.java
+javac PhoneNumbersServer.java
+javac InsertServers.java
+javac CheckServers.java
+</pre>
+
+ <p>It you get any compiler error, probably the <em>classpath</em>
+ has not been properly set. In this case, go to the page on
+ <a href="availability.htm">Availability</a> to know how to set it.
+ Then, we start the RMI registry:</p>
+ <pre>
+start rmiregistry (rmiregistry &amp; in Unix)
+</pre>
+
+ <p>Now, we need to have the Virtual Net application, and to
+ initialize a net called TestA that will be used by the servers and
+ clients.</p>
+
+ <p>There are several ways to execute this application. One of them
+ is generating another program that creates an object
+ <em>vnet.remote.VirtualNet</em>.</p>
+
+ <p>Another way is to use one of the two programs hosted in
+ <em>vnet.remote.prg</em>. We will use the graphic version:</p>
+ <pre>
+javaw vnet.remote.prg.GraphMain -init=+C+M+U+Y+MU1+MC2+MY3 -start TestA
+</pre>
+
+ <p>The graph of this net is:</p><img src="vnrt.jpg" class='centered'>
+
+ <p>Before executing the server or client applications, you have to
+ generate the stub for the server, and its stub and skeleton:</p>
+ <pre>
+rmic PhoneNumbersServer
+java vnet.remote.vnc PhoneNumbersServer
+javac PhoneNumbersServer_Stub_VNet.java
+rmic PhoneNumbersServer_Stub_VNet
+</pre>
+
+ <p>Now, it is already possible to install the servers:</p>
+ <pre>
+java InsertServers
+</pre>
+
+ <p>The output of this program will be:</p>
+ <pre>
+This test expects to have a virtualNet called TestA, with 4 nodes C,M,U,Y, with
+links between C-M, M-U, V-Y
+          
+Getting the hosts...
+Binding the servers
+In M there is a server called 
+In Y there is the same server ,but with a different number
+In C there is a server, hosted in U, called BELLMP (/TestA/HostC/BELLMP
+          
+Ready
+          
+</pre>
+
+ <p>Finally, we test the client:</p>
+ <pre>
+java CheckServers C
+</pre>
+
+ <p>The ouput is:</p>
+ <pre>
+This test expects to have a virtualNet called TestA, with 4 nodes C,M,U,Y, with
+links between C-M, M-U, V-Y
+Getting the host
+getting LMP
+phone: 763271
+getting /TestA/HostY/LMP
+phone: 859829
+getting /TestA/HostM/LMP
+phone: 763271
+getting BELLMP
+phone: 213207
+getting /TestA/HostC/BELLMP
+phone: 213207
+getting /TestA/HostU/BELLMP
+java.rmi.NotBoundException: /TestA/HostU/BELLMP
+</pre>
+
+ <div class='hr'>&nbsp;</div>
+ <h3><a name="Download" id="Download">Download the example</a></h3>
+
+ <p><a href="vnetexrmi.zip">vnetexrmi.zip</a> (10 KB)</p>
+
+ <p>Once unzipped this file -and having correctly set the
+ <em>classpath</em>-, to execute the example is just needed to
+ do:</p>
+ <pre>
+start rmiregistry (rmiregistry &amp; in Unix)
+javaw vnet.remote.prg.GraphMain -init=+C+M+U+Y+MU1+MC2+MY3 -start TestA
+start java InsertServers (java InsertServers &amp; in Unix)
+java CheckServers C
+</pre>
+ </div>
+ </div>
+</body>
+</html>
