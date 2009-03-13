@@ -1,7 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 
 <wsm path='website'>
-
 <transform source='.'>
     <alltemplates cssMoldClass='wsmreplace'>
         <replace what='cssdir' withdir='css'/>
@@ -38,6 +37,9 @@
         </template>
     </location>
     <location source='tnotes'>
+        <template mold='../mold.htm'/>
+    </location>
+    <location source='linux'>
         <template mold='../mold.htm'/>
     </location>
     <exclude pattern='.svn'/>
@@ -84,6 +86,9 @@
             <item name='XmlObjects' file='csharp/xmlobjects/index.htm'/>
             <item name='XmlObjectsDocGui' file='csharp/xmlobjectsdocgui/index.htm'/>
         </group>
+        <group name='Linux'>
+			<item name='Synergy patch' file='linux/synergy.patch/linuxSynergyPatch.html'/>
+        </group>		
         <group name='Technical notes'>
             <group name='C#'>
                 <item name='GAC and mono' file='tnotes/csharp/gacWMono.html'/>

@@ -1,0 +1,259 @@
+diff -crB ../../original/synergy-1.3.1/cmd/synergyc/synergyc.cpp ./cmd/synergyc/synergyc.cpp
+*** ../../original/synergy-1.3.1/cmd/synergyc/synergyc.cpp	2006-03-22 05:40:27.000000000 +0000
+--- ./cmd/synergyc/synergyc.cpp	2009-03-12 00:51:42.186708361 +0000
+***************
+*** 76,81 ****
+--- 76,82 ----
+  		m_daemon(true),
+  		m_logFilter(NULL),
+  		m_display(NULL),
++ 		m_yscroll(0),
+  		m_serverAddress(NULL)
+  		{ s_instance = this; }
+  	~CArgs() { s_instance = NULL; }
+***************
+*** 86,91 ****
+--- 87,93 ----
+  	bool				m_backend;
+  	bool				m_restartable;
+  	bool				m_daemon;
++ 	int 				m_yscroll;
+  	const char* 		m_logFilter;
+  	const char*			m_display;
+  	CString 			m_name;
+***************
+*** 106,112 ****
+  #if WINAPI_MSWINDOWS
+  	return new CScreen(new CMSWindowsScreen(false));
+  #elif WINAPI_XWINDOWS
+! 	return new CScreen(new CXWindowsScreen(ARG->m_display, false));
+  #elif WINAPI_CARBON
+  	return new CScreen(new COSXScreen(false));
+  #endif
+--- 108,114 ----
+  #if WINAPI_MSWINDOWS
+  	return new CScreen(new CMSWindowsScreen(false));
+  #elif WINAPI_XWINDOWS
+! 	return new CScreen(new CXWindowsScreen(ARG->m_display, false, ARG->m_yscroll));
+  #elif WINAPI_CARBON
+  	return new CScreen(new COSXScreen(false));
+  #endif
+***************
+*** 517,522 ****
+--- 519,525 ----
+  " [--debug <level>]"
+  USAGE_DISPLAY_ARG
+  " [--name <screen-name>]"
++ " [--yscroll <delta>]"
+  " [--restart|--no-restart]"
+  " <server-address>"
+  "\n\n"
+***************
+*** 530,535 ****
+--- 533,540 ----
+  "*     --daemon             run the client as a daemon.\n"
+  "  -n, --name <screen-name> use screen-name instead the hostname to identify\n"
+  "                           ourself to the server.\n"
++ "      --yscroll <delta>    defines the vertical scrolling delta, which is\n"
++ "                           120 by default.\n"
+  "  -1, --no-restart         do not try to restart the client if it fails for\n"
+  "                           some reason.\n"
+  "*     --restart            restart the client automatically if it fails.\n"
+***************
+*** 618,623 ****
+--- 623,633 ----
+  		}
+  #endif
+  
++ 		else if (isArg(i, argc, argv, NULL, "--yscroll", 1)) {
++ 			// define scroll 
++ 			ARG->m_yscroll = atoi(argv[++i]);
++ 		}
++ 
+  		else if (isArg(i, argc, argv, "-1", "--no-restart")) {
+  			// don't try to restart
+  			ARG->m_restartable = false;
+diff -crB ../../original/synergy-1.3.1/lib/common/common.h ./lib/common/common.h
+*** ../../original/synergy-1.3.1/lib/common/common.h	2006-04-02 05:27:33.000000000 +0100
+--- ./lib/common/common.h	2009-03-12 00:51:42.178709649 +0000
+***************
+*** 133,137 ****
+--- 133,139 ----
+  
+  // make assert available since we use it a lot
+  #include <assert.h>
++ #include <stdlib.h>
++ #include <string.h>
+  
+  #endif
+diff -crB ../../original/synergy-1.3.1/lib/platform/CXWindowsKeyState.cpp ./lib/platform/CXWindowsKeyState.cpp
+*** ../../original/synergy-1.3.1/lib/platform/CXWindowsKeyState.cpp	2006-04-02 20:16:39.000000000 +0100
+--- ./lib/platform/CXWindowsKeyState.cpp	2009-03-12 00:51:42.254208770 +0000
+***************
+*** 211,217 ****
+  			int i = (c >> 3);
+  			int b = 1 << (c & 7);
+  			if (m_keyboardState.global_auto_repeat == AutoRepeatModeOff ||
+! 				(m_keyboardState.auto_repeats[i] & b) == 0) {
+  				LOG((CLOG_DEBUG1 "  discard autorepeat"));
+  				break;
+  			}
+--- 211,217 ----
+  			int i = (c >> 3);
+  			int b = 1 << (c & 7);
+  			if (m_keyboardState.global_auto_repeat == AutoRepeatModeOff ||
+! 				(c!=113 && c!=116 && (m_keyboardState.auto_repeats[i] & b) == 0)) {
+  				LOG((CLOG_DEBUG1 "  discard autorepeat"));
+  				break;
+  			}
+diff -crB ../../original/synergy-1.3.1/lib/platform/CXWindowsScreen.cpp ./lib/platform/CXWindowsScreen.cpp
+*** ../../original/synergy-1.3.1/lib/platform/CXWindowsScreen.cpp	2006-04-02 20:16:39.000000000 +0100
+--- ./lib/platform/CXWindowsScreen.cpp	2009-03-12 01:31:51.646209081 +0000
+***************
+*** 70,77 ****
+  
+  CXWindowsScreen*		CXWindowsScreen::s_screen = NULL;
+  
+! CXWindowsScreen::CXWindowsScreen(const char* displayName, bool isPrimary) :
+  	m_isPrimary(isPrimary),
+  	m_display(NULL),
+  	m_root(None),
+  	m_window(None),
+--- 70,78 ----
+  
+  CXWindowsScreen*		CXWindowsScreen::s_screen = NULL;
+  
+! CXWindowsScreen::CXWindowsScreen(const char* displayName, bool isPrimary, int mouseScrollDelta) :
+  	m_isPrimary(isPrimary),
++ 	m_mouseScrollDelta(mouseScrollDelta),
+  	m_display(NULL),
+  	m_root(None),
+  	m_window(None),
+***************
+*** 94,99 ****
+--- 95,101 ----
+  {
+  	assert(s_screen == NULL);
+  
++ 	if (mouseScrollDelta==0) m_mouseScrollDelta=120;
+  	s_screen = this;
+  
+  	// set the X I/O error handler so we catch the display disconnecting
+***************
+*** 210,222 ****
+  
+  	// restore auto-repeat state
+  	if (!m_isPrimary && m_autoRepeat) {
+! 		XAutoRepeatOn(m_display);
+  	}
+  }
+  
+  void
+  CXWindowsScreen::enter()
+  {
+  	// release input context focus
+  	if (m_ic != NULL) {
+  		XUnsetICFocus(m_ic);
+--- 212,226 ----
+  
+  	// restore auto-repeat state
+  	if (!m_isPrimary && m_autoRepeat) {
+! 		//XAutoRepeatOn(m_display);
+  	}
+  }
+  
+  void
+  CXWindowsScreen::enter()
+  {
++ 	screensaver(false);
++ 
+  	// release input context focus
+  	if (m_ic != NULL) {
+  		XUnsetICFocus(m_ic);
+***************
+*** 249,255 ****
+  		// turn off auto-repeat.  we do this so fake key press events don't
+  		// cause the local server to generate their own auto-repeats of
+  		// those keys.
+! 		XAutoRepeatOff(m_display);
+  	}
+  
+  	// now on screen
+--- 253,259 ----
+  		// turn off auto-repeat.  we do this so fake key press events don't
+  		// cause the local server to generate their own auto-repeats of
+  		// those keys.
+! 		//XAutoRepeatOff(m_display);
+  	}
+  
+  	// now on screen
+***************
+*** 266,272 ****
+  		// the X server when the auto-repeat configuration is changed so
+  		// we can't track the desired configuration.
+  		if (m_autoRepeat) {
+! 			XAutoRepeatOn(m_display);
+  		}
+  
+  		// move hider window under the cursor center
+--- 270,276 ----
+  		// the X server when the auto-repeat configuration is changed so
+  		// we can't track the desired configuration.
+  		if (m_autoRepeat) {
+! 			//XAutoRepeatOn(m_display);
+  		}
+  
+  		// move hider window under the cursor center
+***************
+*** 817,824 ****
+  		yDelta = -yDelta;
+  	}
+  
+  	// send as many clicks as necessary
+! 	for (; yDelta >= 120; yDelta -= 120) {
+  		XTestFakeButtonEvent(m_display, xButton, True, CurrentTime);
+  		XTestFakeButtonEvent(m_display, xButton, False, CurrentTime);
+  	}
+--- 821,832 ----
+  		yDelta = -yDelta;
+  	}
+  
++ 	if (yDelta < m_mouseScrollDelta) {
++ 		LOG((CLOG_WARN "Wheel scroll delta (%d) smaller than threshold (%d)", yDelta, m_mouseScrollDelta));
++ 	}
++ 
+  	// send as many clicks as necessary
+! 	for (; yDelta >= m_mouseScrollDelta; yDelta -= m_mouseScrollDelta) {
+  		XTestFakeButtonEvent(m_display, xButton, True, CurrentTime);
+  		XTestFakeButtonEvent(m_display, xButton, False, CurrentTime);
+  	}
+diff -crB ../../original/synergy-1.3.1/lib/platform/CXWindowsScreen.h ./lib/platform/CXWindowsScreen.h
+*** ../../original/synergy-1.3.1/lib/platform/CXWindowsScreen.h	2006-03-09 04:07:17.000000000 +0000
+--- ./lib/platform/CXWindowsScreen.h	2009-03-12 00:51:42.198708140 +0000
+***************
+*** 31,37 ****
+  //! Implementation of IPlatformScreen for X11
+  class CXWindowsScreen : public CPlatformScreen {
+  public:
+! 	CXWindowsScreen(const char* displayName, bool isPrimary);
+  	virtual ~CXWindowsScreen();
+  
+  	//! @name manipulators
+--- 31,37 ----
+  //! Implementation of IPlatformScreen for X11
+  class CXWindowsScreen : public CPlatformScreen {
+  public:
+! 	CXWindowsScreen(const char* displayName, bool isPrimary, int mouseScrollDelta=0);
+  	virtual ~CXWindowsScreen();
+  
+  	//! @name manipulators
+***************
+*** 161,166 ****
+--- 161,167 ----
+  
+  	// true if screen is being used as a primary screen, false otherwise
+  	bool				m_isPrimary;
++ 	int 				m_mouseScrollDelta;
+  
+  	Display*			m_display;
+  	Window				m_root;
