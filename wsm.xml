@@ -6,7 +6,13 @@
         <replace what='cssdir' withdir='css'/>
         <replace what='wsmdoc' withdoc='full'/>
     </alltemplates>
+    <location source='main' target='.'>
+        <template mold='../mold.htm'/>
+    </location>       
     <location source='Java' target='.'>
+        <template mold='../mold.htm'/>
+    </location>       
+    <location source='phd'>
         <template mold='../mold.htm'/>
     </location>       
     <location source='css'/>
@@ -53,12 +59,7 @@
     <menu id='menu'>
         <item name='Home' file='index.htm'/>
         <group name='Java'>
-            <item name='CmdLinker' file='cmdlinker/index.htm'/>
-            <item name='FileSplit' file='filesplit/index.htm'/>
             <item name='IdlDepend' file='idldepend/index.htm'/>
-            <item name='Menu Applet' file='menu/index.htm'/>
-            <item name='Sensei' href='http://grasia.fdi.ucm.es/sensei'/>
-            <item name='SplitImage' file='splitimage/index.htm'/>
             <group name='Table filter'>
                 <item name='Overview' file='tablefilter/index.html'/>
                 <item name='Table header' file='tablefilter/header.html'/>
@@ -81,13 +82,21 @@
                 <item name='Versions' file='virtualnet/versions.htm'/>
             </group>
             <item name='VirtualNet2' file='virtualnet2/index.htm'/>
+            <item name='CmdLinker' file='cmdlinker/index.htm'/>
+            <item name='Sensei' file='phd/index.htm' mainLink='false'/>
+            <item name='FileSplit' file='filesplit/index.htm'/>
+            <item name='Menu Applet' file='menu/index.htm'/>
+            <item name='SplitImage' file='splitimage/index.htm'/>
         </group>
-        <group name='C#'>
+        <group name='c#'>
             <item name='XmlObjects' file='csharp/xmlobjects/index.htm'/>
             <item name='XmlObjectsDocGui' file='csharp/xmlobjectsdocgui/index.htm'/>
         </group>
         <group name='Linux'>
 			<item name='Synergy patch' file='linux/synergy.patch/linuxSynergyPatch.html'/>
+        </group>		
+        <group name='PhD'>
+            <item name='Sensei' file='phd/index.htm'/>
         </group>		
         <group name='Technical notes'>
             <group name='C#'>
