@@ -1,0 +1,40 @@
+<html>
+
+<head>
+ <title>How to debug NUnit tests in Visual Studio</title>
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="Debug NUnitTests Visual Studio">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>&gt; 25th March 2009, 00:20 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>
+
+<h1>How to debug NUnit tests</h1>
+<h1>in Visual Studio</h1>
+
+<p>The tests will be part, normally, of a workspace solution that contains at least the project itself plus a secondary project with the <a href='http://www.nunit.org/index.php'>NUnit</a> tests files.</p>
+
+<p>The best approach is to create a secondary project on the solution, called, for example, <span class='mark'>NUnitLauncher</span>. To do, right click on the workspace in the Solution Explorer, select the option  <span class='scode'>Add New Project</span>, and choose <span class='scode'>Console Application</span>. In this moment, the project will contain a single file, <span class='scode'>Program.cs</span>, that can be safely removed.</p>
+
+<p>Now, select the properties, debug tab, and select the <span class='scode'>Start external program</span> option, entering the correct path to the NUnit executable, that, in my case, is: <span class='scode'>C:\Program Files (x86)\NUnit 2.4.8\bin\nunit.exe</span>. Then, the command line arguments must contain the path to the debuggable DLL.</p>
+
+<p><img class='centered' src="DebugNunitTestsVS_debug.png"></p>
+
+<p>The created project should have a main entry, as it had been created as a console application. It can not be converted to a class library, which will avoid spurious compilation errors, like in:
+<div class='code'>
+Error	1	Program 'C:\Development\visualstudio\WebSiteManager\NUnitLauncher\obj\Debug\NUnitLauncher.exe' does not contain a static 'Main' method suitable for an entry point	NUnitLauncher
+</div>
+TO convert it, select the properties, application tab, and select as output type: Class library</p>
+
+<p><img class='centered' src="DebugNunitTestsVS_app.png"></p>
+
+<p>Not it is possible to start the tests on debug mode by launching the new created project.</p>
+
+ </div>
+ </div>
+</body> 
+

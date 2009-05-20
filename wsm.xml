@@ -45,6 +45,12 @@
     <location source='tnotes'>
         <template mold='../mold.htm'/>
     </location>
+    <location source='howto'>
+        <template mold='../mold.htm'/>
+    </location>
+    <location source='books'>
+        <template mold='../mold.htm'/>
+    </location>
     <location source='linux'>
         <template mold='../mold.htm'/>
     </location>
@@ -93,7 +99,7 @@
             <item name='XmlObjectsDocGui' file='csharp/xmlobjectsdocgui/index.htm'/>
         </group>
         <group name='Linux'>
-			<item name='Synergy patch' file='linux/synergy.patch/linuxSynergyPatch.html'/>
+			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
         </group>		
         <group name='PhD'>
             <item name='Sensei' file='phd/index.htm'/>
@@ -102,7 +108,11 @@
             <group name='C#'>
                 <item name='GAC and mono' file='tnotes/csharp/gacWMono.html'/>
             </group>
+			<group name='How to'>
+				<item name='Debug NUnits' file='howto/DebugNUnitTestsVS.html'/>
+			</group>
         </group>
+        <item name='Just words' file='books/2009/index.htm'/>
     </menu>
 </navigation>
 
