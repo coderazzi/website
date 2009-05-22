@@ -1,0 +1,164 @@
+<html>
+
+<head>
+ <title>Python decorators and optional arguments</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="python decorators arguments">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>&gt; 22th May 2009, 00:27 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>  
+
+<h1>Python decorators and optional arguments</h1>
+
+<p>Python decorators are available since 
+<a href='http://www.python.org/dev/peps/pep-0318/'>version 2.4</a>.
+Version 2.6 includes class decorators, 
+but the following discussion refers exclusively to function decorators.</p>
+
+<p>Function decorators are implemented as functions that take -eventually- 
+another function as parameter, the 
+function it is decorating-. This is not the only implementation alternative, as
+decorators can be also implemented as classes, but for the purpose of this document,
+the function implementation assumption is generic enough. For detailed information on decorators,
+I would refer to its <a href='http://www.python.org/dev/peps/pep-0318/'>PEP</a>, 
+to the <a href='http://pypi.python.org/pypi/decorator/'>decorator.py</a> package, or to
+this tutorial at 
+<a href='http://www.ibm.com/developerworks/linux/library/l-cpdecor.html?S_TACT=105AGX03&S_CMP=EDU'>developersworks</a>
+</p>
+
+<p>In short, the syntax:
+<pre>@decorate
+def f(....)</pre></p>
+
+<p>is quite equivalent to do: 
+<pre>f = decorate(f)</pre></p>
+<p>That is, the decorator takes <span class="mark">f</span> as parameter, 
+and the return value overrides the initial <span class="mark">f</span> definition.</p>
+
+<p>Decorators can have arguments, like in:</p>
+
+<pre>@decorate(message)
+def f(....)</pre>
+
+<p>In this case, the decoration is not carried out by 
+<span class="mark">decorate</span> function, but by its return value. 
+That is, this
+example is quite equivalent to do:</p>
+<pre>f = decorate(message)(f)</pre>
+
+<p>Just in case, this is:</p>
+<pre>temp = decorate(message)
+f = temp(f)</pre>
+   
+<p>The distinction is important when the decorator's arguments are optional.</p>
+<p>To see why, I will use a simple example, a unit tests package, that requires 
+decorating the functions to test with a 
+decorator <span class="mark">@test</span>, like in:</p>
+
+<pre>@test
+def functionToTest(...):
+  pass</pre>
+  
+<p>Its implementation could be rather simple, just adding an attribute to the function to decorate:</p>
+
+<pre>def test(f):
+   f.test = True
+   return f</pre>
+  
+<p>And the testing framework would then test all the functions with the given attribute. As the 
+framework evolves, functionality is added to test categories, so that only the functions in 
+the specified category are tested. With this purpose, the previous decorator is extended, accepting
+now a parameter <span class="mark">category</span>; note that its implementation gets a bit 
+more complicated, as the real decorator is now the returned value:</p>
+
+<pre>def test(category):
+   def real_decorator(f):
+      f.test = True
+      f.test_category = category
+      return f
+   return real_decorator</pre>
+   
+<p>This nesting is required, as we will use the decoration like in:</p>
+
+<pre>@test('database')
+  def f(....)</pre>
+
+<p>equivalent to:</p> <pre>test('database')(f)</pre>
+
+<p>But updating the decorator as shown above would break all the existing codebase, as  
+it requires now a mandatory argument. A basic solution would be providing a 
+default value:</p>
+
+<pre>def test(category=None):
+   def real_decorator(f):
+      f.test = True
+      f.test_category = category
+      return f
+   return real_decorator</pre>
+   
+<p>Unfortunately, this won't work. 
+The codebase will still contain many functions decorated without arguments.
+In those cases, we hare invoking the decorator with one parameter, but that 
+passed parameter, that should be the category is, in fact, the function to decorate. 
+For this to work, the decoration should be:</p>
+
+<pre>f = test()(f)</pre>
+   
+<p>So the <span class="mark">correct</span> way to use the decorator becomes now:</p>
+
+<pre>@test()
+def functionToTest():
+  print 'tested'</pre>
+
+<p>Just to start, this is not elegant. A decorator without arguments is expected to be called without
+those brackets.</p>
+
+<p>And, to continue, there exists no complete solution, or better said, not completely generic solution.
+Fortunately, there is a solution for <span class="mark">most</span> of the cases; 
+the problem is that the decorator's function must be able to handle two different situations:
+<ul>
+<li>Called with arguments that represent the expected arguments. And return then something that will
+be called again with the function to decorate.</li>
+<li>Called with a single argument: the function to decorate.</li>
+</ul></p>
+
+<p>The only possibility is to check:
+<ul>
+<li>That there is only one single argument, and is the first of the defined arguments.</li>
+<li>And that its type is a function.</li>
+</ul>
+</p>
+
+<p>In this case, it is possible to assume that the decorator is being used without brackets. 
+And this solution is generic as far as the decorator doesn't expect as first optional 
+argument a function.</p>
+
+<p>The previous example could be implemented now as:</p>
+
+<pre>def test(category=None):
+   def real_decorator(f):
+      f.test = True
+      f.test_category = category
+      return f
+   if type(category) == type(real_decorator):
+      return real_decorator(category)
+   return real_decorator</pre>
+   
+<p>Obviously, if the category could be a function, this wouldn't work. If the decorator expects more
+than one optional argument, better place those with function values -if any- on the second or later 
+positions.</p>
+
+<p>Just a final note on the previous code: it verifies if the type of the argument is a function, but
+not if it is a method in a class. When a method's class is decorated, the decoration mechanism is
+triggered before it is bounded to the class, so it would be useless to write the more extended check:</p>
+
+<pre>if type(category)==types.FunctionType or type(category)==types.MethodType :
+	...</pre>
+
+</body>
+</html>

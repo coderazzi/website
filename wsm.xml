@@ -107,10 +107,11 @@
         <group name='Technical notes'>
             <group name='C#'>
                 <item name='GAC and mono' file='tnotes/csharp/gacWMono.html'/>
-            </group>
-			<group name='How to'>
 				<item name='Debug NUnits' file='howto/DebugNUnitTestsVS.html'/>
-			</group>
+            </group>
+            <group name='Python'>
+                <item name='Decorators' file='tnotes/python/decoratorsWithoutArguments.html'/>
+            </group>
         </group>
         <item name='Just words' file='books/2009/index.htm'/>
     </menu>
