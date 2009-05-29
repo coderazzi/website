@@ -1,0 +1,590 @@
+<html>
+<head>
+<title>optmatch - ultimate option parser for Python</title>
+<link rel="stylesheet" type="text/css" href="../../css/global.css">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <meta name="Keywords" content="python option parsing">
+</head>
+<body>
+ <div id='body'>
+ <div id='content'>
+<h1>optmatch - ultimate option parser for Python</h1>
+
+<ul>
+<li><a href="#intro">Quick introduction</a></li>
+<li><a href="#purpose">Purpose</a></li>
+<li><a href="#concepts">Concepts</a></li>
+<li><a href="#tutorial">Tutorial</a></li>
+<li><a href="#download">Download</a></li>
+</ul>
+
+
+<h2><a name='intro'>Quick introduction</a></h2>
+
+<p><span class='mark'>optmatch</span> is a python library that allows parsing command 
+line options in a simple way. 
+For example, a tool supporting two options called <span class='scode'>mode</span> and 
+<span class='scode'>verbose</span>, and requiring two arguments, called 
+<span class='scode'>file</span> and <span class='scode'>where</span>, would be coded as:</p>
+
+<pre>class Example(OptionMatcher):
+
+	@optmatcher
+	def handle(self, file, verboseFlag=False, modeOption='simple', where=None):
+		...	</pre>
+
+<p>This tool would support a syntax such as:</p>
+
+<pre>[--verbose] [--mode MODE] file [where]</pre>
+
+<p>In the previous example, the suffix of the method's parameters define the
+role of each parameter. Alternatively, the decorator can embed this 
+information, like in:</p>
+
+<pre>class Example(OptionMatcher):
+
+	@optmatcher(flags='verbose', options='mode')
+	def handle(self, file, verbose=False, mode='simple', where=None):
+		...	</pre>
+
+<p>Which is equivalent to the initial example. A more complicated case would be:</p>
+
+<pre>class Example(OptionMatcher):
+
+	@optmatcher
+	def handleHelp(self, helpFlag):
+		...	
+
+	@optmatcher
+	def handleCompression(self, file, compressFlag=False):
+		...
+
+	@optmatcher(flags='verbose', options='mode')
+	def handle(self, file, verbose=False, mode='simple', where=None):
+		...	</pre>
+		
+<p>In this case, the tool supports three possible alternatives:</p>
+<pre>[--help]</pre>		
+<pre>[--compress] file</pre>
+<pre>[--verbose] [--mode MODE] file [where]</pre>
+
+<p>And the library issues usage error messages if the user enters
+invalid arguments, like <span class='scode'>--compress</span> and 
+<span class='scode'>--mode</span>--, which are mutually incompatible.</p>
+
+<p>The previous examples show the simpliest ways to access this library,
+which contains quite a lof of functionality to cover most aspects related
+to command line parsing, including printing usage messages, handling aliases,
+etc.</p>
+
+
+
+
+
+
+<h2><a name='purpose'>Purpose</a></h2>
+
+<p><span class='mark'>optmatch</span> defines the command line parsing 
+by setting the handler or handlers than will process the command line. 
+The library then matches the received input with these handlers, invoking 
+the most convenient one, or issuing error messages if the input does not 
+match the expected syntax.</p>
+
+<p>In addition to these handlers, <span class='mark'>optmatch</span> 
+supports a  specific interface to define aliases,
+documentation associated to each argument/option, etc, and it is able 
+to automatize the generation of usage messages.</p>
+
+<p>Its initial purpose was to extend the existing related functionality. 
+There are two existing libraries to handle command line options parsing in python: 
+<a href='http://docs.python.org/library/getopt.html'>getopt</a> and
+<a href='http://docs.python.org/library/optparse.html'>optparse</a>.</p>
+<ul><li><span class='mark'>getopt</span> usage is rather
+simple, and it is almost just limited to split the received arguments 
+in a list of expected arguments: the programmer must still make sense 
+of the received input, checking that all arguments are there, that they 
+are not incompatible, and then, invoking the handler or handlers to process
+them.</li>
+
+<li><span class='mark'>optparse</span> provides a much richer interface, 
+although it mostly makes the usage of <span class='mark'>getopt</span> 
+convenient -and it also provides printing usage messages-. Using 
+<span class='mark'>optparse</span> requires a set of well
+defined steps: defining the flags/options, etc, its aliases and documentation. 
+For each option is possible to associate some actions, like storing a variable 
+or invoking a function, all defined 
+in a completely procedural way.</li></ul>
+
+<p>The initial purpose behind <span class='mark'>optmatch</span> was to extend 
+<span class='mark'>optparse</span> to handle some usual operations:  defining incompatibilities between 
+arguments, or whether an option would require the presence of
+some other options. Eventually, it came the idea of just matching command 
+line options to the  signature of the parameters, which allows for most of 
+the initial planned checks, and makes handling the command line options very 
+simple.</p>
+
+
+
+
+
+
+
+<h2><a name='concepts'>Concepts</a></h2>
+
+<p><span class='mark'>optmatch</span> is not limited to GNU style command 
+line options.  In this style, options can be 
+specified in short format or long format. For example, an alias can be defined between the
+short option <span class='scode'>v</span> and the long one 
+<span class='scode'>verbose</span>. The user can then enter 
+<span class='scode'>-v</span> or <span class='scode'>--verbose</span>,
+indistinctly.</p>
+
+<p>Other valid styles also supported in <span class='mark'>optmatch</span> include 
+the typical  Windows format, like in <span class='scode'>/help</span>
+or using <span class='scode'>-</span> as prefix for short and long options, like in 
+<span class='scode'>-help</span>. In this document, the
+GNU style is refered as <span class='mark'>getopt</span> mode.</p>
+
+<p>In any case, some terms apply to both styles:</p>
+
+<ul><li>option: is an argument prefixed with the option prefix -normally 
+<span class='scode'>-</span> or <span class='scode'>--</span>, and with 
+a value associated. For example: <pre>--mode=optimized</pre></li>
+<li>flag: is an option without associated value. 
+If present, it is assumed to have the boolean value
+<span class='scode'>True</span>. For example: <pre>--verbose</pre></li>
+<li>prefix: is an option that can be specified multiple times. 
+For example: <pre>-I/usr/include -I/opt/include</pre></li>
+<li>parameter: any argument in the command line that is not 
+prefixed by the option prefix.</li>
+</ul>
+
+
+
+<p>Note that, in general, option refers to flags, options and prefixes.</p>
+<p>In getopt mode, there are two option prefixes:</p>
+<ul><li><span class='scode'>-</span>: short prefix. Only short options apply, 
+containing a single letter. The user can enter multiple short options together, 
+like in: <pre>-iof here</pre>which stands for the short flags
+<span class='scode'>i</span>, <span class='scode'>o</span>, and the short option 
+<span class='scode'>f</span>, with value <span class='scode'>here</span></li>
+
+<li><span class='scode'>--</span>: long prefix. Only long options apply, 
+containing two or more letters. 
+The user cannot enter multiple long options together. If a value is specified, 
+it can be done on
+a separate argument, like in:
+<pre>--mode optimized</pre>
+Or, alternatively, in the same argument, separated by <span class='scode'>=</span> 
+(or any other pre-specified character):
+<pre>--mode=optimized</pre>
+</li></ul>
+
+<p>In non-getopt mode, only one option prefix applies, normally 
+<span class='scode'>-</span> or <span class='scode'>/</span>. In this case, there is
+no distinction between short and long options, and the user must enter 
+each option on a separate argument, like in:
+<pre>/mode:optimized</pre></p>
+
+<p>Finally, <span class='mark'>optmatch</span> uses the concept 'gnu mode'. 
+If specifically defined, it implies that all option arguments must be 
+specified at the beginning of the command line. 
+Otherwise (the default), options and parameters can be freely intermixed.</p>
+
+<h2><a name='tutorial'>Tutorial</a></h2>
+
+<ul>
+<li><a href="#basics">The Basics</a></li>
+<li><a href="#basicHelp">Predefined usage message</a></li>
+<li><a href="#aliases">Aliases</a></li>
+<li><a href="#publicnames">Public names</a></li>
+<li><a href="#optset">optset</a></li>
+<li><a href="#advancedOptset">Advanced optset</a></li>
+<li><a href="#mode">Usage mode</a></li>
+<li><a href="#badusage">Handling bad usage</a></li>
+<li><a href="#badsyntax">Handling bad synatx</a></li>
+<li><a href="#moreonhelp">More on help</a></li>
+<li><a href="#varnames">Var names</a></li>
+</ul>
+
+<h3><a name="basics">The basics</a></h3>
+<p>There are three main elements to import from <span class='mark'>optmatch</span>: 
+<ul><li><span class='mark'>OptionMatcher</span>: the main class; users must 
+implement the methods  that handle the command line options as part 
+of a subclass of OptionMatcher.</li>
+<li><span class='mark'>optmatcher</span>: a decorator that specifies that a method 
+in a class is a command line handler.</li>
+<li><span class='mark'>optset</span>: a decorator that specifies that a method in a 
+class handles common options to one or more handlers.</li></ul>
+
+<p>The following code defines two such handlers, 
+and processes the command line arguments:</p>
+
+<pre>from optmatch import OptionMatcher, optmatcher, optset
+
+class Example(OptionMatcher):
+
+	@optmatcher
+	def handleCompression(self, file, compressFlag):
+		'''Compress the specified file'''
+		...
+
+	@optmatcher
+	def handleMove(self, file, where=None, verboseFlag=False):
+		'''Moves the file to the specified directory'''
+		...	
+
+Example().process(sys.argv)</pre>
+		
+<p>This code allows the tool to handle command line arguments where the user specifies one of:		
+<pre>[--compress] file</pre>
+<pre>[--verbose] file [where]</pre>
+
+<p>The suffix for each parameter on the handlers define the parameter role. The valid suffixes are:</p>
+<ul>
+<li><span class='mark'>Flag</span></li>
+<li><span class='mark'>Option</span></li>
+<li><span class='mark'>Prefix</span></li>
+<li><span class='mark'>OptionInt</span>: the associated value is converted to an integer</li>
+<li><span class='mark'>OptionFloat</span>: the associated value is converted to a float number</li>
+</ul>
+
+
+
+
+<h3><a name="basicHelp">Basic help</a></h3>
+<p>In the previous example, in addition to the two specified cases, the user can enter 
+<span class='scode'>--help</span>
+to receive some basic usage information. It would look like:</p>
+
+<pre>Usage: [common options] file where
+
+options:
+  --compress
+  -h, --help            shows this help message
+  --verbose
+
+alternatives:
+
+* --compress file       Compress the specified file
+
+* [--verbose (False)] file [where]
+                        Moves the file to the specified directory
+
+* -h                    shows the help message</pre>
+
+<p>Note that the documentation for each handlers is used to document the alternatives,
+but the options are not documented. To document them, it is needed to supply it as:</p>
+
+<pre>OptionMatcher.setUsageInfo(optionsHelp={'compress':'compress the specified file'})</pre>
+
+<p>The information for all the options  must be provided at once, in a dictionary.</p>
+
+
+
+
+
+
+<h3><a name="aliases">Aliases</a></h3>
+
+<p>Aliases are the way to connect short and long options, like specifying that 
+<span class='scode'>-v</span> is equivalent to <span class='scode'>--verbose</span></p>
+
+<p>In <span class='mark'>getopt</span> mode, an alias must always match a short
+option (one letter) to a long one, or viceversa. There are two ways ot specify aliases:
+on the <span class='scode'>OptionMatcher</span> constructor, or using its 
+<span class='scode'>setAliases</span> method, which expects a dictionary, such as:</p>
+<pre>OptionMatcher.setAliases({'v':'verbose'})</pre>
+
+<p>The help system automatically displays the option's aliases.</p>
+
+
+
+
+
+<h3><a name="publicnames">Public names</a></h3>
+
+<p>As specifed so far, <span class='mark'>optmatch</span>
+would not be able to handle options that are not valid variable names. For example,
+how to define the flag <span class='scode'>dry-run</span> or the option 
+<span class='scode'>email@</span>?</p>
+
+<p>As it happens, options are quite well behaven, defined usually as valid Python
+variable names: it is not usual to have an option starting with a digit, or having 
+a character such as <span class='scode'>$</span> or <span class='scode'>@</span> inside.
+In any case, <span class='mark'>optmatch</span> allows such possibilities, although
+it must be explicitly programmed.</p>
+
+<p>The most usual case envolves using dashes, like in <span class='scode'>dry-run</span>.
+<span class='mark'>optmatch</span> automatically translates camel case into dashes, so
+the following example:</p>
+
+<pre>@optmatcher
+	def handle(self, dryRunFlag):
+		...	</pre>
+
+<p>expects the flag <span class='scode'>dry-run</span>, instead of the flag
+<span class='scode'>dryRun</span>.</p>
+
+<p>This behaviour can be embedded in the decorator, using the <span class='scode'>as</span>
+specification. The previous example is equivalent to:</p>
+
+<pre>@optmatcher(flags='d as dry-run')
+	def handle(self, d):
+		...	</pre>
+		
+<p>Obviously, this possibility allows defining any kind of option, using all kind
+of illegal variable names:</p>		
+
+<pre>@optmatcher(flags='d as @f***ing!')
+	def handle(self, d):
+		...	</pre>
+		
+<p>Yes, this handler expects a flag <span class='scode'>--@f***ing!</span></p>
+
+<p>Although the previous two possibilites should cover all the bases, it is still
+possible to define a mapping for these <span class='mark'>public names</span>
+on the <span class='scode'>OptionMatcher</span> constructor, or using its 
+<span class='scode'>setPublicNames</span> method, which expects a dictionary, such as:</p>
+<pre>OptionMatcher.setPublicNames({'d':'@f***ing!'})</pre>
+
+
+
+		
+
+<h3><a name="optset">optset</a></h3>
+
+<p>There are cases where one or more options apply to multiple handlers. A typical
+example would be the verbose flag. Instead of defining it on all the matchers, it is
+possible to use the decorator <span class='mark'>optset</span>, like in:
+
+<pre>@optset
+	def handleHelp(self, helpFlag):
+		...	</pre>
+
+<p>It is quite equivalent to the <span class='mark'>optmatcher</span> decorator, so
+it is possible to specify its behaviour through the decorator:</p>
+
+<pre>@optset(flags='help')
+	def handleHelp(self, help):
+		...	</pre>
+		
+<p>These handlers are called, for convenience, when possible. That it, if, in the previous
+example does not include the flag <span class='scode'>--help</span>, the method
+<span class='scode'>handleHelp</span> is not invoked. However, if could have
+been defined with default values, like in:</p>
+
+<pre>@optset(flags='help')
+	def handleHelp(self, help=False):
+		...	</pre>
+
+<p>In this case, the method will be always called, which simplifies setting some common 
+variables</p>
+
+
+
+
+
+<h3><a name="advancedOptset">Advanced optset</a></h3>
+
+<p><span class='mark'>optset</span> is also useful to define mandatory options. For example,
+a tool could require that the flag <span class='scode'>--test</span> is provided with
+an option <span class='scode'>--file=FILENAME</span> where the file to test is specified.</p>
+
+<p>This could be defined as:</p>
+
+<pre>@optset
+	def handleTest(self, testFlag, fileOption):
+		...	</pre>
+
+<p>If the user specifies <span class='scode'>--test</span> but not 
+<span class='scode'>--file=</span> an exception is automatically raised.</p>
+
+<p>Now, there could be multiple matchers, but this option 
+<span class='scode'>--test</span> could only apply to one of the matchers. It is possible
+to limit the scope of a <span class='mark'>optset</span> handler to one or several matchers:</p>
+
+<pre>@optset(applies='zip')
+	def handleTest(self, testFlag, fileOption):
+		...	
+
+@optmatcher
+	def zip(self, file):
+		...	
+		</pre>
+
+<p>It is possible to define multiple matchers, vene using limited regular expressions:</p>		
+
+<pre>@optset(applies='zip, test*')
+	def handleTest(self, testFlag, fileOption):
+		...	</pre>
+		
+<p>In this case, it would apply to the method <span class='scode'>zip</span>, and to 
+all methods starting with <span class='scode'>test</span>.</p>
+
+<p>If a <span class='mark'>optset</span> handler has no  
+<span class='scode'>applies</span> specification, it would apply to all defined matchers,
+unless a matcher specifies <span class='mark'>exclusive=True</span>, such as:</p>
+
+<pre>@optmatcher(exclusive=True)
+	def handle(self, testFlag, fileOption):
+		...	</pre>
+
+
+
+
+
+		
+		
+<h3><a name="mode">Usage mode</a></h3>		
+
+<p>By default, <span class='mark'>OptionMatcher</span> works on <span class='mark'>getopt</span>
+mode. In other words, it is compatible with <span class='mark'>getopt</span> and
+<span class='mark'>optparse</span>: there are short options, prefixed with 
+<span class='scode'>-</span>, and long options, prefixed with <span class='scode'>--</span>.</p>
+
+<p>By default also, the <span class='mark'>gnu mode</span> is disabled: option arguments 
+can be freely intermixed with required arguments. This mode can be disabled on the 
+<span class='scode'>OptionMatcher.process</span> method, specifying the argument
+<span class='scode'>gnu=False</span>.</p>
+
+<p>This mode can be overriden by specifying a different option prefix. As usual, 
+this can be done on the contructor, or using a specific method, in this case:
+<span class='scode'>OptionMatcher.setMode</span>. For example, </p>
+
+<pre>OptionMatcher.setMode(optionPrefix='-')</pre>
+
+<p>In this example, the distinction between short and long arguments dissapear, and all 
+options are expected with the simple prefix <span class='scode'>-</span>.</p>
+
+<p>It is also possible to define the character that specifies the assignment, which is
+by default <span class='scode'>=</span>. For example, </p>
+
+<pre>OptionMatcher.setMode(optionPrefix='/', assigner=':')</pre>
+
+<p>enables Windows typical mode:</p>
+
+<pre>/mode:optimized</pre>
+
+
+
+
+
+<h3><a name="badusage">Handling incorrect usage</a></h3>		
+
+<p>When the user's input does not match the expected input, an exception is raised.</p>
+
+<p>This exception is the <span class='scode'>UsageException</span>, defined in the
+<span class='mark'>optmatcher</span> library. However, by default, it is automatically
+handled, so that a message is printed on the standard error stream.</p>
+
+<p>To disable this behaviour, allowing the library's client to process it at will, it
+is needed to invoke the <span class='scode'>OptionMatcher.process</span> like in:</p>
+
+<pre>.process(handleUsageProblems=False)</pre>
+
+
+
+
+
+<h3><a name="badsyntax">Handling incorrect syntax</a></h3>
+
+<p><span class='scode'>UsageException</span> is a class that inherits from
+<span class='scode'>OptionMatcherException</span>; this exception is raised when
+the syntax or aliases are incorrectly defined. It does not depend on the user's input.</p>
+
+
+
+
+
+<h3><a name="moreonhelp">More on help</a></h3>
+
+<p>By default, <span class='mark'>optmatcher</span> adds a matcher to handle help requests.
+That is, <span class='scode'>-h</span> or <span class='scode'>--help</span>, or even
+<span class='scode'>/help</span> it the correct prefix was setup, will automatically display
+the normal usage message.</p>
+
+<p>There are a few ways to override this behaviour:</p>
+
+<ul>
+<li>Disabling the default help: this can be done on the <span class='mark'>OptionMatcher</span>
+constructor, or invoking its <span class='scode'>OptionMatcher.enableDefaultHelp</span>
+method.</li>
+
+<li>Overriding the <span class='scode'>OptionMatcher.printHelp</span> method, that will be
+automatically invoked by the default help.</li>
+
+<li>Defining an explicit help matcher, such as:
+<pre>optmatcher
+	def handleHelp(self, helpFlag):
+		...	</pre>
+</li></ul>
+
+<p>In these two last cases, the <span class='mark'>OptionMatcher</span> class provides 
+some functionality to display the required information. The method
+<span class='scode'>OptionMatcher.getUsage</span> returns a
+<span class='scode'>OptionMatcher.printHelp</span> UsageAccessor instance, that can be used to
+format the usage message and to retrieve the required information, related to defined options,
+paraeters, etc.</p>
+
+
+
+<h3><a name="varnames">Var names</a></h3>
+
+<p><span class='mark'>varnames</span> is a concept related to the help system. 
+If it is defined an option called <span class='scode'>filename</span>, the default usage 
+for this option will print something like:</p>
+
+<pre>filename = FILENAME</pre>
+
+<p>It is possible to redefine the associated variable (hende the var name), by setting 
+the var names on the constructor:</p>
+
+<pre>OptionMatcher(optionVarNames{'filename':'ORIGIN'})</pre>
+
+<p>This would print a usage message such as:</p>
+
+<pre>filename = ORIGIN</pre>
+
+<h2><a name='download'>Download</a></h2>
+
+<p>Current version is 0.8.4 released the 29th May 2009.</p>
+
+<ul>
+<li>Version 0.8.4:<ul>
+	<li><a href='optmatch.py'>optmatch.py</a></li>
+	<li><a href='tests.py'>py unit tests</a></li>
+</ul></li>
+</ul>
+
+<p><span class='mark'>optmatcher</span> is open source, with the 
+following generic python license:</p>
+<pre>Copyright (c) Luis M. Pena &lt;dr.lu@coderazzi.net&gt;  All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+Redistributions in bytecode form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in
+the documentation and/or other materials provided with the
+distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</pre>
+
+</div></div>
+</body>
+</html>

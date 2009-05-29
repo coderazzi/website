@@ -12,6 +12,9 @@
     <location source='Java' target='.'>
         <template mold='../mold.htm'/>
     </location>       
+    <location source='python'>
+        <template mold='../mold.htm'/>
+    </location>       
     <location source='phd'>
         <template mold='../mold.htm'/>
     </location>       
@@ -94,9 +97,17 @@
             <item name='Menu Applet' file='menu/index.htm'/>
             <item name='SplitImage' file='splitimage/index.htm'/>
         </group>
+        <group name='python'>
+			<item name='optmatch' file='python/optmatch/index.htm'/>
+			<item name='Decorators' file='tnotes/python/decoratorsWithoutArguments.html'/>
+        </group>
         <group name='c#'>
             <item name='XmlObjects' file='csharp/xmlobjects/index.htm'/>
             <item name='XmlObjectsDocGui' file='csharp/xmlobjectsdocgui/index.htm'/>
+			<group name='technical notes'>
+                <item name='GAC and mono' file='tnotes/csharp/gacWMono.html'/>
+				<item name='Debug NUnits' file='howto/DebugNUnitTestsVS.html'/>
+			</group>
         </group>
         <group name='Linux'>
 			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
@@ -104,15 +115,6 @@
         <group name='PhD'>
             <item name='Sensei' file='phd/index.htm'/>
         </group>		
-        <group name='Technical notes'>
-            <group name='C#'>
-                <item name='GAC and mono' file='tnotes/csharp/gacWMono.html'/>
-				<item name='Debug NUnits' file='howto/DebugNUnitTestsVS.html'/>
-            </group>
-            <group name='Python'>
-                <item name='Decorators' file='tnotes/python/decoratorsWithoutArguments.html'/>
-            </group>
-        </group>
         <item name='Just words' file='books/2009/index.htm'/>
     </menu>
 </navigation>
