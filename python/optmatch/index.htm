@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>optmatch - ultimate option parser for Python</title>
+<title>optmatch - Python command line parsing made easy</title>
 <link rel="stylesheet" type="text/css" href="../../css/global.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
  <meta name="Keywords" content="python option parsing">
@@ -8,13 +8,14 @@
 <body>
  <div id='body'>
  <div id='content'>
-<h1>optmatch - ultimate option parser for Python</h1>
+<h1>optmatch - Python command line parsing made easy</h1>
 
 <ul>
 <li><a href="#intro">Quick introduction</a></li>
 <li><a href="#purpose">Purpose</a></li>
 <li><a href="#concepts">Concepts</a></li>
 <li><a href="#tutorial">Tutorial</a></li>
+<li><a href="#history">History</a></li>
 <li><a href="#download">Download</a></li>
 </ul>
 
@@ -72,7 +73,7 @@ information, like in:</p>
 invalid arguments, like <span class='scode'>--compress</span> and 
 <span class='scode'>--mode</span>--, which are mutually incompatible.</p>
 
-<p>The previous examples show the simpliest ways to access this library,
+<p>The previous examples show the simplest ways to access this library,
 which contains quite a lof of functionality to cover most aspects related
 to command line parsing, including printing usage messages, handling aliases,
 etc.</p>
@@ -101,7 +102,7 @@ There are two existing libraries to handle command line options parsing in pytho
 <a href='http://docs.python.org/library/optparse.html'>optparse</a>.</p>
 <ul><li><span class='mark'>getopt</span> usage is rather
 simple, and it is almost just limited to split the received arguments 
-in a list of expected arguments: the programmer must still make sense 
+into a list of expected arguments: the programmer must still make sense 
 of the received input, checking that all arguments are there, that they 
 are not incompatible, and then, invoking the handler or handlers to process
 them.</li>
@@ -155,14 +156,14 @@ If present, it is assumed to have the boolean value
 <span class='scode'>True</span>. For example: <pre>--verbose</pre></li>
 <li>prefix: is an option that can be specified multiple times. 
 For example: <pre>-I/usr/include -I/opt/include</pre></li>
-<li>parameter: any argument in the command line that is not 
-prefixed by the option prefix.</li>
+<li>parameter: any argument in the command line that does not include the option prefix.</li>
 </ul>
 
 
 
-<p>Note that, in general, option refers to flags, options and prefixes.</p>
-<p>In getopt mode, there are two option prefixes:</p>
+<p>Note that, in this document, it is normally used the word option to cover 
+not only options, but also flags and prefixes.</p>
+<p>In <span class='mark'>getopt</span> mode, there are two option prefixes:</p>
 <ul><li><span class='scode'>-</span>: short prefix. Only short options apply, 
 containing a single letter. The user can enter multiple short options together, 
 like in: <pre>-iof here</pre>which stands for the short flags
@@ -180,7 +181,7 @@ Or, alternatively, in the same argument, separated by <span class='scode'>=</spa
 <pre>--mode=optimized</pre>
 </li></ul>
 
-<p>In non-getopt mode, only one option prefix applies, normally 
+<p>In non-<span class='mark'>getopt</span> mode, only one option prefix applies, normally 
 <span class='scode'>-</span> or <span class='scode'>/</span>. In this case, there is
 no distinction between short and long options, and the user must enter 
 each option on a separate argument, like in:
@@ -205,6 +206,7 @@ Otherwise (the default), options and parameters can be freely intermixed.</p>
 <li><a href="#badsyntax">Handling bad synatx</a></li>
 <li><a href="#moreonhelp">More on help</a></li>
 <li><a href="#varnames">Var names</a></li>
+<li><a href="#decorators">Decorators</a></li>
 </ul>
 
 <h3><a name="basics">The basics</a></h3>
@@ -249,7 +251,8 @@ Example().process(sys.argv)</pre>
 <li><span class='mark'>OptionFloat</span>: the associated value is converted to a float number</li>
 </ul>
 
-
+<p>Please note that <span class='mark'>optmatch</span> automatically expands all shell/user 
+variables in the options.</p>
 
 
 <h3><a name="basicHelp">Basic help</a></h3>
@@ -413,7 +416,8 @@ to limit the scope of a <span class='mark'>optset</span> handler to one or sever
 		...	
 		</pre>
 
-<p>It is possible to define multiple matchers, vene using limited regular expressions:</p>		
+<p>It is possible to define multiple matchers, separated by commas or 
+using limited regular expressions:</p>		
 
 <pre>@optset(applies='zip, test*')
 	def handleTest(self, testFlag, fileOption):
@@ -546,12 +550,119 @@ the var names on the constructor:</p>
 
 <pre>filename = ORIGIN</pre>
 
+
+
+
+<h3><a name="decorators">Decorators</a></h3>
+
+<p>The two decorators in this module, <span class='mark'>optmatcher</span> and 
+<span class='mark'>optset</span>, allows defining the behaviour of the underlying
+matcher via their parameters. Both decorators share most of the parameters:
+</p>
+
+<ul>
+<li><span class='mark'>options</span>: defines which of the parameters are considered options.
+This parameter is a string, where the defined options are separated by commas, like in:
+
+<pre>@optmatcher(options='mode, file')
+def matcher(self, mode, file):
+   ...
+</pre>
+
+Each of the parameters can be defined like: <pre>parameter as public_name</pre>
+For example:
+
+<pre>@optmatcher(options='mode as verbose-mode, file as target.file')
+def matcher(self, mode, file):
+   ...
+</pre>
+
+In this example, the matcher expects two options, named <span class='code'>verbose-mode</span>
+and <span class='code'>target-file</span>
+
+</li>
+
+<li><span class='mark'>intOptions</span>: defines which of the parameters are considered 
+options associated to integer values. The remarks given to the normal options also apply
+for integer options.</li>
+
+<li><span class='mark'>floatOptions</span>: defines which of the parameters are considered 
+options associated to floatvalues. The remarks given to the normal options also apply
+for float options.</li>
+
+<li><span class='mark'>prefixes</span>: defines which of the parameters are considered 
+prefixes. The remarks given to the normal options also apply for prefixes.</li>
+
+<li><span class='mark'>flags</span>: defines which of the parameters are considered 
+flags. The remarks given to the normal options also apply for flags. As additional feature,
+it is possible to define <span class='mark'>orphan flags</span>, which are specified in the
+decorator, but have no associated matching parameter. For example:
+
+<pre>@optset(flags='quiet')
+def setQuiet(self):
+   ...
+</pre>
+
+In this case, only when the user enters <span class='code'>--quiet</span>, this matcher
+is invoked. Note that it would be possible to introduce a parameter 
+<span class='code'>quiet</span> in this matcher, but, when invoked, it would always
+be set to True. Hereby, it is possible to define it on the decorator only.
+</li>
+
+<li><span class='mark'>renamePars</span>: defines the public name for the parameter
+variables. For example:
+
+<pre>@optmatcher(renamePars='d as dir')
+def handle(self, d):
+   ...
+</pre>
+
+The help associated to this matcher would show the parameter <span class='code'>d</span>
+with the name <span class='code'>dir</span>.
+
+<li><span class='mark'>priority</span>. Matchers are tried in order, being the order defined
+by alphabetical sorting on the matcher method names. This order can be observed when the help
+lists all the alternatived for the current <span class='mark'>OptionMatcher</span>. It is
+possible to alter this order by defining the priorities of each matcher. Higher priorities 
+are invoked first.</li>
+
+</ul>
+
+<p>In addition, <span class='mark'>optset</span> can define the matchers to which it applies,
+using the <span class='code'>applies</span> parameter in the decorator, as described in
+the <a href='#advancedOptset'>advanced optset tutorial</a>. Its counterpart is the
+<span class='code'>exclusive</span> parameter in the 
+<span class='mark'>optmatcher</span> decorator.</p>
+
+
+
+<h2><a name='history'>History</a></h2>
+
+<ul>
+	<li>Version 0.8.5, 2nd June 2009.
+	<ul><li>Improves help format</li>
+	    <li>All provided options are automatically expanded (shell and user variables)</li>
+	</ul>
+	<li>Version 0.8.4, 29th May 2009. First downloadable version.</li>
+	<li>Version 0.8, 14th May 2009. API totally simplified, including minor refactoring.</li>
+	<li>Version 0.7, 1st May 2009. Introduction of <span class='mark'>varnames</span> in help system, 
+	help support vastly improved.</li>
+	<li>Version 0.6, 2nd April 2009. Introduction of functionality to help checking the syntax
+	(this was removed on 0.8).</li>
+	<li>Version 0.5, 15th January 2009. Introduction of decorators.</li>
+	<li>Version 0.4, 10th December 2008. Basic help system.</li>
+	<li>Version 0.3, 3rd November 2008. Support for non-getopt mode.</li>
+	<li>Version 0.2, 25th September 2008. Introduction of common handler concept.</li>
+	<li>Version 0.1, 12th September 2008. First working version, totally functional.</li>
+</ul>
+
+
 <h2><a name='download'>Download</a></h2>
 
 <p>Current version is 0.8.4 released the 29th May 2009.</p>
 
 <ul>
-<li>Version 0.8.4:<ul>
+<li>Version 0.8.5:<ul>
 	<li><a href='optmatch.py'>optmatch.py</a></li>
 	<li><a href='tests.py'>py unit tests</a></li>
 </ul></li>
