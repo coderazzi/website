@@ -78,6 +78,7 @@
                 <item name='Java 5 support' file='tablefilter/java5.html'/>
                 <item name='Download' file='tablefilter/download.html'/>
                 <item name='Examples' file='tablefilter/examples.html'/>
+                <item name='FAQs' file='tablefilter/faqs.html'/>
                 <item name='Javadoc' file='tablefilter/javadoc.html'/>
             </group>
             <group name='VirtualNet'>
