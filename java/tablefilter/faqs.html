@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>TableFilter - FAQs</title>
+</head>
+<body><div id='content'>
+
+  <ul>
+    <li><a href='#sortingevents'>Listening for sorting events</a></li>
+  </ul>
+
+  <ul>
+    <li><a name='sortingevents'>Listening for sorting events</a>
+    <p>Listening for sorting events require adding a listener to the 
+    table itself. For example, it is possible to add a tooltip that shows
+    the current number of rows -or how many have been filtered out-:
+    </p>
+    <pre>header.getTable().getRowSorter().addRowSorterListener(new RowSorterListener() {
+            @Override
+            public void sorterChanged(RowSorterEvent e) {
+                System.out.println(e.getPreviousRowCount());
+            }
+         });</pre>
+    </li>
+   </ul>
+
+</div></body>
+</html>
