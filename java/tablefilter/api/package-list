@@ -1,7 +1,7 @@
-com.byteslooser.filters
-com.byteslooser.filters.gui
-com.byteslooser.filters.gui.editors
-com.byteslooser.filters.parser
-com.byteslooser.filters.parser.generic
-com.byteslooser.filters.parser.re
-com.byteslooser.filters.resources
+net.coderazzi.filters
+net.coderazzi.filters.gui
+net.coderazzi.filters.gui.editors
+net.coderazzi.filters.parser
+net.coderazzi.filters.parser.generic
+net.coderazzi.filters.parser.re
+net.coderazzi.filters.resources
