@@ -74,7 +74,7 @@ class Decoration(object):
         
         #perhaps the base decorator is called with the function to decorate
         #see http://coderazzi.net/tnotes/python/decoratorsWithoutArguments.html
-        if (args[0] and not filter(None, args[1:]) and
+        if (args[0] and not any(filter(None, args[1:])) and
                 type(args[0]) == type(decorate)): 
             return decorate(args[0], [])
 
@@ -397,13 +397,13 @@ class OptMatcherInfo(object):
         self.kwargs = kwarg and not self.mode.getopt and {}
         #note that self.group is used for 'applies' and 'exclusive' 
         decorationInfo, self.group, priority = Decoration.parseDecoration(func)
-        if decorationInfo and filter(None, decorationInfo): 
+        if decorationInfo and any(filter(None, decorationInfo)): 
             self._initializeParametersFromDecorator(vars, *decorationInfo)
         else:
             self._initializeParametersFromSignature(vars)            
            
         #get default values
-        defs = list(func.func_defaults or [])
+        defs = list(func.__defaults__ or [])
         firstDef = self.lastArg - len(defs)
         self.defaults = dict([(i + firstDef, d) for i, d in enumerate(defs)])
         
@@ -643,7 +643,7 @@ class OptMatcherInfo(object):
     def describe(self):
         '''Describes the underlying method'''
         try:
-            name = 'method ' + self.func.im_self.__class__.__name__ + '.'
+            name = 'method ' + self.func.__self__.__class__.__name__ + '.'
         except AttributeError:
             name = 'function '
         return name + self.func.__name__
@@ -655,8 +655,8 @@ class OptMatcherInfo(object):
     def _getParametersInfo(self, f):
         #This information includes: the list of variables, if it supports
         #   varargs, and if it supports kwargs 
-        flags, firstArg = f.func_code.co_flags, hasattr(f, 'im_self')
-        varnames = f.func_code.co_varnames[firstArg:f.func_code.co_argcount]
+        flags, firstArg = f.__code__.co_flags, hasattr(f, '__self__')
+        varnames = f.__code__.co_varnames[firstArg:f.__code__.co_argcount]
         return list(varnames), (flags & 0x0004) != 0, (flags & 0x0008) != 0
 
     def _asInt(self, value):
@@ -691,8 +691,8 @@ class OptMatcherHandler(OptMatcherInfo):
         
         def somethingProvided():
             #just check if the user provided any value.
-            return self.providedPars or filter(lambda x: x != [],
-                                               self.provided.values())            
+            return self.providedPars or any(filter(lambda x: x != [],
+                                                   self.provided.values()))            
         #It can, if all the options/parameters are specified or have defaults
         errorReason = self._getInvokingPars()[0]        
         return (required or somethingProvided()) and errorReason
@@ -993,6 +993,11 @@ class UsageAccessor(object):
         The list will include the number of parameter of the matcher with
          more mandatory parameters (plus the parameters in the common one)
         '''
+        def oldMapNone(*a):
+            '''A replace for map(None, ....), invalid in 3.0 :-( '''
+            m = max([len(each) for each in a])
+            return list(zip(* [each + [None] * (m - len(each)) for each in a]))
+        
         ret, allPars, varargs = [], [], False
         for c, handlers in enumerate(self.handlers):
             pars = []
@@ -1002,7 +1007,7 @@ class UsageAccessor(object):
                     varargs = True
                     break
             allPars.append(pars)
-        for c, each in enumerate(map(None, * allPars)):
+        for c, each in enumerate(oldMapNone(* allPars)):
             name = None
             for i in each:
                 if i:
@@ -1025,7 +1030,7 @@ class UsageAccessor(object):
         options = {}
         for i in range(self.getAlternatives()):
             self._buildOptions(i, options)
-        ret = options.values()
+        ret = list(options.values())
         ret.sort(key=lambda x: (isinstance(x, OptionInfo), x.name.lower()))
         return ret
 
@@ -1035,7 +1040,7 @@ class UsageAccessor(object):
         those associated to the common matcher. The list
         will be sorted alphabetically, listing last the optional options
         '''
-        ret = self._buildOptions(alternative, {}).values()
+        ret = list(self._buildOptions(alternative, {}).values())
         ret.sort(key=lambda x: (x.defaultProvided, x.name.lower()))
         return ret
         
@@ -1123,13 +1128,13 @@ class OptionMatcher (object):
     def getUsage(self):
         '''Returns an Usage object to handle the usage info'''
         matcherHandlers, commonHandlers = self._createHandlers()
-        handlers = [[m] + filter(lambda x: x.appliesToMatcher(m),
-                                 commonHandlers) for m in matcherHandlers]
+        handlers = [[m] + list(filter(lambda x: x.appliesToMatcher(m),
+                               commonHandlers)) for m in matcherHandlers]
         return UsageAccessor(handlers, self._mode)
     
     def printHelp(self):
         '''shows the help message'''
-        print self.getUsage().getUsageString()
+        print (self.getUsage().getUsageString())
         
     def process(self, args, gnu=False, handleUsageProblems=True):
         '''Processes the given command line arguments
@@ -1149,8 +1154,8 @@ class OptionMatcher (object):
         try:
             for handler in matchers:
                 #only use the common handlers that apply to the matcher
-                assocCommons = filter(lambda x: x.appliesToMatcher(handler),
-                                      commons)
+                assocCommons = list(filter(lambda x: 
+                                    x.appliesToMatcher(handler), commons))
                 problem = self._tryHandlers(assocCommons, handler, commandLine)
                 if not problem:
                     #handlers ok: invoke common handler, then matcher's handler
@@ -1165,7 +1170,7 @@ class OptionMatcher (object):
                 for each in commons:
                     each.reset()
             raise UsageException (highestProblem[1])       
-        except UsageException, ex:
+        except UsageException as ex:
             if handleUsageProblems != False:
                 import sys
                 sys.stderr.write(str(ex) + '\n')
