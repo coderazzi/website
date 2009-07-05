@@ -6,6 +6,7 @@
 
   <ul>
     <li><a href='#sortingevents'>Listening for sorting events</a></li>
+    <li><a href='#userfilters'>Create additional user filters</a></li>
   </ul>
 
   <ul>
@@ -20,6 +21,29 @@
                 System.out.println(e.getPreviousRowCount());
             }
          });</pre>
+    </li>
+
+    <li><a name='userfilters'>Create additional user filters</a>
+    <p>It is easy to define additional filters outside the header filter, using the 
+    	<a href='api/net/coderazzi/filters/UserFilter.html'>UserFilter</a> class</p>
+    <p>For example (as taken from test file AppUserFilter.java):</p>
+
+	<pre>    
+final UserFilter userFilter = new UserFilter(filterHeader){
+	@Override
+	public boolean include(Entry entry) {
+		return -1!=entry.getStringValue(nameColumn).indexOf('e');
+	}
+};
+JCheckBox check = new JCheckBox("Filter out any row where the name does not contain a lower case 'e'");		
+check.addItemListener(new ItemListener() {			
+	@Override
+	public void itemStateChanged(ItemEvent e) {				
+		userFilter.setEnabled(e.getStateChange()==ItemEvent.SELECTED);
+	}
+});
+    </pre>
+    
     </li>
    </ul>
 
