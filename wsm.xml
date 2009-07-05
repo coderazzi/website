@@ -101,6 +101,7 @@
         <group name='python'>
 			<item name='optmatch' file='python/optmatch/index.htm'/>
 			<item name='Decorators' file='tnotes/python/decoratorsWithoutArguments.html'/>
+			<item name='2.x to 3.0' file='tnotes/python/migrating2to3.html'/>
         </group>
         <group name='c#'>
             <item name='XmlObjects' file='csharp/xmlobjects/index.htm'/>
