@@ -1,0 +1,191 @@
+<html>
+
+<head>
+ <title>Experiences migrating to Python 3</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="python 3 migration">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>&gt; 13th Jun 2009, 20:03 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>  
+
+<h1>Short experiences migrating programs to Python 3</h1>
+
+<p>After I migrated yesterday a short program, <a href='../../python/optmatch/index.html'>optmatch</a>
+to python 3.0, I decided to write on the experience, not so much as to list the problems I faced, 
+but to be able to remember the subtle changes later on: I should extend the list as I migrate 
+other programs. Currently, it just includes:</p>
+
+<ul>
+<li><a href='#list.sort'>[].sort does not accept cmp argument</a></li>
+<li><a href='#filter.iterator'>filter, map returns an iterator, not a list</a></li>
+<li><a href='#map.none'>map's function cannot be None</a></li>
+</ul>
+
+<p>My first stop place was <a href='http://diveintopython3.org/'>Dive Into Python 3</a>,
+specially the 
+<a href='http://diveintopython3.org/porting-code-to-python-3-with-2to3.html'>porting</a> document.
+I do not include here anything already included there, like printing being now a function, and, if I
+do, is only to refer to my own experience about the change.</p>
+ 
+<p>The program I migrated was quite short, around 1300 lines, and the accompanying unit tests reach just below 2000 lines, so I am pretty sure
+that the problems I solved were a subset of the normal headaches a more usual migration would 
+take.</p>
+
+<p>I was more interested on getting to know Python 3, than just migrating my program. So I did use
+<a href='http://docs.python.org/3.0/library/2to3.html'>2to3.py</a>, but more for curiosity, at first,
+and later, to know how it would handle some idioms not valid anymore in Python 3.</p>
+
+
+<h2><a name='list.sort'>[].sort does not accept cmp argument</a></h2>
+
+<p>In python 2.x, <span class='code'>[].sort</span> supports 3 arguments: <span class='code'>key, 
+reverse, cmp</span>. The latest is gone in Python 3.</p>
+
+<p>In <a href='http://bytes.com/groups/python/844614-python-3-sorting-comparison-function'>this 
+thread</a> I read the reasoning behind: people normally uses <span class='code'>cmp</span>, but
+using <span class='code'>key</span> would produce better and shorter solutions, and in most cases
+it is very easy to transform a sorting based on the <span class='code'>cmp</span> argument into
+one based on the <span class='code'>key</span> argument.</p>
+
+<p>The same thread proposes using the following function to convert a sorting based on 
+<span class='code'>cmp</span>:</p>
+
+<pre>
+def cmp2key(mycmp):
+    "Converts a cmp= function into a key= function"
+    class K:
+        def __init__(self, obj, *args):
+            self.obj = obj
+        def __cmp__(self, other):
+            return mycmp(self.obj, other.obj)
+    return K
+
+s.sort(key=cmp2key(cmp))
+</pre>
+
+<p>This struck me as odd, for its zealotry to force a solution seen as better, and for the
+need to include the new function into the code.</p>
+
+<p>I had some code such as:</p>
+
+<pre>functionsAndPriorities.sort(lambda x, y: y[0] - x[0])</pre>
+
+<p>This is the kind of code that the thread refered to, as it could have been written:</p>
+
+<pre>functionsAndPriorities.sort(key=lambda x: -x[0])</pre>
+
+<p>That is nicer, shorter, and probably faster. But I had this other code which does not seem so
+suitable for a change:</p>
+
+<pre>
+   def compare(a, b):
+       #first: give less weight to options than to flags
+       noflag = isinstance(a, OptionInfo)
+       if noflag != isinstance(b, OptionInfo):
+           return (noflag and 1) or - 1
+       #then: alphabetical order, case insensitive
+       A = a.name.lower()    
+       B = b.name.lower()
+       return (A < B and - 1) or (A > B and 1) or 0
+        
+   ret.sort(compare)
+</pre>
+
+<p>Using <a href='http://docs.python.org/3.0/library/2to3.html'>2to3.py</a> was not help,
+as it let unchanged any code related to the <span class='code'>sort + cmp</span> problem.</p>
+
+<p>But, in fact, the change is quite easy, so I had to agree (so far, at least), with the reasoning
+to remove the argument:</p>
+
+<pre>
+ret.sort(key=lambda x: (isinstance(x, OptionInfo), x.name.lower()))
+</pre>
+
+<p>Conclusion: better to realize that <span class='code'>[].sort</span> has no 
+<span class='code'>cmp</span> argument anymore, and be ready to spend some time 
+replacing comparison functions, because the change seems to be for the better.</p>
+
+
+
+
+
+<h2><a name='filter.iterator'>filter, map returns an iterator, not a list</a></h2>
+
+<p>This change seems quite harmless: it is.</p>
+
+<p>The easier way to change old code that would expect a list, would be adding it explicitly:</p>
+
+<pre>filter(....) -> list(filter(...))</pre>
+
+<p>Interestingly, <a href='http://docs.python.org/3.0/library/2to3.html'>2to3.py</a> removes any 
+usage of the <span class='code'>filter</span> function. For example:</p>
+
+<pre>return self.providedPars or filter(lambda x: x != [], self.provided.values())</pre>
+
+<p>Is replaced by:</p>
+
+<pre>return self.providedPars or [x for x in list(self.provided.values()) if x != []]</pre>
+
+<p>The only problem that I have experienced with <span class='code'>filter</span> returning an iterator
+is on the idioms where I evaluated directly the returned value as a boolean expression. For example,
+to check if any element in a list is an odd number, I would have written:</p>
+
+<pre>if filter(lambda x: x%2, lst): #do anything</pre>
+
+<p>This code is useless in Python 3, as the returned value is an iterator, and will evaluate as True
+even if the list to iterate is empty. <a href='http://docs.python.org/3.0/library/2to3.html'>2to3.py</a>
+will replace the previous code with:</p>
+
+<pre>if [x for x in lst if x%2]:</pre>
+
+<p>But this means that the whole list is calculated, which defeats the benefit of having 
+<span class='code'>filter</span> returning an iterator: as soon as an element in the list is
+evaluated as odd, there is no need to evaluate the rest of the list, which can be written as:</p>
+
+<pre>if any(filter(lambda x: x%2, lst)): #do anything</pre>
+
+<p>Conclusion: learn the new feature, and try to get advantage of the performance improvements.
+And get to know added functions, like  <span class='any'>any</span></p>
+
+
+
+<h2><a name='map.none'>map's function cannot be None</a></h2>
+
+<p>I haven't yet understood the reason for this change. If you have a number of lists with
+different number of elements, using <span class='code'>map(None, lst1, ...)</span> is equivalent to
+using <span class='code'>zip(lst1, ...)</span>, but it will returns as many tuples as elements are
+in the larger passed list, filling the other lists with None elements.</p>
+</p>
+
+<p>For example:</p>
+<pre>
+a=[1, 2, 3]
+b=[10, 20]
+map(None, a, b)
+</pre>
+<p>Returns, in python 2.x: 
+<pre>[(1, 10), (2, 20), (3, None)]</pre>
+
+<p>In Python 3, you obtain a <span class='code'>TypeError</span> exception:</p>
+<pre>TypeError: 'NoneType' object is not callable</pre>
+
+<p>There is no offered alternative for this behaviour. It must be coded explicitly, such as:</p>
+<pre>
+   def oldMapNone(*a):
+       '''A replace for map(None, ....), invalid in 3.0 :-( '''
+       m = max([len(each) for each in a])
+       return list(zip(* [each + [None] * (m - len(each)) for each in a]))
+</pre>
+
+<p>Conclusion: why? I presume there must be some reason lying somewhere, but so far I didn't find it.</p>
+
+
+</div>
+</div>
+</body>
+
