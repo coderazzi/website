@@ -11,6 +11,7 @@
  
 
 <p class="timestamp">&gt; 12th March 2009, 02:10 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>  
+<p class="timestamp">updated: &gt; 29th July2009, 02:54 &nbsp;&nbsp;&nbsp;&nbsp; [Ubuntu 9.04]</p>  
 
 <p><span class="note">Please note that I do not claim any copyright on this code, it is just a patch on the 
 original code copyrighted by Chris Schoeneman. I do not impose either additional license terms that those already 
@@ -74,13 +75,22 @@ More specifically:</p>
 This is definitely not the same as to wake up the screen if there is mouse/keyboard activity on
 the client, but it is enough for most purposes.</li></ul>
 
+<p>There are still additional problems on the linux application. As this
+<a href='https://bugs.launchpad.net/ubuntu/+source/synergy/+bug/194029'>bug</a> describes, there can be
+responsiveness issues: the mouse seems frozen at moments. Fortunately, there is a solution for this 
+problem: running <span class='mark'>synergyc</span> as root (which is definitely not the best approach).</p>
+
 <h2><a name="binary">Download binary</a></h2>
 
-<p>This binary has been built on Ubuntu 8.10, 32 bits, using the same instructions as detailed below.
+<p>These binary have been built on Ubuntu 8.10, and Ubuntu 9.04, 32 bits, using the same instructions as detailed below.
 You can copy it into /usr/bin/synergyc</p>
 
-<ul><li><a href="synergyc">synergyc</a> : Version 12th March 2009, md5sum: 
-<span class="mark">8c1e87248db7e06cfcfebf6394a06072</span></li></ul>
+<ul>
+<li><a href="synergyc">synergyc</a> for Ubuntu 8.10: Version 12th March 2009, md5sum: 
+<span class="mark">8c1e87248db7e06cfcfebf6394a06072</span></li>
+<li><a href="904_32/synergyc">synergyc</a> for Ubuntu 9.04: Version 29th July 2009, md5sum: 
+<span class="mark">a8d162e0c81a051e5c70f8653f9cecaf</span></li>
+</ul>
 
 
 <h2><a name="source">Download patch source</a></h2>
