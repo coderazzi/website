@@ -15,6 +15,9 @@
     <location source='python'>
         <template mold='../mold.htm'/>
     </location>       
+    <location source='osx'>
+        <template mold='../mold.htm'/>
+    </location>       
     <location source='phd'>
         <template mold='../mold.htm'/>
     </location>       
@@ -113,6 +116,11 @@
         </group>
         <group name='Linux'>
 			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
+        </group>		
+        <group name='Os X'>
+			<item name='Hackintosh-ing' file='osx/hackintoshing.htm'/>
+			<item name='Asus P5Q-E' file='osx/p5q-e/index.htm'/>
+			<item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
         </group>		
         <group name='PhD'>
             <item name='Sensei' file='phd/index.htm'/>

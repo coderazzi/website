@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>SMbiosvendor</key>
+    <string>Apple Computer, Inc.</string>
+    <key>SMbiosversion</key>
+    <string>MP11.88Z.005C.B08.0707021221</string>
+    <key>SMmanufacter</key>
+    <string>Apple Computer, Inc.</string>
+    <key>SMproductname</key>
+    <string>MacPro1,1</string>
+    <key>SMsystemversion</key>
+    <string>1.0</string>
+    <key>SMserial</key> 
+    <string>017632718ES</string>
+    <key>SMfamily</key>
+    <string>MacPro</string>
+    <key>SMboardmanufacter</key>
+    <string>Apple Computer, Inc.</string>
+    <key>SMboardproduct</key>
+    <string>Mac-F4208DC8 PVT</string>
+    <key>SMexternalclock</key>
+    <string>400</string>
+    <key>SMmaximalclock</key>
+    <string>2500</string>
+    <key>SMmemtype</key>
+    <string>19</string>
+    <key>SMmemspeed</key>
+    <string>800</string>
+</dict>
+</plist>

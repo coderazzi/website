@@ -7,10 +7,13 @@
   <ul>
     <li><a href='#sortingevents'>Listening for sorting events</a></li>
     <li><a href='#userfilters'>Create additional user filters</a></li>
+    <li><a href='#datesonfilters'>Using dates on the filters</a></li>
   </ul>
 
+<div class="hr">&nbsp;</div>
+
   <ul>
-    <li><a name='sortingevents'>Listening for sorting events</a>
+    <li><a name='sortingevents'><span class='mark'>Listening for sorting events</span></a>
     <p>Listening for sorting events require adding a listener to the 
     table itself. For example, it is possible to add a tooltip that shows
     the current number of rows -or how many have been filtered out-:
@@ -23,7 +26,9 @@
          });</pre>
     </li>
 
-    <li><a name='userfilters'>Create additional user filters</a>
+	<div class="hr">&nbsp;</div>
+
+    <li><a name='userfilters'><span class='mark'>Create additional user filters</span></a>
     <p>It is easy to define additional filters outside the header filter, using the 
     	<a href='api/net/coderazzi/filters/UserFilter.html'>UserFilter</a> class</p>
     <p>For example (as taken from test file AppUserFilter.java):</p>
@@ -44,6 +49,51 @@ check.addItemListener(new ItemListener() {
 });
     </pre>
     
+    </li>
+
+	<div class="hr">&nbsp;</div>
+
+
+    <li><a name='datesonfilters'><span class='mark'>Using dates on the filters</span></a>
+    <p>By default, the <span class='mark'>TableFilterHeader</span> has no built-in functionality to support
+    directly dates. It is still possible to match specific dates, but the relational operators will most
+    likely fail; for example, if dates are expressed as dd-mm-yyyy, it will evaluate as true that
+    <span class='code'>06-01-2008 > 02-12-2009</span>, as it converts the dates into strings.</p>
+    
+    <p>The easiest way to solve this is to instruct the <a href='parsers.html'>text parser</a> to understand
+    the format used on the dates; this solution requires that the table model associates a Date.class to the
+    specific column. That is, if the table model automatically converts dates into strings, a second solution, displayed
+    later, is needed. This second solution is also needed if the table uses more than one date format.</p>
+    
+    <p>The simples solution requires four steps:</p>
+    <ol>
+     <li>Define a <a href='api/net/coderazzi/filters/parser/ITypeBuilder.html'>ITypeBuilder</a> to handle dates.
+     For example:
+     <pre>
+ITypeBuilder dateTypeBuilder = new ITypeBuilder() {
+   public Object parse(String text) throws FilterTextParsingException {
+      SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+      try {
+         return df.parse(text);
+      } catch (ParseException ex) {return null;}
+   }
+};</pre>
+     </li>
+     <li>Create a specific <a href='api/net/coderazzi/filters/parser/generic/TypesFactory.html'>TypesFactory</a> instance:
+     <pre>
+TypesFactory typesFactory = new TypesFactory();</pre></li>
+     <li>On this factory, associate the created builder to the Date.class:
+     <pre>
+typesFactory.setFactory(Date.class, dateTypeBuilder);</pre></li>
+     <li>Finally, associate the filter header to a new text parser that will use the created factory:
+     <pre>
+filterHeader.setTextParser(new FilterTextParser(typesFactory));</pre>
+     </li>
+    </ol>
+    <p>This solution assumes that the table model only supports one date format. If this is not the case, it is needed to specify a different text parser for each column. It also assumes that the table model returns the elements on the
+    given column as dates. If the model preformats these dates and just returns strings, the new text parser must
+    define a comparator for strings, using this 
+    <a href='api/net/coderazzi/filters/parser/generic/FilterTextParser.html#FilterTextParser(net.coderazzi.filters.parser.generic.IRelationalOperandFactory)'>constructor</a>. In any case, a more complicated solution!</p>
     </li>
    </ul>
 

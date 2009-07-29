@@ -91,11 +91,12 @@ You can copy it into /usr/bin/synergyc</p>
 <ul><li><a href="synergy-coderazzi.patch">synergy-coderazzi.patch</a> : Version 12th March 2009, md5sum: 
 <span class="mark">6c3a1012b6f7ac865c1b5c8fc08a8e5b</span></li></ul>
 
-<p>To download the sources and the patch, and build it, you can use the following code, on any temporary directory:<p>
+<p>To download the sources and the patch, and build it, you can use the following code, on any temporary directory (please see the notes below on the required Ubuntu packages):
+<p>
 
 <pre class="code">wget http://downloads.sourceforge.net/synergy2/synergy-1.3.1.tar.gz?use_mirror=mesh
 tar zxvf ./synergy-1.3.1.tar.gz
-wget http://www.coderazzi.com/linux/synergy.patch/synergy-coderazzi.patch
+wget http://www.coderazzi.net/linux/synergy.patch/synergy-coderazzi.patch
 cd synergy-1.3.1
 patch -p1 -i ../synergy-coderazzi.patch
 ./configure -x-libraries /usr/lib -x-includes /usr/includes

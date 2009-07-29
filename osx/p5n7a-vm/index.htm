@@ -1,0 +1,116 @@
+<html>
+<head>
+ <title>OsX Leopard on Asus P5N7A-VM (vanilla)</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="osx hackintosh p5n7a-vm vanilla">
+</head>
+<body>
+ <div id='body'>
+ <div id='content'>
+ 
+
+<p class="timestamp">&gt; 23rd July 2009, 01:39 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>  
+
+<h1>OsX Leopard on Asus P5N7A-VM (vanilla)</h1>
+
+<p>At insanelymac there is a 
+<a href='http://www.insanelymac.com/forum/index.php?showtopic=148416&st=200&p=1080065&#entry1080065'>discussion</a>
+ on how to install Leopard on the P5N7A-VM using the boot-132 method.</p>
+ 
+<p>I had built my PC without a CD-ROM (this is intended to be my server), and, as you could read on the
+previous discussion, the USB ports are all but useless, so I was out of luck to install Leopard on the usual boot-132 terms.</p>
+
+<p>However, I had two running Leopard machines, a Mac mini and a <a href='../p5q-e/index.htm'>hackintosh</a>, so I decided to install Leopard on a separate hard disk, and set it up completely for the P5N7A-VM motherboard, where I would move later the disk. It worked beautifully, and the single feature not right is the shutdown/restart functionality. I can live without that. The USB works now perfectly (at 480 Mbs), and Os X updates are installed without a glitch.</p>
+
+<p>This is my hardware:</p>
+<ul>
+	<li>Cpu: E5200.</li>
+	<li>Motherboard: Asus P5N7A-VM (with Nvidia 9300 GPU)</li>
+	<li>Memory: 4Gb (2 Corsair PC2-800).</li>
+	<li>Hard disk: Hitachi 500 Gb</li>
+	<li>A hotswap rack</li>
+	<li>PSU: Be Quiet 300 W</li>	
+	<li>Case: LianLi PCV-350B, with 2 120mm and 1 80 mm fan, regulated by the motherboard, plus another
+	90 mm fan on mini Ninja Cpu cooler. I have also a Thermalright HR-05 cooler for the GPU, without fans.
+	The case is almost silent, the PSU is the noisest component, and it is pretty silent.</li>
+</ul>
+
+<p>The installation required 9 steps. Obviously, most of these steps apply to any motherboard, as far as
+the right drivers are available. I include first a detailed description of the steps I executed for the P5N7A-VM motherboard, and then a <a href='#summary'>generic description</a> for any motherboard.</p>
+
+<h2>Steps for P5N7A-VM</h2>
+
+<ol>
+ <li>The first step is to install Leopard on a free partition (20 Gb). I used retail 10.5.6. This installation can be done:
+ <ul>
+   <li>Using a Mac, directly, just specifying the free partition.</li>
+   <li>Using the hackintosh, I had to install the retail DVD in yet another free partition (9 Gb), and then boot it using then boot-132 method. As usual, it ends with error.</li>
+ </ul>
+ The chosen free partition must be in a disk partitioned with MBR or with GUID. In the first case, the given partition must be one of the first 3 partitions, must be primary, and there must be not logical partitions before. 
+ </li>
+ <li>Now, it is needed to setup the installed partition. For that, reboot first on the working Mac / hackintosh</li>
+ <li>Copy the <a href='DSDT.aml'>DSDT.aml</a> for the associated CPU. 
+ This file was provided by <span class='mark'>Diabolik</span>, and is available 
+   <a href='http://www.insanelymac.com/forum/index.php?showtopic=148416&st=200&p=1082035&#entry1082035'>here</a>; have a look at this forum in case that newer versions are published. 
+   In the same place is available the <a href='DSDT.dsl'>DSDT.dsl</a> required for quad cores. Note that this file must be copied on the root directory in the installed partition.</li>
+ <li>Install <a href='http://chameleon.osx86.hu/'>Chameleon</a> on the installed partition, including the Extra files, although most of them are not needed.</li>
+ <li>The previous step created an <span class='mark'>Extra</span> folder in the root directory in the installed partition. It contains a file <a href='com.apple.Boot.plist'>com.apple.Boot.plist</a> where I added a timeout of 1 second to boot into Os X, specifying:
+ <pre>&lt;key&gt;Timeout&lt;/key&gt;&lt;string&gt;1&lt;/string&gt;</pre></li>
+ <li>In the same directory, I included my own <a href='smbios.plist'>smbios.plist</a>, although this is only needed to have nice values displayed on the <span class='mark'>About this mac</span> dialog.</li>
+ <li>Under this directory, enter the folder <span class='mark'>Extensions</span>. It should only contain the following kexts:
+ <ul>
+    <li><span class='mark'>AppleDecrypt.kext</span>: directly included by Chameleon</li>
+    <li><span class='mark'>IOAHCIBlockStorageInjector.kext</span>: directly included by Chameleon</li>
+    <li><span class='mark'>OpenHalRestart.kext</span>: directly included by Chameleon</li>
+    <li><span class='mark'>AppleHDA.kext</span>: provided in the
+    <a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=45081'>insanelymac</a> forum,
+    by <span class='mark'>frodokenny</span>, required for the audio to work. This driver comes with the next one:</li>
+    <li><span class='mark'>HDAEnabler.kext</span></li>
+ </ul>
+ I copied also the file <span class='mark'>AppleHDA.kext</span> into the <span class='mark'>/System/Library/Extensions</span> folder in the installed partition.
+ </li>
+ <li>Now, it is needed to set the correct access rights for each file. So, eject the installed partition, open a terminal window and mount again the partition (preserving rights) on the terminal doing something like:
+ <pre>sudo mount -t hfs /dev/disk1s2 tmpdir</pre>
+ where tmpdir is any temporal directory, and disk1s2 must be correctly specified (look at the Disk Utility program for the identity assigned to the installed partition).
+ <pre> cd tmpdir
+ sudo chown root:wheel DSDT.aml
+ sudo chown -R root:wheel Extra</pre>
+ </li>
+ <li>Finally, rebuild the <span class='mark'>Extensions.mkext</span> files found in 
+ the <span class='mark'>/Extra</span> and <span class='mark'>/System/Library</span> folders. To do so,
+ I have created the file <a href='updateMkext.sh'>updateMkext.sh</a> in the <span class='mark'>/Extra</span>
+ folder, with the following code:
+ <pre>KEXT_RETAIL="../System/Library/Extensions"
+KEXT_EXTRA="../Extra/Extensions"
+MKEXT="../Extra/Extensions.mkext"
+
+kextcache -v 1 -t -l -a i386 -m "$MKEXT" "$KEXT_EXTRA" "$KEXT_RETAIL"</pre>
+ This script was provided by the user <span class='mark'>zhell</span> in 
+ <a href='http://www.insanelymac.com/forum/lofiversion/index.php/t159063.html'>insanelymac</a>.
+ To execute it:
+ <pre>cd /Extra
+sudo ./updateMkExt.sh</pre>
+</ol>
+
+<p>Now, the hard disk with the newly Leopard installed can be swapped to the final machine, with the P5N7A-VM motherboard. Of course, to start it, it is needed a boot partition manager, and I used Grub, already installed in a separate hard disk.</p>
+
+<p>That is all. I still copied the installed partition into the hard disk normally used in my machine, to avoid having two hard disks installed, but this step is obviously not required.</p>
+
+<h2><a name='summary'>Summary for any motherboard</a></h2>
+
+<p>I am sure this summary works for any motherboard, if you are able to get the right drivers (kexts), which
+is obviously the difficult part. In addition, it requires a working Mac or hackintosh:</p>
+
+<ol>
+<li>Install from a Mac/Hackintosh Leopard (I used 10.5.6) on a separate partition on the final hard disk.</li>
+<li>Reboot into the working Mac/Hackintosh, mounting the final hard disk as well.</li>
+<li>Unless the BIOS is patched (or is directly supported), copy DSDT.aml or DSDT.dsl to the root of the installed partition.</li>
+<li>Install Chameleon on this partition.</li>
+<li>Prepare convenienly the Extra folder. This is a trial and error loop, until all required kexts -and none more- are there. It must be also ensured that the access rights to all the files in this folder are correct (owner: root, group: wheel).</li>
+<li>Swap the hard disk to the final machine, and ensure you can boot it (Grub is my best choice)</li>
+</ol>
+
+</div></div>
+</body>
+</html>
