@@ -1,44 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
 <html>
 <head>
 <title>TableFilter - license and download</title>
+
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <link rel="stylesheet" type="text/css" href="../css/site.css">
+ <link rel="stylesheet" type="text/css" href="../css/menu.css">
+ <meta name="Description" content="TableFilter - Swing component for filtering tables">
+ <meta name="Keywords" content="tablefilter table filter swing java filtering">
+ <meta name="Author" content="Luis M. Pena">
 </head>
-<body><div id='content'>
+<body>
+ <div id="menu" class="wsmMenu"><div class="navcontainer"><ul class="navlist"><li><a href="../index.htm">Home</a></li><li class="group"><a href="#" class="justtext">Java</a><ul class="navlist"><li><a href="../idldepend/index.htm">IdlDepend</a></li><li class="group"><a href="#" class="justtext">Table filter</a><ul class="navlist"><li><a href="index.html">Overview</a></li><li><a href="header.html">Table header</a></li><li><a href="parsers.html">Text expressions</a></li><li><a href="editors.html">Filter editors</a></li><li><a href="standalone.html">Standalone mode</a></li><li><a href="java5.html">Java 5 support</a></li><li class="active"><a href="#">Download</a></li><li><a href="examples.html">Examples</a></li><li><a href="faqs.html">FAQs</a></li><li><a href="javadoc.html">Javadoc</a></li></ul></li><li class="group"><a href="../virtualnet/index.htm">VirtualNet</a></li><li><a href="../virtualnet2/index.htm">VirtualNet2</a></li><li><a href="../cmdlinker/index.htm">CmdLinker</a></li><li><a href="../phd/index.htm">Sensei</a></li><li><a href="../filesplit/index.htm">FileSplit</a></li><li><a href="../menu/index.htm">Menu Applet</a></li><li><a href="../splitimage/index.htm">SplitImage</a></li></ul></li><li class="group"><a href="../python/optmatch/index.htm">python</a></li><li class="group"><a href="../csharp/xmlobjects/index.htm">c#</a></li><li class="group"><a href="../linux/synergy.patch/index.htm">Linux</a></li><li class="group"><a href="../osx/hackintoshing.htm">Os X</a></li><li class="group"><a href="../phd/index.htm">PhD</a></li><li><a href="../books/2009/index.htm">Just words</a></li></ul></div></div>
+ <div id="body" class="wsmContent">
+  <div id="header">&nbsp;</div>
+  <div id="content">
 
   <ul>
-    <li><a href='#download'>Download</a></li>
-    <li><a href='#license'>License</a></li>
-    <li><a href='#support'>Support</a></li>
+    <li><a href="#download">Download</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#support">Support</a></li>
   </ul>
 
-  <h1><a name='download'>Download</a></h1>
+  <h1><a name="download">Download</a></h1>
   
     <p>
-      <span class='mark'>TableFilter</span> is available in source and 
+      <span class="mark">TableFilter</span> is available in source and 
       binary formats, with versions for Java 5 and Java 6. 
       The license is MIT open source, please look below for the complete details.
     </p>
     
-    <p>The three last versions are available for download:</p>
+    <p>The last versions are available for download:</p>
 
-  	<h2>Version 1.4.1 ( 4th July 2009 ) </h2>
+    <h2>Version 1.5.0 ( 7th August 2009 ) </h2>
       <ul>
        <li>Download for Java 6 or later
         <ul>
-         <li><a href='download/tablefilter-v1.4.1.jar'>Binary distribution</a>
+         <li><a href="download/tablefilter-v1.5.0.jar">Binary distribution</a>
           (without sources, tests not included)</li>
-         <li><a href='download/tablefilterDbg-v1.4.1.jar'>Binary distribution with sources</a>
+         <li><a href="download/tablefilterDbg-v1.5.0.jar">Binary distribution with sources</a>
           (useful for debug purposes)</li>
-         <li><a href='download/tablefilter-v1.4.1.zip'>Source distribution</a>
+         <li><a href="download/tablefilter-v1.5.0.zip">Source distribution</a>
           (with sources, and tests are included)</li>
         </ul>
        </li>
        <li>Download for Java 5
         <ul>
-         <li><a href='download/tablefilter5-v1.4.1.jar'>Binary distribution</a> 
+         <li><a href="download/tablefilter5-v1.5.0.jar">Binary distribution</a> 
           (without sources, tests not included)</li>
-         <li><a href='download/tablefilterDbg5-v1.4.1.jar'>Binary distribution with sources</a>
+         <li><a href="download/tablefilterDbg5-v1.5.0.jar">Binary distribution with sources</a>
           (useful for debug purposes)</li>
-         <li><a href='download/tablefilter5-v1.4.1.zip'>Source distribution</a> 
+         <li><a href="download/tablefilter5-v1.5.0.zip">Source distribution</a> 
+          (with sources, and tests are included)</li>
+        </ul>
+       </li>
+       <li>Changes; this release improves on the usage of the 
+       <a href="api/net/coderazzi/filters/gui/editors/TableChoiceFilterHeader.html">TableChoiceFilterHeader</a>,
+          that is, the editor filter that offers the user a list of the different options
+          as found in the table model:
+       <ul>
+        <li>The choices are automatically updated when new entries are included in the table.
+        That is, new values are added to the filter's choices; however, old values, that
+        are removed or replaced out of the table model, are not removed from the filter's choices.
+        </li>
+        <li>In addition, the comparator function used to set the order among the choices in
+        the editor, is replaced, to use automatically the comparison method supplied on
+        <a href="http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html">Comparable classes</a>
+         (if supplied, that is)</li>
+       </ul>
+      </li></ul>
+
+  	<h2>Version 1.4.1 ( 4th July 2009 ) </h2>
+      <ul>
+       <li>Download for Java 6 or later
+        <ul>
+         <li><a href="download/tablefilter-v1.4.1.jar">Binary distribution</a>
+          (without sources, tests not included)</li>
+         <li><a href="download/tablefilterDbg-v1.4.1.jar">Binary distribution with sources</a>
+          (useful for debug purposes)</li>
+         <li><a href="download/tablefilter-v1.4.1.zip">Source distribution</a>
+          (with sources, and tests are included)</li>
+        </ul>
+       </li>
+       <li>Download for Java 5
+        <ul>
+         <li><a href="download/tablefilter5-v1.4.1.jar">Binary distribution</a> 
+          (without sources, tests not included)</li>
+         <li><a href="download/tablefilterDbg5-v1.4.1.jar">Binary distribution with sources</a>
+          (useful for debug purposes)</li>
+         <li><a href="download/tablefilter5-v1.4.1.zip">Source distribution</a> 
           (with sources, and tests are included)</li>
         </ul>
        </li>
@@ -51,82 +101,43 @@
        	<li>Added commodity class UserFilter to create external filters.</li>
        	<li>Added serialization ids to all serializable classes.</li>
        </ul>
-      </ul>
+      </li></ul>
 
   	<h2>Version 1.4.0 ( 10th June 2009 ) </h2>
       <ul>
-       <li>Download for Java 6 or later
-        <ul>
-         <li><a href='download/tablefilter-v1.4.0.jar'>Binary distribution</a>
-          (without sources, tests not included)</li>
-         <li><a href='download/tablefilterDbg-v1.4.0.jar'>Binary distribution with sources</a>
-          (useful for debug purposes)</li>
-         <li><a href='download/tablefilter-v1.4.0.zip'>Source distribution</a>
-          (with sources, and tests are included)</li>
-        </ul>
-       </li>
-       <li>Download for Java 5
-        <ul>
-         <li><a href='download/tablefilter5-v1.4.0.jar'>Binary distribution</a> 
-          (without sources, tests not included)</li>
-         <li><a href='download/tablefilterDbg5-v1.4.0.jar'>Binary distribution with sources</a>
-          (useful for debug purposes)</li>
-         <li><a href='download/tablefilter5-v1.4.0.zip'>Source distribution</a> 
-          (with sources, and tests are included)</li>
-        </ul>
-       </li>
+       
        <li>Changes:
        <ul>
        	<li>The whole namespace is migrated from byteslooser.com to coderazzi.net</li>
        	<li>Removing Java compilations warnings from source.</li>
        </ul>
-      </ul>
+      </li></ul>
 
   	<h2>Version 1.3.0 ( 17th February 2009 ) </h2>
       <ul>
-       <li>Download for Java 6 or later
-        <ul>
-         <li><a href='download/tablefilter-v1.3.0.jar'>Binary distribution</a>
-          (without sources, tests not included)</li>
-         <li><a href='download/tablefilterDbg-v1.3.0.jar'>Binary distribution with sources</a>
-          (useful for debug purposes)</li>
-         <li><a href='download/tablefilter-v1.3.0.zip'>Source distribution</a>
-          (with sources, and tests are included)</li>
-        </ul>
-       </li>
-       <li>Download for Java 5
-        <ul>
-         <li><a href='download/tablefilter5-v1.3.0.jar'>Binary distribution</a> 
-          (without sources, tests not included)</li>
-         <li><a href='download/tablefilterDbg5-v1.3.0.jar'>Binary distribution with sources</a>
-          (useful for debug purposes)</li>
-         <li><a href='download/tablefilter5-v1.3.0.zip'>Source distribution</a> 
-          (with sources, and tests are included)</li>
-        </ul>
-       </li>
        <li>Changes:
        <ul>
        	<li>Automatic layout management for the filter header.
 	       	On previous versions, the user had to place manually the header in the Gui container, 
-	      as detailed <a href='header.html#manual'>here</a>, while now is is enough to
+	      as detailed <a href="header.html#manual">here</a>, while now is is enough to
 	      instantiate the header and set the associated table: 
 		    <pre>TableFilterHeader filterHeader = new TableFilterHeader(table);</pre>
         </li>
         <li>
 	      Version 1.3.0 keeps backwards compatibility: if the 
-	      <a href='api/net/coderazzi/filters/gui/TableFilterHeader.html'>TableFilterHeader</a>
+	      <a href="api/net/coderazzi/filters/gui/TableFilterHeader.html">TableFilterHeader</a>
 	      is explicitely included in some Gui container, the default behaviour to 
 	      automatically setup the filter header close by the table header is deactivated.
         </li>
        </ul>
-      </ul>
+      </li></ul>
 
     
-  <h1><a name='license'>License</a></h1>
+  <h1><a name="license">License</a></h1>
 
     <p>
-      <span class='mark'>TableFilter</span> is available under the 
-      <a href='http://www.opensource.org/licenses/mit-license.php'>MIT</a> 
+      <span class="mark">TableFilter</span> is available under the 
+      <a href="http://www.opensource.org/licenses/mit-license.php">MIT</a> 
       license.
     </p>
 
@@ -161,17 +172,20 @@ THE SOFTWARE.</pre>
     <p>
       As of version 1.2.0, there are also icons in the library, to facilitate
       its usage under Gui editors. These icons come from the 
-      <a href='http://www.famfamfam.com/lab/icons/silk/'>FamFamFam</a> silk icon library, 
+      <a href="http://www.famfamfam.com/lab/icons/silk/">FamFamFam</a> silk icon library, 
       licensed under a
       <a href="http://creativecommons.org/licenses/by/2.5/">Creative Commons Attribution 2.5 License</a>.
     </p>
 
-  <h1><a name='support'>Support</a></h1>
+  <h1><a name="support">Support</a></h1>
 
     <p>
       Would you require commercial support on this library, or specific 
       customizations, please contact <b><i>dr.lu@coderazzi.net</i></b>
     </p>
 
-</div></body>
+</div>
+  <div id="copyright">Copyright (c) Luis M. Pena  -  dr.lu@coderazzi.com</div> 
+ </div>
+</body>
 </html>
