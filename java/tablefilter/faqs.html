@@ -56,7 +56,9 @@ check.addItemListener(new ItemListener() {
 
     <li><a name='datesonfilters'><span class='mark'>Using dates on the filters</span></a>
     <p>By default, the <span class='mark'>TableFilterHeader</span> has no built-in functionality to support
-    directly dates. It is still possible to match specific dates, but the relational operators will most
+    directly dates: this should eventually change, to simplify the usual cases
+    (where the date format can be implied). 
+    On the meantime, it is still possible to match specific dates, but the relational operators will most
     likely fail; for example, if dates are expressed as dd-mm-yyyy, it will evaluate as true that
     <span class='code'>06-01-2008 > 02-12-2009</span>, as it converts the dates into strings.</p>
     
@@ -75,19 +77,21 @@ ITypeBuilder dateTypeBuilder = new ITypeBuilder() {
       SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
       try {
          return df.parse(text);
-      } catch (ParseException ex) {return null;}
+      } catch (ParseException ex) {
+         throw new FilterTextParsingException("Invalid date", pex2.getErrorOffset());
+      }
    }
-};</pre>
+}; </pre>
      </li>
-     <li>Create a specific <a href='api/net/coderazzi/filters/parser/generic/TypesFactory.html'>TypesFactory</a> instance:
+     <li>Create a specific <a href='api/net/coderazzi/filters/parser/generic/FilterTextParser.html'>TextParser</a> instance:
      <pre>
-TypesFactory typesFactory = new TypesFactory();</pre></li>
-     <li>On this factory, associate the created builder to the Date.class:
+FilterTextParser textParser = TableFilterHelper.createTextFilterParser(TableModel);</pre></li>
+     <li>On this parser, associate the created builder to the Date.class:
      <pre>
-typesFactory.setFactory(Date.class, dateTypeBuilder);</pre></li>
-     <li>Finally, associate the filter header to a new text parser that will use the created factory:
+textParser.setFactory(Date.class, dateTypeBuilder);</pre></li>
+     <li>Finally, associate the filter header to the text parser:
      <pre>
-filterHeader.setTextParser(new FilterTextParser(typesFactory));</pre>
+filterHeader.setTextParser(textParser);</pre>
      </li>
     </ol>
     <p>This solution assumes that the table model only supports one date format. If this is not the case, it is needed to specify a different text parser for each column. It also assumes that the table model returns the elements on the
