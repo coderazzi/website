@@ -11,11 +11,12 @@
  
 
 <p class="timestamp">&gt; 06th July 2009, 12:27 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>  
+<p class="timestamp">updated: &gt; 19th August 2009, 02:54 &nbsp;&nbsp;&nbsp;&nbsp; [10.5.8]</p>  
 
 <h1>OsX Leopard on Asus P5Q-E (boot 132 / vanilla)</h1>
 
 <p>This is my own guide to install Leopard 10.5.6 Vanilla on an Asus P5Q-E, including automatic later updates
-to 10.5.7.</p>
+to 10.5.7. (updated now to <a href='#1058'>10.5.8</a>)</p>
 <p>There are other guides around, but none worked exactly as expected, so this post lists the way I was able
 to successfully install it. I include references to all the places where I gathered the required information.</p>
 <p>Everything works on my PC, with a minor caveat: it can go to Sleep, but afterwards it always fail to restart or
@@ -51,6 +52,7 @@ by using non PWM fans, at 800 to 1200 rpm. In my LianLi case, they are rather qu
 <li><a href="#install">Install Leopard</a></li>
 <li><a href="#tune">Tune the installation</a></li>
 <li><a href="#ring">One drive to rule them all</a></li>
+<li><a href="#1058">Update: upgrade to 10.5.8</a></li>
 </ul>
 
 <h2><a name='bios'>Patch bios</a></h2>
@@ -199,6 +201,59 @@ works without further problems!</p>
 <p>Whatever is the size of your hard drive, the last partitions are much slower than the initial ones. That is why Vista has 170 Gb in two partitions: downloads, and information not usually updated can go to the last partition.</p>
 
 <p>For this setup to work, I install Grub on the MBR, and it can start all: Ubuntu, Vista or OsX (Chameleon, in fact)</p>
+
+
+<h2><a name='1058'>Upgrade to 10.5.8</a></h2>
+
+<p>I spent now a couple of days doing the upgrade to 10.5.8. The experience was quite Linux-like, as the sound stopped
+working. Well, the Ethernet connection went also down, but that was easily solved by reinstalling the associated kext
+(IONetworkingFamily.kext). With the audio, nothing worked. I tried the normal software update way, then the combo update,
+without luck.</p>
+
+<p>The solution has been to remove the AppleHDA.kext, installing instead the VoodooHDA kext from the
+homonym <a href='http://code.google.com/p/voodoohda/'>open source project</a>. Back to (normal) life. Thanks a lot to James Toy, the VoodooHDA project developer, great work, as even the allegedly problematic digital output works.</p>
+
+<p>To install it, I remove the AppleHDA.kext from the /System/Library/Extensions and /Extra/Extensions folders, and copied on /System/Libray/Extensions the VoodooHDA.kext.</p>
+
+<p>Unfortunately, life is not that easy; sleep works, as fine as usual, but after sleep, the sound goes bollocks. This is strange, as the logging from VoodooHDA shows a lot of work related to the sleep/restart process, but, currently, this is just the case. There is a simple solution; unload the VoodooHDA.kext before sleeping, and load it again on wake up. This solution requires the <a href='http://www.macupdate.com/info.php/id/10387'>SleepWatcher daemon</a>, plus the following new scripts on /etc/rc.wakeup and /etc/rc.sleep (I only installed the SleepWatcher daemon, not the additional StartupItem package):<p>
+
+<p><a href='rc.sleep'>/etc/rc.sleep</a></p>
+<pre>KEXT=/System/Library/Extensions/VoodooHDA.kext
+
+while true; do
+        kextunload ${KEXT}
+        if [ $? -ne 0 ]
+        then
+                break
+        fi
+        sleep 1
+done;
+</pre>
+
+<p><a href='rc.wakeup'>/etc/rc.wakeup</a></p>
+<pre>KEXT=/System/Library/Extensions/VoodooHDA.kext
+
+while true; do
+        kextunload ${KEXT}
+        if [ $? -ne 0 ]
+        then
+                break
+        fi
+        sleep 1
+done;
+
+while true; do
+        kextload ${KEXT}
+        if [ $? -eq 0 ]
+        then
+                break
+        fi;
+        sleep 1
+done;
+</pre>
+
+<p>As expected, both scripts must have execution rights, and be owned by root:wheel</p>
+
 </div></div>
 </body>
 </html>
