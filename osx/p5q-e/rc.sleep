@@ -1,0 +1,11 @@
+KEXT=/System/Library/Extensions/VoodooHDA.kext
+
+while true; do
+	kextunload ${KEXT}
+	if [ $? -ne 0 ]
+	then
+		break
+	fi
+	sleep 1
+done;
+
