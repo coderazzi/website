@@ -77,6 +77,7 @@
                 <item name='Table header' file='tablefilter/header.html'/>
                 <item name='Text expressions' file='tablefilter/parsers.html'/>
                 <item name='Filter editors' file='tablefilter/editors.html'/>
+                <item name='Handling types' file='tablefilter/types.html'/>
                 <item name='Standalone mode' file='tablefilter/standalone.html'/>
                 <item name='Java 5 support' file='tablefilter/java5.html'/>
                 <item name='Download' file='tablefilter/download.html'/>

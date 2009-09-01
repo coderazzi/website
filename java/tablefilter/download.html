@@ -1,21 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
 <html>
 <head>
 <title>TableFilter - license and download</title>
-
- <link rel="stylesheet" type="text/css" href="../css/global.css">
- <link rel="stylesheet" type="text/css" href="../css/site.css">
- <link rel="stylesheet" type="text/css" href="../css/menu.css">
- <meta name="Description" content="TableFilter - Swing component for filtering tables">
- <meta name="Keywords" content="tablefilter table filter swing java filtering">
- <meta name="Author" content="Luis M. Pena">
 </head>
-<body>
- <div id="menu" class="wsmMenu"><div class="navcontainer"><ul class="navlist"><li><a href="../index.htm">Home</a></li><li class="group"><a href="#" class="justtext">Java</a><ul class="navlist"><li><a href="../idldepend/index.htm">IdlDepend</a></li><li class="group"><a href="#" class="justtext">Table filter</a><ul class="navlist"><li><a href="index.html">Overview</a></li><li><a href="header.html">Table header</a></li><li><a href="parsers.html">Text expressions</a></li><li><a href="editors.html">Filter editors</a></li><li><a href="standalone.html">Standalone mode</a></li><li><a href="java5.html">Java 5 support</a></li><li class="active"><a href="#">Download</a></li><li><a href="examples.html">Examples</a></li><li><a href="faqs.html">FAQs</a></li><li><a href="javadoc.html">Javadoc</a></li></ul></li><li class="group"><a href="../virtualnet/index.htm">VirtualNet</a></li><li><a href="../virtualnet2/index.htm">VirtualNet2</a></li><li><a href="../cmdlinker/index.htm">CmdLinker</a></li><li><a href="../phd/index.htm">Sensei</a></li><li><a href="../filesplit/index.htm">FileSplit</a></li><li><a href="../menu/index.htm">Menu Applet</a></li><li><a href="../splitimage/index.htm">SplitImage</a></li></ul></li><li class="group"><a href="../python/optmatch/index.htm">python</a></li><li class="group"><a href="../csharp/xmlobjects/index.htm">c#</a></li><li class="group"><a href="../linux/synergy.patch/index.htm">Linux</a></li><li class="group"><a href="../osx/hackintoshing.htm">Os X</a></li><li class="group"><a href="../phd/index.htm">PhD</a></li><li><a href="../books/2009/index.htm">Just words</a></li></ul></div></div>
- <div id="body" class="wsmContent">
-  <div id="header">&nbsp;</div>
-  <div id="content">
-
+<body><div id='content'>
   <ul>
     <li><a href="#download">Download</a></li>
     <li><a href="#license">License</a></li>
@@ -31,6 +18,89 @@
     </p>
     
     <p>The last versions are available for download:</p>
+
+    <h2>Version x.y.z ( 1st September 2009 ) </h2>
+      <ul>
+       <li>Download for Java 6 or later
+        <ul>
+         <li><a href="download/tablefilter-v2.0.0.jar">Binary distribution</a>
+          (without sources, tests not included)</li>
+         <li><a href="download/tablefilterDbg-v2.0.0.jar">Binary distribution with sources</a>
+          (useful for debug purposes)</li>
+         <li><a href="download/tablefilter-v2.0.0.zip">Source distribution</a>
+          (with sources, and tests are included)</li>
+        </ul>
+       </li>
+       <li>Download for Java 5
+        <ul>
+         <li><a href="download/tablefilter5-v2.0.0.jar">Binary distribution</a> 
+          (without sources, tests not included)</li>
+         <li><a href="download/tablefilterDbg5-v2.0.0.jar">Binary distribution with sources</a>
+          (useful for debug purposes)</li>
+         <li><a href="download/tablefilter5-v2.0.0.zip">Source distribution</a> 
+          (with sources, and tests are included)</li>
+        </ul>
+       </li>
+       <li>This version extends some public interfaces, adding functionality. However,
+       it means that users that implemented their own table filter editors or text parsers 
+       must now implement
+       the new interfaces, so the compatibility is broken. Most users uniquely use the existing
+       table filter editors and parsers, and will not face any compatibiliy issues:
+       <ul>
+
+        <li>Changed interface on 
+        <a href="api/net/coderazzi/filters/gui/ITableFilterEditor.html">ITableFilterEditor</a>
+        <ul>
+            <li>It is possible to retrieve the applied filter on any table's column</li>
+            <li>It is also possible to set dynamically the filter on any column</li>
+            <li>Its is supported, through the use of the new 
+            <a href="api/net/coderazzi/filters/gui/ITableFilterEditorObserver.html">ITableFilterEditorObserver</a>
+            interface, to be notified of changes on the filter's editor.</li>
+        </ul>
+        </li>
+        <li>Changed interface on 
+        <a href="api/net/coderazzi/filters/parser/IFilterTextParser.html">IFilterTextParser</a>,
+        including two methods already defined in the generic implementation in 
+        <a href="api/net/coderazzi/filters/parser/generic/FilterTextParser.html">FilterTextParser</a>:
+        <ul>
+            <li>Define a type builder for specific user types.</li>
+            <li>Define a comparator for any type.</li>
+        </ul>
+        </li>
+        <li>Added interface on 
+        <a href="api/net/coderazzi/filters/gui/ITableFilterHeaderObserver.html">ITableFilterHeaderObserver</a>,
+        to observe events on the <a href="api/net/coderazzi/filters/gui/TableFilterHeader.html">TableFilterHeader</a>.
+        </li>
+        <li>Dates are now <a href='types.html#dates'>automatically handled</a> in the library.</li>
+        <li>The user can provide properties that override some default behaviours. This includes:<ul>
+            <li><span class='mark'>net.coderazzi.filters.DateFormat</span> 
+            Defines the default date format to use on the filter parser.</li>
+            <li><span class='mark'>net.coderazzi.filters.CompareDatesAsBuilt</span> 
+            Defines the default behaviour when 
+            <a href='types.html#compare'>comparing dates</a>.</li>
+			<li><span class='mark'>net.coderazzi.filters.ChoiceFilterEditor.EmptyValue</span>
+			Defines how the <a href="api/net/coderazzi/filters/gui/editors/ChoiceFilterEditor.html">ChoiceFilterEditor</a>
+			displays empty strings. By default, it is <span class='mark'>(empty)</span></li>
+<li><span class='mark'>net.coderazzi.filters.ChoiceFilterEditor.NullValue</span>
+			Defines how the <a href="api/net/coderazzi/filters/gui/editors/ChoiceFilterEditor.html">ChoiceFilterEditor</a>
+			displays null values. By default, it is <span class='mark'>(null)</span></li>
+			<li><span class='mark'>net.coderazzi.filters.FilterTextParser.NullFilterText</span>
+			Defines the null string on the default filter text parser. By default, is is
+			<span class='mark'>null</span></li> 
+        </ul>
+        </li>
+        <li>Bug solved: usage of renderers on 
+        <a href="api/net/coderazzi/filters/gui/editors/TableChoiceFilterEditor.html">TableChoiceFilterEditor</a> 
+        would likely drive to AWT exceptions.</li>
+        <li>Bug solved: changing the table or the model, using the 
+        <a href="api/net/coderazzi/filters/gui/editors/TableChoiceFilterEditor.html">TableChoiceFilterEditor</a>
+        on a column with boolean or enumeration types, would hide all the elements, as if they would not
+        validate the filter -even if empty-
+        </li>
+        <li><a href="api/net/coderazzi/filters/UserFilter.html">UserFilter</a>s are automatically enabled</li>
+        <li>Extended examples to show how to listen for events on the table editors</li>
+       </ul>
+      </ul>
 
     <h2>Version 1.5.0 ( 7th August 2009 ) </h2>
       <ul>
@@ -142,7 +212,7 @@
       license.
     </p>
 
-    <pre>Copyright (c) 2007 Luis M. Pena  - dr.lu@coderazzi.net
+    <pre>Copyright (c) 2007 Luis M. Pena  - sen@coderazzi.net
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -182,11 +252,9 @@ THE SOFTWARE.</pre>
 
     <p>
       Would you require commercial support on this library, or specific 
-      customizations, please contact <b><i>dr.lu@coderazzi.net</i></b>
+      customizations, please contact <b><i>sen@coderazzi.net</i></b>
     </p>
 
-</div>
-  <div id="copyright">Copyright (c) Luis M. Pena  -  dr.lu@coderazzi.com</div> 
  </div>
 </body>
 </html>
