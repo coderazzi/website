@@ -1,6 +1,6 @@
 <html>
 <head>
- <title>OsX Leopard on Asus P5Q-E (boot 132)</title>
+ <title>OsX (vanilla) on Asus P5Q-E (boot 132)</title>
  <link rel="stylesheet" type="text/css" href="../../css/global.css">
  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
  <meta name="Keywords" content="osx hackintosh p5q-e boot132 vanilla">
@@ -10,17 +10,16 @@
  <div id='content'>
  
 
-<p class="timestamp">&gt; 06th July 2009, 12:27 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>  
-<p class="timestamp">updated: &gt; 19th August 2009, 02:54 &nbsp;&nbsp;&nbsp;&nbsp; [10.5.8]</p>  
+<p class="timestamp">&gt; 10th September 2009, 01:34 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>  
 
-<h1>OsX Leopard on Asus P5Q-E (boot 132 / vanilla)</h1>
+<h1>OsX on Asus P5Q-E</h1>
 
-<p>This is my own guide to install Leopard 10.5.6 Vanilla on an Asus P5Q-E, including automatic later updates
-to 10.5.7. (updated now to <a href='#1058'>10.5.8</a>)</p>
-<p>There are other guides around, but none worked exactly as expected, so this post lists the way I was able
-to successfully install it. I include references to all the places where I gathered the required information.</p>
-<p>Everything works on my PC, with a minor caveat: it can go to Sleep, but afterwards it always fail to restart or
-shutdown. My hardware is rather common:</p>
+<img class='right' src='osx-p5q-e-lu.png'/>
+
+<p>I have been running Os X on a P5Q-E motherboard for about two months, first using Leopard and then Snow Leopard. 
+It works perfectly, and the links below describe how I installed them.</p>
+
+<p>My PC is rather new, with hardware considered Osx-friendly:</p>
 <ul>
 	<li>Cpu: Q9550, no overclocked (at least not at this moment).</li>
 	<li>Motherboard: Asus P5Q-E</li>
@@ -28,231 +27,19 @@ shutdown. My hardware is rather common:</p>
 	<li>Graphic card: 9800GT 512Mb (Sparkle, passive cooling).</li>
 	<li>Hard disk: Velociraptor 10000rpm, 300Gb</li>
 	<li>Cd drive: LG, Dvd +-rw.</li>
+	<li>Plus a hard drive rack to easily change hard disks.</li>
 </ul>
 
-<p>The hardware includes as well a hotswap rack, and, probably quite interesting, all my fans have fixed speed.
-I had found that the motherboard would get crazy at moments, putting them at high speed / full noise (using Vista 64bits or Ubuntu). I solved it
-by using non PWM fans, at 800 to 1200 rpm. In my LianLi case, they are rather quiet.</p>
+<p>My final configuration includes one single hard disk with Vista Ultimate 64 bits, Kubuntu and Os X, 
+all graciously handled using Grub as partition manager.</p>
 
-<p>My final setup has the single velociraptor hard disk holding Vista 64 bits, OsX Leopard 10.5.7 and Ubuntu 9.04 64bits. But to reach this setup I used two additional hard disks -one fully reformated, the another one just needs a free partition of less than 10 Gb-. The three hard disks are identified as:
-<ul>
-<li>TARGET: the final velociraptor drive, with all my OSes installed.</li>
-<li>TEMP: an intermediate hard disk, with at least a free 10Gb primary partition.</li>
-<li>FINAL: a hard disk that will be fully reformated. I call it FINAL because, in fact, it contains a final
- installation of OsX (that I will copy to TARGET).</li>
-</ul>
-</p>
+
+<p>There are two guides, one for each Os X version:</p>
 
 <ul>
-<li><a href="#bios">Patch bios</a></li>
-<li><a href="#bios-setup">Setup bios</a></li>
-<li><a href="#bootflash">Boot flash</a></li>
-<li><a href="#macrequired">Mac machine</a></li>
-<li><a href="#leopard">Restore Leopard (installation disk)</a></li>
-<li><a href="#install">Install Leopard</a></li>
-<li><a href="#tune">Tune the installation</a></li>
-<li><a href="#ring">One drive to rule them all</a></li>
-<li><a href="#1058">Update: upgrade to 10.5.8</a></li>
+	<li><a href='leopard.htm'>Leopard (10.5)</a>: installation of a vanilla OsX (version 10.5.7, then upgraded to 10.5.8).</li>
+	<li><a href='snowleopard/index.htm'>Snow Leopard (10.6)</a>: installation of OsX, from scratch or as Leopard update.</li>
 </ul>
-
-<h2><a name='bios'>Patch bios</a></h2>
-
-<p>This is the very first step, and took me very long time to assume, as I was not that confortable at downloading
-a BIOS. Allegedly, the BIOS mods replace the DSDT for your motherboard/CPU, replacing the following code:
-(see <a href='http://www.insanelymac.com/forum/index.php?showtopic=136586'>this insanelymac post</a>)</p>
-
-<pre>
- Scope (_PR)
-    {
-      Processor (P001, 0x01, 0x00000810, 0x06) {}
-      Alias (P001, CPU1)
-      Processor (P002, 0x02, 0x00000000, 0x00) {}
-      Alias (P002, CPU2)
-      Processor (P003, 0x03, 0x00000000, 0x00) {}
-      Alias (P003, CPU3)
-      Processor (P004, 0x04, 0x00000000, 0x00) {}
-      Alias (P004, CPU4)
-    }
-</pre>
-<p>With:</p>
-<pre>
-    Scope (_PR)
-    {
-      Processor (P001, 0x01, 0x00000810, 0x06) {}
-      Processor (P002, 0x02, 0x00000000, 0x00) {}
-      Processor (P003, 0x03, 0x00000000, 0x00) {}
-      Processor (P004, 0x04, 0x00000000, 0x00) {}
-    }
-</pre>
-
-<p>Without this patch, the installation usually stops somewhere <a href='./NoPatchProblem.jpg'>here<a/> (this image is downloaded from some of the forums, but I didn't write down the original page and I cannot find it now again).</p>
-
-<p>Patches for this motherboard -and many others- can be obtained <a href='http://www.insanelymac.com/forum/index.php?showtopic=136586'>here</a>. I choosed <a href='http://redirectingat.com/?id=292X457&url=http%3A//depositfiles.com/files/3dhjde8l7'>
-2001-BIOS-Asus_P5Q_E_for_MAC_OS_X_&_all_OS__incl._by_Juzzi..ROM.zip</a></p>
-
-<h2><a name='bios-setup'>Bios setup</a></h2>
-
-<p>The hard disk must be set on AHCI mode. This was already my usual mode, no changes here.</p>
-
-<h2><a name="bootflash">Boot flash</a></h2>
-
-<p>This step formats a usb key and prepare it to be able to boot from any hard disk partition.
-This step will be needed to boot OsX Leopard the first time.</p>
-
-<p>The information is found in <a href='http://www.insanelymac.com/forum/index.php?showtopic=144020'>this forum.</a> (see step 5: creating a Bootable Usb Flash Drive), and requires Windows XP (or Vista)</p>
-
-<ul>
-<li>Format USB flash as Fat 32.</li>
-<li>Create a syslinux drive on it. This can be done by extracting the downloaded .zip files 
-( <a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=41734'>1</a> /
-<a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=41735'>2</a> ) to a temporal directory. This temporal directory contains a win32 subdirectory. Execute on it: <span class='code'>syslinux.exe -ma DRIVE_LETTER:</span></li>
-<li>Copy the files from <a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=41740'>here</a> into the USB flash. This file contains the image for the BOOT 132 method -that is, contains some drivers that allows OsX to start on the Asus P5Q machine.</li>
-<li>Ensure that the flash drive is active (in Disk Management, select the key, right click, and select Active)</li>
-</ul>
-
-
-<h2><a name='macrequired'>Mac machine</a></h2>
-
-<p>Before installing OsX vanilla, you need, in fact, a working OsX installation. On my final setup. I used a
-Mac Mini -which means that I installed OsX on a valid Apple machine, although I later moved the target hard disk
-to a PC-, but for my first try, documented now, I used iDeneb.</p>
-
-<p>I went shopping for a torrent iDeneb v1.4 (10.5.6), which a found at an irresistible price. I burned it and then
-disconnected my usual hard drive (TARGET) and install iDeneb on a partition on my additional hard disk (TEMP). I found the main information to setup it up <a href='http://www.matthewbjones.com/2009/05/mac-pro-hackintosh.html'>on this blog</a>. Basically, it involves starting the iDeneb installation and, before installing it, pressing the Customization button to:</p>
-<ul>
-<li>Use original ACPI: ACPI Kext 10.5.6 (thanks to the Bios patch)</li>
-<li>Audio: select Apple Azalia Audio.</li>
-<li>Network: select Apple Yuka.</li>
-<li>Fix: Firewire remove. (not sure if this is needed).</li>
-</ul>
-
-<p>This ensures a successful iDeneb installation. Afterwards, start it, and you have already a working OsX machine!</p>
-
-<h2><a name="leopard">Restore Leopard (installation disk)</a></h2>
-
-<p>This point refers to installing Leopard 10.5.6. Whether you buy it or get it on alternative ways, you have a .dmg file, that will be <span class='mark'>restored</span> to a hard disk partition (this is the OsX notation). In my case, I used a separate hard disk (FINAL):
-<ul>
-<li>Use Disk Utility</li>
-<li>Format the hd called FINAL with at least two partitions (10 Gb per partition is enough). These two partitions will be called OSX and RETAIL.</li>
-<li>This hard disk must be formatted as GUID (no MBR)</li>
-<li>Select now the RETAIL partition in Disk Utility and click Restore, using as source the OsX Leopard image (.dmg).
-</ul>
-</p>
-
-<p>Now, you have a partition called RETAIL that contains the Leopard 10.5.6 installation drive.</p>
-
-
-<h2><a name="install">Install Leopard</a></h2>
-
-<p>Disconnect now the TEMP hard drive, letting only the FINAL hard drive. Plug also the Usb flash key created before, and boot the machine from the USB key.</p>
-
-<p>This operation will start syslinux, that in turn starts the boot132 kernel. It will let you choose the drive to start. Choose the RETAIL partition. This triggers the installation, that will be done on the partition labeled as OSX.</p>
-
-<p>Setup correctly the OsX installation, everything should work just fine, but at the end -around 10 minutes later-,
-the installation will fail with the message 'Cannot be installed'.</p>
-
-<p>FINE! Reboot the machine, again using the USB key, but selecting now the OSX partition.</p>
-
-<h2><a name="tune">Tune the installation</a></h2>
-
-<p>In this moment, you have a working OSX installation where lot of things do not work, including sound or network. In addition, it requires the USB flash key to be started. This is solved by installing chameleon and the drivers (Kexts):</p>
-
-<ul>
-<li>Install Chameleon, with all the Kexts. In my case, this was Chameleon 2 rc1.</li>
-<li>Run EFIStudio, select Nvidia 8800GT 512 Mb, Add device, and update manually the references inside from 8800 to 9800, then write to com.apple.Boot.plist.</li>
-<li>The directory /Extra/Extension should only contain:
-  <ul>
-    <li>AppleDecrypt.kext (can be found in the USB key, inside initrd.img).</li>
-    <li>AppleHDA.kext (for the sound, ADI2000B), see <a href='http://www.insanelymac.com/forum/index.php?showtopic=154652'>this post</a></li>
-    <li>IOAHCIBlockStorageInjector.kext, to solve the problem with orange icons.</li>
-    <li>IONetworkingFamily.kext, for network.</li>
-    <li>skge.kext, for network, as the motherboard has two different LAN chips.</li>
-    <li>OpenHalRestart.kext, for shutdown and restart</li>
-  </ul>
-</li>
-<li>Execute now kexthelper, to replace the following original Kexts:
-<ul>
-<li>AppleHDA.kext</li>
-<li>IONetworkingFamily.kext</li>
-</ul>
-</li>
-</ul>
-</p>
-<p>You an use the normal OsX update routines to install Leopard 10.5.7. Have the boot flash and the previous Kext handy, because perhaps you need to restore Chameleon and/or the kexts installed with kexthelper. But the update
-works without further problems!</p>
-
-<p>To have <span class='mark'>About this mac</span> show the right information, add the <a href='smbios.plist'>smbios.plist</a> file to the /Extra directory.</p>
-
-<p>To have Chameleon automatically enter OsX, edit /Extra/com.apple.Boot.plist and add </p>
-<pre>&lt;key&gt;Timeout&lt;/key&gt;&lt;String&gt;1&lt;/String&gt;</pre>
-
-<h2><a name="ring">One drive to rule them all</a></h2>
-
-<p>My final step is to use a single drive to hold Vista / OsX / Linux. My target drive has only 300 Gb, but I find that more than enough for all purposes. Of course, if you have a couple of terabytes you can play it better. My steup includes:</p>
-
-<ul>
-<li>First partition, primary, 105 Gb: Vista 64 bits. I do full backups of this partition using Acronis True Image, and the only limitation I have is that the partition cannot be moved around. That is, if is backed up as the initial partition, it cannot be restored as the second partition.</li>
-<li>Second partition, primary, 95 Gb: Os X. This is installed by placing this hard disk and the FINAL disk used on the normal Leopard installation, and then restoring the working partition into this second partition (plus adding then Chameleon again).</li>
-<li>Third partition, primary, 1 Gb. This is the boot Linux partition.</li>
-<li>Fourth parition, logical, 4 Gb, as swap drive for Linux.</li>
-<li>Fifth partition, logical, 25 Gb, Ubuntu.</li>
-<li>Sixth partition, logical, 70 Gb, Fat 32, as added partition for Windows.</li>
-</ul>
-<p>Whatever is the size of your hard drive, the last partitions are much slower than the initial ones. That is why Vista has 170 Gb in two partitions: downloads, and information not usually updated can go to the last partition.</p>
-
-<p>For this setup to work, I install Grub on the MBR, and it can start all: Ubuntu, Vista or OsX (Chameleon, in fact)</p>
-
-
-<h2><a name='1058'>Upgrade to 10.5.8</a></h2>
-
-<p>I spent now a couple of days doing the upgrade to 10.5.8. The experience was quite Linux-like, as the sound stopped
-working. Well, the Ethernet connection went also down, but that was easily solved by reinstalling the associated kext
-(IONetworkingFamily.kext). With the audio, nothing worked. I tried the normal software update way, then the combo update,
-without luck.</p>
-
-<p>The solution has been to remove the AppleHDA.kext, installing instead the VoodooHDA kext from the
-homonym <a href='http://code.google.com/p/voodoohda/'>open source project</a>. Back to (normal) life. Thanks a lot to James Toy, the VoodooHDA project developer, great work, as even the allegedly problematic digital output works.</p>
-
-<p>To install it, I remove the AppleHDA.kext from the /System/Library/Extensions and /Extra/Extensions folders, and copied on /System/Libray/Extensions the VoodooHDA.kext.</p>
-
-<p>Unfortunately, life is not that easy; sleep works, as fine as usual, but after sleep, the sound goes bollocks. This is strange, as the logging from VoodooHDA shows a lot of work related to the sleep/restart process, but, currently, this is just the case. There is a simple solution; unload the VoodooHDA.kext before sleeping, and load it again on wake up. This solution requires the <a href='http://www.macupdate.com/info.php/id/10387'>SleepWatcher daemon</a>, plus the following new scripts on /etc/rc.wakeup and /etc/rc.sleep (I only installed the SleepWatcher daemon, not the additional StartupItem package):<p>
-
-<p><a href='rc.sleep'>/etc/rc.sleep</a></p>
-<pre>KEXT=/System/Library/Extensions/VoodooHDA.kext
-
-while true; do
-        kextunload ${KEXT}
-        if [ $? -ne 0 ]
-        then
-                break
-        fi
-        sleep 1
-done;
-</pre>
-
-<p><a href='rc.wakeup'>/etc/rc.wakeup</a></p>
-<pre>KEXT=/System/Library/Extensions/VoodooHDA.kext
-
-while true; do
-        kextunload ${KEXT}
-        if [ $? -ne 0 ]
-        then
-                break
-        fi
-        sleep 1
-done;
-
-while true; do
-        kextload ${KEXT}
-        if [ $? -eq 0 ]
-        then
-                break
-        fi;
-        sleep 1
-done;
-</pre>
-
-<p>As expected, both scripts must have execution rights, and be owned by root:wheel</p>
 
 </div></div>
 </body>

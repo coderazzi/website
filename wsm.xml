@@ -119,8 +119,13 @@
 			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
         </group>		
         <group name='Os X'>
+			<item name='Without apples' file='osx/index.htm'/>
 			<item name='Hackintosh-ing' file='osx/hackintoshing.htm'/>
-			<item name='Asus P5Q-E' file='osx/p5q-e/index.htm'/>
+	        <group name='Asus P5Q-E'>
+				<item name='Intro' file='osx/p5q-e/index.htm'/>
+				<item name='Leopard' file='osx/p5q-e/leopard.htm'/>
+				<item name='With snow' file='osx/p5q-e/snowleopard/index.htm'/>
+			</group>
 			<item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
         </group>		
         <group name='PhD'>
