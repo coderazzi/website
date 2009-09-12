@@ -1,0 +1,106 @@
+<html>
+<head>
+ <title>Snow Leopard OsX on Asus P5Q-E</title>
+ <link rel="stylesheet" type="text/css" href="../../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="osx hackintosh p5q-e boot132 vanilla snow leopard">
+</head>
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class="timestamp">&gt; 10th September 2009, 01:44 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>   
+
+<h1>Snow Leopard on Asus P5Q-E</h1>
+
+<img src='sl-lu.png' alt='sl hackintosh image' class='left' />
+
+<p>This is my little help for anyone trying to install Snow Leopard OsX on P5Q-E 
+(in fact, almost any Asus P5Q motherboard should work the same), 
+whether it is a new install or an update from Leopard.</p>
+ 
+<p>This is a continuation of my <a href='../leopard.htm'>first post on installing OsX 10.5 (Leopard) on this motherboard.</a>. Please have a look to the
+information posted there on how to <a href='../leopard.htm#bios-setup'>setup the bios</a></p>
+
+<p>A brief summary: everything works perfectly fine. Update from Leopard? check. 64 bits? check. Sleep, sound, network, graphics card? check ^ 4. I have been able also to <span class='mark'>upgrade to 10.6.1 without any problem</span>.</p>
+
+<p>My main information was obtained at this <a href='http://www.insanelymac.com/forum/index.php?showtopic=182227'>Generic Retail Install Guide</a>: it draws several options, from which I chosed the option Chameleon v2 RC1 USB Bootloader with Netkas PCEFIv10.1 patched boot [by The Guru FlashGX].</p>
+
+<p>In any case, please note that, for this guide:<p><ul>
+<li>even for a brand new install, it is assumed that a Os X installation (in principle, Leopard, but Tiger should be as valid) is available.</li>
+<li>it requires two hard disks. One contains the Leopard installation, and another disk is used to play with the installation process, GUID partitioned.
+</li></ul>
+
+<p>BUT you do not need two hard disks. You can follow your own installation process, the 
+<a href='http://www.insanelymac.com/forum/index.php?showtopic=182227'>insanelymac</a> post gives quite a few alternatives on how to work it.</p>
+
+<p>Neverthelles, even if you follow any alternative way, I think that reading how I succeeded on the installation can help you. Even just to know which are the specific KEXTS for this motherboard.</p>
+
+<p>Let's go:</p>
+
+<ul>
+<li>I use a second hard drive, with GUID partitioning, with two partitions:<ul>
+	<li>A big enough partition, called <span class='mark'>SNOW</span>, that will hold Snow Leopard, empty, formatted as Mac Os Extended (Journaled)</li>
+	<li>A rather small partition (&lt;10 Gb), to copy the Snow Leopard DVD image. This partition is called <span class='mark'>SNOW_INSTALL</span></li>
+</ul></li>
+
+<li>If you intend to update your existing Leopard installation:<ul>
+	<li>Copy the Leopard partition into <span class='mark'>SNOW</span>: that is, launch Disk Image, restore existing Leopard partition into <span class='mark'>SNOW</span></li>
+	<li>After copying the partition, it is better to remove from the <span class='mark'>SNOW</span> partition any Hackintosh leftovers. This includes:<ul>
+		<li>Remove the /Extra directory</li>
+		<li>If possible, remove the KEXTS installed in /System/Library/Extensions. Even better, if possible, replace them with the original ones. 
+		For the record, I did not remove these kexts, only removed the /Extra directory</li></ul></li>
+	<li>You can be brave enough and perform an update on the existing Leopard partition directly. Up to you; if this is the case, <span class='mark'>SNOW</span> refers to your existing Leopard partition.</li></ul></li>
+	
+	
+<li>Copy the DVD -Snow Leopard install- into <span class='mark'>SNOW_INSTALL</span> (again using Disk Image)</li>
+
+<li>Time to setup a boot drive using a USB stick. This will be the bootloader for Snow Leopard. The boot loader can be quite small (around 128 Mb, if it is still possible to find such small drives); I link below to the original files, as there could be updates. Please note that downloading them requires in some cases free registration. If you find it more convenient, I have made these files also <a href='p5q-e-sl.zip'>available</a>.<ul>
+	<li>Format the USB stick, using Disk Imager, as Max OS X Extended (Journaled)</li>
+	<li>Run <a href='http://chameleon.osx86.hu/file_download/22/Chameleon-2.0-r431.pkg.zip'>chameleon (RC1 r431 package)</a> on it, no need to install any extras.</li>
+	<li>Remove from the USB drive the 'boot' file on the root.</li>
+	<li>The boot file provided in chameleon r431 package is not Snow Leopard compatible. Now, there are two options:<ul>
+		<li>Copy the <a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=55126'>boot file</a> (free login required) from Netkas into the root</li>
+		<li>Copy the boot file available from 
+		<a href='http://chameleon.osx86.hu/file_download/37/Chameleon-2.0-RC3-r658-bin.tar.gz'>Chameleon 2.0 Rc3, r658 package</a>. This is my preferred solution, as the Netkas's boot seems to raise kernel panics when used on a MBR partition.</li></ul></li>
+	<li>In directory Extra/Extensions, copy the following files (all require free login):<ul>
+		<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54820'>fakesmc.kext</a></li>
+		<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54821'>NullCPUPowerManagement.kext</a>. It disables the default Power Management from Apple. It is probably not needed (on the final installation is not required at all).</li>
+		<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54822'>OpenHalRestart.kext</a></li></ul></li>
+	<li>Edit in the Extra directory the file <span class='code'>com.apple.Bios.plist</span> and provide any sensitive values. Mine is available 
+	<a href='../com.apple.Boot.plist'>here</a>, but if you are upgrading from Leopard you should definitely use your original contents (the same applies for 
+	<span class='code'>smbios.plist)</span>.</li>
+	<li>For your graphic card, you must ensure its support. For NVidia cards, the support is normally included directly in Os X; for this reason, I favour EFI strings over kext injections. For a Nvidia 9800GT, the required EFI string is included in this <a href='../com.apple.Boot.plist'>com.apple.Boot.plist</a> file; for other cards, please google how to handle it.</li>
+	</ul></li>
+	
+<li>Restart, boot from bootloader, and select the partition <span class='mark'>SNOW_INSTALL</span>.</li>
+<li>When the installer starts, choose the <span class='mark'>SNOW</span> partition to install there Snow Leopard. If you had copied there your Leopard partition, the install will perform automatically an update.</li>
+<li>Restart, boot from bootloader, and select now the parttition <span class='mark'>SNOW</span>. It should boot just fine, and it is not time to try the specifics of P5Q-E</li></ul>
+
+
+<p>Whether you used the initial <a href='http://www.insanelymac.com/forum/index.php?showtopic=182227'>guide</a>, or this one, you should have now a working Snow Leopard installation, which can boot in 32 or 64 bits, but with the following problems:</p>
+<ul>
+	<li>The second LAN port does not work (Marvell 88E8001, but the first one, Marvell 88E8056, does. For the record, the latest one, correctly handled in OsX, is the one further away from the keyboard/mouse ports).</li>
+	<li>No sound</li>
+	<li>All HD icons are orange</li>
+	<li>It still requires the boot USB stick. Even without this requirement, sleep will not yet work.</li>
+</ul>
+	
+<p>Now, it is needed to install Chameleon on this partition, plus the same Extra directory already installed in the boot USB stick, and, of course, the boot file.</p>
+
+<p>This is the final list of kexts that are required for Asus P5Q-E (all available <a href='p5q-e-sl.zip'>here</a>):</p>
+	<ul><li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20Other%20Peripheral%20Devices%20%5E5Inne%5E6%20==/IOAHCIBlockStorageInjector.kext.zip'>IOAHCIBlockStorageInjector.kext</a>: required to solve the orange icons, copy it into /Extra/Extensions</li>
+	<li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20%20Sound%20%5E5d%C5%BAwi%C4%99k%5E6%20==/voodoohda%5E_v021%5E_64bit.zip'>VoodooHDA 64 bits</a>: copy  it into /System/Library/Extension (but remove first the file AppleHDA.kext in this directory!). See my discussion in <a href='../leopard.htm#1058'>10.5</a> to see some problems with the VoodooHDA kext.</li>
+	<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54820'>fakesmc.kext</a>, in /Extra/Extensions</li>
+	<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54822'>OpenHalRestart.kext</a>, in /Extra/Extensions</li>
+	<li>NullCPUPowerManagement.kext: is NOT NEEDED, and, if present, will disable the normal Sleep.</li>
+	<li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20%20LAN%20%5E0%20Wireless%20%5E5wi-fi%5E6%20==/skge.kext.zip'>skge.kext</a>:  required to enable the first LAN port (Marvell 88E8001). It must be copied into /System/Library/Extensions. However, this kext does not seem work properly the full time -specially after sleep-. If you can live with just one Gigabyte LAN port, better avoid this driver; otherwise, it is needed to unload/reload the driver, as described bewow for the VoodooHDA driver.</li></ul></li>
+</ul>
+
+<p>After all is done, my final setup includes the Snow Leopard installation, in a GUID partition. I boot it (using still the boot loader), and then I restore it into the final MBR partition -in a hard disk with Kubuntu and Vista 64 bits-, reinstalling again Chameleon (plus specific boot file and KEXT files). Done!</p>
+
+<h2>Update to 10.6.1</h2>
+<p>Performed easily using the Software Update, no problems after restaring</p>
+</div></div>
+</body>
+</html>
