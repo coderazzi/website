@@ -9,7 +9,7 @@
  <div id='body'>
  <div id='content'>
 
-<p class="timestamp">&gt; 10th September 2009, 01:44 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dusseldorf, Germany</p>   
+<p class="timestamp">&gt; 10th September 2009, 01:44 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>   
 
 <h1>Snow Leopard on Asus P5Q-E</h1>
 
@@ -67,7 +67,7 @@ information posted there on how to <a href='../leopard.htm#bios-setup'>setup the
 		<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54820'>fakesmc.kext</a></li>
 		<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54821'>NullCPUPowerManagement.kext</a>. It disables the default Power Management from Apple. It is probably not needed (on the final installation is not required at all).</li>
 		<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54822'>OpenHalRestart.kext</a></li></ul></li>
-	<li>Edit in the Extra directory the file <span class='code'>com.apple.Bios.plist</span> and provide any sensitive values. Mine is available 
+	<li>Edit in the Extra directory the file <span class='code'>com.apple.Boot.plist</span> and provide any sensitive values. Mine is available 
 	<a href='../com.apple.Boot.plist'>here</a>, but if you are upgrading from Leopard you should definitely use your original contents (the same applies for 
 	<span class='code'>smbios.plist)</span>.</li>
 	<li>For your graphic card, you must ensure its support. For NVidia cards, the support is normally included directly in Os X; for this reason, I favour EFI strings over kext injections. For a Nvidia 9800GT, the required EFI string is included in this <a href='../com.apple.Boot.plist'>com.apple.Boot.plist</a> file; for other cards, please google how to handle it.</li>
@@ -90,12 +90,19 @@ information posted there on how to <a href='../leopard.htm#bios-setup'>setup the
 
 <p>This is the final list of kexts that are required for Asus P5Q-E (all available <a href='p5q-e-sl.zip'>here</a>):</p>
 	<ul><li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20Other%20Peripheral%20Devices%20%5E5Inne%5E6%20==/IOAHCIBlockStorageInjector.kext.zip'>IOAHCIBlockStorageInjector.kext</a>: required to solve the orange icons, copy it into /Extra/Extensions</li>
-	<li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20%20Sound%20%5E5d%C5%BAwi%C4%99k%5E6%20==/voodoohda%5E_v021%5E_64bit.zip'>VoodooHDA 64 bits</a>: copy  it into /System/Library/Extension (but remove first the file AppleHDA.kext in this directory!). See my discussion in <a href='../leopard.htm#1058'>10.5</a> to see some problems with the VoodooHDA kext.</li>
+	<li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20%20Sound%20%5E5d%C5%BAwi%C4%99k%5E6%20==/voodoohda%5E_v021%5E_64bit.zip'>VoodooHDA 64 bits</a>: copy  it into /System/Library/Extension 
+	(but remove first the file AppleHDA.kext in this directory!). 
+	See my discussion in <a href='../leopard.htm#1058'>10.5</a> to see some problems with the VoodooHDA kext. And remember that, by now, the digital
+	output seems not working.</li>
 	<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54820'>fakesmc.kext</a>, in /Extra/Extensions</li>
 	<li><a href='http://www.insanelymac.com/forum/index.php?act=attach&type=post&id=54822'>OpenHalRestart.kext</a>, in /Extra/Extensions</li>
 	<li>NullCPUPowerManagement.kext: is NOT NEEDED, and, if present, will disable the normal Sleep.</li>
 	<li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20%20LAN%20%5E0%20Wireless%20%5E5wi-fi%5E6%20==/skge.kext.zip'>skge.kext</a>:  required to enable the first LAN port (Marvell 88E8001). It must be copied into /System/Library/Extensions. However, this kext does not seem work properly the full time -specially after sleep-. If you can live with just one Gigabyte LAN port, better avoid this driver; otherwise, it is needed to unload/reload the driver, as described bewow for the VoodooHDA driver.</li></ul></li>
 </ul>
+
+<p>Note: I didn't require including ay Kext for networking; this does not seem to be the norm, as other people
+<a href='http://www.insanelymac.com/forum/index.php?showtopic=185701'>reportedly</a> require a Kext called RJ45. I wonder it is was a leftover
+of my Leopard installation, I should investigate this.</p>
 
 <p>After all is done, my final setup includes the Snow Leopard installation, in a GUID partition. I boot it (using still the boot loader), and then I restore it into the final MBR partition -in a hard disk with Kubuntu and Vista 64 bits-, reinstalling again Chameleon (plus specific boot file and KEXT files). Done!</p>
 
