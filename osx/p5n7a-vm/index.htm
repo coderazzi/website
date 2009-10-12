@@ -1,9 +1,9 @@
 <html>
 <head>
- <title>OsX Leopard on Asus P5N7A-VM (vanilla)</title>
+ <title>OsX on Asus P5N7A-VM (vanilla)</title>
  <link rel="stylesheet" type="text/css" href="../../css/global.css">
  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
- <meta name="Keywords" content="osx hackintosh p5n7a-vm vanilla">
+ <meta name="Keywords" content="osx hackintosh p5n7a-vm vanilla snow leopard">
 </head>
 <body>
  <div id='body'>
@@ -11,11 +11,16 @@
  
 
 <p class="timestamp">&gt; 23rd July 2009, 01:39 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
-<p class="timestamp">updated: &gt; 19th August 2009, 02:58 &nbsp;&nbsp;&nbsp;&nbsp; [10.5.8 update does not work!]</p>  
+<p class="timestamp">updated: &gt; 8th October 2009, 02:27 &nbsp;&nbsp;&nbsp;&nbsp; [Snow leopard]</p>  
 
-<h1>OsX Leopard on Asus P5N7A-VM (vanilla)</h1>
+<h1>OsX on Asus P5N7A-VM (vanilla)</h1>
 
 <img src='osx-p5n7a-vm-lu.png' class='left'/>
+
+
+<p>This post referred initially to the installation of Leopard (10.5.6); it is now updated to include <a href='#snow'>Snow Leopard</a></p>
+
+<h2>Leopard on the cage</h2>
 
 <p>At insanelymac there is a 
 <a href='http://www.insanelymac.com/forum/index.php?showtopic=148416&st=200&p=1080065&#entry1080065'>discussion</a>
@@ -119,6 +124,46 @@ is obviously the difficult part. In addition, it requires a working Mac or hacki
 <li>Prepare convenienly the Extra folder. This is a trial and error loop, until all required kexts -and none more- are there. It must be also ensured that the access rights to all the files in this folder are correct (owner: root, group: wheel).</li>
 <li>Swap the hard disk to the final machine, and ensure you can boot it (Grub is my best choice)</li>
 </ol>
+
+
+<h2><a name='snow'>Installing Snow Leopard</a></h2>
+
+<p>The update from Leopard to 10.6.0 followed the same steps: use a different machine (hackintosh) to perform the update, using a
+separate hard disk, then include the required drivers, boot on the target P5N7A-VM hackintosh, and copy the created partition into the target disk. Finally, reinstall chameleon.</p>
+
+<p>Something is to be considered here: the same boot loader cannot boot Leopard and Snow Leopard, so my solution is to keep both on separate hard drives, each with its own boot loader.</p>
+
+<p>All files included below are zipped on the file <a href='SnowLeopardCustom.zip'>SnowLeopardCustom.zip</a></p>
+
+<ol>
+ <li>Install Snow Leopard on a free partition (10 Gb) in a GUID-partitioned hard disk, and boot it, using the boot-132 method
+ (using a USB stick, in my case). Then, clean install or update the current Leopard partition.</li>
+ <li>Now, it is needed to setup the installed partition. For that, reboot first on the working Mac / hackintosh</li>
+ <li>Install <a href='http://chameleon.osx86.hu/'>Chameleon</a> on the installed partition, excluding the Extra files. In particular, whatever is the version you install, it is needed to install the boot fiel provided on Chameleon 2.0 Rc3 (r658
+ package), and none of the earlier versions. In this moment, it is only possible to perform an easy install of Rc1, while Rc3 requires a custom installation: in this case, use the easy Rc1 installation, and then just override the boot file 
+ on the root directory with the boot file included in Rc3 (included in the attached file),</li>
+ <li>The previous step created an <span class='mark'>Extra</span> folder in the root directory in the installed partition. It contains a file <a href='com.apple.Boot.plist'>com.apple.Boot.plist</a> where I added a timeout of 1 second to boot into Os X, specifying:
+ <pre>&lt;key&gt;Timeout&lt;/key&gt;&lt;string&gt;1&lt;/string&gt;</pre></li>
+ <li>In the same directory, I included my own <a href='smbios.plist'>smbios.plist</a>, although this is only needed to have nice values displayed on the <span class='mark'>About this mac</span> dialog.</li>
+ <li>Copy the <span class='mark'>DSDT.aml</span> for the associated dual core CPU -the same as used in Leopard-. 
+ Note that this file must be copied on the Extra directory in the installed partition, and look to the notes above if your
+ CPU is not a dual core.</li>
+ <li>Under this directory, enter the folder <span class='mark'>Extensions</span>. It should only contain the following kexts:
+ <ul>
+    <li><span class='mark'>fakesmc.kext</span></li>
+    <li><span class='mark'>IOAHCIBlockStorageInjector.kext</span>: avoids orange icons</li>
+    <li><span class='mark'>OpenHalRestart.kext</span></li>
+ </ul></li>
+ <li>Copy the file <span class='mark'>AppleHDA.kext</span> into the <span class='mark'>/System/Library/Extensions</span> folder in the installed partition. This controls the ALC1200 Realtek audio, provided <a href='http://www.insanelymac.com/forum/lofiversion/index.php/t161430.html'>here</a>.</li>
+ <li>Now, it is needed to set the correct access rights for each file. So, eject the installed partition, open a terminal window and mount again the partition (preserving rights) on the terminal doing something like:
+ <pre>sudo mount -t hfs /dev/disk1s2 tmpdir</pre>
+ where tmpdir is any temporal directory, and disk1s2 must be correctly specified (look at the Disk Utility program for the identity assigned to the installed partition).
+ <pre> cd tmpdir
+ sudo chown root:wheel DSDT.aml
+ sudo chown -R root:wheel Extra</pre>
+ </li>
+</ol>
+
 
 </div></div>
 </body>

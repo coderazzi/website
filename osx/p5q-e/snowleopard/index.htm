@@ -16,13 +16,13 @@
 <img src='sl-lu.png' alt='sl hackintosh image' class='left' />
 
 <p>This is my little help for anyone trying to install Snow Leopard OsX on P5Q-E 
-(in fact, almost any Asus P5Q motherboard should work the same), 
+(in fact, almost any Asus P5Q motherboard should work the same -sound apart-), 
 whether it is a new install or an update from Leopard.</p>
  
 <p>This is a continuation of my <a href='../leopard.htm'>first post on installing OsX 10.5 (Leopard) on this motherboard.</a>. Please have a look to the
 information posted there on how to <a href='../leopard.htm#bios-setup'>setup the bios</a></p>
 
-<p>A brief summary: everything works perfectly fine. Update from Leopard? check. 64 bits? check. Sleep, sound, network, graphics card? check ^ 4. I have been able also to <span class='mark'>upgrade to 10.6.1 without any problem</span>.</p>
+<p>A brief summary: everything works perfectly fine. Update from Leopard? check. 64 bits? check. Sleep, sound, network, graphics card? check ^ 4. I have been able also to <span class='mark'>upgrade to 10.6.1 without any problem</span>. Nevertheless, not everything is as nice as wished: sound works, as far as no digital output is required.</p>
 
 <p>My main information was obtained at this <a href='http://www.insanelymac.com/forum/index.php?showtopic=182227'>Generic Retail Install Guide</a>: it draws several options, from which I chosed the option Chameleon v2 RC1 USB Bootloader with Netkas PCEFIv10.1 patched boot [by The Guru FlashGX].</p>
 
@@ -89,7 +89,7 @@ information posted there on how to <a href='../leopard.htm#bios-setup'>setup the
 <p>Now, it is needed to install Chameleon on this partition, plus the same Extra directory already installed in the boot USB stick, and, of course, the boot file.</p>
 
 <p>This is the final list of kexts that are required for Asus P5Q-E (all available <a href='p5q-e-sl.zip'>here</a>):</p>
-	<ul><li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20Other%20Peripheral%20Devices%20%5E5Inne%5E6%20==/IOAHCIBlockStorageInjector.kext.zip'>IOAHCIBlockStorageInjector.kext</a>: required to solve the orange icons, copy it into /Extra/Extensions</li>
+	<ul><li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20Other%20Peripheral%20Devices%20%5E5Inne%5E6%20==/IOAHCIBlockStorageInjector.kext.zip'>IOAHCIBlockStorageInjector.kext</a>: required to solve the orange icons (if you happen to dislike them), copy it into /Extra/Extensions</li>
 	<li><a href='http://cid-8b65993ef55cf014.skydrive.live.com/self.aspx/.Public/OSx86/Snow%20Leopard/Drivers%20kext%20%5E5Sterowniki%5E6/==%20%20Sound%20%5E5d%C5%BAwi%C4%99k%5E6%20==/voodoohda%5E_v021%5E_64bit.zip'>VoodooHDA 64 bits</a>: copy  it into /System/Library/Extension 
 	(but remove first the file AppleHDA.kext in this directory!). 
 	See my discussion in <a href='../leopard.htm#1058'>10.5</a> to see some problems with the VoodooHDA kext. And remember that, by now, the digital
