@@ -70,7 +70,7 @@ information posted there on how to <a href='../leopard.htm#bios-setup'>setup the
 	<li>Edit in the Extra directory the file <span class='code'>com.apple.Boot.plist</span> and provide any sensitive values. Mine is available 
 	<a href='../com.apple.Boot.plist'>here</a>, but if you are upgrading from Leopard you should definitely use your original contents (the same applies for 
 	<span class='code'>smbios.plist)</span>.</li>
-	<li>For your graphic card, you must ensure its support. For NVidia cards, the support is normally included directly in Os X; for this reason, I favour EFI strings over kext injections. For a Nvidia 9800GT, the required EFI string is included in this <a href='../com.apple.Boot.plist'>com.apple.Boot.plist</a> file; for other cards, please google how to handle it.</li>
+	<li>For your graphic card, you must ensure its support. For NVidia cards, the support is normally included directly in Os X; for this reason, I favour EFI strings over kext injections. For a Nvidia 9800GT, the required EFI string is included in this <a href='../com.apple.Boot.plist'>com.apple.Boot.plist</a> file; for other cards, please google how to handle it, or use the method described on the initial Leopard installation: run EFIStudio, select your card, when supported, and dump the EFI string to com.apple.Boot.plist.</li>
 	</ul></li>
 	
 <li>Restart, boot from bootloader, and select the partition <span class='mark'>SNOW_INSTALL</span>.</li>
