@@ -170,7 +170,12 @@ separate hard disk, then include the required drivers, boot on the target P5N7A-
 
 <h2><a name='snowupdates'>Snow Leopard updates</a></h2>
 
-<p>Updates to 10.6.1 and 10.6.2 run smoothly, using the default Software update. No glitches to report...</p>
+<p>Updates to 10.6.1 and 10.6.2 run smoothly, using the default Software update. The only problem is that sound is lost, but the solution is easy.</p>
+
+<p>The best is, before upgrading, to save a copy of the existing sound kext. This is the file <span class='mark'>/System/Library/Extensions/AppleHDA.kext</span>. Otherwise, it is also available in the file <a href='SnowLeopardCustom.zip'>SnowLeopardCustom.zip</a>, or in the original 
+<a href='http://www.insanelymac.com/forum/lofiversion/index.php/t161430.html'>web site</a>.</p>
+
+<p>After upgrading, restore this kext into the original location <span class='mark'>/System/Library/Extensions</span>. This is better accomplished using the tool <a href='http://cheetha.net/'>Kext helper</a>.</p>
 
 </div></div>
 </body>
