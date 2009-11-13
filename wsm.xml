@@ -80,6 +80,7 @@
                 <item name='Handling types' file='tablefilter/types.html'/>
                 <item name='Standalone mode' file='tablefilter/standalone.html'/>
                 <item name='Java 5 support' file='tablefilter/java5.html'/>
+                <item name='Default behaviour' file='tablefilter/properties.html'/>
                 <item name='Download' file='tablefilter/download.html'/>
                 <item name='Examples' file='tablefilter/examples.html'/>
                 <item name='FAQs' file='tablefilter/faqs.html'/>

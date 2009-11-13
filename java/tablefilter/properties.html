@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>TableFilter - overriden default behaviour via system properties</title>
+</head>
+<body><div id='content'>
+
+  <h1><a name="properties">Overriden default behaviour via system properties</a></h1>
+  
+        <p>
+        The filter have some built-in default behaviour. For example, the header
+        is placed by default inline, the text parser is case-sensitive and so on.</p>
+        
+        <p>Users can modify this default behavior by overriden system properties. There
+        are such properties for most aspects, including all the strings visualized
+        by the library. The main properties are:
+        <ul>
+            <li><span class='mark'>net.coderazzi.filters.Header.Mode</span>:
+            the default editor mode (SLIM, BASIC, CHOICE). By default is BASIC.
+            </li>
+            <li><span class='mark'>net.coderazzi.filters.Header.Position</span>:
+            whether the header must be placed by default on TOP or INLINE.
+            By default is INLINE.
+            </li>
+            <li><span class='mark'>net.coderazzi.filters.TextParser.IgnoreCase</span>:
+            if the filter text parsers must be case sensitive or not. By default,
+            parsing is case sensitive.
+            </li>
+            <li><span class='mark'>net.coderazzi.filters.TextParser.DateFormat</span>:
+            the default date format when the user writes a date on a text filter.
+            By default it corresponds to the java SHORT date format for the current
+            locale.
+            </li>
+            <li><span class='mark'>net.coderazzi.filters.TextParser.CompareDateAsRendered</span>:
+            set to true to use the built-in date comparison. See 
+            <a href='types.html#compare'>here</a> to understand this delicate point.
+             By default, it is set to false.
+            </li>
+            <li><span class='mark'>net.coderazzi.filters.TextParser.BooleanFalse</span>:
+            the string associated to the boolean value false.
+            </li>
+            <li><span class='mark'>net.coderazzi.filters.TextParser.BooleanTrue</span>:
+            the string associated to the boolean value true.
+            </li>
+        </ul>
+        </p>
+        
+        <p>The example <a href='examples.html#AppTestProperties'>on properties</a> 
+        allows to play with these properties, before applying them to a typical 
+        table filter program.</p>
+        
+ </div>
+</body>
+</html>
