@@ -1,0 +1,179 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Glassed Pane</title>
+<meta name="Description" content="Glass Pane for swing">
+<meta name="Keywords" content="Glass pane swing java">
+<meta name="Author" content="LuisM Pena / coderazzi">
+<style type="text/css">
+<!--
+  body  { background: white;max-width:800px;padding: 0px;               
+            font-family: Verdana, Helvetica, Trebuchet MS, Trebuchet, Arial;}
+  #content {margin: 0 4em 4em 9em; background: white; font-size: 0.90em;}
+  #note    {float: right; font-size: 0.8em;}
+  h1 { background: #6666ff; margin: 0px 10px 20px 0px; padding: 10px; 
+       font-size: 2em; color: #f0f0ff;}
+  h2 { background: #8888ff; margin: 30px 10px 20px 40px; padding: 8px; 
+       font-size: 1.6em}
+  .centered{display: block; margin-left: auto; margin-right: auto;text-align: center;}
+  .mark {font-weight: bold; font-style: italic;}
+  .code {display: inline; font-family: monospace;}
+  
+-->
+</style>
+</head>
+<body><div id='content'>
+
+  <h1>Glassed Pane</h1>
+  
+  <ul>
+	<li><a href='#usage'>Usage and javadoc</a></li>
+	<li><a href='#behaviour'>Default behaviour</a></li>
+	<li><a href='#similar'>Similar functionality</a></li>
+	<li><a href='#download'>Download</a></li>
+	<li><a href='#license'>License</a></li>
+  </ul>
+    
+  <p>GlassedPane is a simple swing component that 
+  <span class='mark'>facilitates</span> the usage of a
+  glass pane, usually limited to the 
+  <a href='http://java.sun.com/javase/6/docs/api/javax/swing/JRootPane.html'>JRootPane</a>, 
+  to any swing container.</p>
+  <p>This <a href='example.jar'>example</a> shows it in action, with a snapshot shown below:</p>
+  
+    <p>
+      <img src="example.png" class="centered"/>
+    </p>
+  
+  <p>In this snapshot, one component in the frame (a table plus its scroll pane), 
+  is blocked behind a  grayed, semitransparent glass that shows an animated icon.
+  Under Netbeans' Matisse, this component appears as:</p>
+
+    <p>
+      <img src="onMatisse.png" class="centered"/>
+    </p>
+
+    <p>There are two working components in action: the GlassPane, 
+    blocking the content, and the GlassedPane, a container for both the normal 
+    content and the glass itself. It must be noted that the GlassPane is any 
+    <a href='http://www.j2ee.me/javase/6/docs/api/javax/swing/JComponent.html'>JComponent</a>. 
+    Although it is intended to be kind of a glass blocking the normal component, 
+    it could be any other component to replace the usual one. 
+    In this sense, GlassedPane is implementing a subset of the funcionality 
+    directly provided by the 
+    <a href='http://java.sun.com/javase/6/docs/api/javax/swing/JLayeredPane.html'>JLayeredPane</a>: 
+    indeed, <span class='mark'>the behaviour provided by GlassedPane can be implemented 
+    directly using the standard JLayeredPane; 
+    its value is to simplify its usage for the specific glass scenario</span>.</p>
+
+
+<h2><a name='usage'>Usage and javadoc</a></h2>
+
+<p>The javadoc information for the library is 
+available <a href='api/index.html'>here</a></p>
+
+<p>The following code, extracted from the test included in the distribution,
+ shows how the GlassedPane is implemented in the example above:</p>
+
+<pre>//initialization, empty constructor
+net.coderazzi.glasspane.GlassedPane glassPane = new net.coderazzi.glasspane.GlassedPane();
+
+//set the layout. It is a normal container
+glassPane.getContentPane().setLayout(new java.awt.BorderLayout());
+
+//add the normal component
+glassPane.getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+//add the glasspane itself to a swing container
+jSplitPane1.setLeftComponent(glassPane);</pre>
+
+<p>Afterwards, the glass pane can be visualized / hidden using code such as:</p>
+
+<pre>glassPane.getGlassPane().setVisible(booleanValue);</pre>
+
+
+<h2><a name='behaviour'>Default behaviour</a></h2>
+
+<p>By default, the content pane is a 
+<a href='http://java.sun.com/javase/6/docs/api/javax/swing/JPanel.html'>JPanel</a>,
+although the user can setup any other swing container instead.</p>
+
+<p>Also by default, the glass pane is a <a href='api/net/coderazzi/glasspane/GlassPane.html'>GlassPane</a>. 
+However, any other component can be instantiated by default,
+just by overriding the system property <span class='mark'>&quot;net.coderazzi.glasspane.glassclass&quot;</span>,
+defined as <a href='api/net/coderazzi/glasspane/GlassedPane.html#GLASS_CLASS_PROPERTY'>GlassedPane.GLASS_CLASS_PROPERTY</a>.
+ Obviously, it is also possible to use
+the normal API to set other component, using the method 
+<a href='api/net/coderazzi/glasspane/GlassedPane.html#setGlassPane(java.awt.Component)'>GlassedPane.setGlassPane</a></p>
+
+<p>The default glass pane merely blocks the user access to the content behind, and is displayed in a grayed semitransparent
+color. It is possible to define also the default color and degree of transparency, using system properties:
+<ul><li>Change the default background, by defining the system property 
+<span class='mark'>&quot;net.coderazzi.glasspane.glasscolor&quot;</span>,
+defined as <a href='api/net/coderazzi/glasspane/GlassPane.html#GLASS_COLOR_PROPERTY'>GlassPane.GLASS_COLOR_PROPERTY</a></li>
+    <li>Change the transparency level, by defining the system property 
+    <span class='mark'>&quot;net.coderazzi.glasspane.glasstransparency&quot;</span>, 
+    defined as <a href='api/net/coderazzi/glasspane/GlassPane.html#GLASS_TRANSPARENCY_PROPERTY'>GlassPane.GLASS_TRANSPARENCY_PROPERTY</a></li>
+</ul>
+Alternatively, it is possible to just invoke 
+<a href='api/net/coderazzi/glasspane/GlassPane.html#setColor(java.awt.Color)'>GlassPane.setColor</a> on the GlassPane instance.
+</p>
+
+<p>The library is provided with a second GlassPane, 
+<a href='api/net/coderazzi/glasspane/LabelGlassPane.html'>LabelGlassPane</a>, with adds a 
+<a href='http://www.j2ee.me/javase/6/docs/api/javax/swing/JLabel.html'>JLabel</a>, centered
+automatically in the GlassPane. It is possible to setup a message or an icon. By default, it will 
+use the icon found on the system property 
+<span class='mark'>&quot;net.coderazzi.glasspane.labelicon&quot;</span>, defined as
+  <a href='api/net/coderazzi/glasspane/LabelGlassPane.html#GLASS_MESSAGE_ICON_PROPERTY'>LabelGlassPane.GLASS_MESSAGE_ICON_PROPERTY</a>.</p>
+
+<h2><a name='similar'>Similar functionality</a></h2>
+
+<p>Before writting this component, I checked for existing implementations. I liked specially this one in 
+<a href='http://rabbit-hole.blogspot.com/2006/04/decoratingoverpainting-swing.html'>The Rabbit Hole</a>.
+Although it is not really equivalent on functionality (does not block the user input), 
+it has the advantage that there is no need to create a specific component in order to hide 
+the content behind: it is painted directly over the component to hide. The code and the list
+of TODOs inside discouraged me, together with the notion to have to implement the paint method
+-not being able to just using a JLabel, with an icon / animated icon-.</p>
+
+
+<h2><a name='download'>Download</a></h2>
+
+<p>This component is available with the MIT open source license (see below its text).</p>
+
+<ul><li>Version 1.0.0 (20th November 2009)<ul>
+    <li><a href='glasspane-1-0-0.zip'>glasspane-1-0-0.zip</a></li></ul>
+</li></ul>
+
+<h2><a name='license'>License</a></h2>
+
+<p><span class='mark'>GlassPane</span> is available under the MIT license.</p>
+
+    <pre>Copyright (c) 2009 Luis M. Pena  - lu@coderazzi.net
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</pre>
+
+<p>The provided GlassedPane component's icon forms part of the WYSIWYG Sapphire set of free icons, available 
+at <a href='http://dryicons.com/free-icons/icons-list/wysiwyg-sapphire/'>dryicons</a></p>
+<p>The included example contains an animated gif, generated with the nice 
+<a href='http://www.ajaxload.info/'>ajax loading gif generator</a></p>
+
+</div></body>
+</html>

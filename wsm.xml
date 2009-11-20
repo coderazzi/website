@@ -25,6 +25,16 @@
     <location source='Java/idldepend' target='idldepend'>
         <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
     </location>
+    <location source='Java/glassedpane' target='glassedpane'>
+        <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
+        <exclude pattern='api'/>
+    </location>
+    <location source='Java/glassedpane/api' target='glassedpane/api'>
+        <template mold='../../../javadoc.mold.htm'>
+            <exclude pattern='index.html'/>
+            <exclude pattern='*-frame.html'/>
+        </template>
+    </location>
     <location source='csharp/xmlobjects'>
         <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
     </location>
@@ -86,6 +96,7 @@
                 <item name='FAQs' file='tablefilter/faqs.html'/>
                 <item name='Javadoc' file='tablefilter/javadoc.html'/>
             </group>
+            <item name='GlassedPane' file='glassedpane/index.html'/>
             <group name='VirtualNet'>
                 <item name='Overview' file='virtualnet/index.htm'/>
                 <item name='Availability' file='virtualnet/availability.htm'/>
