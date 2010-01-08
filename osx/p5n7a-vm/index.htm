@@ -11,7 +11,7 @@
  
 
 <p class="timestamp">&gt; 23rd July 2009, 01:39 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
-<p class="timestamp">updated: &gt; 11th November 2009, 02:27 &nbsp;&nbsp;&nbsp;&nbsp; [Snow leopard 10.6.2 ok]</p>  
+<p class="timestamp">updated: &gt; 07th January 2010, 23:20 &nbsp;&nbsp;&nbsp;&nbsp; [USB issues]</p>  
 
 <h1>OsX on Asus P5N7A-VM (vanilla)</h1>
 
@@ -19,7 +19,7 @@
 
 
 <p>This post referred initially to the installation of Leopard (10.5.6); it is now updated to include <a href='#snow'>Snow Leopard</a>.
-In short: it works, currently updated to 10.6.2.</p>
+In short: it works, currently updated to 10.6.2; but be aware of <a href='#usb'>USB issues</a></p>
 
 <h2>Leopard on the cage</h2>
 
@@ -167,6 +167,16 @@ separate hard disk, then include the required drivers, boot on the target P5N7A-
  </li>
 </ol>
 
+<h2><a name='usb'>USB issues</a></h2>
+
+<p>With the settings indicated above, the system will be working, but with some issues. In special, rebooting and shutdown 
+works only some times. Other times, the system takes ages to reboot or shutdown, if it even manages to do so. And starting the system becomes as well difficult, requiring normally starting it with &quot;-v&quot; option in chameleon. With this verbose flag set, the startup will show many errors related to the USB subsystem (some assertions also related to the sound), but the system can finally start. If you read through the forums, you can see that the root of the problem lies on the incomplete BIOS of the motherboard, which lacks an option to enable the EHCI handoff.</p>
+
+<p>For me, these are just minor issues, as the reboot / shutdown / start process is quite unusual for me, as I rather put the system on sleep. This changed last week, when I bough a nice Apple keyboard, which refused to work under the existing conditions.</p>
+
+<p>My solution was to finally disable the USB legacy option on the BIOS. This implies that the UBS keyboard becomes useless until the OS starts, which could have been an issue in the normal pre-conditions, where I was habitually forced to setup the verbose flag in Chameleon to start the system. But now, all the issues are gone, and the system properly boots / reboots / shuts down.</p>
+
+<p>Still, I need now to enable USB support on my boot loader (Grub), and I will be still unable to modify the startup settings in Chameleon. The PS/2 port comes now to the rescue, as I can always plug a PS/2 keyboard and setup any required Chameleon settings. I guess there is always a trade-off to pay.... </p>
 
 <h2><a name='snowupdates'>Snow Leopard updates</a></h2>
 
