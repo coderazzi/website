@@ -44,15 +44,8 @@
     <location source='Java/tablefilter' target='tablefilter'>
         <template mold='../../tfilter.mold.htm' />
         <exclude pattern='api'/>
-        <exclude pattern='api5'/>
     </location>
     <location source='Java/tablefilter/api' target='tablefilter/api'>
-        <template mold='../../../javadoc.mold.htm'>
-            <exclude pattern='index.html'/>
-            <exclude pattern='*-frame.html'/>
-        </template>
-    </location>
-    <location source='Java/tablefilter/api5' target='tablefilter/api5'>
         <template mold='../../../javadoc.mold.htm'>
             <exclude pattern='index.html'/>
             <exclude pattern='*-frame.html'/>
@@ -94,7 +87,7 @@
                 <item name='Download' file='tablefilter/download.html'/>
                 <item name='Examples' file='tablefilter/examples.html'/>
                 <item name='FAQs' file='tablefilter/faqs.html'/>
-                <item name='Javadoc' file='tablefilter/javadoc.html'/>
+                <item name='Javadoc' file='tablefilter/api/index.html'/>
             </group>
             <item name='GlassedPane' file='glassedpane/index.html'/>
             <group name='VirtualNet'>
