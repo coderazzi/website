@@ -13,11 +13,38 @@
   
     <p>
       <span class="mark">TableFilter</span> is available in source and 
-      binary formats, with versions for Java 5 and Java 6. 
+      binary formats, with versions for Java 5 and Java 6. Please note that
+      the Java 5 version is not developed anymore, being 2.0.1 (14th November
+      2009) its latest available download.
       The license is MIT open source, please look below for the complete details.
     </p>
     
     <p>The last versions are available for download:</p>
+
+    <h2>Version 2.1.0 ( 20th January 2010 ) </h2>
+      <ul>
+         <li><a href="download/tablefilter-v2.1.0.jar">Binary distribution</a>
+          (without sources, tests not included)</li>
+         <li><a href="download/tablefilterDbg-v2.1.0.jar">Binary distribution with sources</a>
+          (useful for debug purposes)</li>
+         <li><a href="download/tablefilter-v2.1.0.zip">Source distribution</a>
+          (with sources, and tests are included)</li>
+        </ul>
+       </li>
+       <p>Added a new singleton instance to facilitate updating the default settings
+       of the library (what can be achieved, anyway, using system properties).
+       </p>
+       
+       <p>Added an autoselection mode, enabled by default. If the current filtering
+       filters out all rows in the table but one, that row become automatically selected.
+       Likewise, selected rows are automatically de-selected when they are filtered out.</p>
+       
+       <p>Modified the default behaviour of the filters, to use wildcard expressions when
+       the user does not specify any operator.</p>
+       
+       <p>All the filter editor constructors where the filter position (table's column)
+       was specified, are now deprecated.</p>
+      
 
     <h2>Version 2.0.1 ( 13th November 2009 ) </h2>
       <ul>
@@ -231,7 +258,7 @@
       license.
     </p>
 
-    <pre>Copyright (c) 2007 Luis M. Pena  - sen@coderazzi.net
+    <pre>Copyright (c) 2007 Luis M. Pena  - lu@coderazzi.net
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -271,7 +298,7 @@ THE SOFTWARE.</pre>
 
     <p>
       Would you require commercial support on this library, or specific 
-      customizations, please contact <b><i>sen@coderazzi.net</i></b>
+      customizations, please contact <b><i>lu@coderazzi.net</i></b>
     </p>
 
  </div>

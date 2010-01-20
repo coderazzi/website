@@ -41,7 +41,8 @@ final UserFilter userFilter = new UserFilter(filterHeader){
 		return -1!=entry.getStringValue(nameColumn).indexOf('e');
 	}
 };
-JCheckBox check = new JCheckBox("Filter out any row where the name does not contain a lower case 'e'");		
+JCheckBox check = new JCheckBox("Filter out any row where the "+
+                                "name does not contain a lower case 'e'");		
 check.addItemListener(new ItemListener() {			
 	@Override
 	public void itemStateChanged(ItemEvent e) {				
