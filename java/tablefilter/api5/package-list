@@ -1,7 +1,0 @@
-net.coderazzi.filters
-net.coderazzi.filters.artifacts
-net.coderazzi.filters.gui
-net.coderazzi.filters.gui.editors
-net.coderazzi.filters.parser
-net.coderazzi.filters.parser.generic
-net.coderazzi.filters.parser.re
