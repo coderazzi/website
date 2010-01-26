@@ -21,29 +21,38 @@
     
     <p>The last versions are available for download:</p>
 
-    <h2>Version 2.1.0 ( 20th January 2010 ) </h2>
+    <h2>Version 2.1.2 ( 26th January 2010 ) </h2>
       <ul>
-         <li><a href="download/tablefilter-v2.1.0.jar">Binary distribution</a>
+         <li><a href="download/tablefilter-v2.1.2.jar">Binary distribution</a>
           (without sources, tests not included)</li>
-         <li><a href="download/tablefilterDbg-v2.1.0.jar">Binary distribution with sources</a>
+         <li><a href="download/tablefilterDbg-v2.1.2.jar">Binary distribution with sources</a>
           (useful for debug purposes)</li>
-         <li><a href="download/tablefilter-v2.1.0.zip">Source distribution</a>
+         <li><a href="download/tablefilter-v2.1.2.zip">Source distribution</a>
           (with sources, and tests are included)</li>
         </ul>
        </li>
-       <p>Added a new singleton instance to facilitate updating the default settings
+       <ol>
+       <li>Added a new singleton instance to facilitate updating the default settings
        of the library (what can be achieved, anyway, using system properties).
-       </p>
+       </li>
        
-       <p>Added an autoselection mode, enabled by default. If the current filtering
+       <li>Added an autoselection mode, enabled by default. If the current filtering
        filters out all rows in the table but one, that row become automatically selected.
-       Likewise, selected rows are automatically de-selected when they are filtered out.</p>
+       Likewise, selected rows are automatically de-selected when they are filtered out
+       (this is the usual operation mode in the Java 6 table sorter)</li>
        
-       <p>Modified the default behaviour of the filters, to use wildcard expressions when
-       the user does not specify any operator.</p>
+       <li>Modified the default behaviour of the filters, to use wildcard expressions when
+       the user does not specify any operator.</li>
        
-       <p>All the filter editor constructors where the filter position (table's column)
-       was specified, are now deprecated.</p>
+       <li>All the filter editor constructors where the filter position (table's column)
+       was specified, are now deprecated.</li>
+       
+       <li>Solved bugs related to setting the header visible or hidden, and enabled or 
+       disabled</li>
+      
+       <li>Added new Position type NONE, to ensure that the header is not automatically
+       placed -if that is so required-.</li>
+     </ol>
       
 
     <h2>Version 2.0.1 ( 13th November 2009 ) </h2>

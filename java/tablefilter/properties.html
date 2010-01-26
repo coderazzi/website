@@ -20,6 +20,11 @@
         are such properties for most aspects, including all the strings visualized
         by the library. The main properties are:
         <ul>
+            <li><span class='mark'>net.coderazzi.filters.TextParser.class</span>:
+            (since version 2.1.2): defines the class used by default as TextParser. It
+            must subclass <a href='api/net/coderazzi/filters/parser/IFilterTextParser.html'>IFilterTextParser</a>
+            and define a default constructor
+            </li>
             <li><span class='mark'>net.coderazzi.filters.TableFilter.AutoSelection</span>:
             (since version 2.1): true by default; if the filter expression would
             select just one row in the table, that row is automatically selected.
@@ -65,7 +70,9 @@
         class defines a singleton, of type
         <a href='api/net/coderazzi/filters/TableFilter.Settings.html'>TableFilter.Settings</a>
         which facilitates the definition of the most common properties: autoSelection,
-        case sensitivity, and the default header's mode and position.</p>
+        case sensitivity, and the default header's mode and position, as well as the class
+        defining the default <a href='api/net/coderazzi/filters/parser/IFilterTextParser.html'>IFilterTextParser</a>
+        implementation.</p>
         
         <p>Please note that this class is a simple wrapper around the system properties.</p>
  </div>

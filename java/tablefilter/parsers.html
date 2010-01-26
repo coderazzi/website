@@ -215,7 +215,7 @@
         It is possible to create the 
         <a href='api/net/coderazzi/filters/parser/generic/FilterTextParser.html'>FilterTextParser</a>,
         with a different set of operands and / or supported types.
-      </p> 
+      </p>            
 
       <p>
         Implementing the interface 
@@ -226,6 +226,10 @@
         operation is not described here. If this is needed, please
         study the source code or contact me for additional support.
       </p>
+      
+      <p>The easiest way to define the text parser to be used by default is to override the
+      system property &quot;net.coderazzi.filters.TextParser.class&quot; or, more easily, to
+      redefine the value <span class='mark'>TableFilter.Settings.filterTextParserClass</span></p>
 
 </div></body>
 </html>
