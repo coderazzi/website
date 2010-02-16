@@ -1,0 +1,356 @@
+<html>
+<head>
+ <title>Solaris 10 on Asus P5Q-E</title>
+ <link rel="stylesheet" type="text/css" href="../../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="solaris p5q-e">
+<style type="text/css">
+ <!--
+ div#wimage {
+    background-image:  url(sol10logo.png);
+    background-repeat: no-repeat;
+    background-position: top center;
+ }
+ -->
+ </style>
+</head>
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class="timestamp">&gt; 16th February 2010, 00:11 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>   
+
+<h1>Solaris 10 on Asus P5Q-E</h1>
+
+<p>The P5Q-E + Nvidia 9800GT + Q9550 cpu handles correctly the Solaris 10 
+<span class='mark'>(September 2009 version)</span> installation.</p>
+<p>Or better said, Solaris supports almost completely the P5Q-E motherboard
+and the Nvidia graphic card. The only exception is the two Gigabit ethernet ports, 
+Marvell 88E8001, and Marvell 88E8056; but its drivers are easily available.</p>
+
+<p>The audio probably works. I mean, OSS seems to support it perfectly, but I am not
+really interested on making this installation a media player, so I haven't spent any
+efforts on this direction.</p>
+
+<p>My current installation, through, is not 100% perfect. I am unable to shut it down completely, I will investigate a bit further here, as I am afraid the problem is on
+the LAN drivers. However, this is not a severe problem -not in my scale, anyway-, so I still consider P5Q-E a perfect target for a Solaris installation.</p>
+
+<p>I use this motherboard to boot, among other operative systems, Os X. For this, I had to patch the BIOS, as explained <a href='../../osx/p5q-e/leopard.htm#bios'>in this post</a>. Whether this patch has helped me to successfully install Solaris, or whether it is hindering my efforts -like on the shutdown problem-, will remain without answer, as I am not ready to repatch (unpatch?) the BIOS. However, I am pretty sure that the BIOS patch is not important at all. The BIOS settings themselves could be, however, more determinant on the installation, so please check <a href='../../osx/p5q-e/leopard.htm#bios-setup'>here</a> the settings that I have used</p>
+
+<div id="wimage">
+
+<ul><li><a href='#Preparations'>Preparations</a></li>
+	<ul><li><a href='#harddisk'>Hard disk</a></li>
+	<li><a href='#partitioning'>Understanding Solaris partitioning</a></li>
+	<li><a href='#lan-drivers'>Obtain the LAN drivers</a></li></ul>
+<li><a href='#Installation'>Installation</a></li>
+	<ul>
+	<li><a href='#solaris-install'>Solaris 10 installation</a></li>
+	<li><a href='#myk'>Installing the myk driver</a></li>
+	<li><a href='#root'>Customize root</a></li>
+	<li><a href='#updates'>Security updates</a></li></ul>
+<li><a href='#packages'>Additional software / packages</a></li>
+<ul>
+	<li><a href='#firefox'>Firefox 3.6</a></li>
+	<li><a href='#java'>Java 6</a></li>
+	<li><a href='#eclipse'>Eclipse Galileo</a></li>
+	<li><a href='#Blastwave'>Blastwave</a></li>
+	<li><a href='#sudo'>Sudo</a></li>
+	<li><a href='#oracle'>Oracle 11g</a></li>
+</ul></ul>
+
+<h2><a name='Preparations'>Preparations</a></h2>
+
+<h3><a name='harddisk'>Hard disk</a></h3>
+
+<p>I will use a single hard disk, with a single partition for the 
+	Solaris partition.</p>
+<p>This is not at all mandatory: it is not a major problem to use a partition
+	on other dis. It is, simply, that I can too easily swap hard drives 
+	using an external hot swapper, and Solaris is
+	not that friendly to multiple partitions (after installing it
+	in a separate primary partition, playing with the other
+	partitions gives always a feeling of fragility)</p>
+<p>Please note that I have also some additional security requirements that make 
+ unsuitable sharing the Solaris partition with a Windows partition.</p>
+	
+<p>Anyway, it you rather use a hard disk with existing OS installations, Solaris will require:
+<ol><li>a primary (and active) partition</li>
+<li>Solaris will have its own Grub install. If an
+   existing Linux installation exists, it will not be possible to start
+   Solaris from the existing Grub/Grub2 installation (not even
+   considering Lilo here)</li></ol>
+ </p>
+ 
+ 
+<h3><a name='partitioning'>Understanding Solaris partitioning</a></h3>
+
+<p>Solaris has the <span class='mark'>normal</span> hard disk partitioning 
+   normally used in Windows, Os X, Linux. In Linux, that is the information shown
+    when <span class='mark'>fdisk</span> or <span class='mark'>cfdisk</span> are executed.
+    Likewise, is the information provided by Os X' Disk Utility under the Partition
+    tab.</p>
+<p>In X systems, each disk partition can be used to mount 
+    different portions of the filesystem. Similar situation in Windows, where each disk
+    partition can hold a filesystem.</p>
+    
+<p>Solaris requires the same disk partitioning. But then, on the space
+    allocated to it, it defines a second partitioning layout, and the
+    mount points are done on this second layout. In Solaris notation, this is
+    called, respectively, <span class='mark'>fdisk partitions</span> and
+    <span class='mark'>disk slices</span>.</p>
+    
+<p>Why is this relevant on the preparations? 
+Under linux it is recommended to allocate a separate partition
+as swap space. This is not needed under Solaris: allocate the whole required space and
+then assign a disk slice in that partition as swap space.</p>
+
+<h3><a name='lan-drivers'>Obtain the LAN drivers</a></h3>
+
+<p>I am not very sure that many people will use Solaris as the only home computer. Probably, there are other computers at hand to download the LAN drivers at any moment, and therefore, this step could be executed later on.</p>
+
+<p>The drivers can be obtained from:
+<ul><li>88E8001: 64bit yukonx driver at <a href='http://www.marvell.com/drivers/'>http://www.marvell.com/drivers/</a></li>
+<li>88E8056: <a href='http://homepage2.nifty.com/mrym3/taiyodo/eng/'>myk driver</a> : the current version is
+<a href='http://homepage2.nifty.com/mrym3/taiyodo/myk-2.6.9.tar.gz'>myk-2.6.9.tar.gz</a>
+</li></ul>
+
+<p>I downloaded the myk driver and stored it into a USB stick, FAT32 formatted</p>
+
+<h2><a name='Installation'>Installation</a></h2>
+
+
+<h3><a name='solaris-install'>Solaris 10 installation</a></h3>
+
+<p>I tried installing Solaris (edition September 2009) from a USB stick, but I didn't succeed (I used several tools, including <a href='http://unetbootin.sourceforge.net/'>unetbootin</a>). So I went the prescribed way, burning the Solaris iso into a dvd, and booting then from the dvd</p>
+
+<p>The installation is started, and is mostly automatized. Some questions are requested, like the host name, root password, time and zones, 
+whether to enable remote services (yes) and which
+packages to install (I went for full installation: entire software group plus OEM).</p>
+
+<p>My hard disk had been on use previously, and it contained 4 partitions; the solaris
+  installation tries to preserve those partitions, which, in this case, was not the
+  desired outcome. To solve this, it is needed to start the terminal (press the right
+  mouse button on the background to start it). In the terminal, trigger the
+  <span class='mark'>format</span> command, then select
+  <span class='mark'>fdisk</span>, delete the current partitions and create a single one,
+  of type Solaris2, covering the whole hard disk. Then, <span class='mark'>quit</span>
+  the format command and then <span class='mark'>reboot</span></p>
+  
+<p>With one single partition, the installation script proposes to use the whole disk for
+  Solaris, although the disk slice sizes didn't match my requirements. I intend to install
+  Oracle on the root partition, and Oracle requires a nice swap size, so I decided the
+  following disk slicing (sizes in Megabytes):
+  <pre>/ : 125000
+swap: 8192
+/export/home: 343700</pre></p>
+
+<p>After this, the installation script will complete in about 35 minutes.
+Note that this installation, in opposition to most Linux distributions, 
+will have create a single user, root.</p>
+
+<h3><a name='myk'>Installing the myk driver</a></h3>
+
+<p>It is now the time to introduce the USB stick with the myk driver obtained <a href='#lan-drivers'>before</a>: 
+it will appear in the
+desktop (in my case, as <span class='mark'>unnamed_rmdisk</span>). 
+Open a terminal window and do:</p>
+<pre>cd /tmp
+cp /rmdisk/unnamed_rmdisk/myk-2.6.9.tar.gz .
+gunzip myk-2.6.9.tar.gz 
+tar xvf myk-2.6.9
+cd myk-2.6.9
+</pre>
+
+<p>Note that there is a README.txt file in this directory; follow its instructions, which in summary are:</p>
+
+<pre>rm obj Makefile
+ln -s Makefile.amd64_gcc Makefile
+ln -s amd64 obj
+/usr/ccs/bin/make
+/usr/ccs/bin/make install
+./addrv.sh
+devfsadm -i myk
+touch /etc/hostname.myk0
+</pre>
+
+<p>If the IP address is obtained via DHCP, do also:</p>
+
+<pre>touch /etc/dhcp.myk0</pre>
+
+<p>And now, reboot the machine.</p>
+
+<h3><a name='root'>Customize root</a></h3>
+
+<p><span class='note'>The information coming now
+is extracted from <a href='http://www.blastwave.org/jir/blastwave.fam'>Blastwave in 5 steps</a>, starting precisely by the last step</span></p>
+
+<p>As said above, there is so far one single user, root. The main problem with this is -never minding the problems that this can cause into your X mind-, that the root home directory is /, so the root directory is too easily polluted. For example, there will be already a /Desktop and /Documents directories. To assign a /root home directory:</p>
+
+<pre>mkdir /root 
+chmod 700 /root 
+chown root:root /root</pre>
+
+<p>Now, edit /etc/passwd and edit the line for root:</p>
+<pre>root:x:0:0:Super-User:/:/sbin/sh</pre>
+<p>into</p>
+<pre>root:x:0:0:Super-User:/root:/bin/bash</pre>
+
+<p>(This also sets bash as the shell)</p>
+
+<p>Again, reboot the machine. After rebooting, it is safe to delete /Desktop and /Documents directories.</p>
+
+<h3><a name='updates'>Security updates</a></h3>
+
+<p>Now, keeping the system updated -at security level- is the first step: launch applications/utilities/update manager, register at Sun and get ready to apply
+updates (without a service plan number).</p>
+
+<h2><a name='packages'>Additional software / packages</a></h2>
+
+<h3><a name='firefox'>Firefox 3.6</a></h3>
+
+<p>Solaris 10 (5/09) is distributed with firefox 2.0.0.19. (the first firefox 2 distribution was created the 19th December 2006, and the latest, 2.0.0.20, the 18th December 2008). Updating to the latest, 3.6, makes definitely sense.</p>
+
+<p>As of today, the latest distributed firefox package is 3.6rc2, available from
+<a href='http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.6/contrib/solaris_pkgadd'>the mozilla website</a>. In this page, download the
+<span class='mark'>firefox-3.6.en-US.solaris-10-fcs-i386-pkg.bz2</span> file, and the associated md5sum (or whichever is the latest available version).</p>
+
+<p>To check the md5sum, compare the contents of the md5sum to the output of the following command:</p>
+
+<pre>digest -a md5 firefox-3.6.en-US.solaris-10-fcs-i386-pkg.bz2</pre>
+
+<p>If the md5 sum matches, install it with:</p>
+
+<pre>bunzip2 firefox-3.6.en-US.solaris-10-fcs-i386-pkg.bz2
+pkgadd -d firefox-3.6.en-US.solaris-10-fcs-i386-pkg</pre>
+
+<p>This package is installed under /opt/sfw/bin/firefox. To use it as default firefox installation, do:</p>
+
+<pre>cd /usr/bin
+ln -sf /opt/sfw/bin/firefox /usr/bin/firefox</pre>
+
+<h3><a name='java'>Java 6</a></h3>
+
+<p>Solaris 10 comes definitely with the JDK installed, but it is the previous release, JDK 5. As of today, the latest version is Java 6 update 18, obviously available for Solaris.</p>
+
+<p>Download, from the <a href='http://java.sun.com/javase/downloads/widget/jdk6.jsp'>Java</a> website, both, the Solaris x86 AND Solaris x64 installations.</p>
+
+<pre>cd /usr/jdk
+sh ~/Desktop/jdk-6u18-solaris-i586.sh
+sh ~/Desktop/jdk-6u18-solaris-x64.sh
+rm latest
+ln -sf jdk1.6.0_18 latest
+cd ..
+rm java
+ln -sf jdk/latest java</pre>
+
+<p>Please note that the last two lines with make Java 6 update 18 the default used version</p>
+
+<h3><a name='eclipse'>Eclipse Galileo</a></h3>
+
+<p>Solaris does not include any Java IDE -well, it t includes <a href='http://www.jedit.org/'>jEdit</a>-. Probably <a href='http://netbeans.org/'>Netbeans</a> would make much more sense for a Solaris platform, but I favor <a href='http://www.eclipse.org/'>Eclipse</a>. The Solaris distribution of Eclipse is not available in the general downloads page, although still distributed in the <a href='http://update.eclipse.org/downloads/drops/R-3.5-200906111540/solPlatform.php'>Eclipse</a> website: download the Eclipse SDK and, to install it under /opt, do:</p>
+
+<pre>cd /opt
+unzip ~/Desktop/eclipse-SDK-3.5-solaris-gtk-x86.zip</pre>
+
+<h3><a name='Blastwave'>Blastwave</a></h3>
+
+<p>When packages are needed, the best is to default to <a href='http://www.blastwave.org/index.fam'>Blastwave</a>. The information on how to set it up is reachable in <a href='http://www.blastwave.org/jir/blastwave.fam'>its own website</a>. In summary:</p>
+
+<pre>pkgadd -d http://blastwave.network.com/csw/pkgutil_`/sbin/uname -p`.pkg 
+/opt/csw/bin/pkgutil --catalog 
+/opt/csw/bin/pkgutil --install gnupg textutils 
+/opt/csw/bin/gpg --keyserver pgp.mit.edu --recv-keys A1999E90
+/opt/csw/bin/gpg --edit-key A1999E90 
+
+Command> Trust
+Then enter 5 (I trust ultimately), and confirm it.
+Command> Quit</pre>
+
+<p>Now, edit the file /etc/opt/csw/pkgutil.conf and uncomment the lines:</p>
+<pre>use_gpg=true 
+use_md5=true</pre>
+
+<p>Now:</p>
+<pre>/opt/csw/bin/pkgutil --catalog</pre>
+
+<p>Done, now it is easy to install new packages. Even in this repository,
+packages are not the latest. For example, as of today (15th February 2009),
+eclipse is only available as 3.3.2 version, and firefox's latest is 2.0.0.18. More current packages are available in <a href='http://www.opencsw.org/'>OpenCSW</a>.</p>
+
+<p>It is now convenient to add some paths to the default PATH. Edit /etc/default/login
+and include in PATH and SUPATH:</p>
+
+<pre>PATH=/opt/csw/bin:/usr/bin:/usr/dt/bin:/usr/openwin/bin:/usr/ccs/bin 
+DUPATH=/opt/csw/bin:/usr/sbin:/usr/bin:/usr/dt/bin:/usr/openwin/bin:/usr/ccs/bin</pre>
+
+<h3><a name='sudo'>Sudo</a></h3>
+
+<p>Sudo can now be installed via Blastwave:</p>
+
+<pre>/opt/csw/bin/pkgutil -i sudo</pre>
+
+<p>Now, edit /opt/csw/etc/sudoers and uncomment the line</p>
+<pre>%wheel ALL=(ALL) SETENV: ALL</pre>
+
+<p>Any user can now be sudoed if it is included in the wheel group. This group does
+not exist, let's create it:</p>
+
+<pre>groupadd wheel</pre>
+
+<p>It is now a good moment to create some default user, for example:
+
+<pre>useradd -m -d /export/home/larry -s /bin/bash larry
+passwd larry</pre>
+<p>[enter the new password]</p>
+
+<p>This user can be included, at creation or later, in any group. To add it to the wheel group:</p>
+<pre>usermod -G wheel larry</pre>
+
+<h3><a name='oracle'>Oracle 11g</a></h3>
+
+<p>To prepare the system, is needed to create <span class='mark'>dba</span> group and <span class='mark'>oracle</span> accounts, and prepare the target installation directory under <span class='mark'>/opt/oracle</span>:</p>
+
+<pre>groupadd -g 300 dba
+useradd -m -d /export/home/oracle -g dba -u 300 -s /bin/bash oracle
+passwd oracle
+mkdir /opt/oracle
+mkdir /opt/oraInventory
+chown oracle:dba /opt/oracle
+chown oracle:dba /opt/oraInventory
+chmod 755 /opt/oracle
+chmod 755 /opt/oraInventory
+usermod -G wheel oracle</pre>
+
+<p>Some settings are needed to pass the oracle installation checks.
+Edit /etc/system and add:</p>
+
+<pre>set max_nprocs=20000
+set maxuprc=16384
+set shmsys:shminfo_shmmax=4294967295</pre>
+
+<p>Now, login as oracle user, and download the installation discs. Register at Oracle and start the download of Oracle 11g for Solaris x86-64 from <a href='http://www.oracle.com/technology/software/products/database/index.html'>Oracle</a>.</p>
+
+<p>Once downloaded the installation disks, unzip them. A directory <span class='mark'>database</span> is created where unzipped. Execute the installer:</p>
+
+<pre>cd database
+./runInstaller</pre>
+
+<p>The installation is graphical, and, mostly, automatized. A few questions must be asked, like the action to take (I choose create and configure database), the type of installation (desktop class), and the target directories (/opt/oracle and /opt/oraInventory) and global database name (oracle). When the installation completes, it pop-ups a message to execute two scripts as root:<p>
+
+<pre>/opt/oraInventory/orainstRoot.sh
+/opt/oracle/product/11.2.0/dbhome_1/root.sh</pre>
+
+<p>(in this last one, it is needed to provide the local bin directory, which is /usr/bin, not /usr/local/bin)</p>
+
+<p>To make oracle available everywhere, the following variables should be added to the environment:</p>
+
+<pre>ORACLE_HOME=/opt/oracle/product/11.2.0/dbhome_1
+ORACLE_OWNER=oracle
+ORACLE_SID=oracle</pre>
+
+<p>and extend PATH with</p>
+<pre>${ORACLE_HOME}/bin</pre>
+</div></div>
+</body>
+</html>

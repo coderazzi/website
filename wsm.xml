@@ -18,6 +18,9 @@
     <location source='osx'>
         <template mold='../mold.htm'/>
     </location>       
+    <location source='solaris'>
+        <template mold='../mold.htm'/>
+    </location>       
     <location source='phd'>
         <template mold='../mold.htm'/>
     </location>       
@@ -133,10 +136,14 @@
 			</group>
 			<item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
         </group>		
+        <group name='Solaris'>
+			<item name='Solaris' file='solaris/index.htm'/>
+	        <item name='On Asus P5Q-E' file='solaris/p5q-e/index.htm'/>
+        </group>		
         <group name='PhD'>
             <item name='Sensei' file='phd/index.htm'/>
         </group>		
-        <item name='Just words' file='books/2009/index.htm'/>
+        <item name='Just words' file='books/2010/index.htm'/>
     </menu>
 </navigation>
 
