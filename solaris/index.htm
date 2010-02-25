@@ -11,7 +11,7 @@
 
 <p class="timestamp">&gt; 16th February 2010, 04:33 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>   
 
-<h1>Solaris</h1>
+<h1>SunOS</h1>
 
 <img src="250px-Sparcstation5.jpg" alt="Sparcstation 5 image, from http://en.wikipedia.org/wiki/SPARCstation_5" class="right">
 
@@ -22,21 +22,20 @@
 
 <p>This changed recently, when I had to install Oracle at home. While Oracle 10g Express Edition is easy to install, in Windows or in Linux, it has a limit of 4 Gb on disk space, and that didn't met my expectations. Installing any other version than XE on linux is more challenging, and playing with the possibilities, I decided to bet on Solaris.</p>
 
-<p>Instead of trying the virtual machine approach, I preferred installing it Solaris on its own harddisk, for the security perspective: doing online banking from home is, from my paranoid perspective, risky business. Well, banking is risky business, unless you are the banker, but that is another story . . . </p>
+<p>Instead of trying the virtual machine approach, I preferred installing it Solaris on its own harddisk, for the security perspective: doing online banking from home is, from my paranoid perspective, risky business. Well, banking is risky business, unless you are the banker, but that is another story . . . 
 
-<p>Being obliged to access online banking, I would never use my Windows installations; for the time being, I feel <span class='mark'>a bit</span> more confident using my Os X machine (and to lesser extent, my hackintoshes), and much more confident with <span class='mark'>some</span> of my Linux installations.</p>
+Requiring online banking, I would never use my Windows installations; for the time being, I feel <span class='mark'>a bit</span> more confident using my Os X machine (and to lesser extent, my hackintoshes), and much more confident with <span class='mark'>some</span> of my Linux installations.
 
-<p>The best approach I have found, so far, is to use a Linux distribution on CD. I could use some of the Live CDs, but I prefer customizing my own distribution using <a href='http://www.slax.org/'>Slax</a>. The problem, of course, is that it is an slow process: I must boot the machine using the CD -it loads it on memory-, and the process takes a bit less than 4 minutes. Each time that I need new updates, I must burn a new CD, customizing it.</p>
+The best approach I have found, so far, is to use a Linux distribution on CD. I could use some of the Live CDs, but I prefer customizing my own distribution using <a href='http://www.slax.org/'>Slax</a>. The problem, of course, is that it is an slow process: I must boot the machine using the CD -it loads it on memory-, and the process takes a bit less than 4 minutes. Each time that I need new updates, I must burn a new CD, customizing it. So, having Solaris should be faster, right?</p>
 
-<p>Now, installing Solaris on a separate hard disk enables me also to do secure banking. A MBR rootkit could be installed, but I doubt it; it would be different if the disk would be shared with a Windows installation, for example. By the way: when I mention using a different hard disk means than, if I use Windows on that machine, the Solaris disk will not be accesible (I use a mobile rack, like the <a href='http://www.fantec.de/html/de/2/artId/__1861/gid/__3009030190/article.html'>fantec</a> one. Call me paranoid. And it is definitely faster than starting my Linux CD.</p>
+<p>Anyway, safer online banking is only a side benefit of using Solaris. However, there are several drawbacks. The main one is that, there is currently no way to freeze the machine in Solaris -sleep or hibernate-. Solaris boot fast, but then the whole working environment must be still recreated. Also, while the free distribution Solaris provides the users with all the security updates, the normal package updates are not available: the associated subscription costs $324 for my machine.</p>
 
-<p>The only problem with this approach is moral: using a great operative system to do online banking is quite a sin. Although I intend to use this machine for development purposes -why I need Oracle, in fact-, I prefer usually to default to OsX or Kubuntu, as there is no way to freeze the machine in Solaris -sleep or hibernate-. Solaris boot fast, but then the whole working environment must be still recreated.</p>
+<p>An alternative is to use <a href='http://www.opensolaris.com/'>OpenSolaris</a>. Then, it is possible also to suspend the machine, although hibernation is still disabled.</p>
 
-<p>Also, while the free distribution Solaris provides the users with all the security updates, the normal package updates are not available: the associated subscription costs $324 for my machine.</p>
-
-
-<p>Enough said, if you are interested in installing Solaris, this <a href='p5q-e/index.htm'>guide</a> can be useful to you. 
+<p>If you are interested in installing Solaris, this <a href='p5q-e/index.htm'>guide</a> can be useful to you. 
 In reality, Solaris support immediately a lot of hardware (see the <a href='http://www.sun.com/bigadmin/hcl/'>compatibility list</a>), and the installation is quite straightforward -easier than hacking OsX, definitely!-.</p>
+
+<p>I have included also a <a href='p5q-e/opensolaris.htm'>description</a> of the most updated OpenSolaris installation, and <a href='oracle.htm'>how to install</a> Oracle 11g on both installations.</p>
 
 </div></div>
 </body>

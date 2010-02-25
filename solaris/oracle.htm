@@ -1,0 +1,143 @@
+<html>
+<head>
+ <title>Install Oracle 11g on Solaris / OpenSolaris</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="solaris opensolaris oracle 11g">
+</head>
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class="timestamp">&gt; 26th February 2010, 03:11 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>   
+
+<h1>Install Oracle 11g on Solaris / OpenSolaris</h1>
+
+<p><span class='mark'>Note:</span> this guide describes a very basic installation, with the whole system installed in a single slice.</p>
+
+<p>It assumes that <span class='mark'>sudo</span> is installed and enabled. <a href='p5q-e/index.htm#sudo'>This post</a> describes how to set it
+up in Solaris, and <a href='p5q-e/opensolaris.htm#sudo'>this</a> one for OpenSolaris.</p>
+
+<p>The installation is mostly the same for both distributions. The first exception is that, in OpenSolaris, it is needed to install the <span class='mark'>motif</span> package, using the package manager. Otherwise the installation will abort with a java error such as:</p>
+<pre>java.lang.UnsatisfiedLinkError...fatal: libXm.so.4: open failed: No such file or directory</pre>
+
+<p>The another exception is that the installation under OpenSolaris will issue a warning with the message:</p>
+
+<pre>minimum requirement were not met for this environment</pre>
+
+<p>This warning can be safely ignored.</p>
+
+
+<p>To prepare the system, is needed to create <span class='mark'>dba</span> group and <span class='mark'>oracle</span> accounts, and prepare the target installation directory under <span class='mark'>/opt/oracle</span>:</p>
+
+<pre>groupadd -g 300 dba
+useradd -m -d /export/home/oracle -g dba -u 300 -s /bin/bash oracle
+passwd oracle
+mkdir /opt/oracle
+mkdir /opt/oraInventory
+chown oracle:dba /opt/oracle
+chown oracle:dba /opt/oraInventory
+chmod 755 /opt/oracle
+chmod 755 /opt/oraInventory
+usermod -G wheel oracle</pre>
+
+<p>Some settings are needed to pass the oracle installation checks.
+Edit /etc/system and add:</p>
+
+<pre>set max_nprocs=20000
+set maxuprc=16384
+set shmsys:shminfo_shmmax=4294967295</pre>
+
+<p>Now, login as oracle user, and download the installation discs. Register at Oracle and start the download of Oracle 11g for Solaris x86-64 from <a href='http://www.oracle.com/technology/software/products/database/index.html'>Oracle</a>.</p>
+
+<p>Once downloaded the installation disks, unzip them. A directory <span class='mark'>database</span> is created where unzipped. Execute the installer:</p>
+
+<pre>cd database
+./runInstaller</pre>
+
+<p>The installation is graphical, and, mostly, automatized. A few questions must be asked, like the action to take (I choose create and configure database), the type of installation (desktop class), and the target directories (/opt/oracle and /opt/oraInventory) and global database name (oracle). When the installation completes, it pop-ups a message to execute two scripts as root:<p>
+
+<pre>/opt/oraInventory/orainstRoot.sh
+/opt/oracle/product/11.2.0/dbhome_1/root.sh</pre>
+
+<p>(in this last one, it is needed to provide the local bin directory, which is /usr/bin, not /usr/local/bin)</p>
+
+<p>To make oracle available everywhere, the following variables should be added to the environment (for example, adding it into /etc/profile):</p>
+
+<pre>ORACLE_HOME=/opt/oracle/product/11.2.0/dbhome_1
+ORACLE_OWNER=oracle
+ORACLE_SID=oracle</pre>
+
+<p>and extend PATH with</p>
+<pre>${ORACLE_HOME}/bin</pre>
+
+<p>I will not start the Oracle instance automatically, so I prefer not adding scripts into the /etc/rc?.d directory. However, I setup a couple of scripts in $ORACLE_HOME/bin, to start or stop the database:
+
+<p>startOracle:</p>
+<pre>#!/usr/bin/bash
+
+if [[ $EUID -ne 0 ]]; then
+   if [[ $EUID -ne 300 ]]; then
+      echo No root or oracle, sudoing this command
+      sudo -i $0
+      exit 0
+   fi
+fi
+
+WHERE=`dirname $0`
+
+if [ "$ORACLE_HOME" = "" ]; then
+   ORACLE_HOME=${WHERE}/..
+   export ORACLE_HOME
+fi
+
+echo Starting database
+su - oracle -c "${WHERE}/dbstart ${WHERE}/.."
+
+echo Starting enterprise manager
+su - oracle -c "${WHERE}/emctl start dbconsole"</pre>
+
+<p>stopOracle:</p>
+<pre>#!/usr/bin/bash
+
+if [[ $EUID -ne 0 ]]; then
+   if [[ $EUID -ne 300 ]]; then
+      echo No root or oracle, sudoing this command
+      sudo -i $0
+      exit 0
+   fi
+fi
+
+WHERE=`dirname $0`
+
+if [ "$ORACLE_HOME" = "" ]; then
+   ORACLE_HOME=${WHERE}/..
+   export ORACLE_HOME
+fi
+
+echo Stopping database
+su - oracle -c "${WHERE}/dbshut $ORACLE_HOME"
+
+echo Stopping enterprise manager
+su - oracle -c "${WHERE}/emctl stop dbconsole"</pre>
+
+<p>But for these scripts to work, it is needed to setup correctly the oratab file (/var/opt/oracle/oratab).
+You will find there your oracle instance, so edit the associated line, and set the last character as 'Y' to be automatically started (N is the default)</p>
+
+<p>for example: <span class='mark'>oracle:/opt/oracle/product...:Y</span></p>
+
+<p>There will be probably problems when starting the Enterprise Manager, reporting an OC4J problem.
+In my case, my database instance is called <span class='mark'>oracle</span>, and my host name is <span class='mark'>lianli</span>, and the error reports a missing file <span class='mark'>/opt/oracle/product/11.2.0/dbhome_1/oc4j/j2ee/OC4J_DBConsole_lianli_oracle</span>. However, that directory contains a directory <span class='mark'>OC4J_DBConsole_localhost_oracle</span>, so the solution requires:</p>
+
+<pre>cd /opt/oracle/product/11.2.0/dbhome_1/oc4j/j2ee
+ln -s OC4J_DBConsole_localhost_oracle OC4J_DBConsole_lianli_oracle
+
+cd /opt/oracle/product/11.2.0/dbhome_1/
+ln -s localhost_oracle lianli_oracle</pre>
+
+<p>Now, to start the database it is needed to do:</p>
+<pre>startOracle</pre>
+
+</div></div>
+</body>
+</html>

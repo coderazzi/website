@@ -26,13 +26,21 @@
 <span class='mark'>(September 2009 version)</span> installation.</p>
 <p>Or better said, Solaris supports almost completely the P5Q-E motherboard
 and the Nvidia graphic card. The only exception is the two Gigabit ethernet ports, 
-Marvell 88E8001, and Marvell 88E8056; but its drivers are easily available.</p>
+Marvell 88E8001, and Marvell 88E8056; but its drivers are easily available. The hardware I am using is:</p>
+<ul>
+	<li>Cpu: Q9550, no overclocked (at least not at this moment).</li>
+	<li>Motherboard: Asus P5Q-E</li>
+	<li>Memory: 8Gb (4 Corsair PC2-1066).</li>
+	<li>Graphic card: 9800GT 512Mb (Sparkle, passive cooling).</li>
+	<li>Hard disk: Velociraptor 10000rpm, 300Gb</li>
+	<li>Cd drive: LG, Dvd +-rw.</li>
+	<li>Plus a hard drive rack to easily change hard disks.</li>
+</ul>
 
-<p>The audio probably works. I mean, OSS seems to support it perfectly, but I am not
-really interested on making this installation a media player, so I haven't spent any
-efforts on this direction.</p>
+<p>The audio also works directly out of the box. I haven't tried the digital output, but I am not
+really interested on making this installation a media player, anyway.</p>
 
-<p>My current installation, through, is not 100% perfect. I am unable to shut it down completely, I will investigate a bit further here, as I am afraid the problem is on
+<p>My current installation, through, is not 100% perfect. I am unable to shut it down completely (well, not always); I will investigate a bit further here, as I am afraid the problem is on
 the LAN drivers. However, this is not a severe problem -not in my scale, anyway-, so I still consider P5Q-E a perfect target for a Solaris installation.</p>
 
 <p>I use this motherboard to boot, among other operative systems, Os X. For this, I had to patch the BIOS, as explained <a href='../../osx/p5q-e/leopard.htm#bios'>in this post</a>. Whether this patch has helped me to successfully install Solaris, or whether it is hindering my efforts -like on the shutdown problem-, will remain without answer, as I am not ready to repatch (unpatch?) the BIOS. However, I am pretty sure that the BIOS patch is not important at all. The BIOS settings themselves could be, however, more determinant on the installation, so please check <a href='../../osx/p5q-e/leopard.htm#bios-setup'>here</a> the settings that I have used</p>
@@ -56,7 +64,7 @@ the LAN drivers. However, this is not a severe problem -not in my scale, anyway-
 	<li><a href='#eclipse'>Eclipse Galileo</a></li>
 	<li><a href='#Blastwave'>Blastwave</a></li>
 	<li><a href='#sudo'>Sudo</a></li>
-	<li><a href='#oracle'>Oracle 11g</a></li>
+	<li><a href='../oracle.htm'>Oracle 11g</a></li>
 </ul></ul>
 
 <h2><a name='Preparations'>Preparations</a></h2>
@@ -144,6 +152,21 @@ packages to install (I went for full installation: entire software group plus OE
   <pre>/ : 125000
 swap: 8192
 /export/home: 343700</pre></p>
+
+<p>This looks, on my 500Gb (466Gb when counted properly) harddisk, as:</p>
+<pre>Total disk cylinders available: 60798 + 2 (reserved cylinders)
+
+Part      Tag    Flag     Cylinders         Size            Blocks
+  0       root    wm    1046 - 16981      122.08GB    (15936/0/0) 256011840
+  1       swap    wu       1 -  1045        8.01GB    (1045/0/0)   16787925
+  2     backup    wm       0 - 60797      465.74GB    (60798/0/0) 976719870
+  3 unassigned    wm       0                0         (0/0/0)             0
+  4 unassigned    wm       0                0         (0/0/0)             0
+  5 unassigned    wm       0                0         (0/0/0)             0
+  6 unassigned    wm       0                0         (0/0/0)             0
+  7       home    wm   16982 - 60797      335.65GB    (43816/0/0) 703904040
+  8       boot    wu       0 -     0        7.84MB    (1/0/0)         16065
+  9 unassigned    wm       0                0         (0/0/0)             0</pre>
 
 <p>After this, the installation script will complete in about 35 minutes.
 Note that this installation, in opposition to most Linux distributions, 
@@ -307,50 +330,7 @@ passwd larry</pre>
 <p>This user can be included, at creation or later, in any group. To add it to the wheel group:</p>
 <pre>usermod -G wheel larry</pre>
 
-<h3><a name='oracle'>Oracle 11g</a></h3>
 
-<p>To prepare the system, is needed to create <span class='mark'>dba</span> group and <span class='mark'>oracle</span> accounts, and prepare the target installation directory under <span class='mark'>/opt/oracle</span>:</p>
-
-<pre>groupadd -g 300 dba
-useradd -m -d /export/home/oracle -g dba -u 300 -s /bin/bash oracle
-passwd oracle
-mkdir /opt/oracle
-mkdir /opt/oraInventory
-chown oracle:dba /opt/oracle
-chown oracle:dba /opt/oraInventory
-chmod 755 /opt/oracle
-chmod 755 /opt/oraInventory
-usermod -G wheel oracle</pre>
-
-<p>Some settings are needed to pass the oracle installation checks.
-Edit /etc/system and add:</p>
-
-<pre>set max_nprocs=20000
-set maxuprc=16384
-set shmsys:shminfo_shmmax=4294967295</pre>
-
-<p>Now, login as oracle user, and download the installation discs. Register at Oracle and start the download of Oracle 11g for Solaris x86-64 from <a href='http://www.oracle.com/technology/software/products/database/index.html'>Oracle</a>.</p>
-
-<p>Once downloaded the installation disks, unzip them. A directory <span class='mark'>database</span> is created where unzipped. Execute the installer:</p>
-
-<pre>cd database
-./runInstaller</pre>
-
-<p>The installation is graphical, and, mostly, automatized. A few questions must be asked, like the action to take (I choose create and configure database), the type of installation (desktop class), and the target directories (/opt/oracle and /opt/oraInventory) and global database name (oracle). When the installation completes, it pop-ups a message to execute two scripts as root:<p>
-
-<pre>/opt/oraInventory/orainstRoot.sh
-/opt/oracle/product/11.2.0/dbhome_1/root.sh</pre>
-
-<p>(in this last one, it is needed to provide the local bin directory, which is /usr/bin, not /usr/local/bin)</p>
-
-<p>To make oracle available everywhere, the following variables should be added to the environment:</p>
-
-<pre>ORACLE_HOME=/opt/oracle/product/11.2.0/dbhome_1
-ORACLE_OWNER=oracle
-ORACLE_SID=oracle</pre>
-
-<p>and extend PATH with</p>
-<pre>${ORACLE_HOME}/bin</pre>
 </div></div>
 </body>
 </html>

@@ -137,8 +137,10 @@
 			<item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
         </group>		
         <group name='Solaris'>
-			<item name='Solaris' file='solaris/index.htm'/>
-	        <item name='On Asus P5Q-E' file='solaris/p5q-e/index.htm'/>
+			<item name='SunOS' file='solaris/index.htm'/>
+	        <item name='Solaris on P5Q-E' file='solaris/p5q-e/index.htm'/>
+	        <item name='OpenSolaris on P5Q-E' file='solaris/p5q-e/opensolaris.htm'/>
+	        <item name='Oracle 11g' file='solaris/oracle.htm'/>
         </group>		
         <group name='PhD'>
             <item name='Sensei' file='phd/index.htm'/>

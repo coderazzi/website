@@ -1,0 +1,189 @@
+<html>
+<head>
+ <title>OpenSolaris 10 on Asus P5Q-E</title>
+ <link rel="stylesheet" type="text/css" href="../../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="opensolaris p5q-e">
+</head>
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class="timestamp">&gt; 26th February 2010, 00:04 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>   
+
+<h1>OpenSolaris on Asus P5Q-E</h1>
+
+<p>I installed OpenSolaris after <a href='index.htm'>trying</a> Solaris. As expected, the driver support is far better in OpenSolaris, and all my devices were immediately usable, including my network port -the only device not working on my bare bones Solaris installation-. Please have a look to my post on the Solaris installation (specially the introduction and <a href='index.htm#Preparations'>preparation<a/>) to see my hardware description and to follow some of the explanations below.</p>
+
+<p>The distribution I have installed is a preview of the next version of Solaris, named Indiana, downloaded from <a href='http://www.genunix.org/'>Genunix</a>: more specifically, I opted for the USB Universal download for the OpenSolaris preview based on build 133, the most updated download by the end of February 2010. <span class='mark'>Please note</span>: to be able to install OpenSolaris from USB, it is needed a running Solaris installation! If you lack such an installation, you can use some of the live CDs, like <a href='http://www.milax.org/'>Milax</a>, or just use the DVD installation instead.</p>
+
+<p>For this installation, I will use a 640Gb hard disk, formatted in 4 partitions, as it will also hold Kubuntu and Microsoft Vista. The installation will be done from a 2 Gb USB stick. The usual wisdom is to always install Solaris last, at least, before Windows. However, I will just restore a copy of Vista from a separate partition, so I will directly install OpenSolaris first.</p>
+
+<ul>
+  <li><a href='#hdfdisk'>Partition the hard disk</a></li>
+  <li><a href='#usbstick'>Prepare the USB stick</a></li>
+  <li><a href='#install'>Install OpenSolaris</a></li>
+  <li><a href='#sleep'>Sleep support</a></li>
+  <li><a href='#sudo'>Sudo</a></li>
+</ul>
+
+<h2><a name='hdfdisk'>Partition the hard disk</a></h2>
+
+<p>My target is to divide the 640Gb hard disk in 3 fdisk partitions of the same size. Under Solaris, it will look like:</p>
+
+<pre>             Total disk size is 38912 cylinders
+             Cylinder size is 32130 (512 byte) blocks
+
+                                               Cylinders
+      Partition   Status    Type           Start   End   Length    %
+      =========   ======    ============   =====   ===   ======   ===
+          1       Active    Solaris2           0  13373   13374    34
+          2                 IFS: NTFS      13373  25981   12609    32
+          3                 Linux native   25982  26746     765     2
+          4                 Linux native   26747  38912   12166    31</pre>
+
+
+<p>(Ok, there are here 4 partitions, but the 3rd one is the swap partition for Linux, to be installed on the 4th partition)</p>
+
+<p>To achieve this state, use under Solaris the command <span class='mark'>format</span>, and let the last 3 partitions unformatted. Or better, if you can use a Linux distribution, get the previous state using <span class='mark'>cfdisk</span>. With cfdisk, the partitions should look like:</p>
+
+<pre>             Size: 640135028736 bytes, 640.1 GB
+    Heads: 255   Sectors per Track: 63   Cylinders: 77825
+
+    Name   Flags   Part Type  FS Type   [Label]  Size (MB)
+ -----------------------------------------------------------
+    sdb1   Boot     Primary   Solaris            220001.57
+    sdb2            Primary   NTFS      []       207416.89
+    sdb3            Primary   Linux               12584.68
+    sdb4            Primary   Linux              200129.29</pre>
+
+
+<h2><a name='usbstick'>Prepare the USB stick</a></h2>
+
+<p>This step requires a Solaris (or OpenSolaris) installation. No, 
+<a href='http://unetbootin.sourceforge.net/'>unetbootin</a> will not help here.</p>
+
+<p>A 1 Gb USB stick is enough to hold the OpenSolaris distribution, and I used a 2 Gb stick here.
+The information here comes mostly from this post: <a href='http://www.sun.com/bigadmin/content/submitted/usbstick_milax_dsl.jsp'>OpenSolaris and Linux on One USB Stick for Dual Usage</a>, although I used the whole
+USB stick to contain exclusively the Solaris distribution.</p>
+
+<p>Start Solaris, and deactivate the volume management that would mount automatically the USB filesystems:</p>
+
+<pre>/etc/init.d/volmgt stop</pre>
+
+<p>Plug now the target USB stick. To see the device name associated, do:</p>
+
+<pre>rmformat -l</pre>
+
+<p>It will list something like /dev/rdsk/c3t0d0p0, associated to USB Flash Memory. This is the device name 
+that I will use from this moment. If yours differ, change accordingly the commands below. Let's start by
+assigning the whole disk to solaris, and naming it (as usb-sol, for example):</p>
+
+<pre>fdisk -B /dev/rdsk/c3t0d0p0
+rmformat -b usb-sol /dev/rdsk/c3t0d0p0</pre>
+
+<p>Now, it is time to create the Solaris partitions, do:</p>
+
+<pre>format -e</pre>
+
+<p>And choose the disk associated to the USB stick. The target is to reach a partitioning as:</p>
+
+<pre>Current partition table (original):
+Total disk cylinders available: 963 + 2 (reserved cylinders)
+
+Part      Tag    Flag     Cylinders       Size            Blocks
+  0 unassigned    wm       3 - 962        1.88GB    (960/0/0) 3932160
+  1 unassigned    wm       0              0         (0/0/0)         0
+  2     backup    wu       0 - 962        1.88GB    (963/0/0) 3944448
+  3 unassigned    wm       0              0         (0/0/0)         0
+  4 unassigned    wm       0              0         (0/0/0)         0
+  5 unassigned    wm       0              0         (0/0/0)         0
+  6 unassigned    wm       0              0         (0/0/0)         0
+  7 unassigned    wm       0              0         (0/0/0)         0
+  8       boot    wu       0 -   0        2.00MB    (1/0/0)      4096
+  9 unassigned    wm       0              0         (0/0/0)         0
+</pre>
+
+<p>This can be achieved with the following list of commands:</p>
+<pre>p
+0
+[enter]
+wm
+3
+1.0 gb [or whichever size you prefer]
+label
+0
+y
+quit
+quit</pre>
+
+<p>Now, the USB contains a partition ready to hold the Solaris OS distribution. We copy now the downloaded USB distribution (in my case, the file is called osol-dev-133-x86.usb) and install grub to be able to boot from the USB stick:</p>
+
+<pre>dd if=./osol-dev-133-x86.usb of=/dev/rdsk/c3t0d0s0 bs=16384
+growfs /dev/rdsk/c3t0d0s2
+installgrub -mf /boot/grub/stage1 /boot/grub/stage2 /dev/rdsk/c3t0d0s0</pre>
+
+<h2><a name='install'>Install OpenSolaris</a></h2>
+
+<p>Boot now using the USB stick, it will start OpenSolaris, after asking some questions about the keyboard to use. A Live OpenSolaris installation is then ready: it is possible to use it before installing it on the target
+drive. Among other things, it is possible to check whether the devices are supported or not. In the case of
+the P5Q-E motherboard + Nvidia 9800GT, everything is available, except the secondary Gigabit ethernet port (88E8001) -which could be downloaded from Marvell.</p>
+
+<p>Install then the distribution into hard disk, into the first available partition. Installation goes pretty fast, less than 10 minutes in total.</p>
+
+<p>Unfortunately, after reboot, GRUB reports <span class='mark'>no such partition</span>: grub is missing. If this is the case, boot again from USB stick, open a terminal and do:</p>
+
+<pre>su - root</pre>
+<p>Not that the default password is <span class='mark'>opensolaris</span>. It is needed to know the device associated to the hard disk. One way is to invoke <span class='mark'>format</span>, just to see the available disks. In my case, it is <span class='mark'>c5t3d0</span>, so the first partition will be <span class='mark'>c5t3d0s0</span>. Do then: </p>
+
+<pre>installgrub -mf /boot/grub/stage1 /boot/grub/stage2 /dev/rdsk/c5t0d0s0</pre>
+
+<p>Reboot without the USB stick, it should work well now.</p>
+
+<h2><a name='sleep'>Sleep support</a></h2>
+
+<p>My main intention after the OpenSolaris installation was to enable suspend / sleep / resume, but after the installation, OpenSolaris still won't be able to suspend. Going to the shutdown option in the Gnome menu will not show any option for <span class='mark'>suspend</span>, and doing on a terminal:
+</p>
+
+<pre>sys-suspend</pre>
+
+<p>Produces the error: <span class='mark'>Suspend is not supported</span>. Fortunately, the solution is fast, as described in <a href='http://blogs.sun.com/randyf/entry/solaris_suspend_and_resume_how'>this post</a>: from the command line, do:</p>
+
+<pre>pfexec gedit /etc/power.conf</pre>
+
+<p>And include a new line:</p>
+
+<pre>S3-support enable</pre>
+
+<p>Time now to invoke the power management configuration, again from the command line:</p>
+
+<pre>pfexec pmconfig</pre>
+
+<p>Ready; we can try again:</p>
+
+<pre>sys-suspend</pre>
+
+<p>Works, great! And after rebooting, the shutdown window will have a new option <span class='mark'>suspend</span>. However, there are still problems: after suspend, the system resumes . . . almost: the monitor does not wake up. The solution is to remove the screen saver (but still enabling monitor suspend).</p>
+
+<p>Finally, to merely suspend the computer when the power button is pressed, go to the power management preferences and setup this option.</p>
+
+<h2><a name='sudo'>Sudo</a></h2>
+
+<p><span class='mark'>sudo</span> is directly available, but the required group does not exist -and the created user obviously does not belong to the unexisting group:</p>
+
+<p>Edit /etc/sudoers and uncomment the line</p>
+<pre>%wheel ALL=(ALL) SETENV: ALL</pre>
+
+<p>Any user can now be sudoed if it is included in the wheel group. This group does
+not exist, let's create it:</p>
+
+<pre>groupadd wheel</pre>
+
+<p>To add a user to this group, just do (using larry as example here):</p>
+<pre>usermod -G wheel larry</pre>
+
+<p>It will be now needed to reboot the system.</p>
+
+</div></div>
+</body>
+</html>
