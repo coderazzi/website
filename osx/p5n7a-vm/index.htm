@@ -11,7 +11,7 @@
  
 
 <p class="timestamp">&gt; 23rd July 2009, 01:39 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
-<p class="timestamp">updated: &gt; 07th January 2010, 23:20 &nbsp;&nbsp;&nbsp;&nbsp; [USB issues]</p>  
+<p class="timestamp">updated: &gt; 5th April 2010, 23:20 &nbsp;&nbsp;&nbsp;&nbsp; [10.6.3 update]</p>  
 
 <h1>OsX on Asus P5N7A-VM (vanilla)</h1>
 
@@ -19,7 +19,7 @@
 
 
 <p>This post referred initially to the installation of Leopard (10.5.6); it is now updated to include <a href='#snow'>Snow Leopard</a>.
-In short: it works, currently updated to 10.6.2; but be aware of <a href='#usb'>USB issues</a></p>
+In short: it works, currently updated to 10.6.3; but be aware of <a href='#usb'>USB issues</a>. In 10.6.3, currently, USB will stop working when the computer goes to sleep (partial solution included)</p>
 
 <h2>Leopard on the cage</h2>
 
@@ -178,6 +178,8 @@ works only some times. Other times, the system takes ages to reboot or shutdown,
 
 <p>Still, I need now to enable USB support on my boot loader (Grub), and I will be still unable to modify the startup settings in Chameleon. The PS/2 port comes now to the rescue, as I can always plug a PS/2 keyboard and setup any required Chameleon settings. I guess there is always a trade-off to pay.... </p>
 
+<p><span class='mark'>Update: on 10.6.3, USB stops working when the computer goes to sleep; it is needed to re-plug any USB device. I am trying to solve this as DSDT level,but, so far, a working solution is to replace in /System/Library/Extensions, the kext IOUSBFamily.kext with the version from 10.6.2</span></p>
+
 <h2><a name='snowupdates'>Snow Leopard updates</a></h2>
 
 <p>Updates to 10.6.1 and 10.6.2 run smoothly, using the default Software update. The only problem is that sound is lost, but the solution is easy.</p>
@@ -186,6 +188,8 @@ works only some times. Other times, the system takes ages to reboot or shutdown,
 <a href='http://www.insanelymac.com/forum/lofiversion/index.php/t161430.html'>web site</a>.</p>
 
 <p>After upgrading, restore this kext into the original location <span class='mark'>/System/Library/Extensions</span>. This is better accomplished using the tool <a href='http://cheetha.net/'>Kext helper</a>.</p>
+
+<p>The update to 10.6.3 has the same problem, but, in addition, <span class='mark'>USB stops working when the computer goes to sleep; it is needed to re-plug any USB device </span>. I am trying to solve this as DSDT level,but, so far, a working solution is to replace in /System/Library/Extensions, the kext IOUSBFamily.kext with the version from 10.6.2</p>
 
 </div></div>
 </body>

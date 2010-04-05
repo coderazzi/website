@@ -88,8 +88,8 @@
                 <item name='Java 5 support' file='tablefilter/java5.html'/>
                 <item name='Default behaviour' file='tablefilter/properties.html'/>
                 <item name='Download' file='tablefilter/download.html'/>
+                <item name='How to' file='tablefilter/howto.html'/>
                 <item name='Examples' file='tablefilter/examples.html'/>
-                <item name='FAQs' file='tablefilter/faqs.html'/>
                 <item name='Javadoc' file='tablefilter/api/index.html'/>
             </group>
             <item name='GlassedPane' file='glassedpane/index.html'/>
