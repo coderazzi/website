@@ -13,17 +13,42 @@
   
     <p>
       <span class="mark">TableFilter</span> is available in source and 
-      binary formats, with versions for Java 5 and Java 6. Please note that
-      the Java 5 version is not developed anymore, being 2.0.1 (14th November
-      2009) its latest available download.
+      binary formats, with versions for Java 5 and Java 6. 
       The license is MIT open source, please look below for the complete details.
     </p>
-    
-    <p><span class='mark'>Note:</span> I pulled out the binary distributions with sources for all
-      versions -except the latest- for the Java 5 version. By mistake, it didn't include the Java 5
-      sources, but the Java 6 ones. </p>
-    
+       
     <p>The last versions are available for download:</p>
+
+    <h2>Version 2.2.0 ( 12th April 2010 ) </h2>
+      <ul>
+       <li>Download for Java 6 or later
+        <ul>
+         <li><a href="download/tablefilter-v2.2.0.jar">Binary distribution</a>
+          (without sources, tests not included)</li>
+         <li><a href="download/tablefilterDbg-v2.2.0.jar">Binary distribution with sources</a>
+          (useful for debug purposes)</li>
+         <li><a href="download/tablefilter-v2.2.0.zip">Source distribution</a>
+          (with sources, and tests are included)</li>
+        </ul>
+       </li>
+       <li>Download for Java 5
+        <ul>
+         <li><a href="download/tablefilter5-v2.2.0.jar">Binary distribution</a> 
+          (without sources, tests not included)</li>
+         <li><a href="download/tablefilterDbg5-v2.2.0.jar">Binary distribution with sources</a>
+          (useful for debug purposes)</li>
+         <li><a href="download/tablefilter5-v2.2.0.zip">Source distribution</a> 
+          (with sources, and tests are included)</li>
+        </ul>
+       </li>
+       <li>This version reintroduces compatibility with Java 5, temporarily excluded on version 2.1, 
+       although not all features are available in the old Java version; more specifically, autoselection
+       will not be supported under Java 5. In addition, many tests for the Java 5 version have been 
+       rewritten, as they contained important bugs<br>
+       Concerning Java 6, this release solves a minor bug, as not all resources would be released
+       when a new table model was applied to a table filter.<br>               
+       </li>
+      </ul>
 
     <h2>Version 2.1.2 ( 26th January 2010 ) </h2>
       <ul>
@@ -159,26 +184,8 @@
        </ul>
       </ul>
 
-    <h2>Version 1.5.0 ( 7th August 2009 ) </h2>
+    <h3>Version 1.5.0 ( 7th August 2009 ) </h3>
       <ul>
-       <li>Download for Java 6 or later
-        <ul>
-         <li><a href="download/tablefilter-v1.5.0.jar">Binary distribution</a>
-          (without sources, tests not included)</li>
-         <li><a href="download/tablefilterDbg-v1.5.0.jar">Binary distribution with sources</a>
-          (useful for debug purposes)</li>
-         <li><a href="download/tablefilter-v1.5.0.zip">Source distribution</a>
-          (with sources, and tests are included)</li>
-        </ul>
-       </li>
-       <li>Download for Java 5
-        <ul>
-         <li><a href="download/tablefilter5-v1.5.0.jar">Binary distribution</a> 
-          (without sources, tests not included)</li>
-         <li><a href="download/tablefilter5-v1.5.0.zip">Source distribution</a> 
-          (with sources, and tests are included)</li>
-        </ul>
-       </li>
        <li>Changes; this release improves on the usage of the 
        <a href="api/net/coderazzi/filters/gui/editors/TableChoiceFilterEditor.html">TableChoiceFilterEditor</a>,
           that is, the editor filter that offers the user a list of the different options
@@ -196,26 +203,8 @@
        </ul>
       </li></ul>
 
-  	<h2>Version 1.4.1 ( 4th July 2009 ) </h2>
+  	<h3>Version 1.4.1 ( 4th July 2009 ) </h3>
       <ul>
-       <li>Download for Java 6 or later
-        <ul>
-         <li><a href="download/tablefilter-v1.4.1.jar">Binary distribution</a>
-          (without sources, tests not included)</li>
-         <li><a href="download/tablefilterDbg-v1.4.1.jar">Binary distribution with sources</a>
-          (useful for debug purposes)</li>
-         <li><a href="download/tablefilter-v1.4.1.zip">Source distribution</a>
-          (with sources, and tests are included)</li>
-        </ul>
-       </li>
-       <li>Download for Java 5
-        <ul>
-         <li><a href="download/tablefilter5-v1.4.1.jar">Binary distribution</a> 
-          (without sources, tests not included)</li>
-         <li><a href="download/tablefilter5-v1.4.1.zip">Source distribution</a> 
-          (with sources, and tests are included)</li>
-        </ul>
-       </li>
        <li>Changes:
        <ul>
        	<li>Bug solution: in specific conditions, the header would fail to display.</li>
@@ -227,7 +216,7 @@
        </ul>
       </li></ul>
 
-  	<h2>Version 1.4.0 ( 10th June 2009 ) </h2>
+  	<h3>Version 1.4.0 ( 10th June 2009 ) </h3>
       <ul>
        
        <li>Changes:
@@ -237,7 +226,7 @@
        </ul>
       </li></ul>
 
-  	<h2>Version 1.3.0 ( 17th February 2009 ) </h2>
+  	<h3>Version 1.3.0 ( 17th February 2009 ) </h3>
       <ul>
        <li>Changes:
        <ul>

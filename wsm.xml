@@ -47,8 +47,15 @@
     <location source='Java/tablefilter' target='tablefilter'>
         <template mold='../../tfilter.mold.htm' />
         <exclude pattern='api'/>
+        <exclude pattern='api5'/>
     </location>
     <location source='Java/tablefilter/api' target='tablefilter/api'>
+        <template mold='../../../javadoc.mold.htm'>
+            <exclude pattern='index.html'/>
+            <exclude pattern='*-frame.html'/>
+        </template>
+    </location>
+    <location source='Java/tablefilter/api5' target='tablefilter/api5'>
         <template mold='../../../javadoc.mold.htm'>
             <exclude pattern='index.html'/>
             <exclude pattern='*-frame.html'/>
@@ -80,17 +87,19 @@
             <item name='IdlDepend' file='idldepend/index.htm'/>
             <group name='Table filter'>
                 <item name='Overview' file='tablefilter/index.html'/>
-                <item name='Table header' file='tablefilter/header.html'/>
-                <item name='Text expressions' file='tablefilter/parsers.html'/>
-                <item name='Filter editors' file='tablefilter/editors.html'/>
-                <item name='Handling types' file='tablefilter/types.html'/>
-                <item name='Standalone mode' file='tablefilter/standalone.html'/>
-                <item name='Java 5 support' file='tablefilter/java5.html'/>
-                <item name='Default behaviour' file='tablefilter/properties.html'/>
                 <item name='Download' file='tablefilter/download.html'/>
-                <item name='How to' file='tablefilter/howto.html'/>
-                <item name='Examples' file='tablefilter/examples.html'/>
-                <item name='Javadoc' file='tablefilter/api/index.html'/>
+                <item name='Javadoc' file='tablefilter/javadoc.html'/>
+	            <group name='Tutorial'>
+	                <item name='Table header' file='tablefilter/header.html'/>
+	                <item name='Text expressions' file='tablefilter/parsers.html'/>
+	                <item name='Filter editors' file='tablefilter/editors.html'/>
+	                <item name='Handling types' file='tablefilter/types.html'/>
+	                <item name='Standalone mode' file='tablefilter/standalone.html'/>
+	                <item name='Java 5 support' file='tablefilter/java5.html'/>
+	                <item name='Default behaviour' file='tablefilter/properties.html'/>
+	                <item name='How to' file='tablefilter/howto.html'/>
+	                <item name='Examples' file='tablefilter/examples.html'/>
+                </group>
             </group>
             <item name='GlassedPane' file='glassedpane/index.html'/>
             <group name='VirtualNet'>
