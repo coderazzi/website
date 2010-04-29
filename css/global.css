@@ -122,3 +122,8 @@ img.centered
     color: gray;
 	text-align: center;
 }
+
+.table_text_center td
+{
+	text-align: center;	
+}
