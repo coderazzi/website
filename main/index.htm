@@ -18,16 +18,55 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
  <div id='body'>
  <div id='content'>
  
+ <p class="entry"><span class="entry-date">02rd May 2010</span>More on Lucid Lynx</p> 
+
+<p> <img src="images/os.png" alt="os icon" class="blog"> 
+I installed Lucid Lynx on a separate computer, as a fresh install. It went really fast, and much smoother than my previous upgrade; once I activated the Nvidia drivers, I still got the same resolution problems on startup and shutdown as in my original installation.</p> 
+
+<p>I installed OpenSSH-server, just in time before my mouse stopped working. It seems a well known  
+<a href="http://ubuntuforums.org/showthread.php?t=1214003">EHCI error</a>, where the only solution is to setup USB as 1.1 on the bios. As I use the computer along a Mac Mini, I preferred setting up Synergy. It still contains the same problems as in previous versions, so I reverted to my <a href="http://www.coderazzi.net/linux/synergy.patch/index.htm">old patch</a>.</p>
+
+<p>I had the time to check startup and shutdown times, comparing them to the Vista installation on the same computer:</p>
+
+<table class="table_text_center">
+	 <tr>
+	   <th></th> 
+	   <th>Startup</th>
+	   <th>Shutdown</th>
+	</tr>
+	<tr>
+
+	   <th>Vista 32</th> 
+	   <td>87</td>
+	   <td>20</td>
+	</tr>
+	<tr>
+	   <th>Kubuntu 10.04 - 32 bits</th> 
+	   <td>35</td>
+
+	   <td>14</td>
+	</tr>
+</table>	
+
+<p>Definitely faster. In facts, it seems that Kubuntu starts faster on this old machine -Pentium D820, 2 Gigs-, than on my newer one -Q9550, 8 gis, Velociraptor drive-</p>
+   
+<p class="entry"><span class="entry-date">1st May 2010</span>The Sound of Inevitability</p>    
+<p> <a href="http://techcrunch.com/2010/05/01/the-internet-is-cyclical/">
+<img src="http://tctechcrunch.files.wordpress.com/2010/05/a3.jpg" class="blog"/>Great read</a>, nice Matrix reference </p> 
+ 
+<p><br><br><br></p>  
+ 
+
 <p class="entry"><span class="entry-date">30th April 2010</span>Upgrading to Kubuntu 10.4</p> 
 
-<p> <img src='images/os.png' alt='os icon' class='blog'/> 
+<p> <img src="images/os.png" alt="os icon" class="blog"> 
 One hour to upgrade Kubuntu to 10.4, counting with a few pauses to notice dialogs requiring input. Not bad at all. But after rebooting, I encountered the same problem as on my last upgrade: Grub hadn't been executed properly. Fortunately, I am still able to get into the previous kernel, and, after a few discouraging windows -wrong resolution- and error messages, I am able to boot, get into terminal mode and issue the first rescue command:</p>
 
-<p class='mark'>sudo update-grub</p>
+<p class="mark">sudo update-grub</p>
 
 <p>Rebooting gets me into the right kernel, but the rest of errors still happen. I am still using Grub, old well known Grub, and I must update manually into Grub 2. Seems like a good moment:</p>
 
-<p class='mark'>sudo apt-get install grub2</p>
+<p class="mark">sudo apt-get install grub2</p>
 
 <p>On reboot, the grub menu will now offer several options:
 <ul>
@@ -38,18 +77,19 @@ One hour to upgrade Kubuntu to 10.4, counting with a few pauses to notice dialog
 
 <p>Boot again into Kubuntu, terminal mode, and upgrade Grub from legacy:</p>
 
-<p class='mark'>sudo upgrade-from-grub-legacy</p>
+<p class="mark">sudo upgrade-from-grub-legacy</p>
 
 <p>select hard disk (/dev/sda), let it work -finds Vista, OsX, great-, reboot again.</p>
 
 <p>First surprise: two entries for OsX, 32 bits and 64 bits. Both seem to start slower, but both seem also to bypass Chameleon, and definitely boot OsX into the required mode (32 or 64 bits). Nice, but I wonder how to handle it on future OsX upgrades, and how this is working.</p>
 
-<p><img src='images/kubuntu-error.jpg' alt='error installing kubuntu' class='right'/> Back to the root, time to solve the Ubuntu errors and the graphic resolution problem-. Right is the screenshot with one of the errors;
+<p><img src="images/kubuntu-error.jpg" alt="error installing kubuntu" class="right"> Back to the root, time to solve the Ubuntu errors and the graphic resolution problem-. Right is the screenshot with one of the errors;
 
-this error is obviously related to my /etc/fstab entries, removing them solves the problem. The screenshot shows also the resolution problem. It looks like a great CGA screen (CGA was, max, 640x200, with 16 colors), time to google the solution: <a href='http://www.sucka.net/2010/03/nvidia-drivers-ubuntu-10-04-lucid-lynx/'>edit some grub 2 files</a> and the reupdate grub. Finally there!</p>
+this error is obviously related to my /etc/fstab entries, removing them solves the problem. The screenshot shows also the resolution problem. It looks like a great CGA screen (CGA was, max, 640x200, with 16 colors), time to google the solution: <a href="http://www.sucka.net/2010/03/nvidia-drivers-ubuntu-10-04-lucid-lynx/">edit some grub 2 files</a> and the reupdate grub. Finally there!</p>
 
 <p>So, not a smooth update; system is now working; a process called 'virtuoso-t' insists on taking a minimum of 10% CPU time, and the startup and shutdown times, as well as sleep/wake up times seem to take slightly longer, but for today the time is over.</p>
-  
+
+ 
 <p class="entry"><span class="entry-date">29th April 2010</span>Ubuntu day</p> 
   
  <p> <img src='images/os.png' alt='os icon' class='blog'/> 
