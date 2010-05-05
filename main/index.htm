@@ -9,6 +9,7 @@
 <!--
 .entry  { margin-left: -10px; margin-right: -10px; background: #eee;color: #b95959; text-align: left; font-family: courier, monospace; font-size: 16px; }
 .entry-date  { padding-right:60px; font-family: courier, monospace; color: #222; font-family: courier, monospace; font-size: 11px;}
+img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; width:96px}
 -->
 </style>
 </head>
@@ -17,9 +18,41 @@
  <div id='body'>
  <div id='content'>
  
+<p class="entry"><span class="entry-date">30th April 2010</span>Upgrading to Kubuntu 10.4</p> 
+
+<p> <img src='images/os.png' alt='os icon' class='blog'/> 
+One hour to upgrade Kubuntu to 10.4, counting with a few pauses to notice dialogs requiring input. Not bad at all. But after rebooting, I encountered the same problem as on my last upgrade: Grub hadn't been executed properly. Fortunately, I am still able to get into the previous kernel, and, after a few discouraging windows -wrong resolution- and error messages, I am able to boot, get into terminal mode and issue the first rescue command:</p>
+
+<p class='mark'>sudo update-grub</p>
+
+<p>Rebooting gets me into the right kernel, but the rest of errors still happen. I am still using Grub, old well known Grub, and I must update manually into Grub 2. Seems like a good moment:</p>
+
+<p class='mark'>sudo apt-get install grub2</p>
+
+<p>On reboot, the grub menu will now offer several options:
+<ul>
+<li>Chainload Grub2, from where I can boot Vista, Os X without problems</li>
+<li>Execute a command ugrade-from-grub-legacy, that, if selected, just shows an error message</li>
+<li>Boot any of the 10.04 LTS installations modes, including the very latest kernel</li>
+</ul></p>
+
+<p>Boot again into Kubuntu, terminal mode, and upgrade Grub from legacy:</p>
+
+<p class='mark'>sudo upgrade-from-grub-legacy</p>
+
+<p>select hard disk (/dev/sda), let it work -finds Vista, OsX, great-, reboot again.</p>
+
+<p>First surprise: two entries for OsX, 32 bits and 64 bits. Both seem to start slower, but both seem also to bypass Chameleon, and definitely boot OsX into the required mode (32 or 64 bits). Nice, but I wonder how to handle it on future OsX upgrades, and how this is working.</p>
+
+<p><img src='images/kubuntu-error.jpg' alt='error installing kubuntu' class='right'/> Back to the root, time to solve the Ubuntu errors and the graphic resolution problem-. Right is the screenshot with one of the errors;
+
+this error is obviously related to my /etc/fstab entries, removing them solves the problem. The screenshot shows also the resolution problem. It looks like a great CGA screen (CGA was, max, 640x200, with 16 colors), time to google the solution: <a href='http://www.sucka.net/2010/03/nvidia-drivers-ubuntu-10-04-lucid-lynx/'>edit some grub 2 files</a> and the reupdate grub. Finally there!</p>
+
+<p>So, not a smooth update; system is now working; a process called 'virtuoso-t' insists on taking a minimum of 10% CPU time, and the startup and shutdown times, as well as sleep/wake up times seem to take slightly longer, but for today the time is over.</p>
+  
 <p class="entry"><span class="entry-date">29th April 2010</span>Ubuntu day</p> 
   
- <p> <img src='images/os.png' alt='os icon' class='left'/> 
+ <p> <img src='images/os.png' alt='os icon' class='blog'/> 
  Today is the release day for Ubuntu 10.04 Lucid Lynx, so I will be installing tonight its <a href='http://www.kubuntu.org'>KDE flavour</a>. Its focus is on the cloud, and there should be no major changes on the desktop experience; I decided to run some tests to check how Ubuntu fares against Os X and Microsoft Vista on a very specific subject: startup and shutdown times, as well as the time required to put the machine to sleep and to wake it up. I used my Q9550 cpu, 8 gigs, on a 300 Gb Velociraptor hard drive: the firts partition is allocated to Vista and the last to Kubuntu, so it can be expected some higher disk speeds when running Vista.</p>
  
  <table class='table_text_center'>
@@ -57,7 +90,7 @@
    
 <p class="entry"><span class="entry-date">29th April 2010</span>TableFilter v3.0.0</p> 
   
- <p> <img src='images/tablefilter.png' alt='table filter icon' class='left'/> 
+ <p> <img src='images/tablefilter.png' alt='table filter icon' class='blog'/> 
  Finally, I was able to complete the new version of <a href="tablefilter/index.html">Table Filter</a>;
  getting the new filter editor component took me quite a long time. Synchronizing then the code
  to have the Java 1.5 version, updating comments, the documentation, and the web site took me almost the
@@ -69,7 +102,7 @@
   
 <p class="entry"><span class="entry-date">29th April 2010</span>Fighting Subversion</p> 
  
-<p><img src='images/svn.png' alt="Subversion icon" class='left'/>
+<p><img src='images/svn.png' alt="Subversion icon" class='blog'/>
 Today, I fought subversion again. A <span class='mark'>simple</span> change took me hours to solve. 
 The problem? I work on multiple computers and I intend to commit my changes on a single repository.
 As far as changes keep simple, commitments work smoothly; 
@@ -95,7 +128,7 @@ I think it is time to stop fighting what subversion was meant to solve, time to 
  
 <p class="entry"><span class="entry-date">17th April 2010</span>Slaughterhouse 5</p> 
  
-<p> <img src='books/2010/Slaughterhouse5.jpg' alt="Slaughterhouse 5 cover" class='left' height='96' wifth='96'/><a href='books/2010/index.html'>[books]</a>
+<p> <img src='books/2010/Slaughterhouse5.jpg' alt="Slaughterhouse 5 cover" class='blog'/><a href='books/2010/index.html'>[books]</a>
  An auto-referent book, where the motifs behind it are part of the book itself, and the book seems totally alien to the story is trying to tell. That's it, I am more drawn to the style of the book than to the story that it tells, or that it intends to tell.</p>
 
 <p>You see, the main point of the book is the story behind, the bombing of Dresden, and the unnecessary death of far more people than Hiroshima or Nagasaki killed. But what I remember from the book is the style, the prose of Vonnegut, his way to tell things. I guess I am just another Tralfamadorian, able to watch the Earthling Zoo, thinking that there is nothing to solve. I pay full tribute to the cleverness of this book, although it still failed to move me.</p>
@@ -103,14 +136,14 @@ I think it is time to stop fighting what subversion was meant to solve, time to 
  
 <p class="entry"><span class="entry-date">12th April 2010</span>TableFilter v2.2.0</p> 
   
- <p> <img src='images/tablefilter.png' alt='table filter icon' class='left'/> 
+ <p> <img src='images/tablefilter.png' alt='table filter icon' class='blog'/> 
  Spent some time updating <a href="tablefilter/index.html">Table Filter</a> to recover Java 1.5 compatibility. The time went, mostly, to uncover old bugs that were raising out of index exceptions. This becomes the version 2.2, which I expect to last... for a few days.</p>
  <p>The point is, that the filtering uses normal Swing controls -mainly comboboxes-, which render awfully in some platforms; in special, mixing different filtering modes makes the filter header look all but inconsistent, so I have worked for the last weeks on a custom filter editor, that should solve these
  issues. In addition, it adds some features, like autocompletion, and magically simplifies the API. It also breaks compatibility, and it looks, in general, like a completely new version, so I am investing some extra time to squeeze bugs and inconsistencies.</p>
  
 <p class="entry"><span class="entry-date">5th April 2010</span>Saturn's Children</p> 
  
-<p> <img src='books/2010/SaturnsChildren.jpg' alt="Saturn's Children cover" class='left' height='96' wifth='96'/><a href='books/2010/index.html'>[books]</a>
+<p> <img src='books/2010/SaturnsChildren.jpg' alt="Saturn's Children cover" class='blog'/><a href='books/2010/index.html'>[books]</a>
  Huge. I hadn't read science fiction for quite a long time, and I was frankly rusty for the exhibition of imagination in this book, just amazing.</p>
 <p>I am not sure what I really prefer: if the realism of the actions -interplanetary trips that take indeed months or years, the boredom during those trips-, the often used scientific explanations, the ironies and humor -these are robots, bored robots, even with existential problems-, or the erotism -yes, even with robots-.</p>
 <p>Then, it comes the plot, as imaginative as the descriptions of unknown worlds, and really twisted. Of course, it is a plot where basic logical rules do not apply, so it is quite a challenge to follow.</p>
