@@ -9,7 +9,7 @@
     <location source='main' target='.'>
         <template mold='../mold.htm'/>
     </location>       
-    <location source='Java' target='.'>
+    <location source='java' target='.'>
         <template mold='../mold.htm'/>
     </location>       
     <location source='python'>
@@ -25,14 +25,14 @@
         <template mold='../mold.htm'/>
     </location>       
     <location source='css'/>
-    <location source='Java/idldepend' target='idldepend'>
+    <location source='java/idldepend' target='idldepend'>
         <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
     </location>
-    <location source='Java/glassedpane' target='glassedpane'>
+    <location source='java/glassedpane' target='glassedpane'>
         <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
         <exclude pattern='api'/>
     </location>
-    <location source='Java/glassedpane/api' target='glassedpane/api'>
+    <location source='java/glassedpane/api' target='glassedpane/api'>
         <template mold='../../../javadoc.mold.htm'>
             <exclude pattern='index.html'/>
             <exclude pattern='*-frame.html'/>
@@ -44,18 +44,18 @@
     <location source='csharp/xmlobjectsdocgui'>
         <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
     </location>
-    <location source='Java/tablefilter' target='tablefilter'>
+    <location source='java/tablefilter' target='tablefilter'>
         <template mold='../../tfilter.mold.htm' dismissSourceHead='true'/>
         <exclude pattern='api'/>
         <exclude pattern='api5'/>
     </location>
-    <location source='Java/tablefilter/api' target='tablefilter/api'>
+    <location source='java/tablefilter/api' target='tablefilter/api'>
         <template mold='../../../javadoc.mold.htm'>
             <exclude pattern='index.html'/>
             <exclude pattern='*-frame.html'/>
         </template>
     </location>
-    <location source='Java/tablefilter/api5' target='tablefilter/api5'>
+    <location source='java/tablefilter/api5' target='tablefilter/api5'>
         <template mold='../../../javadoc.mold.htm'>
             <exclude pattern='index.html'/>
             <exclude pattern='*-frame.html'/>

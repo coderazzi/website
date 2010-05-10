@@ -18,11 +18,82 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
  <div id='body'>
  <div id='content'>
  
+<p class="entry"><span class="entry-date">10th May 2010</span>Apparent procrastination</p> 
+<p><img src='images/thinking.jpg' alt='thoughts icon' class='blog'/> 
+	I had had, quite a few weeks ago, a request to get the source code of one 
+	of my <a href='tablefilter/index.html'>OSS projects</a> in a public repository; more to the point, the request
+	suggested <a href='http://github.com/'>GitHub</a>.</p>
+
+<p>I was in that moment thinking of a quite big update to that library, and I
+	had still other requirement pending: getting the library into the central
+	<a href='http://maven.apache.org/'>maven</a> repository.</p>
+
+<p>The result: high apparent procrastination. I was, in fact, dedicating a lot
+	of my spare time to the project, but one way or another, everything moved at
+	ridiculosly low speeds.</p>
+
+<p>Choosing the central repository required some time to check the differences
+	between GitHub and other repositories. I was quite pissed off with subversion,
+	but then I had to dedicate time to learn Git. And then, <a href='http://mercurial.selenic.com/'>mercurial</a>.</p>
+
+<p>Related to the other requirements, to be able to put artifacts in the central Maven repository required, then,
+	setting up <a href='http://samba.anu.edu.au/rsync/'>rsync</a>, so that Maven would 
+	be able to fetch automatically the artifacts
+	(the manual process was looking heavy and long). After thinking about 
+	how to better proceed, I discovered that the requirements had changed, and the
+	rsync path was not available anymore, so it was needed to host the artifacts in
+	some intermediate repository.</p>
+
+<p>On the meantime, I was working on changing the implementation of the library. I was
+	trying ot make it simple, going along the normal implementation of UI components
+	in Swing, so I tried many approaches; in fact, all approaches were valid, gave the
+	expected result, but were just not clean enough. So I kept working on them, and the
+	apparent procrastination kept mounting up.</p>
+
+<p>Finally, about 2 weeks ago, I gave thumbs up to the final implementation. Due to 
+	the extensive changes, documentation updates were absolutly required, and I was able to lose
+	still one more week getting a proper delivery (I managed to get the project 
+	<a href='http://ant.apache.org/'>ANT</a>-ed
+	on the meantime). I thought the other open points -central source, maven repository- would
+	be a matter of hours, nice to be able to be still that naive ...</p>
+
+<p>I checked GitHub, Google code, and I found the later more compelling. Starting the
+	setup, I was faced to the subversion/mercurial decision, and then I got into a frentic
+	trial to understand Mercurial and how it would better fit my project.
+	While setting up Google Code, I decided it was better to also setup a discussion group,
+	fun stuff, stagnating stuff!</p>
+
+<p>While decissions were taken, I got into the maven requirements: now, the artifacts must
+	be hold in a central forge, and only several are currently accepted. My project only fit
+	in one of the forges: <a href='http://nexus.sonatype.org/oss-repository-hosting.html'>Nexus</a>. 
+	Setting it up requires a new account at Sonatype, plus
+	another one at Jira at Sonatype. Then, writting a ticket, that once solved, gives
+	access to a snapshot repository. This process took me very long time, due to a silly
+	error on my input (I gave my name as a single name -Lu-, but a full name, including family
+	name was expected. No related messages, but nothing worked!).</p>
+
+<p>Once everything was up, I still had to mavenize my project. I had just ant-ed it, and,
+	well, maven has its very own way to accomplish things. If you wanna do things your way,
+	you will most likely fail. You see, maven is very flexible, as far as you do things as
+	it expects; I wonder if my wife will understand the joke if I start calling her Maven... </p>
+
+<p>So, one day later, I managed to get into some self-agreement on how to get the normal maven
+	deployment process, the eclipse project structure and my own delivery process in a common
+	approach. I still had to play with GPG keys, create one and set it up in a central repository,
+	and then it was time to start thinking about some key / password program, because the
+	process had implied, in total, setting up 6 accounts / keys.</p>
+
+<p>Now, I have the impression that everything is as it should be; my knowledge on some matters
+	is still abit shaky, but I think I should be able to handle an update of the project. And I
+	think I know a bit of mercurial. And I am totally surprised on how good so many things are
+	setup -the central maven repository, Nexus, Google Code, Google discussion groups-. 
+	It was really worth my time. All of it.</p>
+
 <p class="entry"><span class="entry-date">07th May 2010</span>Still, resolution</p> 
 <p><img src='images/thinking.jpg' alt='thoughts icon' class='blog'/> 
 	Long time ago, I remembered that, longer time ago, I though about megapixels and human vision. 
 	Mind you, it was around 1985, my only computer was a ZX-Spectrum with a resolution of 256 x 192 pixels, 
-	requiring 6 Kb, plus the memory required to represent colors (just .75 kb, in fact).</p>
+	requiring 6 Kb, plus the memory required to represent colors (just another .75 kb).</p>
 
 <p>I asked an older friend, somebody making already money with software!, which could be the resolution 
 	of the human eye. You see, games was, then, 8 bytes, they looked like... well, 8 bytes. I would look 
@@ -31,7 +102,7 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 <p>As it goes, the eye has the equivalent to, maximum, 1.5 megapixels. And its connection to the brain 
 	only supports about 1/7 of this capacity (maximal, again). This would be equivalent to about .150 megapixels, 
 	which means 25000 times the resolution of that old ZX-Spectrum. Which perhaps sounds like a lot, until you 
-	consider your 10 or 12 years old camera, that was already able to shoot 1 megapixel pictures, pictures that, 
+	consider your 10 years old camera, that was already able to shoot 1 megapixel pictures, pictures that, 
 	by any current standard, look just poor.</p>
 
 <p>Of course, there is a trick: focus. A human eye only sees, at a huge resolution, a very small area. 
@@ -44,7 +115,8 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 
 <p>Again, this is not really the case: most games show better resolution on the supposedly focused area, degrading it otherwise.</p>
 
-<p>Long time ago, I thought that, some time later, I would be solving all these problems. Good riddance.</p>
+<p>So, the eye is an example of relatively bad hardware (1.5 megapixels and a limited cable connection) coupled with
+   great software -in fact, backed up with good hardware, to focus on the interesting spots-.</p>
 
 <p class="entry"><span class="entry-date">05th May 2010</span>TableFilter v3.0.1</p> 
   
