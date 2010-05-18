@@ -7,7 +7,7 @@
  <meta name="Description" content="homepage">
 <style type="text/css">
 <!--
-.entry  { margin-left: -10px; margin-right: -10px; background: #eee;color: #b95959; text-align: left; font-family: courier, monospace; font-size: 16px; }
+.entry  { margin-left: -10px; margin-right: -10px; padding-top:30px; padding-bottom:10px; background: #eee;color: #b95959; text-align: left; font-family: courier, monospace; font-size: 16px; }
 .entry-date  { padding-right:60px; font-family: courier, monospace; color: #222; font-family: courier, monospace; font-size: 11px;}
 img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; width:96px}
 -->
@@ -18,26 +18,93 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
  <div id='body'>
  <div id='content'>
  
-<<<<<<< .mine
-<p class="entry"><span class="entry-date">12th May 2010</span>TableFilter v3.1.0</p> 
-  
- <p> <img src='images/tablefilter.png' alt='table filter icon' class='blog'/> 
- Completed the work on the <a href="tablefilter/index.html">Table Filter</a> library, now version 3.1.0;</p>
- 
- <p>The sources are now on a mercurial repository, hosted at Google Code</a>, 
-    as project <a href='http://code.google.com/p/tablefilter-swing/'>tablefilter-swing</a>
- </p>
- 
- <p>The library can now be used directly in maven, at its is included in the central maven
-   repository, under the expected group id <a href='http://repo2.maven.org/maven2/net/coderazzi/'>net.coderazzi<a/>
- </p>
- 
- <p>The process has included creating also a forum, has taken quite a long time, all together.</p>
-  
+<p class="entry"><span class="entry-date">18th May 2010</span>Grub2 and Os X</p> 
 
-=======
+<p> <img src="images/os.png" alt="os icon" class="blog"> 
+	The new Linux kernel 2.6.34 features a modified suspend/resume process, which should improve the times to
+	put a system to sleep or wake it up. I had intended to check today these improvements, but I prefer to wait
+	until the kernel finds its way on the Ubuntu repositories.</p> 
+
+<p>I had wanted for some time to check the new functionality in Grub2, which allows to boot directly a hackintosh
+	system. In my case, it works rather well, but with important caveats: my dual screen configuration is lost, and
+	I am unable to get the system to sleep. I initially thought that the booting would be missing the
+	<span class='mark'>/Extra</span> folder, containing the specific kexts, but that is not the case. The grub script 
+	looks as good as:</p>
+
+<pre>menuentry "Mac OS X (64-bit) (on /dev/sda2)" {
+	insmod hfsplus
+	set root='(hd0,2)'
+	search --no-floppy --fs-uuid --set 5efc40708a8946a9
+        insmod vbe
+        set do_resume=0
+        if [ /var/vm/sleepimage -nt10 / ]; then
+           if xnu_resume /var/vm/sleepimage; then
+             set do_resume=1
+           fi
+        fi
+        if [ $do_resume == 0 ]; then
+           xnu_uuid 5efc40708a8946a9 uuid
+           if [ -f /Extra/DSDT.aml ]; then
+              acpi -e /Extra/DSDT.aml
+           fi
+           xnu_kernel64 /mach_kernel boot-uuid=${uuid} rd=*uuid
+           if [ /System/Library/Extensions.mkext -nt /System/Library/Extensions ]; then
+              xnu_mkext /System/Library/Extensions.mkext
+           else
+              xnu_kextdir /System/Library/Extensions
+           fi
+           if [ -f /Extra/Extensions.mkext ]; then
+              xnu_mkext /Extra/Extensions.mkext
+           fi
+           if [ -d /Extra/Extensions ]; then
+              xnu_kextdir /Extra/Extensions
+           fi
+           if [ -f /Extra/devprop.bin ]; then
+              xnu_devprop_load /Extra/devprop.bin
+           fi
+           if [ -f /Extra/splash.jpg ]; then
+              insmod jpeg
+              xnu_splash /Extra/splash.jpg
+           fi
+           if [ -f /Extra/splash.png ]; then
+              insmod png
+              xnu_splash /Extra/splash.png
+           fi
+           if [ -f /Extra/splash.tga ]; then
+              insmod tga
+              xnu_splash /Extra/splash.tga
+           fi
+        fi
+}</pre>
+
+<p>For the time being, I have added an entry to boot it using the good old Chameleon:</p>
+<pre>cd /etc/grub.d
+sudo vi 45_osx</pre>
+
+<p>Now, edit the file 45_osx to contain:</p>
+<pre>
+#!/bin/sh 
+exec tail -n +3 $0
+
+cat &lt;&lt; EOF
+menuentry "OsX [Chameleon]" {
+	insmod hfsplus
+	set root=(hd0,2)
+	multiboot /boot
+}
+EOF	
+</pre>
+
+<p>And then, just execute:</p>
+<pre>sudo chmod +x 45_osx
+sudo update-grub</pre>
+
+<p>Kudos to this insanelymac <a href='http://www.insanelymac.com/forum/index.php?showtopic=189079'>post</a></p>
+
+
+
 <p class="entry"><span class="entry-date">16th May 2010</span>Multiple monitors</p> 
-<p><img src='images/hardware.png' alt='hardwaee icon' class='blog'/> 
+<p><img src='images/hardware.png' alt='hardware icon' class='blog'/> 
 	I have been working on a dual screen setup for a long time, using two HP w2207 22" monitors.</p>
 
 <p>About 12 months ago, I started using two separate computers to handle those monitors. 
@@ -74,7 +141,22 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 <p>Unfortunately, there is no lesson to learn here. Even if you decide, now, to buy all your monitors in 
 	triplets, perhaps you will want in some future to setup 4 monitors :-)</p>
 
->>>>>>> .r150
+
+<p class="entry"><span class="entry-date">12th May 2010</span>TableFilter v3.1.0</p> 
+
+ <p> <img src='images/tablefilter.png' alt='table filter icon' class='blog'/> 
+ Completed the work on the <a href="tablefilter/index.html">Table Filter</a> library, now version 3.1.0;</p>
+
+ <p>The sources are now on a mercurial repository, hosted at Google Code</a>, 
+    as project <a href='http://code.google.com/p/tablefilter-swing/'>tablefilter-swing</a>
+ </p>
+
+ <p>The library can now be used directly in maven, at its is included in the central maven
+   repository, under the expected group id <a href='http://repo2.maven.org/maven2/net/coderazzi/'>net.coderazzi<a/>
+ </p>
+
+ <p>The process has included creating also a forum, has taken quite a long time, all together.</p>
+
 <p class="entry"><span class="entry-date">10th May 2010</span>Apparent procrastination</p> 
 <p><img src='images/thinking.jpg' alt='thoughts icon' class='blog'/> 
 	I had had, quite a few weeks ago, a request to get the source code of one 
@@ -87,7 +169,7 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 
 <p>The result: high apparent procrastination. I was, in fact, dedicating a lot
 	of my spare time to the project, but one way or another, everything moved at
-	ridiculosly low speeds.</p>
+	ridiculously low speeds.</p>
 
 <p>Choosing the central repository required some time to check the differences
 	between GitHub and other repositories. I was quite pissed off with subversion,
@@ -102,25 +184,25 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 	some intermediate repository.</p>
 
 <p>On the meantime, I was working on changing the implementation of the library. I was
-	trying ot make it simple, going along the normal implementation of UI components
+	trying to make it simple, going along the normal implementation of UI components
 	in Swing, so I tried many approaches; in fact, all approaches were valid, gave the
 	expected result, but were just not clean enough. So I kept working on them, and the
 	apparent procrastination kept mounting up.</p>
 
 <p>Finally, about 2 weeks ago, I gave thumbs up to the final implementation. Due to 
-	the extensive changes, documentation updates were absolutly required, and I was able to lose
+	the extensive changes, documentation updates were absolutely required, and I was able to lose
 	still one more week getting a proper delivery (I managed to get the project 
 	<a href='http://ant.apache.org/'>ANT</a>-ed
 	on the meantime). I thought the other open points -central source, maven repository- would
 	be a matter of hours, nice to be able to be still that naive ...</p>
 
 <p>I checked GitHub, Google code, and I found the later more compelling. Starting the
-	setup, I was faced to the subversion/mercurial decision, and then I got into a frentic
+	setup, I was faced to the subversion/mercurial decision, and then I got into a frenetic
 	trial to understand Mercurial and how it would better fit my project.
 	While setting up Google Code, I decided it was better to also setup a discussion group,
 	fun stuff, stagnating stuff!</p>
 
-<p>While decissions were taken, I got into the maven requirements: now, the artifacts must
+<p>While decisions were taken, I got into the maven requirements: now, the artifacts must
 	be hold in a central forge, and only several are currently accepted. My project only fit
 	in one of the forges: <a href='http://nexus.sonatype.org/oss-repository-hosting.html'>Nexus</a>. 
 	Setting it up requires a new account at Sonatype, plus
@@ -141,7 +223,7 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 	process had implied, in total, setting up 6 accounts / keys.</p>
 
 <p>Now, I have the impression that everything is as it should be; my knowledge on some matters
-	is still abit shaky, but I think I should be able to handle an update of the project. And I
+	is still a bit shaky, but I think I should be able to handle an update of the project. And I
 	think I know a bit of mercurial. And I am totally surprised on how good so many things are
 	setup -the central maven repository, Nexus, Google Code, Google discussion groups-. 
 	It was really worth my time. All of it.</p>
@@ -174,6 +256,7 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 
 <p>So, the eye is an example of relatively bad hardware (1.5 megapixels and a limited cable connection) coupled with
    great software -in fact, backed up with good hardware, to focus on the interesting spots-.</p>
+
 
 <p class="entry"><span class="entry-date">05th May 2010</span>TableFilter v3.0.1</p> 
   
