@@ -87,9 +87,10 @@
             <item name='IdlDepend' file='idldepend/index.htm'/>
             <group name='Table filter'>
                 <item name='Overview' file='tablefilter/index.html'/>
+                <item name='Tutorial' file='tablefilter/tutorial.html'/>
                 <item name='Download' file='tablefilter/download.html'/>
                 <item name='Javadoc' file='tablefilter/javadoc.html'/>
-                <item name='How to' file='tablefilter/howto.html'/>
+                <item name='How to ...' file='tablefilter/howto.html'/>
                 <item name='Java 5 support' file='tablefilter/java5.html'/>
             </group>
             <item name='GlassedPane' file='glassedpane/index.html'/>
