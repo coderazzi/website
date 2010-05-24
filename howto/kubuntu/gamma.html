@@ -1,0 +1,74 @@
+<html>
+
+<head>
+ <title>Setup multiple monitors under Kubuntu</title>
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="Kubuntu gamma color">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 17th March 2010, 02:22 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>
+
+ <h1>Calibrating screen's color</h1>
+
+ <p>This setup is only needed if you really care for color accuracy, or if you have more than one monitor, and their models do not match.
+	In this case, a color can look quite different on separate monitors, which can be specially bothering in some cases. 	
+ </p>
+
+ <p>Some monitors have many configuration settings. I focus here on the bare bones: brightness, contrast, and gamma correction (the 
+	correlation between a color value and its representation on the screen). Brightness and contrast are usually setup using the monitor
+	settings, while the gamma value usually require specific software setup. More to the point, whatever is the gamma correction defined
+	in the monitor settings, it is usually modified by the software setup: by default, Os X and Windows apply a gamma correction of 2.2
+	(which is applied over the correction defined by the monitor itself, no overriding here).
+ </p>
+
+ <p>I am unsure on how Ubuntu defines the gamma value. There is a command: <span class='mark'>xgamma</span> that shows the applied gamma,
+	and is, by default, 1.0. However, this does not corresponds to the reality (as far as I can gather, this xgamma 1.0 value corresponds
+	to a 2.0 value). The best help here is using calibration tools, which can be as simple as checking some images.</p>
+	
+ <p>These <a href='http://www.lagom.nl/lcd-test/gamma_calibration.php'>pages</a> will show the current gamma value. I personally favor a
+	value of 1.8, which seems to correspond to a <span class='mark'>xgamma=1.3</span> value. It is easy to try different values using the command:</p>
+	
+<pre>xgamma -gamma=x.y</pre>
+
+ <p>It is better to apply different gamma values and see the results on the 
+	<a href='http://www.lagom.nl/lcd-test/black.php'>black</a> and <a href='http://www.lagom.nl/lcd-test/white.php'>white</a> levels.</p>
+	
+ <p>Once the desired xgamma value is calculated, it is needed to update the <span class='mark'>/etc/X11/xorg.conf</span> file, adding the
+	gamma value into the &quot;monitor&quot; section. In my case, it ends looking up like:</p>
+	
+<pre>Section "Monitor"
+	Identifier 	"Configured Monitor"
+	Gamma		1.3
+EndSection</pre>
+
+ <p>Please note that it is possible to apply different gamma values to the red / green / blue channels. After this change, I would still like to have my configuration automatically 
+	updated, so I execute, as detailed on the /etc/X11/xorg.conf file:</p>
+ <pre>sudo dpkg-reconfigure -phigh xserver-org</pre>
+
+<p>Unfortunately, this is not enough. If the X server is restarted, the xgamma command will report a 1.3 gamma value. But, if now the 
+   command is reissued:</p>
+
+<pre>xgamma -gamma=1.3</pre>
+
+<p>The gamma correction is <span class='mark'>then</span> applied: that is, the gamma had not been properly corrected yet. There seems
+	to be some problem with the gamma value applied by the display driver itself. In my case, using NVidia, there is a panel
+	-NVidia X Server settings- that displays, among others, the gamma correction, and which does not match the value reported by
+	xgamma. As far as I have gathered, it is needed to update both values: the nvidia settings and the Xorg.conf value (in fact I 
+	am afraid that all is needed is to update the nvidia settings). When this is done, a file is created on the home directory,
+	<span class='mark'>.nvidia-settings-rc</span>, containing the given gamma values.</p>
+
+ <p>So, the right procedure for NVidia drivers is:<ol>
+		<li>Open the NVidia X Server Settings, and set a gamma value of 1.3. Exit the settings; a file will have been created on the
+			home directory, <span class='mark'>.nvidia-settings-rc</span>, containing the given gamma values</li>
+		<li>Edit the <span class='mark'>/etc/X11/xorg.conf</span> file, as detailed above.</li>
+		<li>Reboot (restarting the X server is enough).</li>
+	</ol>
+	</p>
+
+
+</div></div></body></html>

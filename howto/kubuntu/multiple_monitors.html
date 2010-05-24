@@ -1,0 +1,70 @@
+<html>
+
+<head>
+ <title>Setup multiple monitors under Kubuntu</title>
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="Kubuntu Nvidia multiple monitors">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 17th March 2010, 02:03 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>
+
+ <h1>Setup multiple monitors on Kubuntu (Nvidia)</h1>
+
+ <p>Assuming that the nvidia drivers are installed, it is needed to open the <span class='mark'>NVIDIA X Server Settings</span>,
+	located in the Applications / Settings menu.</p>
+	
+ <p>On the left panel of the shown window, click on the <span class='mark'>X Server Display Configuration</span> option, that should
+	show all the attached screens. By now, only one should be enabled, so click on the disabled one and press the 
+	<span class='mark'>Configure...</span> button: select now the <span class='mark'>TwinView</span> option, press Ok, select the correct
+	position (left / right) from the main window, and then apply the changes.</p>
+	
+ <p>Both screens should be now enabled, and the mouse should move around as expected (specially moving left/right). However, these changes
+	only last for the current session, will be lost as soon as the XServer is restarted. To make the changes persistent, press now the
+	<span class='mark'>Save to X Configuration File</span> button.</p>
+	
+ <p>Somehow, the offered changes are not what they should be, it is better to handle the changes manually (it only implies adding two
+	lines to the configuration file). Press the <span class='mark'>Show preview...</span> button, and pay attention to the 
+	<span class='mark'>Section &quot;Screen&quot;</span>: it will contain two lines, looking like:</p>
+<pre>Option		"TwinView" "1"
+Option		"metamodes" "DFP-0: nvidia-auto-select +1680+0, DFP-1: nvidia-auto-select +0+0"</pre>
+
+ <p>The second line will depend on your exact settings.	In this example, it means that the main window is located 
+	at position 1680:0, and the additional monitor is on its left (1680 being my resolution width).</p>
+	
+ <p>Open then the <span class='mark'>/etc/X11/xorg.conf</span> file and add these two lines into the 
+	Section &quot;Screen&quot;. After this change, I would still like to have my configuration automatically 
+	updated, so I execute, as detailed on the /etc/X11/xorg.conf file:</p>
+	
+ <pre>sudo dpkg-reconfigure -phigh xserver-org</pre>
+
+ <p>My own configuration file, without the initial comments, looks like:</p>
+
+<pre>Section "Monitor"
+	Identifier	"Configured Monitor"
+EndSection
+
+Section "Screen"
+	Identifier	"Default Screen"
+	Monitor		"Configured Monitor"
+	Device		"Configured Video Device"
+	DefaultDepth	24
+	Option		"TwinView" "1"
+	Option		"metamodes" "DFP-0: nvidia-auto-select +1680+0, DFP-1: nvidia-auto-select +0+0"
+EndSection
+
+Section "Module"
+	Load	"glx"
+EndSection
+
+Section "Device"
+	Identifier	"Configured Video Device"
+	Driver	"nvidia"
+	Option	"NoLogo"	"True"
+EndSection</pre>
+
+</div></div></body></html>

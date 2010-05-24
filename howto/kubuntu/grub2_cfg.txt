@@ -1,0 +1,116 @@
+Where art thou, olde Grub?
+
+Not that long ago, most Linux distributions came with Lilo as the default boot loader. As of now, the latest stable Lilo distribution is almost 51 months old (19th Feb 2007), replaced by Grub, and more recently, by Grub2. Grub2 is like Grub, but without the grub, much more powerful,much more everything, including a really more complex configuration.
+
+Grub was so easy to configure as to modifying a text file. Grub2 is, well, powerful. There are more and more places pointing out ways to better configure Grub2. I usually default to:
+http://www.dedoimedo.com/computers/grub-2.html
+http://members.iinet.net/~herman546/p20/GRUB2%20Configuration%20File%20Commands.html
+https://wiki.ubuntu.com/Grub2
+
+There are three specific customizations that I usually require:
+-Resolution, to avoid having Grub booting into a mode that my monitor can't gracefully handle.
+-USB, as I usually like to drop legacy USB support on the BIOS (it causes problems when I boot one of my machines into Os X)
+-Custom boot entries, to add some partitions.
+
+1. Resolution
+
+Most current monitors work very nicely at nice, huge resolutions. If you throw them something archaic, like VGA, there is some upscaling on place, which very often looks odd, or just old. To obtain a nice looking booting process, it is needed to configure Grub2 on the right resolution. How: follow these <a href='http://www.sucka.net/2010/03/nvidia-drivers-ubuntu-10-04-lucid-lynx/'>instructions</a>
+
+It requires:<ol>
+
+<li>Edit <span class='mark'>/etc/default/grub</span>, setting <span class='mark'>GRUB_GFXMODE=1680x1050</span>, or whatever your favorite resolution is. </li>
+
+<li>Edit <span class='mark'>/etc/grub.d/00_header</span>, setting <span class='mark'>set gfxpayload=keep</span>, just after the line <span class='mark'>gfxmode=${GRUB_GFXMODE}</span>. </li>
+
+<li>Update now grub, using <pre>sudo update-grub</pre></li>
+
+
+2. USB
+
+One of my machines has USb problems under Os X. The solution is to remove the support for legacy USB on the BIOS, but then I must use a PS/2 keyboard to change the booting operative system on the Grub menu. This situation was supposed to be solved with Grub2, as it supports directly USB functionality.
+
+However, such functionality seems to be a bit buggy at the moment, and my computer hangs when I follow <a href='http://grub.enbug.org/USBSupport'>these instructions</a>.
+
+3. Custom boot entries
+
+My internal hard disk includes partitions for Vista and Snow Leopard. Grub2 discovered these partitions and populated my boot menu with corresponding entries. I was particularly surprised to see entries for Os X, both for 32 and 64 bits. What is more: they indeed work, but with some caveats, as expected. In my case, the booting is always verbose -I guess there should be some way to solve this-, and once booted, the hackinstosh is unable to sleep; it does not recognize neither my dual screen configuration.
+
+The created boot entry script seems to be perfectly valid for a hackintosh system, looking like:
+<pre>	menuentry "Mac OS X (64-bit) (on /dev/sda2)" {
+		insmod hfsplus
+		set root='(hd0,2)'
+		search --no-floppy --fs-uuid --set 5efc40708a8946a9
+	        insmod vbe
+	        set do_resume=0
+	        if [ /var/vm/sleepimage -nt10 / ]; then
+	           if xnu_resume /var/vm/sleepimage; then
+	             set do_resume=1
+	           fi
+	        fi
+	        if [ $do_resume == 0 ]; then
+	           xnu_uuid 5efc40708a8946a9 uuid
+	           if [ -f /Extra/DSDT.aml ]; then
+	              acpi -e /Extra/DSDT.aml
+	           fi
+	           xnu_kernel64 /mach_kernel boot-uuid=${uuid} rd=*uuid
+	           if [ /System/Library/Extensions.mkext -nt /System/Library/Extensions ]; then
+	              xnu_mkext /System/Library/Extensions.mkext
+	           else
+	              xnu_kextdir /System/Library/Extensions
+	           fi
+	           if [ -f /Extra/Extensions.mkext ]; then
+	              xnu_mkext /Extra/Extensions.mkext
+	           fi
+	           if [ -d /Extra/Extensions ]; then
+	              xnu_kextdir /Extra/Extensions
+	           fi
+	           if [ -f /Extra/devprop.bin ]; then
+	              xnu_devprop_load /Extra/devprop.bin
+	           fi
+	           if [ -f /Extra/splash.jpg ]; then
+	              insmod jpeg
+	              xnu_splash /Extra/splash.jpg
+	           fi
+	           if [ -f /Extra/splash.png ]; then
+	              insmod png
+	              xnu_splash /Extra/splash.png
+	           fi
+	           if [ -f /Extra/splash.tga ]; then
+	              insmod tga
+	              xnu_splash /Extra/splash.tga
+	           fi
+	        fi
+	}</pre>
+ 
+For the time being, I have added an entry to boot it using the good old Chameleon:
+<pre>cd /etc/grub.d
+sudo vi 45_osx</pre>
+
+Now, edit the file 45_osx to contain:
+<pre>
+#!/bin/sh 
+exec tail -n +3 $0
+
+cat << EOF
+menuentry "OsX [Chameleon]" {
+	insmod hfsplus
+	set root=(hd0,2)
+	multiboot /boot
+}
+EOF	
+</pre>
+And then, just execute:
+<pre>sudo chmod +x 45_osx
+sudo update-grub</pre>
+
+<p>Kudos to the insanelymac <a href='http://www.insanelymac.com/forum/index.php?showtopic=189079'>forum</a>'s information</p>
+
+
+
+
+
+
+I like to hack my machines as to boot quite a few operative systems. Normally I work with the bare bones: Ubuntu / Os X / Microsoft / Solaris. One of my hackintoshes has problems with the USB setup, requiring to disable the Legacy USB support on the Bios. Therefore, I cannot use my USB keyboard with Grub, but that is not problem for Grub2.
+
+
+And not that easy to configure. It can handle USB, it boots directly into my hacintosh installation, 
