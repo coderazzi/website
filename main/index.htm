@@ -18,6 +18,74 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
  <div id='body'>
  <div id='content'>
  
+<p class="entry"><span class="entry-date">26th May 2010</span>TiddlyWiki, Evernote and the likes</p> 
+
+<p> <img src='images/wiki.png' alt='wiki icon' class='blog'/>
+	I have been looking, for quite some time, for the best way to keep my own notes, 
+	usually concerning development, howtos, processes, etc. 
+</p>
+
+<p>For a while, I have used blogging software (<a href='http://wordpress.org/'>Wordpress</a>), 
+	directly hosted at their web site,
+	but storing all my notes as private blogs -when something was generic or useful enough, it would remain public. 
+	Although this is a quite simple solution, it has a major drawback: 
+	it requires Internet access, and I often needed accessing the notes offline.
+</p>
+
+<p>On the same line, I got an <a href='http://www.evernote.com/'>Evernote</a> account, 
+	which is definitely much superior to just using blogging software, 
+	but shares the same drawback. In addition, every web site can be eventually blocked 
+	-it happened in the firewall at my office for a while-, or get temporarily (or worse) down.
+</p>
+
+<p>Then I checked sticker/notes software, available -even directly- on all my platforms (OsX, Windows, Linux). 
+	But this was definitely not the solution: I needed searching capabilities, 
+	more complex forms, and being able to transfer the notes easily across computers -and platforms-.
+</p>
+
+<p>I played then with <a href='http://stickwiki.sourceforge.net/'>WoaS</a> (wiki on a stick), 
+	and <a href='http://www.tiddlywiki.com/'>tiddlywiki</a>, and both really filled my requirements... 
+	for a while. Both support the idea of a single file, automatically handled, to contain all the information. 
+	I saw here two drawbacks: embedding some information (images, pdf files, etc) 
+	would be not a great idea: not only the single file would become much larger, 
+	but it would get directly into the second drawback: there is a single file, 
+	containing all the javascript, plus all the real information, plus any images, 
+	whatsoever... fragility comes to my mind.
+</p>
+	
+<p>Backpedalling now into some more robust requirements, I thought on a nice solution, 
+	hosting the information into some database, using a single-file database, no server required. 
+	Thinking on DBBerkeley or, perhaps SQLLite. There is a somehow nice site comparing plenty of wiki engines: 
+	the WikiMatrix [http://www.wikimatrix.org/] . 
+	It was not that helpful to compare wikis or to decide for the best, as to discover wiki engines. 
+</p>
+
+<p>	But, including all the possible solutions, I decided that the original approach was the best: 
+	keeping a single file, using pure Html/Javascript solutions. 
+	I had some interest on python based engines, but, whichever the choice was, the problem remained: 
+	the need to execute a python process, and then having the browser communicate with it. 
+	And, usually, the python program would not require just a simple installation, but adding some eggs to the basket.
+</p>
+
+<p>	So, I finally decided using the single Html file approach: WoaS or tiddlewiki. 
+	In both cases, my idea is to keep the attachments outside the file. This means additional directories
+	(one for backups, other for attachments), 
+	but it still a manageable solution to be transferred among computers 
+	(just transfer a zipped file with the html file and the attachments).
+</p>
+
+<p>	I have tried afterwards which solution will fare better: TiddlyWiki, or WoaS. 
+	Unfortunately, they do not share the same markup language, so transferring notes between them is not immediate. 
+	I already moved all my notes from Wordpress into TiddlyWiki, 
+	so it will remain my needed favorite. 
+	In fact, I haven't see so far any advantage on using WoaS.
+</p>
+
+<p>	I keep now all my notes as a TiddlyWiki page, and it is just great.
+	I keep now exploring the Evernote Python API to be able to transfer notes 
+	into the ever nice Evernote software. That will complete the trip.
+</p>
+
 <p class="entry"><span class="entry-date">24th May 2010</span>TableFilter v3.1.2</p> 
 
  <p> <img src='images/tablefilter.png' alt='table filter icon' class='blog'/>
@@ -327,7 +395,6 @@ I installed Lucid Lynx on a separate computer, as a fresh install. It went reall
 <img src="http://tctechcrunch.files.wordpress.com/2010/05/a3.jpg" class="blog"/>Great read</a>, nice Matrix reference </p> 
  
 <p><br><br><br></p>  
- 
 
 <p class="entry"><span class="entry-date">30th April 2010</span>Upgrading to Kubuntu 10.4</p> 
 
@@ -475,8 +542,8 @@ I think it is time to stop fighting what subversion was meant to solve, time to 
 	version 0.86, including version for Python 3.0.</li>
 	<li>10th June 2009. <a href='idldepend/index.html'>Idldepend</a>, release 1.3.0.</li>
  </ul>
-  
-  
+
+   
  </div>
 </div>
 </body>
