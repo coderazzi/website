@@ -126,6 +126,13 @@
         </group>
         <group name='Linux'>
 			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
+	        <group name='Kubuntu'>
+				<item name='Colors - gamma' file='howto/kubuntu/gamma.html'/>
+				<item name='Multiple monitors' file='howto/kubuntu/multiple_monitors.html'/>
+	        </group>		
+	        <group name='Meego'>
+				<item name='Brightness hotkeys' file='howto/meego/brightness.html'/>
+	        </group>		
         </group>		
         <group name='Os X'>
 			<item name='Without apples' file='osx/index.htm'/>

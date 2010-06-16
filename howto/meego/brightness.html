@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+ <title>Using brightness hotkeys on Meego [Samsung NC10]</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="brightness, Meego, Samsung">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 15th June 2010, 02:08 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>
+
+ <h1>Using brightness hotkeys on Meego [Samsung NC10]</h1>
+
+
+<p>
+	On my netbook, Samsung NC10, Meego handles properly almost all the hardware. 
+	One exception is some of the hotkeys, and specially the brightness keys. 
+	As it goes, X11 recognizes them properly, but no action is triggered; 
+	handling the brightness is as easy as updating properly the values on the file:
+
+	<pre>/sys/class/backlight/acpi_video0/brightness</pre>
+</p>
+
+<p>
+	For example:
+<p>
+
+<pre>echo 4 > /sys/class/backlight/acpi_video0/brightness</pre>
+
+<p>
+	would set middle brightness on this netbook [possible values are 0-7]. 
+	In any case, the previous line will fail, as the file has root permissions, so it is needed to sudo it. 
+</p>
+
+<p>
+	Whatever the action is, it is needed to configure the keyboard to handle it, 
+	and thia is directly supported in Meego, with two caveats:
+	<ul>
+		<li>
+			Updating the brightness requires root permissions. 
+		</li>
+		<li>
+			Associating a shell script on the keys configuration seems not to work. 
+		</li>
+	</ul>
+</p>
+
+<p>
+	So, the basic solution is to write a very basic C program, setuid it with root privileges, 
+	and associate it to the brightness keys. Easy as said, the program is as simple as:
+</p>
+
+<pre>
+/*
+Copyright (c) 2010 Luis M. Pena  - lu@coderazzi.net	[http://coderazzi.net]
+MIT open source license: http://www.opensource.org/licenses/mit-license.php
+*/
+
+#include &lt;errno.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define ACTUAL_BRIGHTNESS_FILE &quot;/sys/class/backlight/acpi_video0/actual_brightness&quot;
+#define BRIGHTNESS_FILE &quot;/sys/class/backlight/acpi_video0/brightness&quot;
+#define MAX_BRIGHTNESS_FILE &quot;/sys/class/backlight/acpi_video0/max_brightness&quot;
+#define BUFFER_SIZE 5
+#define INVALID -1
+
+int read(const char *file){
+	int ret;
+	char buffer[BUFFER_SIZE];
+	FILE *f = fopen(file, &quot;r&quot;);
+	if (!f || !fgets(buffer, BUFFER_SIZE, f)){
+		ret=INVALID;
+		fprintf(stderr, &quot;Could not read %s\n&quot;, file);
+	} else {
+		ret = strtol(buffer, (char **)0, 10);
+		if (errno == EINVAL){
+			ret=INVALID;
+			fprintf(stderr, 
+			        &quot;Error reading %s; unexpected content:%s \n&quot;, file, buffer);
+		}
+	}
+	if (f) fclose(f);
+	return ret;
+}
+
+int brightness(int incr){
+	int current = read(ACTUAL_BRIGHTNESS_FILE);
+	int max = incr&lt;1? current : read(MAX_BRIGHTNESS_FILE);
+	int ret = 1;
+	if (current!=INVALID &amp;&amp; max!=INVALID){
+		if (incr>0 &amp;&amp; current>=max){
+			fprintf(stderr, &quot;brightness already at max level\n&quot;);
+		} else if (incr&lt;0 &amp;&amp; current&lt;=0){
+			fprintf(stderr, &quot;brightness already at min level\n&quot;);
+		} else {
+			FILE *f = fopen(BRIGHTNESS_FILE, &quot;w&quot;);
+			if (f &amp;&amp; fprintf(f, &quot;%d&quot;, current+incr)&gt;0){
+				ret=0;
+			} else {			
+				fprintf(stderr, &quot;Error writing to %s\n&quot;, BRIGHTNESS_FILE);
+			}
+			if (f) fclose(f);
+		}
+	}
+	return ret;
+}
+
+int main(int argc, char **argv){
+	if (argc==2){
+		if (!strcmp(argv[1], &quot;up&quot;)){
+			return brightness(1);
+		} else if (!strcmp(argv[1], &quot;down&quot;)){
+			return brightness(-1);
+		}
+	}
+	fprintf(stderr, &quot;Please use: %s [up|down]\n&quot;, argv[0]);
+	return 1;
+}
+</pre>
+
+<p>It can be compiled -if the gcc package is installed-, or just downloaded from here (6435 bytes):</p>
+
+<ul>
+<li>Source: <a href='brightness.c'>brightness.c</a> [md5: f444af47c26a68ae8bfcd172ef6eaa99]</li>
+<li>Executable: <a href='brightness'>brightness</a> [md5: e866002c51f8967b06c7e6af94f95748]</li>
+</ul>
+
+<p>Compiled or downloaded, store the executable as:</p>
+
+<pre>/usr/local/bin/brightness</pre>
+
+<p>Associate it now to root:</p>
+
+<pre>sudo chown root:root /usr/local/bin/brightness</pre>
+
+<p>And setuid to execute with root privileges:</p>
+
+<pre>sudo chmod 4755 /usr/local/bin/brightness</pre>
+
+<p>You can try it now by executing it as:</p>
+
+<pre>/usr/local/bin/brightness up</pre>
+
+<p>or</p>
+
+<pre>/usr/local/bin/brightness down</pre>
+
+<p>It should update the screen's brightness. Time now not associate it to the appropriated hotkeys:
+open the devices configuration:</p>
+<p><img class='centered' src="meego_devices.png"></p>
+
+<p>Get there to the keyboard option, and activate the keyboard shortcuts:</p>
+<p><img class='centered' src="meego_shortcuts.png"></p>
+
+<p>Now, add a new shortcut, pressing the Add button, and enter:
+	<ul>
+		<li>Name: brightness up</li>
+		<li>Command: /usr/local/bin/brightness up</li>
+	</ul>
+</p>
+
+<p>
+	It will appear under <span class='mark'>Custom shortcuts</span>; 
+	select its shortcut, that will initially appear as <span class='mark'>disabled</span>; 
+	as soon as it is selected, it will change to <span class='mark'>New shortcut...</span>: 
+	press now the brightness up hotkey: 
+	its caption will automatically change to <span class='mark'>XF86MonBrightnessUp</span>.
+</p>
+
+<p>Repeat now the same process to handle brightness down: 
+	add a new shortcut, pressing the Add button, and enter:
+	<ul>
+		<li>Name: brightness down</li>
+		<li>Command: /usr/local/bin/brightness down</li>
+	</ul>
+</p>
+
+<p>After associating it to the brightness down key will appear as <span class='mark'>XF86MonBrightnessDown</span>.</p>
+
+<p>
+	And that is all! In fact, it should be still associated to a nice applet to show the brightness change,
+	but not for the time being!
+</p>
+
+</div></div>
+</body>
+</html>
+
+
+
+
+
+
