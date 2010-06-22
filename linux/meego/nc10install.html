@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+ <title>Installing Meego [Samsung NC10]</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="dual boot, Meego, Samsung">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 18th June 2010, 12:48 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>
+
+ <h1>Installing Meego for dual boot[Samsung NC10]</h1>
+
+
+<p>
+	This is a very small guide describing the steps I took to install Meego on my netbook
+	(Samsung NC10), preparing it to dual boot with the default XP installation.
+</p>
+
+<p>
+	This netbook includes a 160 Gb hard disk with 3 partitions: one hidden, the partition with
+	XP and an additional with 85 Gb; I installed Meego on part of this last partition, which contained only
+	some data I was able to get rid of. For the record, I first did a complete system backup,
+	using Acronis True Image. I was then able to proceed with the installation.
+</p>
+
+<ol>
+	<li>
+		I downloaded the 
+		<a href='http://download5.meego.com/'>Chrome version</a> and created a USB stick, following the
+		instructions in 
+		<a href='http://meego.com/devices/netbook/installing-meego-your-netbook'>the Meego web site</a>.
+	</li>
+	<li>
+		I restarted then the netbook, booting from the USB stick [my BIOS was configured already to start
+		from USB, if present].
+	</li>
+	<li>
+		On the initial menu, I opted directly for the <span class='mark'>only install</span> option.
+	</li>
+	<li>
+		Then it comes the language choice, and immediately the partition selection: select here
+		<span class='mark'>create custom layout</span>. The existing layout is:
+		<ul>
+			<li>sda1, 6 Gb: this is the recovery partition</li>
+			<li>sda2, 62 Gb: the XP partition</li>
+			<li>sda3, 85 Gb: the additional partition, where Meego will be installed.</li>
+		</ul>
+		It is needed to remove this last partition, to create a few new partitions. 
+		I decided to let a partition of about 40 Gb that could still be used in Windows.
+		So, remove first the sda3 partition, and the create:
+		<ul>
+			<li>
+				Swap partition:
+				<ul>
+					<li>mount point: [None]</li>
+					<li>file system: swap</li>
+					<li>size: 4096 Mb</li>
+				</ul>
+			</li>
+			<li>
+				Boot partition:
+				<ul>
+					<li>mount point: /boot</li>
+					<li>file system: ext3</li>
+					<li>size: 200 Mb</li>
+				</ul>
+			</li>
+			<li>
+				Root partition:
+				<ul>
+					<li>mount point: /</li>
+					<li>file system: brtfs</li>
+					<li>size: 40600 Mb</li>
+				</ul>
+			</li>
+			<li>
+				Remaining size, allocated for a Windows partition:
+				<ul>
+					<li>mount point: [None]</li>
+					<li>file system: vfat</li>
+					<li>size: fill to maximum allowable size</li>
+				</ul>
+			</li>
+		</ul>
+		The order on which the partitions are created is not particularly important, as the 
+		installation will not create them in the given order. What I was unable to do was to
+		rethink some steps: creating a partition and then removing it to be created with
+		different parameters would usually require rebooting the system to start again. This
+		is not that bad -no changes are commited on the hard disk until later-
+	</li>
+	<li>
+		The next input requests whether to use a password for the boot loader, 
+		and it is now possible to edit the entries in the boot loader: label /dev/sda2 as 'Windows XP'.
+		For some reason (or bug), I was only able to add /dev/sda1, which was rather useless, so
+		I had to edit the boot configuration later (see below).
+	</li>
+	<li>
+		Reboot, removing first the USB drive. It is now needed to add some settings:
+		-Keyboard, location, date, send or not crashes information, and user / password.
+	</li>
+</ol>
+
+<p>
+	Easy, and fast, these steps build a dual boot Meego / XP configuration. In the Samsung NC-10,
+	all the hardware works fine; not all hotkeys are programmed, in special the brightness keys
+	do not work, although the volume / mute and a few others are correctly setup. To correct the
+	brightness hotkeys, please follow <a href='brightness.html'>these instructions</a>. The Wifi
+	hardware also works fine, requiring obviously configuring the connection.
+</p>
+
+<p>
+	The system is now able to dual boot, although it is configured in such a way that no initial
+	menu is displayed, and it really looks as only Meego is available. The boot loader in Meego is
+	not Grub -or Grub2-, but extlinux, a syslinux variant, and is configured using the file
+	<span class='mark'>/boot/extlinux/extlinux.conf</span>. To have a timeout of 2 seconds, and the
+	OS menu shown, the following entries are required (the second, in fact, requires commenting it out):
+	<pre>timeout 20
+#menu hidden</pre>
+	In my installation, Windows XP was associated to /dev/sda1 instead of /dev/sda2, so a further change
+	was needed on this file: under the option menu for Windows XP, which in my case looked like:
+	<pre>label Other
+	menu label Windows XP
+	kernel chain.c32
+	append boot 1</pre>
+	the last line had to change into
+	<pre>append boot 2</pre>
+</p>
+
+
+</div></div>
+</body>
+</html>
+
+
+
+
+
+
