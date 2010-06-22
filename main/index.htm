@@ -18,6 +18,52 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
  <div id='body'>
  <div id='content'>
  
+<p class="entry"><span class="entry-date">21st Jun 2010</span>Some thoughts on Meego</p> 
+
+<p> <img src='images/meego.png' alt='meego icon' class='blog'/>
+	I have been trying now for a couple of weeks Meego on my netbook, a Samsung NC-10. The very best:
+	hardware support, speed, and startup times.
+	<table class='table_text_center'>
+		<tr>
+		<th></th> 
+		<th>Startup</th>
+		<th>Shutdown</th>
+		</tr>
+		<tr>
+		<th>Windows XP</th> 
+		<td>85 [+5]</td>
+		<td>27</td>
+		</tr>
+		<tr>
+		<th>Meego 1.0</th> 
+		<td align='center'>18 [+5]</td>
+		<td>10</td>
+		</tr>
+	</table>	
+	The added 5 seconds on startup time refer to the netbook's boot times, before even offering any
+	boot options.
+</p>
+<p>
+	And it gets better: while Windows XP implements a pseudo sleep -which will hibernate the computer
+	after a delay-, it is possible to get Meego to sleep the netbook, which takes 1 or 2 seconds, the
+	same time required to later waking it up. Having the computer fully working in one second allows
+	for very effective and fast computer usage (think iPad ways).
+</p>
+<p>
+	On the ugly side, available software is rather thin. Most software can be downloaded as source and then
+	compiled, but that helps little to the user wanting to get into this distribution. For example,
+	there is no support for NTFS volumes, so accessing most Windows drives is out of reach -including
+	external drives already formatted as NTFS- [yes, this can also be corrected downloading the 
+	<a href='http://forum.meego.com/showthread.php?t=533'>ntfs.3g sources</a>]. Setting up the eclipse IDE,
+	or, for that matter, Java, is out of bounds.
+</p>
+<p>
+	But the main problems I have found so far are some sporadic crashes -which happened during command line
+	operations, and I am suspecting so far on the btrfs file system-, and being some times unable to wake
+	up the netbook: it wakes up, but the screen keeps black. I have been playing with the quirks support on
+	pm-suspend, but with no much luck so far. 
+</p>
+
 <p class="entry"><span class="entry-date">16th Jun 2010</span>Hackintosh and 10.6.4</p> 
 
 <p> <img src='images/hackintosh.jpg' alt='hackintosh icon' class='blog'/>
@@ -83,7 +129,7 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 <p>
 	The only thing that bothered my Meego experience was the lack of effective brightness hotkeys, so I 
 	solved it with a small C program (I first tried the simpler shell script route, but that didn't work).
-	If you are interested, here is the full <a href='howto/meego/brightness.html'>explanation</a>.
+	If you are interested, here is the full <a href='linux/meego/brightness.html'>explanation</a>.
 </p>
 
 <p class="entry"><span class="entry-date">26th May 2010</span>TiddlyWiki, Evernote and the likes</p> 

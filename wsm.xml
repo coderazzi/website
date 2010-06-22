@@ -131,7 +131,8 @@
 				<item name='Multiple monitors' file='howto/kubuntu/multiple_monitors.html'/>
 	        </group>		
 	        <group name='Meego'>
-				<item name='Brightness hotkeys' file='howto/meego/brightness.html'/>
+				<item name='Install [Nc10]' file='linux/meego/nc10install.html'/>
+				<item name='Brightness hotkeys' file='linux/meego/brightness.html'/>
 	        </group>		
         </group>		
         <group name='Os X'>
