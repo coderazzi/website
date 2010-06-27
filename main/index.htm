@@ -18,6 +18,25 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
  <div id='body'>
  <div id='content'>
  
+<p class="entry"><span class="entry-date">26th Jun 2010</span>Eclipse Helios: what is new</p> 
+
+<p> <img src='images/eclipse.png' alt='eclipse icon' class='blog'/> Eclipse Helios was released this week (23rd June 2010). As expected, it is an expected upgrade for anybody using this great IDE, but, if something, I missed a single summary explaining all its new features/capabilities. This information exists, but spread all over the Eclipse help system. Reaching its <a href='http://help.eclipse.org/helios/index.jsp'>help site</a> and introducing <span class='mark'>what's new</span> on the search input will provide all the required information. In special:<ul>
+<li><a href='http://help.eclipse.org/helios/index.jsp?topic=/org.eclipse.jdt.doc.user/whatsNew/jdt_whatsnew.html'>Editor</a> new features.</li>
+<li>What's new on <a href='http://help.eclipse.org/helios/index.jsp?topic=/org.eclipse.pde.doc.user/whatsNew/pde_whatsnew.htm'>plug-in development</a></li>
+<li>Platform's <a href='http://help.eclipse.org/helios/index.jsp?topic=/org.eclipse.platform.doc.isv/whatsNew/platform_isv_whatsnew.html'>new features</a></li>
+<li>New <a href='http://help.eclipse.org/helios/index.jsp?topic=/org.eclipse.platform.doc.user/whatsNew/platform_whatsnew.html'>workbench</a> features</li>
+</ul>
+</p>
+
+
+<p class="entry"><span class="entry-date">23rd Jun 2010</span>Hackintosh, USB and 10.6.4</p> 
+
+<p> <img src='images/hackintosh.png' alt='hackintosh icon' class='blog'/> As happened with the update 10.6.3, my second hackintosh, using a P5N7A-VM mobo, loses audio and USB functionality; the audio can be recovered by reinstalling the AppleHDA.kext, but the USB support is another history: USB works, until the machine goes to sleep; after waking up, the USB support is lost, needing to replug any USB device.</p>
+
+<p>I have tried quite a few DSDT hacks, but nothing worked. I tried also using the <a href='http://www.bernhard-baehr.de/sleepwatcher_2.1.tgz'>SleepWatcher daemon</a> to unload/load related kexts, but that is neither working.Fortunately, there is a solution: reinstalling a previous IOUSBFamily.kext (10.6.2 or 10.6.1). This is not a nice solution, but better holding back on a single kext, that holding on an old release (10.6.2) for just this one kext.</p>
+
+<p>So back to up to date 10.6.4 on all my hackintoshes!</p>
+
 <p class="entry"><span class="entry-date">21st Jun 2010</span>Some thoughts on Meego</p> 
 
 <p> <img src='images/meego.png' alt='meego icon' class='blog'/>
@@ -68,7 +87,7 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 
 <p class="entry"><span class="entry-date">16th Jun 2010</span>Hackintosh and 10.6.4</p> 
 
-<p> <img src='images/hackintosh.jpg' alt='hackintosh icon' class='blog'/>
+<p> <img src='images/hackintosh.png' alt='hackintosh icon' class='blog'/>
 	The 10.6.4 Os X update popped up in my hackintoshes short after midnight. My P5Q-E's based hackintosh
 	has handled like a champion all previous updates, and this one was not 
 	<a href='osx/p5q-e/snowleopard/index.htm'>different</a>.

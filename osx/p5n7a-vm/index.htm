@@ -11,7 +11,7 @@
  
 
 <p class="timestamp">&gt; 23rd July 2009, 01:39 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
-<p class="timestamp">updated: &gt; 5th April 2010, 23:20 &nbsp;&nbsp;&nbsp;&nbsp; [10.6.3 update]</p>  
+<p class="timestamp">updated: &gt; 24th April 2010, 02:53 &nbsp;&nbsp;&nbsp;&nbsp; [10.6.4 update]</p>  
 
 <h1>OsX on Asus P5N7A-VM (vanilla)</h1>
 
@@ -19,7 +19,7 @@
 
 
 <p>This post referred initially to the installation of Leopard (10.5.6); it is now updated to include <a href='#snow'>Snow Leopard</a>.
-In short: it works, currently updated to 10.6.3; but be aware of <a href='#usb'>USB issues</a>. In 10.6.3, currently, USB will stop working when the computer goes to sleep (partial solution included)</p>
+In short: it works, currently updated to 10.6.4; but be aware of <a href='#usb'>USB issues</a></p>
 
 <h2>Leopard on the cage</h2>
 
@@ -169,16 +169,14 @@ separate hard disk, then include the required drivers, boot on the target P5N7A-
 
 <h2><a name='usb'>USB issues</a></h2>
 
-<p>With the settings indicated above, the system will be working, but with some issues. In special, rebooting and shutdown 
+<p>With the settings indicated above, and without additional changes, the system will be working, but with some issues. In special, rebooting and shutdown 
 works only some times. Other times, the system takes ages to reboot or shutdown, if it even manages to do so. And starting the system becomes as well difficult, requiring normally starting it with &quot;-v&quot; option in chameleon. With this verbose flag set, the startup will show many errors related to the USB subsystem (some assertions also related to the sound), but the system can finally start. If you read through the forums, you can see that the root of the problem lies on the incomplete BIOS of the motherboard, which lacks an option to enable the EHCI handoff.</p>
 
 <p>For me, these are just minor issues, as the reboot / shutdown / start process is quite unusual for me, as I rather put the system on sleep. This changed last week, when I bough a nice Apple keyboard, which refused to work under the existing conditions.</p>
 
-<p>My solution was to finally disable the USB legacy option on the BIOS. This implies that the UBS keyboard becomes useless until the OS starts, which could have been an issue in the normal pre-conditions, where I was habitually forced to setup the verbose flag in Chameleon to start the system. But now, all the issues are gone, and the system properly boots / reboots / shuts down.</p>
+<p>The best solution to solve all these issues is to disable the USB legacy option on the BIOS. This implies that the UBS keyboard becomes useless until the OS starts, which could have been an issue in the normal pre-conditions, where I was habitually forced to setup the verbose flag in Chameleon to start the system. But now, all the issues are gone, and the system properly boots / reboots / shuts down.</p>
 
-<p>Still, I need now to enable USB support on my boot loader (Grub), and I will be still unable to modify the startup settings in Chameleon. The PS/2 port comes now to the rescue, as I can always plug a PS/2 keyboard and setup any required Chameleon settings. I guess there is always a trade-off to pay.... </p>
-
-<p><span class='mark'>Update: on 10.6.3, USB stops working when the computer goes to sleep; it is needed to re-plug any USB device. I am trying to solve this as DSDT level,but, so far, a working solution is to replace in /System/Library/Extensions, the kext IOUSBFamily.kext with the version from 10.6.2</span></p>
+<p>Still, I would need now to enable USB support on my boot loader (Grub, but the USB support is quite uncomplete), and I will be still unable to modify the startup settings in Chameleon. The PS/2 port comes now to the rescue, as I can always plug a PS/2 keyboard and setup any required Chameleon settings. I guess there is always a trade-off to pay.... </p>
 
 <h2><a name='snowupdates'>Snow Leopard updates</a></h2>
 
@@ -189,7 +187,9 @@ works only some times. Other times, the system takes ages to reboot or shutdown,
 
 <p>After upgrading, restore this kext into the original location <span class='mark'>/System/Library/Extensions</span>. This is better accomplished using the tool <a href='http://cheetha.net/'>Kext helper</a>.</p>
 
-<p>The update to 10.6.3 has the same problem, but, in addition, <span class='mark'>USB stops working when the computer goes to sleep; it is needed to re-plug any USB device </span>. I am trying to solve this as DSDT level,but, so far, a working solution is to replace in /System/Library/Extensions, the kext IOUSBFamily.kext with the version from 10.6.2</p>
+<p>The update to 10.6.3 and 10.6.4 has the same problem, but, in addition, <span class='mark'>USB stops working when the computer goes to sleep; it is needed to re-plug any USB device </span>. I have tried quite a few DSDT hacks, but nothing worked. I tried also using the <a href='http://www.bernhard-baehr.de/sleepwatcher_2.1.tgz'>SleepWatcher daemon</a> to unload/load related kexts, but that is neither working. The only working solution is reinstalling a previous IOUSBFamily.kext (10.6.2 or 10.6.1). This is not a nice solution, but better holding back on a single kext, that holding on an old release (10.6.2) for just this one kext.</p>
+
+<p>With this solution, it is still possible to use the keyboard to wake up the computer, but all plugged USB disks will be ejected without being properly unmounted. Please note that, in fact, this was already the situation on 10.6.2 (in that case, the same would happen, without the error message!)</p>
 
 </div></div>
 </body>
