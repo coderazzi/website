@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd"> 
+<html>
+<head>
+<title>Dominosa - simple Javascript game</title>
+<link rel="stylesheet" type="text/css" href="dominosa.css">
+<link rel="stylesheet" type="text/css" href="../../css/global.css">
+<meta name="Keywords" content="dominosa javascript">
+</head>
+<body>
+<div id='body'>
+<div id='content'>
+	<h1>Dominosa - domino board puzzle</h1>
+	<div id='inputline'>
+		<select id="btype">
+			<option value="2">4x3</option>
+			<option value="3">5x4</option>
+			<option value="4">6x5</option>
+			<option value="5">7x6</option>
+			<option value="6" selected="selected">8x7</option>
+			<option value="7">9x8</option>
+			<option value="8">10x9</option>
+		</select>
+		<input type="button" value="Create" onclick="recreateBoard()"></input>
+		<input type="button" value="Restart" onclick="board.clear()"></input>
+		<input type="button" value="Solution" onclick="board.showSolution()"></input>
+	</div>
+	<table>
+		<td>
+			<table id='board'></table>
+		</td>
+		<td>
+			<table id='pieces'></table>
+		</td>
+	</table>
+    <script type="text/javascript" src="dominosa.js"></script>
+    
+	<h2>Solving it</h2>
+	<p>Dominosa represents a domino board, where all the pieces are placed on the
+	board, and the user must locate those pieces.</p>
+	<p>The easiest way to understand the objective is to press the 'solution' button
+	on the board above: it will show a valid solution of the puzzle (there can be many
+	such solutions)</p>
+	
+	<p>I first saw this game on the great Ubuntu remix distribution. The game itself is 
+	credited to O.S. Adler, who designed it on 1874</p>
+
+	<h2>Development</h2>
+	<p>I developped this game's version as a way to write again Javascript code (which I hadn't
+	done for the best of 2 years). The logic of the game is very simple, and the implementation
+	even simpler.</p>
+	<p>The original implementation fitted in 200 lines, extended to around 600 after
+	proper comments were included, and some funcionality -show the domino pieces already
+	allocated- added. And, even better, there are just a few places where cross functionality
+	code had to be implemented.
+	</p>
+	<p>It is tested under the latest versions (July 2010) of Firefox, Chrome, Safari, and Internet
+	Explorer 6, 7 and 8.</p> 
+
+	<h2>Download</h2>
+	<p> This file <a href='dominosa.zip'>dominosa.zip</a> contains the 3 files required for the
+	game. It is distributed under GNU v3 license.</p>
+	
+	<pre>Copyright (C) 2010  Luis M Pena, lu@coderazzi.net
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <a href='http://www.gnu.org/licenses'>http://www.gnu.org/licenses</a>.</pre>
+</p>
+</div></div>
+</body>
+</html>

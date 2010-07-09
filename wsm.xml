@@ -15,6 +15,9 @@
     <location source='python'>
         <template mold='../mold.htm'/>
     </location>       
+    <location source='javascript'>
+        <template mold='../mold.htm'/>
+    </location>       
     <location source='osx'>
         <template mold='../mold.htm'/>
     </location>       
@@ -123,6 +126,9 @@
                 <item name='GAC and mono' file='tnotes/csharp/gacWMono.html'/>
 				<item name='Debug NUnits' file='howto/DebugNUnitTestsVS.html'/>
 			</group>
+        </group>
+        <group name='javascript'>
+            <item name='Dominosa' file='javascript/dominosa/dominosa.html'/>
         </group>
         <group name='Linux'>
 			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>

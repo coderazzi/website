@@ -1,0 +1,157 @@
+input
+{
+	margin-right: 12px;
+}
+
+select
+{
+	text-align: center;
+}
+
+#board
+{
+border: 2px solid #d3d3d3;
+border-spacing: 3px;
+padding: 0px;
+margin-top: 20px;
+}
+
+#pieces
+{
+border: 1px dotted #d3d3d3;
+border-spacing: 3px;
+margin-top: 20px;
+margin-left: 40px;
+}
+
+#board td
+{
+height: 2em;
+width: 2em;
+text-align: center;
+}
+
+#pieces td
+{
+height: 2em;
+text-align: center;
+border: 2px solid #d3d3d3;
+padding-left: 4px;
+padding-right: 4px;
+}
+
+.piece
+{
+color: black;
+}
+
+.pieceOk
+{
+color: #d3d3d3;
+}
+
+.pieceError
+{
+color: red;
+}
+
+.locNormal
+{
+border: 2px solid #d3d3d3;
+}
+
+.locHighlightedUp
+{
+border: 2px dashed #d3d3d3;
+border-top: 2px solid white;
+}
+
+.locHighlightedDown
+{
+border: 2px dashed #d3d3d3;
+border-bottom: 2px solid white;
+}
+
+.locHighlightedRight
+{
+border: 2px dashed #d3d3d3;
+border-right: 2px solid white;
+}
+
+.locHighlightedLeft
+{
+border: 2px dashed #d3d3d3;
+border-left: 2px solid white;
+}
+
+.locLinkedUp
+{
+border: 2px solid black;
+border-top: 2px solid white;
+}
+
+.locLinkedDown
+{
+border: 2px solid black;
+border-bottom: 2px solid white;
+}
+
+.locLinkedRight
+{
+border: 2px solid black;
+border-right: 2px solid white;
+}
+
+.locLinkedLeft
+{
+border: 2px solid black;
+border-left: 2px solid white;
+}
+
+.locErrorUp
+{
+border: 2px solid red;
+border-top: 2px solid white;
+}
+
+.locErrorDown
+{
+border: 2px solid red;
+border-bottom: 2px solid white;
+}
+
+.locErrorRight
+{
+border: 2px solid red;
+border-right: 2px solid white;
+}
+
+.locErrorLeft
+{
+border: 2px solid red;
+border-left: 2px solid white;
+}
+
+.locSolvedUp
+{
+border: 2px solid green;
+border-top: 2px solid white;
+}
+
+.locSolvedDown
+{
+border: 2px solid green;
+border-bottom: 2px solid white;
+}
+
+.locSolvedRight
+{
+border: 2px solid green;
+border-right: 2px solid white;
+}
+
+.locSolvedLeft
+{
+border: 2px solid green;
+border-left: 2px solid white;
+}
