@@ -17,7 +17,49 @@ img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; wi
 <body>
  <div id='body'>
  <div id='content'>
+	
+<p class="entry"><span class="entry-date">20th September 2010</span>Grub2 and savedefault</p> 
+
+<p> <img src="images/os.png" alt="os icon" class="blog"> I rarely shut my computers down, preferring better the sleep or hibernate options; anyway, I switch operative systems on a regular basis, so I was surprised when my boot manager -Grub2- would always start Ubuntu, failing to start the last used system, even when it was configured to do so (option GRUB_DEFAULT=saved).</p>
+
+<p>I don't yet know if this is a bug or a feature, but the solution is to setup, on the /etc/default/grub file, two entries:</p>
+
+<pre>GRUB_DEFAULT=saved
+GRUB_SAVEDEFAULT=true</pre>
+
+<p>Why is needed the second entry, beats me, but there you go.</p>
+	
  
+<p class="entry"><span class="entry-date">19th September 2010</span>Galaxy</p> 
+
+<p> <img src='images/galaxys.png' alt="Samsung Galaxy S i9000 icon" class='blog'/>I had prepared a nice collection of books for the Summer, only to realize, almost with a foot on the plane, that most of the reading was science fiction, and that I was not in the mood for such reading. This led me to make some precipitated purchases, some <a href='books/2010/index.html#charlemagnepursuit'>wrong</a>, but other <a href='books/2010/index.html#ordinarythunderstorms'>right on the spot</a>.</p>
+
+<p>Another decision, already completing the holidays, was to purchase a smartphone -again with a dose of rush-, and I could only choose between the Samsung Galaxy i9000 S, or the Sony Xperia 10 Mini. The latest, for its size,  was great for my casual phone usage, but all my last experiences with Sony had gone wrong -for its service, not for the quality of the product-, so the decision was easy to take.</p>
+
+<p>I had been already thinking, in fact, about my increasing aversion to some brands, like Microsoft, Apple or Sony; for example, the last steps taken by Apple on iPhone development had led me to exclude completely the possibility to purchase an iPhone or iPad, and I was unaware of the latests <a href='http://www.apple.com/pr/library/2010/09/09statement.html'>changes</a>. Perhaps having known them, the iPhone would have been an option, but I very much doubt it, probably for the same reason I am reluctant to get a MacBook Pro: everybody seems to have the same laptop (perhaps because all the models look alike, independent of size or year).</p>
+
+<p>While my brand aversion is probably right, is wrong to limit my options on that basis, for many obvious reasons. But this time, it was definitely a great help to find a fantastic phone. And I hope now to get soon the Froyo update to the Galaxy S. And also, to recover some taste for my unread science fiction books....</p>
+
+<p class="entry"><span class="entry-date">30th July 2010</span>On Java NIO</p> 
+
+<p> <img src='images/java.gif' alt="java icon" class='blog'/>Shock <a href='http://mailinator.blogspot.com/2008/02/kill-myth-please-nio-is-not-faster-than.html'>posting</a> 
+	-and worse, quite old already- to destroy the myth that Java NIO is faster than the old good IO. 
+	Also shocking that this was seemingly not benchmarked before -although any individual programmer could have checked it and just thought that something was
+	wrong on his code, or on the particular platform implementation. Great also this <a href='http://www.mailinator.com/tymaPaulMultithreaded.pdf'>presentation</a></p>
+	
+	<p>I run my own tests on my Ubuntu 10.04 64 bits machine. Mind you, pet tests that cannot probe anything on their own, but that align with
+	this given post on the speed claims (I didn't extend the test to check also any scalability issues).</p>
+
+
+<p class="entry"><span class="entry-date">26th July 2010</span>iWoz</p> 
+
+<p> <img src='books/2010/iWoz.jpg' alt="iWoz cover" class='blog'/><a href='books/2010/index.html'>[books]</a>
+	This is the biography of a very clever and interesting guy, who achieved a lot in short time. 
+	I just hope that somebody will write once the real iWoz biography, not just his own story.</p>
+
+<p>Anyway, this book is, from a geek perspective, an absolute must. And it is, on its own, quite engaging at moments, with funny stories and anecdotes.</p>
+
+
 <p class="entry"><span class="entry-date">08th July 2010</span>Dominasa</p> 
 
 <p> <img src='images/javascript.png' alt="Javascript icon" class='blog'/>
