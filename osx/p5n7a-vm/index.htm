@@ -11,7 +11,7 @@
  
 
 <p class="timestamp">&gt; 23rd July 2009, 01:39 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
-<p class="timestamp">updated: &gt; 24th April 2010, 02:53 &nbsp;&nbsp;&nbsp;&nbsp; [10.6.4 update]</p>  
+<p class="timestamp">updated: &gt; 12th November 2010, 01:22 &nbsp;&nbsp;&nbsp;&nbsp; [10.6.5 update]</p>  
 
 <h1>OsX on Asus P5N7A-VM (vanilla)</h1>
 
@@ -19,7 +19,7 @@
 
 
 <p>This post referred initially to the installation of Leopard (10.5.6); it is now updated to include <a href='#snow'>Snow Leopard</a>.
-In short: it works, currently updated to 10.6.4; but be aware of <a href='#usb'>USB issues</a></p>
+In short: it works, currently updated to 10.6.5</p>
 
 <h2>Leopard on the cage</h2>
 
@@ -180,6 +180,7 @@ works only some times. Other times, the system takes ages to reboot or shutdown,
 
 <h2><a name='snowupdates'>Snow Leopard updates</a></h2>
 
+<h3>10.6.1 &amp; 10.6.2</h3>
 <p>Updates to 10.6.1 and 10.6.2 run smoothly, using the default Software update. The only problem is that sound is lost, but the solution is easy.</p>
 
 <p>The best is, before upgrading, to save a copy of the existing sound kext. This is the file <span class='mark'>/System/Library/Extensions/AppleHDA.kext</span>. Otherwise, it is also available in the file <a href='SnowLeopardCustom.zip'>SnowLeopardCustom.zip</a>, or in the original 
@@ -187,9 +188,16 @@ works only some times. Other times, the system takes ages to reboot or shutdown,
 
 <p>After upgrading, restore this kext into the original location <span class='mark'>/System/Library/Extensions</span>. This is better accomplished using the tool <a href='http://cheetha.net/'>Kext helper</a>.</p>
 
+<h3>10.6.3 &amp; 10.6.4</h3>
 <p>The update to 10.6.3 and 10.6.4 has the same problem, but, in addition, <span class='mark'>USB stops working when the computer goes to sleep; it is needed to re-plug any USB device </span>. I have tried quite a few DSDT hacks, but nothing worked. I tried also using the <a href='http://www.bernhard-baehr.de/sleepwatcher_2.1.tgz'>SleepWatcher daemon</a> to unload/load related kexts, but that is neither working. The only working solution is reinstalling a previous IOUSBFamily.kext (10.6.2 or 10.6.1). This is not a nice solution, but better holding back on a single kext, that holding on an old release (10.6.2) for just this one kext.</p>
 
 <p>With this solution, it is still possible to use the keyboard to wake up the computer, but all plugged USB disks will be ejected without being properly unmounted. Please note that, in fact, this was already the situation on 10.6.2 (in that case, the same would happen, without the error message!)</p>
+
+<h3>10.6.5</h3>
+<p>Nice update, really smooth, it even corrects the USB problems that have appeared on the previous two releases. 
+	It is only needed to restore the sound kext, as detailed above.</p>
+<p>The restoring of the previous IOUSBFamily.kext is not anymore needed. Note that all plugged USB disks are still ejected without being properly unmounted, but the keyboard/mouse will continue working after a sleep/wake up cycle.</p>
+<p>Sweet.</p>
 
 </div></div>
 </body>
