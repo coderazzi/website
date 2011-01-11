@@ -11,7 +11,7 @@
  
 
 <p class="timestamp">&gt; 23rd July 2009, 01:39 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
-<p class="timestamp">updated: &gt; 12th November 2010, 01:22 &nbsp;&nbsp;&nbsp;&nbsp; [10.6.5 update]</p>  
+<p class="timestamp">updated: &gt; 11th January 2011, 11:10 &nbsp;&nbsp;&nbsp;&nbsp; [10.6.6 update]</p>  
 
 <h1>OsX on Asus P5N7A-VM (vanilla)</h1>
 
@@ -19,7 +19,7 @@
 
 
 <p>This post referred initially to the installation of Leopard (10.5.6); it is now updated to include <a href='#snow'>Snow Leopard</a>.
-In short: it works, currently updated to 10.6.5</p>
+In short: it works, currently updated to 10.6.6</p>
 
 <h2>Leopard on the cage</h2>
 
@@ -178,6 +178,15 @@ works only some times. Other times, the system takes ages to reboot or shutdown,
 
 <p>Still, I would need now to enable USB support on my boot loader (Grub, but the USB support is quite uncomplete), and I will be still unable to modify the startup settings in Chameleon. The PS/2 port comes now to the rescue, as I can always plug a PS/2 keyboard and setup any required Chameleon settings. I guess there is always a trade-off to pay.... </p>
 
+<h2><a name='display'>Display issues</a></h2>
+
+<p>Although I have stated that the hardware works fine with Snow Leopard, there are many features that I could be missing. For example, I have no microphone connected to this hackintosh,
+   so I cannot be sure if its audio drivers work as expected. Yesterday (10th January 2011), I was pointed to another problem: changing the screen resolution produces a blue screen; a cycle
+   sleep/wake up will solve this problem.</p>
+
+<p>I haven't had yet the time to investigate into the problem, but I believe it could be solved with the BIOS settings related to the card; otherwise, patching properly the DSDT, as explained
+	on this <a href='http://tonymacx86.blogspot.com/2010/01/advanced-dsdt-fixes-nvidia-graphics.html'>post</a>.</p>
+
 <h2><a name='snowupdates'>Snow Leopard updates</a></h2>
 
 <h3>10.6.1 &amp; 10.6.2</h3>
@@ -198,6 +207,9 @@ works only some times. Other times, the system takes ages to reboot or shutdown,
 	It is only needed to restore the sound kext, as detailed above.</p>
 <p>The restoring of the previous IOUSBFamily.kext is not anymore needed. Note that all plugged USB disks are still ejected without being properly unmounted, but the keyboard/mouse will continue working after a sleep/wake up cycle.</p>
 <p>Sweet.</p>
+
+<h3>10.6.6</h3>
+<p>The best update ever, nothing stopped working!<p>
 
 </div></div>
 </body>
