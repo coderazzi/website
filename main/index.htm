@@ -19,6 +19,37 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+	<p class="entry"><span class="entry-date">24th March 2011</span>Hackintosh, 10.6.7 on P5Q-E</p> 
+
+	<p> <img src='images/hackintosh.png' alt='hackintosh icon' class='blog'/>My hackintosh using mobo
+	<a href='osx/p5q-e/snowleopard/index.html'>P5Q-E</a> 
+	has gone through most 10.6.x updates without problems, at least compared to the usual ones
+	on my P5N7A-VM hackintosh. Alas, 10.6.7 had to be different.</p>
+	
+	<p>Using the Software Update, found a problem after restarting: sound works (headphones), 
+	 but the rear line ouput doesn't. This is strange, as I am using the VoodooHDA driver, 
+	 not the basic kext from Apple. After some fizzling, the problem lies on the autosensing 
+	 jacks, as the output seems directed to the last sensed one. I have connected several, 
+	 for subwoofer and side speakers, and everything works if the green jack (line out) is 
+	 disconnected and then reconnected: not the best solution, as it must be done after any 
+	 reboot or sleep cycle. Alternatively, disconnecting all jacks but the green one solves 
+	 also the problem.</p>
+	 
+	<p>A real, solid solution is going to require working on the DSDT or the info.plist, once I 
+	get the dump of the audio codec.</p>
+	
+	
+
+
+	<p class="entry"><span class="entry-date">23rd March 2011</span>TableFilter v4.1.2</p> 
+
+	 <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">
+	 <a href='tablefilter/index.html'>Version 4.1.2</a> solves some new problems: an error
+	 listening to table model events and a serious performance issue.</p>
+	 <p>More interesting is the <a href='tablefilter/performance.html'>performance study</a> done, 
+	 including hints to improve the performance on big tables.</p>
+	 <p>Available already on the central maven repositories.</p>
+
 	<p class="entry"><span class="entry-date">22nd March 2011</span>Spoiled geek</p> 
 
 	<p> <img src='images/14vs30.png' alt='monitor size comparison' class='blog_fix'/>Spoiled geek: 

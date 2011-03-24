@@ -91,6 +91,7 @@
             <group name='Table filter'>
                 <item name='Overview' file='tablefilter/index.html'/>
                 <item name='Tutorial' file='tablefilter/tutorial.html'/>
+                <item name='Performance' file='tablefilter/performance.html'/>
                 <item name='Download' file='tablefilter/download.html'/>
                 <item name='Javadoc' file='tablefilter/javadoc.html'/>
                 <item name='How to ...' file='tablefilter/howto.html'/>
@@ -160,7 +161,7 @@
         <group name='PhD'>
             <item name='Sensei' file='phd/index.htm'/>
         </group>		
-        <item name='Just words' file='books/2010/index.htm'/>
+        <item name='Just words' file='books/2011/index.htm'/>
     </menu>
 </navigation>
 

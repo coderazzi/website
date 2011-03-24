@@ -10,7 +10,7 @@
  <div id='content'>
 
 <p class="timestamp">&gt; 10th September 2009, 01:44 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>   
-<p class="timestamp">updated: &gt; 11th January 2011, 11:01 &nbsp;&nbsp;&nbsp;&nbsp; [Snow leopard 10.6.6]</p>  
+<p class="timestamp">updated: &gt; 24th April 2011, 12:05 &nbsp;&nbsp;&nbsp;&nbsp; [Snow leopard 10.6.7]</p>  
 
 <h1>Snow Leopard on Asus P5Q-E</h1>
 
@@ -25,7 +25,7 @@ whether it is a new install or an update from Leopard.</p>
 <p>This is a continuation of my <a href='../leopard.htm'>first post on installing OsX 10.5 (Leopard) on this motherboard.</a>. Please have a look to the
 information posted there on how to <a href='../leopard.htm#bios-setup'>setup the bios</a></p>
 
-<p>A brief summary: everything works perfectly fine. Update from Leopard? check. 64 bits? check. Sleep, sound, network, graphics card? check ^ 4. I have been able also to <span class='mark'>upgrade to 10.6.1, 10.6.2, 10.6.3, 10.6.4, 10.6.5 and 10.6.6 without any problem</span>. As of 10.6.5, the only hardware not working is the second ethernet card (Marvell 88E8001)</p>
+<p>A brief summary: everything works perfectly fine. Update from Leopard? check. 64 bits? check. Sleep, sound, network, graphics card? check ^ 4. I have been able also to <span class='mark'>upgrade to each release in the 10.6 version, from 10.6.1, to 10.6.7, normally with no problems or minus ones</span>. As of 10.6.5, the only hardware not working is the second ethernet card (Marvell 88E8001)</p>
 
 <p>My main information was obtained at this <a href='http://www.insanelymac.com/forum/index.php?showtopic=182227'>Generic Retail Install Guide</a>: it draws several options, from which I chosed the option Chameleon v2 RC1 USB Bootloader with Netkas PCEFIv10.1 patched boot [by The Guru FlashGX].</p>
 
@@ -116,6 +116,11 @@ information posted there on how to <a href='../leopard.htm#bios-setup'>setup the
 <li>10.6.4: Performed easily using the Software Update, no problems after restarting</li>
 <li>10.6.5: Performed easily using the Software Update. After restarting, I lost any networking functionality. To solve it, I directly edited the file <span class='mark'>/System/Library/Extensions/IONetworkingFamily.kext/Contents/PlugIns/AppleYukon2.kext/Contents/Info.plist</span>, making the changes described above. I also updated on this release the VoodooHDA driver, replaced with version 2.7.2, which removed all errors in my log files, and enabled on the way the usage of microphone. Fantastic.</li>
 <li>10.6.6: Performed easily using the Software Update, no problems after restarting</li>
+<li>10.6.7: Using the Software Update, found a problem after restarting: sound works (headphones), but the rear line ouput doesn't. This is
+strange, as I am using the VoodooHDA driver, not the basic kext from Apple. After some fizzling, the problem lies on the autosensing jacks, as the output seems directed to the last sensed one. I have connected several, for subwoofer and side speakers, and everything works if the
+green jack (line out) is disconnected and then reconnected: not the best solution, as it must be done after any reboot or sleep cycle.
+Alternatively, disconnecting all jacks but the green one solves also the problem. A real, solid solution is going to require working on the DSDT or the info.plist, once I get the dump of the audio codec.
+</li>
 </ul>
 </div></div>
 </body>
