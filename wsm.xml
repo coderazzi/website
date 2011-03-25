@@ -161,7 +161,11 @@
         <group name='PhD'>
             <item name='Sensei' file='phd/index.htm'/>
         </group>		
-        <item name='Just words' file='books/2011/index.htm'/>
+        <group name='Just words'>
+	        <item name='2011' file='books/2011/index.htm'/>
+	        <item name='2010' file='books/2010/index.htm'/>
+	        <item name='2009' file='books/2009/index.htm'/>
+        </group>		
     </menu>
 </navigation>
 
