@@ -19,10 +19,55 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+	<p class="entry"><span class="entry-date">26th May 2011</span>Crunchbang Linux</p> 
+	
+	<p> <img src='images/crunchbang.png' class='blog'/>
+	
+		I have been running for a while <a href='http://crunchbanglinux.org/'>Crunchbang</a> 
+		as my desktop Linux distribution, and
+		despite some rough edges, I am quite happy with my choice.</p>
+
+	<p>I decided today to use it as well on a new system, and my first problem happened
+	directly on the installation, with complains that the cdrom media could not be
+	loaded [effectively, I was trying to install using a usb stick, the target system
+	hadn't even a cdrom!]. I pressed Alt-F2 to activate a terminal and solved it entered
+	(being /dev/sdb my usb stick):</p>
+
+	<pre>mount -t vfat /dev/sdb /cdrom</pre>
+
+	<p>This was enough to continue the installation process (pressing
+		Alt-F1 to get back from the terminal)</p>
+
+	<p>The installation process had some more rough edges: when a prompt appeared to
+	request the timezone, only America options were available (after my mistake, 
+	when I introduced American as my locale, trying to get the proper configuration 
+	for my US keyboard); to get other options is needed to change the locale, 
+	but then there is no option to get back to the timezone! 
+	Alas, the solution is easy, enough to reconfigure the timezone:</p>
+
+	<pre>sudo dpkg-reconfigure tzdata</pre>
+
+	<p>Then, some options to configure Crunchbang:</p>
+
+	<ul><span class='mark'>Enable autologin</span>:System -> GDM login setup -> Security -> Enable automatic login</ul>
+	<ul><span class='mark'>Enable suspend</span>:Settings -> Power manager ->General: When power button is pressed -> Suspend</ul>
+	<ul><span class='mark'>Do not request password after suspend</span>:Settings -> Power manager ->Extended: Do not lock screen</ul>
+	<ul><span class='mark'>Disable screensaver</span>:Settings -> Screensaver -> disable it (and do not lock screen)</ul>
+	<ul><span class='mark'>Put monitor to sleep after some time</span>: Settings -> Power manager ->On AC-> Monitor -> set times</ul>
+		
+
+	<p class="entry"><span class="entry-date">15th May 2011</span>Reading point</p> 
+	
+	<p> <img src='books/2011/AConspiracyOfPaper.jpg' class='blog'/><img src='books/2011/ResurrectionMen.jpg' class='blog'/>
+		<img src='books/2011/Neuromancer.jpg' class='blog'/><img src='books/2011/NowYouAreOneOfUs.jpg' class='blog'/>
+		Getting lazy on my book reviews, just included the last 4 at once. Some crap, some crazy sciense fiction, a great
+		financial story, and solid grounds with Inspector Rebus. All in one, not my best 4 choices.</p>
+		
+
 	<p class="entry"><span class="entry-date">7th April 2011</span>Special effecs on Tron Legacy</p> 
 
 	 <p> <img src="images/tron.jpeg" alt="tron legacy icon" class="blog">
-	 I never saw te original Tron, and I had no intention to see the sequel, but this 
+	 I never saw the original Tron, and I had no intention to see the sequel, but this 
 	 <a href='http://jtnimoy.net/workviewer.php?q=178'>interview</a> on
 	 the team's process to develop the special effects has definitely sparked my interest.</p> 
 	 <p>And the blog pointed me to an interesting C++ framework: 
