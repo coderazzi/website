@@ -22,7 +22,7 @@
 
 <p>Now, select the properties, debug tab, and select the <span class='scode'>Start external program</span> option, entering the correct path to the NUnit executable, that, in my case, is: <span class='scode'>C:\Program Files (x86)\NUnit 2.4.8\bin\nunit.exe</span>. Then, the command line arguments must contain the path to the debuggable DLL.</p>
 
-<p><img class='centered' src="DebugNunitTestsVS_debug.png"></p>
+<p><img class='centered' src="DebugNUnitTestsVS_debug.png"></p>
 
 <p>The created project should have a main entry, as it had been created as a console application. It can not be converted to a class library, which will avoid spurious compilation errors, like in:
 <div class='code'>
@@ -30,7 +30,7 @@ Error	1	Program 'C:\Development\visualstudio\WebSiteManager\NUnitLauncher\obj\De
 </div>
 TO convert it, select the properties, application tab, and select as output type: Class library</p>
 
-<p><img class='centered' src="DebugNunitTestsVS_app.png"></p>
+<p><img class='centered' src="DebugNUnitTestsVS_app.png"></p>
 
 <p>Not it is possible to start the tests on debug mode by launching the new created project.</p>
 

@@ -1,0 +1,41 @@
+<html>
+
+<head>
+ <title>Installing Nginx in Os X</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="nginx osx">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>&gt; 19th June 2012, 04:22 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
+<p class='timestamp'>&gt; Updated: 1st July 2012, 01:06</p>  
+
+<h1>Installing Nginx in Os X</h1>
+
+<p>Currently, last stable Nginx version is 1.2.1, download available at 
+  <a href='http://nginx.org/en/download.html'>http://nginx.org/en/download.html</a></p>
+
+<p>By default, it requires PCRE (Perl compatible regular expressions), which is -at least on Snow Leopard- partially available in /usr/lib. But without a full install, nginx will not compile.</p>
+
+<p>So, the first step is to download PCRE from <a href='http://www.pcre.org/'>http://www.pcre.org/</a> 
+  (current version: 8.30), and expand it, let's say, to <span class='code'>/tmp/pcre-8.30</span></p>
+
+<p>Download then Nginx, expanding it, let's say, to <span class='code'>/tmp/nginx-1.2.1</span></p>
+
+<p>To install Nginx in  <span class='code'>/usr/local/nginx</span>, do: </p>
+
+<pre>cd /tmp/nginx-1.2.1
+./configure --with-http_ssl_module --with-pcre=../pcre-8.30 --with-pcre-jit --with-http_ssl_module
+make
+sudo make install</pre>
+
+<p>To install it in another location, add the option <span class='code'>--prefix=target</span> to the second line above (./configure --prefix=/target ...)</p>
+
+</div>
+</div>
+</body>
+

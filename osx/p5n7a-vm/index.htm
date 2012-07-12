@@ -11,7 +11,7 @@
  
 
 <p class="timestamp">&gt; 23rd July 2009, 01:39 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
-<p class="timestamp">updated: &gt; 22nd March 2011, 00:28 &nbsp;&nbsp;&nbsp;&nbsp; [10.6.7 update]</p>  
+<p class="timestamp">updated: &gt; 05th July 2011, 23:01 &nbsp;&nbsp;&nbsp;&nbsp; [10.6.8 update]</p>  
 
 <h1>OsX on Asus P5N7A-VM (vanilla)</h1>
 
@@ -19,7 +19,7 @@
 
 
 <p>This post referred initially to the installation of Leopard (10.5.6); it is now updated to include <a href='#snow'>Snow Leopard</a>.
-In short: it works, currently updated to 10.6.7</p>
+In short: it works, currently updated to 10.6.8</p>
 
 <h2>Leopard on the cage</h2>
 
@@ -198,7 +198,7 @@ works only some times. Other times, the system takes ages to reboot or shutdown,
 <p>After upgrading, restore this kext into the original location <span class='mark'>/System/Library/Extensions</span>. This is better accomplished using the tool <a href='http://cheetha.net/'>Kext helper</a>.</p>
 
 <h3>10.6.3 &amp; 10.6.4</h3>
-<p>The update to 10.6.3 and 10.6.4 has the same problem, but, in addition, <span class='mark'>USB stops working when the computer goes to sleep; it is needed to re-plug any USB device </span>. I have tried quite a few DSDT hacks, but nothing worked. I tried also using the <a href='http://www.bernhard-baehr.de/sleepwatcher_2.1.tgz'>SleepWatcher daemon</a> to unload/load related kexts, but that is neither working. The only working solution is reinstalling a previous IOUSBFamily.kext (10.6.2 or 10.6.1). This is not a nice solution, but better holding back on a single kext, that holding on an old release (10.6.2) for just this one kext.</p>
+<p>The update to 10.6.3 and 10.6.4 has the same problem, but, in addition, <span class='mark'>USB stops working when the computer goes to sleep; it is needed to re-plug any USB device </span>. I have tried quite a few DSDT hacks, but nothing worked. I tried also using the <a href='http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'>SleepWatcher daemon</a> to unload/load related kexts, but that is neither working. The only working solution is reinstalling a previous IOUSBFamily.kext (10.6.2 or 10.6.1). This is not a nice solution, but better holding back on a single kext, that holding on an old release (10.6.2) for just this one kext.</p>
 
 <p>With this solution, it is still possible to use the keyboard to wake up the computer, but all plugged USB disks will be ejected without being properly unmounted. Please note that, in fact, this was already the situation on 10.6.2 (in that case, the same would happen, without the error message!)</p>
 
@@ -213,6 +213,9 @@ works only some times. Other times, the system takes ages to reboot or shutdown,
 
 <h3>10.6.7</h3>
 <p>Perfect update, nothing broken during the update.<p>
+
+<h3>10.6.8</h3>
+<p>Sound lost on the update, so the AppleHDA.kext must be reapplied, as it had happened regularly on every update up to 10.6.5.<p>
 
 </div></div>
 </body>

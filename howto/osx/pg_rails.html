@@ -1,0 +1,42 @@
+<html>
+
+<head>
+ <title>Rails and PostgreSQL in Os X</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="rails postgresql osx">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>&gt; 21th Jun 2012, 23:58 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
+
+<h1>PostgreSQL and Rails</h1>
+
+<p>The official PostgreSQL gem for rails is <a href='http://rubyforge.org/projects/ruby-pg'>ruby-pg</a>. Its installation includes native extensions that require the development version of PostgreSQL to be installed on the target machine. This in a requirement easy to accomplish in Debian installations: <span class='code'>apt-get install libpq-dev</span>, but in OsX the speediest method is to install directly PostgreSQL.</p>
+
+<p>The <a href='http://www.postgresql.org/download/'>distribution</a> of PostgreSQL includes a binary package for Os X, which simplifies the installation and setup of a PostgreSQL database in Os X. However, it also modifies the memory settings in the machine and install a database server, so the devlopment machine ends being a proper server -with additional daemons running full time-.</p>
+
+<p>In many cases this is not required: perhaps a laptop used for casual development, or perhaps the development environment implies already a test database running on a separate machine. For these cases, the best alternative is to download the source code and compile it:</p>
+
+<pre>./configure
+make
+sudo make install</pre>
+
+<p>Which gets PostgreSQL installed under <span class='code'>/usr/local/pgsql</span>. This path (<span class='code'>/usr/local/pgsql/bin</span>) must now be included in the PATH environment variable. Then, installing the ruby gem is as easy as typing:</p>
+<pre>gem install pg</pre>
+
+<p>Although easy, this solution pollutes the <span class='code'>/usr/local/</span> area, so a cleaner alternative is to install it in a separate directory:</p>
+
+<pre>./configure --prefix=TARGET_FOLDER
+make
+make install</pre>
+
+<p>And TARGET_FOLDER/bin must be added now to the environment PATH variable.</p>
+
+</div>
+</div>
+</body>
+

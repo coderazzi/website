@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+ <title>Ubuntu server as a Windows service</title>
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="virtualbox, ubuntu, windows service">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 22nd December 2011, 02:20 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>
+
+<h1>Ubuntu server as a Windows service</h1>
+
+<img src='ubuntuonwindows.jpg' class='right'/>
+
+<p>To host the production environment of a Rails application I had recently
+	developed, I was offered a standalone server, running Windows 7 Professional,
+	on a static IP address. Rails + Windows is an unholy union, and to 
+	isolate as well the Windows machine from compromises on the web application, I 
+	decided to run Ubuntu Server on a VirtualBox instance. The final purpose was 
+	to run Ubuntu without any GUI, reachable exclusively via SSH, and handled 
+	as a Windows service; in this way, the server would be automatically 
+	started or shutdown with the Windows machine.<p>
+
+<p>And this is the tale on how I accomplished it. Obviously this story changes 
+	with the time, eventually becoming obsolete. It relates to the end of 2011, 
+	when the most recent Ubuntu Server distribution is 11.10, and the 
+	most updated VirtualBox release is 4.1.x. Furthermore, the host is running 
+	Windows 7 Professional (64 bits), using a i5 2500K CPU and 8 gigabytes of 
+	memory.</p>
+	
+<ol>
+	<li>Download and install <a href='https://www.virtualbox.org/'>virtualbox</a></li>
+	
+	<li>Download the Ubuntu server distribution. To speed up the download, the 
+		best is to download the alternate torrent distribution 
+		(currently: ubuntu-11.10-server-amd64.iso.torrent), ensuring that the 
+		md5 hash <a href='https://help.ubuntu.com/community/UbuntuHashes'>matches</a>.</li>
+		
+	<li>Start virtualbox, and create a virtual machine (I named mine 
+		<span class='mark'>Wimel</span>) with type Ubuntu (64 bits), using
+		1.5 Gigas and a dynamically allocated VDI hard disk of 50 Gigas; these
+		are arbitrary sizes, the memory depends obviously on the final usage
+		requirements, and 1 Gigabyte should be enough for most purposes; 
+		likewise, 50 Gigas is a lot of space. Enough to say that once the
+		server and all my required applications were installed, only 2 
+		gigabytes were used. But being dynamically allocated, it means that
+		there is space (a lot!) to grow, without immediately using it.</li>
+		
+	<li>After creation, go to the instance configuration in virtualbox. 
+		On storage, provide the path to the downloaded Ubuntu iso, and, on
+		system, allocate 2 processors. Once again, this allocation reflects
+		my own needs, where I gave as much importance to the linux machine as
+		to the Windows host.</li>
+		
+	<li>Start now the virtual machine. Select language and keyboard, provide 
+		a hostname and use the entire disk (no LVM). For a Rails server,
+		I only installed the OpenSSH server (LAMP, specially, not required). 
+		Afterwards, install the GRUB loader to the master boot record, and 
+		complete the installation.</li>
+		
+	<li>After the required reboot, perform the usual maintenance on a Debian
+		distribution:
+			
+<pre>sudo apt-get update
+sudo apt-get upgrade</pre>
+			
+		</ul></li>
+		
+	<li>The objective is to have this machine reachable from the Internet.
+		How this is accomplished depends obviously on your network configuration; 
+		my situation favored allocating an static IP address, and this 
+		<a href='http://www.howtogeek.com/howto/ubuntu/change-ubuntu-server-from-dhcp-to-a-static-ip-address/'>link</a>
+		provides the complete solution:
+			
+<pre>sudo vi /etc/network/interfaces</pre>
+
+		And replace in this file
+		
+<pre>auto eth0
+iface eth0 inet dhcp</pre>
+
+		with
+
+<pre>iface eth0 inet static
+	address 192.168.0.105
+	netmask 255.255.255.0
+	network 192.168.0.0
+	broadcast 192.168.0.255
+	gateway 192.168.0.1</pre>
+	
+		(Please change the address/network as required for your
+		specific needs). To update now the DNS host:</li>
+				
+<pre>sudo vi /etc/resolv.conf</pre>
+
+		which should contain one single line: your own DNS server:
+
+<pre>nameserver 192.168.0.1</pre>
+				
+		Finally, shutdown the machine
+		
+<pre>sudo shutdown -h now</pre>
+
+	</li>
+			
+	<li>This is still not the complete network solution; it is needed to go
+		now to the virtualbox configuration of this machine and select
+		<span class='mark'>Bridge adapter</span> instead of the default NAT. 
+		After this, restart once again the virtual machine.</li>
+		
+	<li>The Ubuntu virtual machine is now reachable via SSH. Obviously, 
+		 it is needed some network address translation magic to access this machine from 
+		the internet. In special, with the static IP address (192.168.0.105 in this case)
+		it is needed to setup NAPT (Network Address and Port Translation) to access the port 
+		22 on 192.168.0.105 via an external port (like 5022). This depend on your router; I have an 
+		old Alcatel router that allows this setup, while a much newer router, 
+		a Netgear WNDR3700 does not fully allow it (I can perform the
+		NAPT translation only from the same or lower port, not from a 
+		higher port).</li>
+		
+	<li>Once this process is completed, the machine can be accessed using 
+		SSH, using: <pre>ssh -p port user@host</pre>
+		where port is the NATP port and host is the host allocated to the
+		router. Likewise, it is possible to access it using SFTP with:
+		<pre>sftp -oPort=port user@host</pre></li>
+			
+			
+	<li>Now it comes the second part of the whole setup: the virtual machine 
+		has to be setup to start automatically on windows startup.
+		Shutdown first the virtual machine, and get ready to install the 
+		great <a href='http://vboxvmservice.sourceforge.net/'>VBoxVmService</a>,
+		currently on version 3.0. Download it and install it on 
+		<pre>c:\vms</pre>
+		Then, follow the instructions on <pre>c:\vms\doc\howto.txt</pre>
+		which basically, implies a configuration file
+		<pre>c:\vms\vboxvmservice.ini</pre> 
+		looking like:
+<pre>[Settings]
+ServiceName=VBoxVmService
+RunAsUser=.\xxUSERxx
+UserPassword=xxPASSWORDxx
+VBOX_USER_HOME=C:\Users\xxUSERxx\.VirtualBox
+RunWebService=no
+PauseShutdown=5000
+
+[Vm0]
+VmName=Wimel
+ShutdownMethod=savestate
+AutoStart=yes</pre>
+		This setups one single virtual machine called Wimel, but multiple
+		machines could be setup automatically. Note that the windows user
+		and password must be hardcoded in the file, so pay attention to the
+		access rights.</li>
+		
+	<li>Once the configuration file is on place, install the service with:
+		<pre>VmServiceControl.exe -i</pre>
+		Then, reboot the system</li>
+		
+	<li>It should work perfectly.... although it didn't work for me none of 
+		the times I tried it. I had to do, in addition:<ul>
+		<li>Open Panel Control / System / Administrative tools / Services</li>
+		<li>Locate vboxvmservice. Open it, and then:<ul>
+		     <li>In init session, enter again the user / password</li>
+		     <li>Set it up to start as automatic (no delayed).</li></ul></li></ul></li>
+		
+</ol>
+
+<p>And that's the lengthy process to have it working. And having it working great.</p>
+			
+
+</div></div>
+</body>
+</html>

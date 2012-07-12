@@ -19,6 +19,163 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+
+	<p class="entry"><span class="entry-date">19th June 2012</span>Installing Nginx on OsX</p> 
+
+	<p><img src='images/nginx.gif' alt="NGinx" class='blog'/>
+		<a href='howto/osx/nginx.html'>Installing Nginx in Osx</a> should be as easy as downloading the available source distribution, and compiling it;
+		the only issue in OsX is that Nginx requires PCRE (Perl compatible regular expressions), and this library
+		is only partially available in Snow Leopard.</p>
+
+	<p>So, to install Nginx, it is needed to download <a href='http://www.pcre.org/'>PCRE</a>, in
+		addition to <a href='http://nginx.org/en/download.html'>nginx</a>, uncompress both files into 
+	    any temporal folders, and type:</p>
+
+<pre>cd /tmp/nginx-1.3.1
+./configure --with-http_ssl_module --with-pcre=../pcre-8.20 --with-pcre-jit --with-http_ssl_module
+make
+sudo make install</pre>
+
+	<p>This will install it in <span class='code'>/usr/local/nginx</span>; To install it in another location, add the option <span class='code'>--prefix=target</span> to the second line above (./configure ...)</p>
+
+
+	<p class="entry"><span class="entry-date">9th February 2012</span>ICS on Galaxy S</p> 
+
+	<p> <img src='images/galaxys.png' alt="Samsung Galaxy S i9000 icon" class='blog'/>
+		On my Galaxy S I9000 I had installed <a href='http://www.darkyrom.com'>DarkyRom</a> 
+		quite a long time ago, and, overall, I was pretty satisfied with the speed and usability. 
+		I had replaced the launcher with the excellent ADWLauncher EX, and using the SwiftKey X keyboard, plus, 
+		of course, customizations on the themes, icons, etc. 
+		However, I was experiencing lately too many application crashes, so I decided to get some more stable ROM.</p>
+		
+	<p> After considering the <a href='http://miuiandroid.com/'>MIUI</a> and 
+		<a href='http://www.cyanogenmod.com/'>cyanogenmod</a> ROMs, I backed up the system and 
+		installed the stable mod of Cyanogenmod (CM7). But even applying the extra download for 
+		Google apps, I could not get GMail installed -or any of the Google apps-. After a 
+		reinstallation -fast and painless, but also fruitless-, I planned to try the MIUI ROM... 
+		but then decided on the experimental Cyanogenmod CM9 based on ICS.</p>
+		
+	<p>	The XDA <a href='http://forum.xda-developers.com/showthread.php?t=1363593'>forum</a>, plus this 
+		<a href='http://www.theandroidsoul.com/cyanogenmod-9-cm9-by-teamhacksung-for-galaxy-s-i9000-ics-android-4-0-3/'>page</a>
+		provided the complete information to download and install it. So I have been running it now for 
+		a few days (build 15) and it works fantastic. </p>
+		
+	<p> As most reviews point out, ICS looks and behaves much greater than Gingerbread (I have not seen any
+		Honeycomb device); but overall, it looks initially like a subtle refinement on the GUI. However,
+		these refinements just kept summing up, until I realized that I was greatly impressed with it.
+		And much of this effect is due to the Roboto font, indeed.</p>
+		
+	<p> Then, the added bonus of having (finally) a Chrome version on Android is just priceless.
+		And even better, knowing that my 2 years old phone is handling it properly; I cannot 
+		recommend it enough, to install and try this version on the Galaxy S. I bet it will stay, only
+		to be eventually replaced by a later beta or the final CM9 version.
+	</p>
+	
+
+	<p class="entry"><span class="entry-date">22nd December 2011</span>Ubuntu server as Windows service</p> 
+	
+	<p> <img src="images/wubuntu.jpg" alt="table filter icon" class="blog">
+	I had recently to setup a server to host a Rails application. What initially should
+	had been a simple task, developed some complications when the whole setup was included,
+	considering backups, etc. The initial complication was the operative system, as the
+	server was running Windows 7 Professional, and Rails presents some allergy symptoms on
+	that environment.</p>
+	<p>So I first installed Ubuntu Server as a virtual machine, and then associated it to
+		a windows service, to enable its automatically start / shutdown. This is, in fact,
+		a very useful setup, so I decided to describe it in detail here: 
+		<a href='linux/linuxaswinservice.htm'>Ubuntu server as windows service</a></p>	
+
+	<p class="entry"><span class="entry-date">15th November 2011</span>TableFilter v4.2.0</p> 
+
+	 <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">
+	 New version, <a href='tablefilter/index.html'>4.2.0</a>, for the library.</p>
+	 <p>Release covering a few  
+	 <a href='http://code.google.com/p/tablefilter-swing/issues/list?can=1&q=&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles'>issues</a>, including one new proposed feature: the ability to disable the user's interaction with
+	a filter -without disabling it-.</p>
+	 <p>Available already on the central maven repositories.</p>
+
+	<p class="entry"><span class="entry-date">11th November 2011</span>Domains</p> 
+
+	<p> <img src='images/domains.jpg' class='blog'/>
+		I first applied for a domain name in 2006; in that moment I requested a personal one, using Yahoo as
+		registrar, and another one for a company in Spain. 
+	</p>
+	
+	<p>Yahoo's web interface was very easy to use, but
+		after two years they increased the registry price like 300%, to 35$ per year. 
+		I dumped them immediately, but they really took their time to transfer my domain, 
+		which was unavailable for about 2 weeks. A company
+		could not (should not) afford this downtime, so my respect for Yahoo decreased many levels.
+	</p>
+	
+	<p>I transferred my domain to <a href='http://www.namecheap.com/'>Namecheap</a>. 
+		I have no idea of marketing, but the name of the registrar seems
+		definitely wrong to me. And there is nothing cheap with the service, as I have only praise for them. 
+		I regularly read complains on bad support, and I have never needed contacting them, so I cannot 
+		comment on that, but their website is fast, and provides all the means to perform all required 
+		operations with the domain, and the knowledge database has been always enough to
+		answer my doubts. I have been able to setup dynamic DNS, forwarding of emails, etc, plus, of course, 
+		the more usual basic domain maintenance. 
+	</p>
+	
+	<p>	When last week I wanted to get a new domain, I checked other sites, and 
+		<a href='http://www.godaddy.com/'>GoDaddy</a> would have saved  me a few bucks over a 5 years period, 
+		but I preferred to stick to Namecheap. It is definitely better to have a single site to control your 
+		domains as different registrars provide very different mechanisms to provide the same functionality. 
+		In retrospect, perhaps I should have tried GoDaddy to check their support and service, but well, too late now.
+	</p>
+	
+	<p>5 months ago, my brother in law dumped unceremoniously his webmaster, asking me to take over. 
+		His webmaster retained the website -which went down, of course-, and didn't transfer the domain's name. 
+		Whether this is legal or moral helps little to have a website up again in short time, so we
+		decided on acquiring a new domain name. My brother in law gave me several names that he wanted to 
+		register, and told me the registrar (<a href='http://www.arsys.es/'>Arsys.es</a>) to use, 
+		one which had been recommended to him. I checked their prices, and at 25 euros/year I couldn't imagine why someone 
+		with good intentions would recommend them.
+	</p>
+
+	<p>Seriously: a registrar work is rather limited:<ul>
+		<li>Ensure proper registration.</li>
+		<li>Provide as many payment options as possible.</li>
+		<li>Ensure that all functionality is reachable via their website, and this website to be fast.</li>
+		<li>In addition, bonuses included provide dynamic DNS, email handling, etc.</li>
+	</ul></p>
+
+	<p>Namecheap provides this functionality -with all the bonuses- for 8 euros per year. I could expect to 
+		have sites offering better prices, and perhaps, less funcionality, so I wonder at these sites expecting 
+		25 euros (or 35 euros, in the case of Yahoo). This is not at all advertising to use Namecheap, I just wonder 
+		why there are users using other registrars offering (much) less bang for the buck.
+		And even recommend them on good will.		
+	</p>
+
+
+	<p class="entry"><span class="entry-date">10th November 2011</span>Reading point</p> 
+
+	<p> <img src='books/2011/Snobs.jpg' class='blog'/><img src='books/2011/TwistedCity.jpg' class='blog'/>
+		<img src='books/2011/TigerlilysOrchids.jpg' class='blog'/><img src='books/2011/FallOfGiants.jpg' class='blog'/>
+		For the last 5 months I have been quite busy developing an e-commerce site,
+		which has implied the usual cocktail of Ruby, Rails, Javascript, CSS, overdoses of Gimp and 
+		severe sleep deprivation. <br>
+		And is probably the period of time when I have read less books: 
+		just these <a href='books/2011/index.htm'>4</a> -and the Fall of Giants felt in 3 days-. 
+		Quite an sterile period -reading-wise, that is-.</p>
+
+
+
+	<p class="entry"><span class="entry-date">05th July 2011</span>Hackintosh, 10.6.8</p> 
+
+	<p> <img src='images/hackintosh.png' alt='hackintosh icon' class='blog'/>10.6.8 update had
+	almost no problems on the <a href='osx/p5n7a-vm/index.htm'>P5N7A-VM hackintosh</a>, 
+	requiring only to reapply the AppleHDA.kext to
+	get the sound on working status again. As for my other hackintosh, with 
+	<a href='osx/p5q-e/snowleopard/index.htm'>P5Q-E</a> mobo, 
+	the update was even more uneventful, as everything worked perfectly after the update. 
+	Only the update to my Macbook Pro worked more smoothly :-)
+	
+	</p><p>Time to get ready for the lions!
+	</p>
+
+
 	<p class="entry"><span class="entry-date">26th May 2011</span>Crunchbang Linux</p> 
 	
 	<p> <img src='images/crunchbang.png' class='blog'/>
@@ -164,10 +321,11 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
 	the articles from <a href='http://www.pcmag.com/author_bio/0,1908,a%253D123,00.asp'>John C. Dvorak</a>; 
 	they seems to be always properly dated. But then, the very same magazine provides 
 	entries without any visible date. For example, this recent page called 
-	<a href='http://www.pcmag.com/slideshow/story/261776/Einstein:-Things-You-Did-Not-Know'>
+	<a href='http://www.pcmag.com/slideshow/story/261776/albert-einstein-seven-things-you-didn-t-know'>
 	Albert Einstein: Seven Things You Didn't Know</a>: it has no date at all; so the line 
 	<span class='mark'>'Albert Einstein was born in Ulm, Germany on this date in 1879'</span> 
-	has definitely less information than expected. Perhaps the author didn't really know 
+	has definitely less information than expected. <note>Update: date included on original article</note>. 
+	Perhaps the author didn't really know 
 	on which date Einstein was born, or was unaware on the date he was writing the story, 
 	but seems, anyway, a deliberate mistake.</p>
 
@@ -348,7 +506,7 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
 
 <p> <img src='images/chrome.png' class='blog'/> True to its word, Google just delivered its new version 7. 
 	I was in that moment just playing with a benchmark tool called 
-	<a href='http://service.futuremark.com/peacekeeper/index.action'>Peecekeeper</a>, so I benchmarked the previous stable
+	<a href='http://peacekeeper.futuremark.com/'>Peecekeeper</a>, so I benchmarked the previous stable
 version (6.0.472.63) against the new one (7.0.517.41), and I was surprised to see it 5% slower</p>
 
 <p><img src="images/chrome7benchmark.jpg" alt="benchmarking chrome 7"></p>
@@ -442,7 +600,7 @@ GRUB_SAVEDEFAULT=true</pre>
 
 <p> <img src='images/hackintosh.png' alt='hackintosh icon' class='blog'/> As happened with the update 10.6.3, my second hackintosh, using a P5N7A-VM mobo, loses audio and USB functionality; the audio can be recovered by reinstalling the AppleHDA.kext, but the USB support is another history: USB works, until the machine goes to sleep; after waking up, the USB support is lost, needing to replug any USB device.</p>
 
-<p>I have tried quite a few DSDT hacks, but nothing worked. I tried also using the <a href='http://www.bernhard-baehr.de/sleepwatcher_2.1.tgz'>SleepWatcher daemon</a> to unload/load related kexts, but that is neither working.Fortunately, there is a solution: reinstalling a previous IOUSBFamily.kext (10.6.2 or 10.6.1). This is not a nice solution, but better holding back on a single kext, that holding on an old release (10.6.2) for just this one kext.</p>
+<p>I have tried quite a few DSDT hacks, but nothing worked. I tried also using the <a href='http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'>SleepWatcher daemon</a> to unload/load related kexts, but that is neither working.Fortunately, there is a solution: reinstalling a previous IOUSBFamily.kext (10.6.2 or 10.6.1). This is not a nice solution, but better holding back on a single kext, that holding on an old release (10.6.2) for just this one kext.</p>
 
 <p>So back to up to date 10.6.4 on all my hackintoshes!</p>
 

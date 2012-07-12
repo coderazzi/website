@@ -15,8 +15,8 @@
   
     <p>
       <span class="mark">TableFilter</span> is open source, under 
-      <a href='#license'>MIT license</a>. Its latest version, 4.1.4, has been
-      released the 26th May 2011. The changelog is available 
+      <a href='#license'>MIT license</a>. Its latest version, 4.3.0, has been
+      released the 17th January 2012. The changelog is available 
       <a href='#history'>below</a>
     </p>
     
@@ -26,7 +26,7 @@
 	       		<li>Available at Google Code, as the project 
 	       			<a href='http://code.google.com/p/tablefilter-swing/'>tablefilter-swing</a></li>
 	   			<li>Alternatively, they can be downloaded directly as a
-	   				single zip file:<a href='download/tablefilter-src-v4.1.4.zip'>tablefilter-src-v4.1.4.zip</a></li>
+	   				single zip file:<a href='download/tablefilter-src-v4.3.0.zip'>tablefilter-src-v4.3.0.zip</a></li>
 	       	</ul>
        	</li>
     	<li><span class='mark'>Binaries</span>:
@@ -43,10 +43,10 @@
 			   		javadoc) can be downloaded directly from the maven repository. The
 			   		last versions are hosted at:
 			   		<ul>
-			   		 <li><a href='http://repo2.maven.org/maven2/net/coderazzi/tablefilter-swing/4.1.4/'>
-			   		 	Version 4.1.4</a></li> 
-			   		 <li><a href='http://repo2.maven.org/maven2/net/coderazzi/tablefilter-swing-java5/4.1.4/'>
-			   		 	Version 4.1.4 for Java 5</a></li> 
+			   		 <li><a href='http://repo2.maven.org/maven2/net/coderazzi/tablefilter-swing/4.3.0/'>
+			   		 	Version 4.3.0</a></li> 
+			   		 <li><a href='http://repo2.maven.org/maven2/net/coderazzi/tablefilter-swing-java5/4.3.0/'>
+			   		 	Version 4.3.0 for Java 5</a></li> 
 				    </ul>
 	    		</li>
 	    		<li>Note that version 4.x is not API compatible with version 3.x; latest 3.x release
@@ -111,7 +111,38 @@ THE SOFTWARE.</pre>
 
   <h2><a name="history">History</a></h2>
   
-    <h4>Version 4.1.4 ( 26th May 2011 )</h4>
+    <h3>Version 4.3.0 ( 17th January 2012 )</h3>
+    
+    	<p>Solved <a href='http://code.google.com/p/tablefilter-swing/issues/detail?id=12'>issue 22</a>,
+    	related to CustomChoices not working with wildcards. Its implementation has had impact
+    	on the CustomChoice interface, extended with several setters.</p>
+
+    	<p>Solved minor bug related to parsing expressions. If the expression started with
+    	an operand (such as &gt;), some inner spaces could be removed from the
+    	expression.</p>
+    	
+    	<p>Solved <a href='http://code.google.com/p/tablefilter-swing/issues/detail?id=23'>issue 23</a>;
+    	the table filter library would not handle properly tables with HTML content. The filter
+    	editor choices would be rendered incorrectly and the filtering would not work in many cases.</p>
+    	       
+    <h3>Version 4.2.0 ( 15th November 2011 )</h3>
+    
+    	<p>Extended the IFilterEditor interface with two new methods to
+    	handle the user interaction with the editor; the added functionality,
+    	as requested <a href='http://code.google.com/p/tablefilter-swing/issues/detail?id=19'>-issue 19-</a>,
+    	allows the programmer to disable the interaction with the editor 
+    	without disabling the filter set.</p>
+    
+    	<p>Solved <a href='http://code.google.com/p/tablefilter-swing/issues/detail?id=16'>issue 16</a>,
+    	related to missing custom choices on enumeration columns.</p>
+
+    	<p>Solved <a href='http://code.google.com/p/tablefilter-swing/issues/detail?id=20'>issue 20</a>,
+    	to properly filter content with embedded newlines.</p>
+    	
+    	<p>Solved <a href='http://code.google.com/p/tablefilter-swing/issues/detail?id=21'>issue 21</a>,
+    	a bug associated to instant filtering.</p>
+    	       
+    <h3>Version 4.1.4 ( 26th May 2011 )</h3>
     
     	<p>Solved <a href='http://code.google.com/p/tablefilter-swing/issues/detail?id=15'>issue 15</a>,
     	where exceptions are raised when the user selects a choice in the 
@@ -314,7 +345,7 @@ THE SOFTWARE.</pre>
     		    The arrow to show the popup is now placed shifted to the bottom.   		    
     		</li>
     		<li>
-    			Integrated <a href="api/net/coderazzi/filters/parser/Types.html">Types</a>'s parser 
+    			Integrated Types's parser 
     			into the <a href="api/net/coderazzi/filters/gui/FilterSettings.html#types">FilterSettings</a>
     			class.    			
     		</li>
@@ -475,7 +506,7 @@ THE SOFTWARE.</pre>
 	       version 2.0.0, the inclusion was not complete and buggy in the case of
 	       some of these properties.<br>
 	       The full list of system properties that can be defined to override
-	       the default TableFilter behavior is listed <a href='properties.html'>here</a>.
+	       the default TableFilter behavior is listed <a href='tutorial.html#settings'>here</a>.
        </li>
        <li>
 	       A new <a href='examples.html#AppTestProperties'>example</a> is provided to test the extended behaviour.
@@ -493,20 +524,18 @@ THE SOFTWARE.</pre>
        <ul>	
 	        <li>
 		        Changed interface on 
-		        <a href="api/net/coderazzi/filters/gui/ITableFilterEditor.html">ITableFilterEditor</a>
+		        <a href="api/net/coderazzi/filters/gui/IFilterEditor.html">ITableFilterEditor</a>
 		        <ul>
 		            <li>It is possible to retrieve the applied filter on any table's column</li>
 		            <li>It is also possible to set dynamically the filter on any column</li>
 		            <li>Its is supported, through the use of the new 
-		            <a href="api/net/coderazzi/filters/gui/ITableFilterEditorObserver.html">ITableFilterEditorObserver</a>
+		            <a href="api/net/coderazzi/filters/gui/IFilterHeaderObserver.html">ITableFilterEditorObserver</a>
 		            interface, to be notified of changes on the filter's editor.</li>
 		        </ul>
 	        </li>
 	        <li>
-		        Changed interface on 
-		        <a href="api/net/coderazzi/filters/parser/IFilterTextParser.html">IFilterTextParser</a>,
-		        including two methods already defined in the generic implementation in 
-		        <a href="api/net/coderazzi/filters/parser/generic/FilterTextParser.html">FilterTextParser</a>:
+		        Changed interface on IFilterTextParser</a>,
+		        including two methods already defined in the generic implementation in FilterTextParser</a>:
 		        <ul>
 		            <li>Define a type builder for specific user types.</li>
 		            <li>Define a comparator for any type.</li>
@@ -514,24 +543,22 @@ THE SOFTWARE.</pre>
 	        </li>
 	        <li>
 		        Added interface on 
-		        <a href="api/net/coderazzi/filters/gui/ITableFilterHeaderObserver.html">ITableFilterHeaderObserver</a>,
+		        <a href="api/net/coderazzi/filters/gui/IFilterHeaderObserver.html">ITableFilterHeaderObserver</a>,
 		        to observe events on the <a href="api/net/coderazzi/filters/gui/TableFilterHeader.html">TableFilterHeader</a>.
 	        </li>
 	        <li>
-	        	Dates are now <a href='types.html#dates'>automatically handled</a> in the library.
+	        	Dates are now <a href='tutorial.html#types'>automatically handled</a> in the library.
 	    	</li>
 	        <li>
 		        The user can provide properties that override some default behaviours. These properties
 		        have been later redefined in 2.0.1.
 	        </li>
 	        <li>
-		        Bug solved: usage of renderers on 
-		        <a href="api/net/coderazzi/filters/gui/editors/TableChoiceFilterEditor.html">TableChoiceFilterEditor</a> 
+		        Bug solved: usage of renderers on TableChoiceFilterEditor</a> 
 		        would likely drive to AWT exceptions.
 	        </li>
 	        <li>
-		        Bug solved: changing the table or the model, using the 
-		        <a href="api/net/coderazzi/filters/gui/editors/TableChoiceFilterEditor.html">TableChoiceFilterEditor</a>
+		        Bug solved: changing the table or the model, using the TableChoiceFilterEditor</a>
 		        on a column with boolean or enumeration types, would hide all the elements, as if they would not
 		        validate the filter -even if empty-
 	        </li>
@@ -547,8 +574,7 @@ THE SOFTWARE.</pre>
 
     <h3>Version 1.5.0 ( 7th August 2009 ) </h3>
       <ul>
-       <li>Changes; this release improves on the usage of the 
-       <a href="api/net/coderazzi/filters/gui/editors/TableChoiceFilterEditor.html">TableChoiceFilterEditor</a>,
+       <li>Changes; this release improves on the usage of the TableChoiceFilterEditor</a>,
           that is, the editor filter that offers the user a list of the different options
           as found in the table model:
        <ul>
@@ -593,8 +619,7 @@ THE SOFTWARE.</pre>
        <ul>
        	<li>Automatic layout management for the filter header.
 	       	On previous versions, the user had to place manually the header in the Gui container, 
-	      as detailed <a href="header.html#manual">here</a>, while now is is enough to
-	      instantiate the header and set the associated table: 
+	      while now is is enough to instantiate the header and set the associated table: 
 		    <pre>TableFilterHeader filterHeader = new TableFilterHeader(table);</pre>
         </li>
         <li>

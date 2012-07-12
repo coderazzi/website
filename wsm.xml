@@ -133,6 +133,7 @@
         </group>
         <group name='Linux'>
 			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
+			<item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>
 	        <group name='Kubuntu'>
 				<item name='Colors - gamma' file='howto/kubuntu/gamma.html'/>
 				<item name='Multiple monitors' file='howto/kubuntu/multiple_monitors.html'/>
@@ -143,14 +144,17 @@
 	        </group>		
         </group>		
         <group name='Os X'>
-			<item name='Without apples' file='osx/index.htm'/>
-			<item name='Hackintosh-ing' file='osx/hackintoshing.htm'/>
-	        <group name='Asus P5Q-E'>
-				<item name='Intro' file='osx/p5q-e/index.htm'/>
-				<item name='Leopard' file='osx/p5q-e/leopard.htm'/>
-				<item name='With snow' file='osx/p5q-e/snowleopard/index.htm'/>
-			</group>
-			<item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
+            <item name='Nginx' file='howto/osx/nginx.html'/>
+            <item name='PostgreSQL / Rails' file='howto/osx/pg_rails.html'/>
+            <group name='Hackintosh'>
+            <item name='Hackintosh-ing' file='osx/hackintoshing.htm'/>
+                <group name='Asus P5Q-E'>
+                    <item name='Intro' file='osx/p5q-e/index.htm'/>
+                    <item name='Leopard' file='osx/p5q-e/leopard.htm'/>
+                    <item name='With snow' file='osx/p5q-e/snowleopard/index.htm'/>
+                </group>
+                <item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
+            </group>
         </group>		
         <group name='Solaris'>
 			<item name='SunOS' file='solaris/index.htm'/>
@@ -162,6 +166,7 @@
             <item name='Sensei' file='phd/index.htm'/>
         </group>		
         <group name='Just words'>
+	        <item name='2012' file='books/2012/index.htm'/>
 	        <item name='2011' file='books/2011/index.htm'/>
 	        <item name='2010' file='books/2010/index.htm'/>
 	        <item name='2009' file='books/2009/index.htm'/>
