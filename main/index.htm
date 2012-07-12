@@ -19,6 +19,57 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+	<p class="entry"><span class="entry-date">12th July 2012</span>Sublime Text 2 and .erb formatting</p> 
+
+	<p><img src='images/sublime.png' alt="Sublime Text 2" class='blog'/>
+		For the last weeks, I have been using the editor <a href='http://www.sublimetext.com/2'>Sublime Text 2</a>, and I find it
+		rather good, with the huge improvement over <a href='http://macromates.com/'>TextMate</a> of being cross platform. 
+		Obviously Emacs or Vi have already this advantage, but after many years using them and being at best only 
+		semi-proficient, I am really open to use other editors.</p>
+
+	<p>The plugin architecture is great, and after installing the required <a href='http://wbond.net/sublime_packages/package_control'>package control plugin</a>, it was time to start enhancing the editor -check this <a href='http://net.tutsplus.com/tutorials/tools-and-tips/sublime-text-2-tips-and-tricks/'>link</a> for some tips on using this editor-.</p>
+
+	<p>Sublime copes obviously with .html files, but it lacks an auto formatter. I installed 
+		<a href='https://github.com/victorporof/Sublime-HTMLPrettify'>Sublime-HTMLPrettify</a>, that formats properly .html files,
+		but alas, the rather requivalent .html.erb files are left untouched. The solution is just to edit the file 
+		<span class='mark'>run.js</span>, located in Packages/Sublime-HTMLPrettify/scripts and convert the lines:</p>
+<pre>if (source.match(".html" + "$") == ".html") {
+	log(style_html(data, option));
+}
+else if (source.match(".css" + "$") == ".css") {
+	log(cssbeautify(data, option));
+}</pre>
+      <p>into:</p>
+<pre>if (source.match(".html" + "$") == ".html") {
+	log(style_html(data, option));
+}
+else if (source.match(".html.erb" + "$") == ".html.erb") {
+	log(style_html(data, option));
+}
+else if (source.match(".css" + "$") == ".css") {
+	log(cssbeautify(data, option));
+}</pre>
+	
+	<p>Obviously it just formats the .html.erb as pure html file, but so far seems fine to me.</p>
+
+	<p class="entry"><span class="entry-date">12th July 2012</span>Recovering SVN revisions</p> 
+
+	<p><img src='images/rsync.png' alt="Rsync" class='blog'/>
+		For my current development, I am using SVN repositories hosted at <a href='http://www.sliksvn.com/'>slik subversion</a>, 
+			but I still keep some older respositories on my own server -precisely
+			the server that crashed badly last weekend-; with backups rather up to date, the recovery was rather fast, and I was only
+			faced with some checkouts that were now desynchronized: that is, on my development machine I had a revision that was newer
+			than expected, and I could just not commit the changes.
+	</p>
+
+	<p>With <span class='mark'>rsync</span>, the solution was very easy: checkout the most updated version from the server, and
+		synchronized the version on my development machine, ensuring that the .svn files where untouched:</p>
+
+<pre>svn checkout REPOSITORY website.svn
+cp -R website website.backup                      #just in case
+find website -name ".svn" -exec rm -Rf \{\} \;    #error messages can be NORMALLY dismissed
+rsync -vr website/ website.svn/</pre>	
+
 
 	<p class="entry"><span class="entry-date">19th June 2012</span>Installing Nginx on OsX</p> 
 
