@@ -85,7 +85,10 @@
 
 <navigation>
     <menu id='menu'>
-        <item name='Home' file='index.htm'/>
+        <group name='Blog'>
+            <item name='Current' file='index.htm'/>
+            <item name='2010' file='blog_2010.html'/>
+        </group>
         <group name='Java'>
             <item name='IdlDepend' file='idldepend/index.htm'/>
             <group name='Table filter'>
