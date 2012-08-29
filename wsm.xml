@@ -28,6 +28,7 @@
         <template mold='../mold.htm'/>
     </location>       
     <location source='css'/>
+    <location source='js'/>
     <location source='java/idldepend' target='idldepend'>
         <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
     </location>
@@ -120,7 +121,7 @@
         </group>
         <group name='python'>
 			<item name='optmatch' file='python/optmatch/index.htm'/>
-            <item name='gimp / PythonFu' file='python/gimp/pythonfu.html'/>
+            <item name='Gimp / PythonFu' file='python/gimp/pythonfu.html'/>
 			<item name='Decorators' file='tnotes/python/decoratorsWithoutArguments.html'/>
 			<item name='2.x to 3.0' file='tnotes/python/migrating2to3.html'/>
         </group>

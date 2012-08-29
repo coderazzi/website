@@ -1,0 +1,38 @@
+#img_wrap{
+	display: block;
+	background:black;
+	width:300px;
+	height:300px;	
+	margin-left: auto;
+    margin-right: auto;
+	position:relative;
+}
+#map_div{
+	top:30px;
+	left:30px;
+	width:240px;
+	height:240px;
+	position:relative;
+	background: yellow;
+	/*background:white url(pfu.png);*/
+}
+#img_map_div{
+	top:30px;
+	left:30px;
+	width:240px;
+	height:240px;
+	position:absolute;
+	z-index:5;
+	pointer-events:none;
+}
+
+#map_div a{ display:block; position:absolute; }
+#map_div a#map_div_top_left{width:48px; height:48px; top:0px; left:0px;}
+#map_div a#map_div_top{ width:48px; height:48px; top:0px; left:96px;}
+#map_div a#map_div_top_right{width:48px;height:48px; top:0px; left:192px;}
+#map_div a#map_div_left{width:48px; height:48px; top:96px; left:0px;}
+#map_div a#map_div_center{width:48px;	height:48px; top:96px; left:96px;}
+#map_div a#map_div_right{width:48px;height:48px; top:96px; left:192px;}
+#map_div a#map_div_bottom_left{width:48px; height:48px; top:192px; left:0px;}
+#map_div a#map_div_bottom{width:48px; height:48px; top:192px; left:96px;}
+#map_div a#map_div_bottom_right{width:48px; height:48px; top:192px; left:192px;}  
