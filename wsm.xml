@@ -120,6 +120,7 @@
         </group>
         <group name='python'>
 			<item name='optmatch' file='python/optmatch/index.htm'/>
+            <item name='gimp / PythonFu' file='python/gimp/pythonfu.html'/>
 			<item name='Decorators' file='tnotes/python/decoratorsWithoutArguments.html'/>
 			<item name='2.x to 3.0' file='tnotes/python/migrating2to3.html'/>
         </group>
@@ -133,6 +134,7 @@
         </group>
         <group name='javascript'>
             <item name='Dominosa' file='javascript/dominosa/dominosa.html'/>
+            <item name='Code Prettify' file='javascript/prettify/index.html'/>
         </group>
         <group name='Linux'>
 			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
@@ -179,6 +181,7 @@
 
 <postTransform>
     <htmhtml mode='HtmToHtml'/>
+    <relcss/>
 </postTransform>
 
 </wsm>

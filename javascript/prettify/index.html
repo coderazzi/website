@@ -1,0 +1,67 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>A Prettify demo</title>
+<meta name="Description" content="A Prettify demo">
+<meta name="Keywords" content="javascript css demo google-code-prettify">
+<meta name="Author" content="Luis Pena">
+
+<link rel="stylesheet" type="text/css" href="../../css/global.css">
+<link rel="stylesheet" type="text/css" href="../../css/sunburst.css">
+<style type="text/css" media='screen'>.full_width{width: 100%;}</style>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script type="text/javascript" src="js/prettify.js"></script>
+<script type="text/javascript" >
+$(function() {
+	var prettify = function(){
+		var txt = $('#input_base').val().replace(/[<>]/g, function(m) { return {'<':'&lt;','>':'&gt;'}[m]});
+		$('#input_source').html('<pre class="prettyprint">'+txt+'</pre>');
+		prettyPrint(function(){
+			$('#toclip').val($('#input_source').html()).focus().select();
+		});
+	}
+	$('#prettify').click(prettify);
+	prettify();
+});
+</script>
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+ 	<h1>google-code-prettify Demo</h1>
+<p>This page is just a demo case for the javascript library 
+	<a href='http://code.google.com/p/google-code-prettify/'>google-code-prettify</a>.</p>
+
+<p>I have no relationship whatsover with the library or the author; I merely needed to apply the formatting
+	to several code snapshots on this website and it was easier for me to use this page: paste the code and
+	check (and use) the resulting html.</p>
+
+<p>The version currenly used on this page is <span class='mark'>1-Jun-2011</span></p>
+
+<p>The code to prettify can be pasted on the text area below; then, press the prettify me button:</p>
+<textarea rows='12' class='full_width' id='input_base'>
+#include <stdio.h>
+int main(int args, char **argv){
+	puts("Hello, world!");
+	return 0;
+}
+</textarea>
+<p>
+	<a href='#' id='prettify'>
+		<img 
+			src='prettifyme.png'
+			onmouseover="this.src='prettifyme_hover.png';"
+			onmouseout="this.src='prettifyme.png';" />
+	</a>
+</p>
+<p>Produced html (selected, just to copy to clipboard):<textarea rows='1' class='full_width' id='toclip'></textarea></p>
+
+<p>With the <a href='http://google-code-prettify.googlecode.com/svn/trunk/styles/sunburst.css'>sunburst theme</a>, the prettified code looks like:</p>
+<div id='input_source'></div>
+
+</div>
+</div>
+</body>
+</html>
