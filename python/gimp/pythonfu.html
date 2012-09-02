@@ -196,7 +196,7 @@ $(function() {
 
 	var getSidePosition = function(x){
 		var ret = Math.floor(x / sectionSize);
-		return (x - sectionSize * ret <= diameter) ? ret : -1;
+		return (x - sectionSize * ret &lt;= diameter) ? ret : -1;
 	}
 	var getPosition = function (self, event){
 		var offset = $(self).offset();

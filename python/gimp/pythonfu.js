@@ -45,7 +45,3 @@ $(function() {
 	});
 	colorize(selected, SELECTED_COLOR);
 });
-
-$(function() {
-	prettyPrint();
-});
