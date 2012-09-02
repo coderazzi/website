@@ -7,20 +7,25 @@
 
 <link rel="stylesheet" type="text/css" href="../../css/global.css">
 <link rel="stylesheet" type="text/css" href="../../css/sunburst.css">
-<style type="text/css" media='screen'>.full_width{width: 100%;}</style>
+<style type="text/css" media='screen'>
+.full_width{width: 100%;}
+a.nodec:link {text-decoration:none;}
+a.nodec:visited {text-decoration:none;}
+</style>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script type="text/javascript" src="../../js/prettify/prettify.js"></script>
 <script type="text/javascript" >
 $(function() {
-	var prettify = function(){
+	var noPrettyPrint = function(f){f();};
+	var transform = function(f){
 		var txt = $('#input_base').val().replace(/[<>]/g, function(m) { return {'<':'&lt;','>':'&gt;'}[m]});
 		$('#input_source').html('<pre class="prettyprint">'+txt+'</pre>');
-		prettyPrint(function(){
-			$('#toclip').val($('#input_source').html()).focus().select();
-		});
-	}
-	$('#prettify').click(prettify);
+		f(function(){$('#toclip').val($('#input_source').html()).focus().select();});
+	};
+	var prettify = function(){transform(prettyPrint)};
+	$('#prettify').click(prettyPrint);
+	$('#uglify').click(function(){transform(noPrettyPrint)});
 	prettify();
 });
 </script>
@@ -39,7 +44,10 @@ $(function() {
 
 <p>The version currenly used on this page is <span class='mark'>1-Jun-2011</span></p>
 
-<p>The code to prettify can be pasted on the text area below; then, press the prettify me button:</p>
+<p>The code to prettify can be pasted on the text area below; then, press the <span class='mark'>prettify me</span>
+   button; if the <span class='mark'>uglify me</span> button is used, the produced html simply escapes the html entities, 
+   so the code can be pasted directly on html pages.</p>
+
 <textarea rows='12' class='full_width' id='input_base'>
 #include <stdio.h>
 int main(int args, char **argv){
@@ -48,12 +56,18 @@ int main(int args, char **argv){
 }
 </textarea>
 <p>
-	<a href='#' id='prettify'>
+	<a href='#' id='prettify' class='nodec'>
 		<img 
 			src='prettifyme.png'
 			onmouseover="this.src='prettifyme_hover.png';"
 			onmouseout="this.src='prettifyme.png';" />
-	</a>
+	</a>&nbsp;
+	<a href='#' id='uglify' class='nodec'>
+		<img 
+			src='uglifyme.png'
+			onmouseover="this.src='uglifyme_hover.png';"
+			onmouseout="this.src='uglifyme.png';" />
+	</a>&nbsp;
 </p>
 <p>Produced html (selected, just to copy to clipboard):<textarea rows='1' class='full_width' id='toclip'></textarea></p>
 

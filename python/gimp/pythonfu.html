@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="../../css/sunburst.css">
 <link rel="stylesheet" type="text/css" href="pythonfu.css">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script type="text/javascript" src='../../js/prettify/prettify.js'></script>
 <script type="text/javascript" src='pythonfu.js'></script>
 </head>
 
@@ -65,84 +66,80 @@
 
 <h2>pythonfu.py</h2>
 <a href='pythonfu.py'>Download</a>
+<pre class='prettyprint'>
+import gimpfu #access constants
 
-<!-- Here comes the code from prettify -->
-<pre class="prettyprint"><span class="kwd">import</span><span class="pln"> gimpfu </span><span class="com">#access constants</span><span class="pln">
+SIZE=240
+RADIO=24
 
-SIZE</span><span class="pun">=</span><span class="lit">240</span><span class="pln">
-RADIO</span><span class="pun">=</span><span class="lit">24</span><span class="pln">
+#create the image
+img=pdb.gimp_image_new(SIZE, SIZE, gimpfu.RGB)
 
-</span><span class="com">#create the image</span><span class="pln">
-img</span><span class="pun">=</span><span class="pln">pdb</span><span class="pun">.</span><span class="pln">gimp_image_new</span><span class="pun">(</span><span class="pln">SIZE</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">,</span><span class="pln"> gimpfu</span><span class="pun">.</span><span class="pln">RGB</span><span class="pun">)</span><span class="pln">
+#add layer with 100% of opacity
+layer=pdb.gimp_layer_new(img, SIZE, SIZE, gimpfu.RGB_IMAGE, "base", 100, gimpfu.NORMAL_MODE)
+pdb.gimp_image_add_layer(img, layer, 0)
 
-</span><span class="com">#add layer with 100% of opacity</span><span class="pln">
-layer</span><span class="pun">=</span><span class="pln">pdb</span><span class="pun">.</span><span class="pln">gimp_layer_new</span><span class="pun">(</span><span class="pln">img</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">,</span><span class="pln"> gimpfu</span><span class="pun">.</span><span class="pln">RGB_IMAGE</span><span class="pun">,</span><span class="pln"> </span><span class="str">"base"</span><span class="pun">,</span><span class="pln"> </span><span class="lit">100</span><span class="pun">,</span><span class="pln"> gimpfu</span><span class="pun">.</span><span class="pln">NORMAL_MODE</span><span class="pun">)</span><span class="pln">
-pdb</span><span class="pun">.</span><span class="pln">gimp_image_add_layer</span><span class="pun">(</span><span class="pln">img</span><span class="pun">,</span><span class="pln"> layer</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln">
+#we need it with alpha channel
+pdb.gimp_layer_add_alpha(layer)
 
-</span><span class="com">#we need it with alpha channel</span><span class="pln">
-pdb</span><span class="pun">.</span><span class="pln">gimp_layer_add_alpha</span><span class="pun">(</span><span class="pln">layer</span><span class="pun">)</span><span class="pln">
+#access its drawable
+drw = pdb.gimp_image_active_drawable(img)
 
-</span><span class="com">#access its drawable</span><span class="pln">
-drw </span><span class="pun">=</span><span class="pln"> pdb</span><span class="pun">.</span><span class="pln">gimp_image_active_drawable</span><span class="pun">(</span><span class="pln">img</span><span class="pun">)</span><span class="pln">
+#set background to black, and foreground to white
+pdb.gimp_context_set_background((0,0,0))
+pdb.gimp_context_set_foreground((255, 255, 255))
 
-</span><span class="com">#set background to black, and foreground to white</span><span class="pln">
-pdb</span><span class="pun">.</span><span class="pln">gimp_context_set_background</span><span class="pun">((</span><span class="lit">0</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">0</span><span class="pun">))</span><span class="pln">
-pdb</span><span class="pun">.</span><span class="pln">gimp_context_set_foreground</span><span class="pun">((</span><span class="lit">255</span><span class="pun">,</span><span class="pln"> </span><span class="lit">255</span><span class="pun">,</span><span class="pln"> </span><span class="lit">255</span><span class="pun">))</span><span class="pln">
+#fill the background - black
+pdb.gimp_drawable_fill(drw, gimpfu.BACKGROUND_FILL)
 
-</span><span class="com">#fill the background - black</span><span class="pln">
-pdb</span><span class="pun">.</span><span class="pln">gimp_drawable_fill</span><span class="pun">(</span><span class="pln">drw</span><span class="pun">,</span><span class="pln"> gimpfu</span><span class="pun">.</span><span class="pln">BACKGROUND_FILL</span><span class="pun">)</span><span class="pln">
+#to set the brush, check first for available brushes using  pdb.gimp_brushes_get_list("")
+#Exanples of brush with width 3 is '1. Pixel', and with width 1, 'Pixel (1x1 square)'
 
-</span><span class="com">#to set the brush, check first for available brushes using  pdb.gimp_brushes_get_list("")</span><span class="pln">
-</span><span class="com">#Exanples of brush with width 3 is '1. Pixel', and with width 1, 'Pixel (1x1 square)'</span><span class="pln">
+#set brush to simple pixel (width: 1)
+pdb.gimp_context_set_brush('Circle (01)')
 
-</span><span class="com">#set brush to simple pixel (width: 1)</span><span class="pln">
-pdb</span><span class="pun">.</span><span class="pln">gimp_context_set_brush</span><span class="pun">(</span><span class="str">'Circle (01)'</span><span class="pun">)</span><span class="pln">
+#draw a square around the image
+ctrlPoints = [RADIO, RADIO, SIZE-RADIO, RADIO, SIZE-RADIO, 
+              SIZE-RADIO, RADIO, SIZE-RADIO, RADIO, RADIO]
+pdb.gimp_paintbrush_default(drw,len(ctrlPoints),ctrlPoints)
 
-</span><span class="com">#draw a square around the image</span><span class="pln">
-ctrlPoints </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[</span><span class="pln">RADIO</span><span class="pun">,</span><span class="pln"> RADIO</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">-</span><span class="pln">RADIO</span><span class="pun">,</span><span class="pln"> RADIO</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">-</span><span class="pln">RADIO</span><span class="pun">,</span><span class="pln"> 
-              SIZE</span><span class="pun">-</span><span class="pln">RADIO</span><span class="pun">,</span><span class="pln"> RADIO</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">-</span><span class="pln">RADIO</span><span class="pun">,</span><span class="pln"> RADIO</span><span class="pun">,</span><span class="pln"> RADIO</span><span class="pun">]</span><span class="pln">
-pdb</span><span class="pun">.</span><span class="pln">gimp_paintbrush_default</span><span class="pun">(</span><span class="pln">drw</span><span class="pun">,</span><span class="pln">len</span><span class="pun">(</span><span class="pln">ctrlPoints</span><span class="pun">),</span><span class="pln">ctrlPoints</span><span class="pun">)</span><span class="pln">
+#now we draw 9 transparent circles (3 rows x 3 columns)
+#a transparent circle means -with an alpha layer-, to select the area and cut it
+for x in (0, SIZE/2-RADIO, SIZE-2*RADIO):
+	for y in (0, SIZE/2-RADIO, SIZE-2*RADIO):
+		#next call was available on 2.6, not on 2.8
+		#pdb.gimp_image_select_ellipse(img, gimpfu.CHANNEL_OP_REPLACE, 
+		#                              x, y, RADIO*2, RADIO*2)
+		pdb.gimp_ellipse_select(img, x, y, RADIO*2, RADIO*2, 
+		                        gimpfu.CHANNEL_OP_REPLACE, True, False, 0)
+		pdb.gimp_edit_cut(drw)
 
-</span><span class="com">#now we draw 9 transparent circles (3 rows x 3 columns)</span><span class="pln">
-</span><span class="com">#a transparent circle means -with an alpha layer-, to select the area and cut it</span><span class="pln">
-</span><span class="kwd">for</span><span class="pln"> x </span><span class="kwd">in</span><span class="pln"> </span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">/</span><span class="lit">2</span><span class="pun">-</span><span class="pln">RADIO</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">-</span><span class="lit">2</span><span class="pun">*</span><span class="pln">RADIO</span><span class="pun">):</span><span class="pln">
-	</span><span class="kwd">for</span><span class="pln"> y </span><span class="kwd">in</span><span class="pln"> </span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">/</span><span class="lit">2</span><span class="pun">-</span><span class="pln">RADIO</span><span class="pun">,</span><span class="pln"> SIZE</span><span class="pun">-</span><span class="lit">2</span><span class="pun">*</span><span class="pln">RADIO</span><span class="pun">):</span><span class="pln">
-		</span><span class="com">#next call was available on 2.6, not on 2.8</span><span class="pln">
-		</span><span class="com">#pdb.gimp_image_select_ellipse(img, gimpfu.CHANNEL_OP_REPLACE, </span><span class="pln">
-		</span><span class="com">#                              x, y, RADIO*2, RADIO*2)</span><span class="pln">
-		pdb</span><span class="pun">.</span><span class="pln">gimp_ellipse_select</span><span class="pun">(</span><span class="pln">img</span><span class="pun">,</span><span class="pln"> x</span><span class="pun">,</span><span class="pln"> y</span><span class="pun">,</span><span class="pln"> RADIO</span><span class="pun">*</span><span class="lit">2</span><span class="pun">,</span><span class="pln"> RADIO</span><span class="pun">*</span><span class="lit">2</span><span class="pun">,</span><span class="pln"> 
-		                        gimpfu</span><span class="pun">.</span><span class="pln">CHANNEL_OP_REPLACE</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">True</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">False</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln">
-		pdb</span><span class="pun">.</span><span class="pln">gimp_edit_cut</span><span class="pun">(</span><span class="pln">drw</span><span class="pun">)</span><span class="pln">
+#remove any selection
+pdb.gimp_selection_none(img)
 
-</span><span class="com">#remove any selection</span><span class="pln">
-pdb</span><span class="pun">.</span><span class="pln">gimp_selection_none</span><span class="pun">(</span><span class="pln">img</span><span class="pun">)</span><span class="pln">
-
-</span><span class="com">#and display the image</span><span class="pln">
-display</span><span class="pun">=</span><span class="pln">pdb</span><span class="pun">.</span><span class="pln">gimp_display_new</span><span class="pun">(</span><span class="pln">img</span><span class="pun">)</span></pre>
-<!--Here ends the prettify code-->
+#and display the image
+display=pdb.gimp_display_new(img)
+</pre>
 
 <p>To obtain the result shown above, the image is handled as a image map with the following html code:</p>
 
-<!-- Here comes the code from prettify -->
-<pre class="prettyprint"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'img_wrap'</span><span class="tag">&gt;</span><span class="pln">
-	</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"map_div"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">'span-2 last'</span><span class="tag">&gt;</span><span class="pln">
-		</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'map_div_top_left'</span><span class="tag">&gt;&lt;/a&gt;</span><span class="pln">
-		</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'map_div_top'</span><span class="tag">&gt;&lt;/a&gt;</span><span class="pln">
-		</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'map_div_top_right'</span><span class="tag">&gt;&lt;/a&gt;</span><span class="pln">
-		</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'map_div_left'</span><span class="tag">&gt;&lt;/a&gt;</span><span class="pln">
-		</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'map_div_center'</span><span class="tag">&gt;&lt;/a&gt;</span><span class="pln">
-		</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'map_div_right'</span><span class="tag">&gt;&lt;/a&gt;</span><span class="pln">
-		</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'map_div_bottom_left'</span><span class="tag">&gt;&lt;/a&gt;</span><span class="pln">
-		</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'map_div_bottom'</span><span class="tag">&gt;&lt;/a&gt;</span><span class="pln">
-		</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'map_div_bottom_right'</span><span class="tag">&gt;&lt;/a&gt;</span><span class="pln">
-	</span><span class="tag">&lt;/div&gt;</span><span class="pln">
-	</span><span class="tag">&lt;img</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">'img_map_div'</span><span class="pln"> </span><span class="atn">src</span><span class="pun">=</span><span class="atv">'pfu.png'</span><span class="tag">&gt;</span><span class="pln">
-</span><span class="tag">&lt;/div&gt;</span></pre>
-
-<!--Here ends the prettify code-->
+<pre class="prettyprint">&lt;div id='img_wrap'&gt;
+	&lt;div id="map_div" class='span-2 last'&gt;
+		&lt;a href="#" id='map_div_top_left'&gt;&lt;/a&gt;
+		&lt;a href="#" id='map_div_top'&gt;&lt;/a&gt;
+		&lt;a href="#" id='map_div_top_right'&gt;&lt;/a&gt;
+		&lt;a href="#" id='map_div_left'&gt;&lt;/a&gt;
+		&lt;a href="#" id='map_div_center'&gt;&lt;/a&gt;
+		&lt;a href="#" id='map_div_right'&gt;&lt;/a&gt;
+		&lt;a href="#" id='map_div_bottom_left'&gt;&lt;/a&gt;
+		&lt;a href="#" id='map_div_bottom'&gt;&lt;/a&gt;
+		&lt;a href="#" id='map_div_bottom_right'&gt;&lt;/a&gt;
+	&lt;/div&gt;
+	&lt;img id='img_map_div' src='pfu.png'&gt;
+&lt;/div&gt;</pre>
 
 <p>That requires these css definitions:</p>
-<pre class='prettyprint'><span class="atn">
+<pre class='prettyprint'>
 #img_wrap{
 	display: block;
 	background:black;
@@ -181,62 +178,61 @@ display</span><span class="pun">=</span><span class="pln">pdb</span><span class=
 #map_div a#map_div_bottom_left{width:48px; height:48px; top:192px; left:0px;}
 #map_div a#map_div_bottom{width:48px; height:48px; top:192px; left:96px;}
 #map_div a#map_div_bottom_right{width:48px; height:48px; top:192px; left:192px;}  
-</span></pre>
+</pre>
 
 <p>Finally, the javascript code to handle the mouse hovering and selection:</p>
 <h2>pythonfu.js</h2>
 <a href='pythonfu.js'>Download</a>
 
-<!-- Here comes the code from prettify -->
-<pre class="prettyprint"><span class="pln">$</span><span class="pun">(</span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
-	</span><span class="kwd">var</span><span class="pln"> SIDE</span><span class="pun">=</span><span class="lit">240</span><span class="pun">;</span><span class="pln">
-	</span><span class="kwd">var</span><span class="pln"> RADIO</span><span class="pun">=</span><span class="lit">24</span><span class="pun">;</span><span class="pln">
-	</span><span class="kwd">var</span><span class="pln"> SELECTED_COLOR</span><span class="pun">=</span><span class="str">'#5Bc5fF'</span><span class="pun">,</span><span class="pln"> HOVER_COLOR</span><span class="pun">=</span><span class="str">'blue'</span><span class="pun">,</span><span class="pln"> NONE_COLOR</span><span class="pun">=</span><span class="str">'yellow'</span><span class="pun">;</span><span class="pln">
+<pre class='prettyprint'>
+$(function() {
+	var SIDE=240;
+	var RADIO=24;
+	var SELECTED_COLOR='#5Bc5fF', HOVER_COLOR='blue', NONE_COLOR='yellow';
 
-	</span><span class="kwd">var</span><span class="pln"> sectionSize </span><span class="pun">=</span><span class="pln"> SIDE </span><span class="pun">/</span><span class="pln"> </span><span class="lit">2</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> RADIO</span><span class="pun">,</span><span class="pln"> diameter </span><span class="pun">=</span><span class="pln"> </span><span class="lit">2</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> RADIO</span><span class="pun">;</span><span class="pln">
-	</span><span class="kwd">var</span><span class="pln"> selected </span><span class="pun">=</span><span class="pln"> </span><span class="lit">4</span><span class="pun">,</span><span class="pln"> hovered </span><span class="pun">=</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln">
-	</span><span class="kwd">var</span><span class="pln"> maps</span><span class="pun">=</span><span class="pln">$</span><span class="pun">(</span><span class="str">'#map_div'</span><span class="pun">).</span><span class="pln">children</span><span class="pun">();</span><span class="pln">
+	var sectionSize = SIDE / 2 - RADIO, diameter = 2 * RADIO;
+	var selected = 4, hovered = -1;
+	var maps=$('#map_div').children();
 
-	</span><span class="kwd">var</span><span class="pln"> getSidePosition </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">x</span><span class="pun">){</span><span class="pln">
-		</span><span class="kwd">var</span><span class="pln"> ret </span><span class="pun">=</span><span class="pln"> </span><span class="typ">Math</span><span class="pun">.</span><span class="pln">floor</span><span class="pun">(</span><span class="pln">x </span><span class="pun">/</span><span class="pln"> sectionSize</span><span class="pun">);</span><span class="pln">
-		</span><span class="kwd">return</span><span class="pln"> </span><span class="pun">(</span><span class="pln">x </span><span class="pun">-</span><span class="pln"> sectionSize </span><span class="pun">*</span><span class="pln"> ret </span><span class="pun">&lt;=</span><span class="pln"> diameter</span><span class="pun">)</span><span class="pln"> </span><span class="pun">?</span><span class="pln"> ret </span><span class="pun">:</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln">
-	</span><span class="pun">}</span><span class="pln">
-	</span><span class="kwd">var</span><span class="pln"> getPosition </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">event</span><span class="pun">){</span><span class="pln">
-		</span><span class="kwd">var</span><span class="pln"> offset </span><span class="pun">=</span><span class="pln"> $</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">).</span><span class="pln">offset</span><span class="pun">();</span><span class="pln">
-		</span><span class="kwd">var</span><span class="pln"> x </span><span class="pun">=</span><span class="pln"> getSidePosition</span><span class="pun">(</span><span class="kwd">event</span><span class="pun">.</span><span class="pln">pageX</span><span class="pun">-</span><span class="pln">offset</span><span class="pun">.</span><span class="pln">left</span><span class="pun">);</span><span class="pln">
-		</span><span class="kwd">var</span><span class="pln"> y </span><span class="pun">=</span><span class="pln"> getSidePosition</span><span class="pun">(</span><span class="kwd">event</span><span class="pun">.</span><span class="pln">pageY</span><span class="pun">-</span><span class="pln">offset</span><span class="pun">.</span><span class="pln">top</span><span class="pun">);</span><span class="pln">
-		</span><span class="kwd">return</span><span class="pln"> x</span><span class="pun">===-</span><span class="lit">1</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> y</span><span class="pun">===-</span><span class="lit">1</span><span class="pln"> </span><span class="pun">?</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pln"> </span><span class="pun">:</span><span class="pln"> </span><span class="lit">3</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> y </span><span class="pun">+</span><span class="pln"> x</span><span class="pun">;</span><span class="pln">
-	</span><span class="pun">}</span><span class="pln">
-	</span><span class="kwd">var</span><span class="pln"> colorize </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">which</span><span class="pun">,</span><span class="pln"> color</span><span class="pun">){</span><span class="pln">
-		</span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">which</span><span class="pun">!==-</span><span class="lit">1</span><span class="pun">)</span><span class="pln"> $</span><span class="pun">(</span><span class="pln">maps</span><span class="pun">[</span><span class="pln">which</span><span class="pun">]).</span><span class="pln">css</span><span class="pun">({</span><span class="str">'background-color'</span><span class="pun">:</span><span class="pln"> color</span><span class="pun">});</span><span class="pln">
-	</span><span class="pun">}</span><span class="pln">
+	var getSidePosition = function(x){
+		var ret = Math.floor(x / sectionSize);
+		return (x - sectionSize * ret <= diameter) ? ret : -1;
+	}
+	var getPosition = function (self, event){
+		var offset = $(self).offset();
+		var x = getSidePosition(event.pageX-offset.left);
+		var y = getSidePosition(event.pageY-offset.top);
+		return x===-1 || y===-1 ? -1 : 3 * y + x;
+	}
+	var colorize = function(which, color){
+		if (which!==-1) $(maps[which]).css({'background-color': color});
+	}
 
-	$</span><span class="pun">(</span><span class="str">'#map_div'</span><span class="pun">).</span><span class="pln">mouseout</span><span class="pun">(</span><span class="kwd">function</span><span class="pun">(){</span><span class="pln">
-		colorize</span><span class="pun">(</span><span class="pln">hovered</span><span class="pun">,</span><span class="pln"> NONE_COLOR</span><span class="pun">);</span><span class="pln">
-		hovered</span><span class="pun">=-</span><span class="lit">1</span><span class="pun">;</span><span class="pln">
-	</span><span class="pun">}).</span><span class="pln">click</span><span class="pun">(</span><span class="kwd">function</span><span class="pun">(</span><span class="kwd">event</span><span class="pun">){</span><span class="pln">
-		colorize</span><span class="pun">(</span><span class="pln">selected</span><span class="pun">,</span><span class="pln"> NONE_COLOR</span><span class="pun">);</span><span class="pln">
-		</span><span class="kwd">var</span><span class="pln"> position</span><span class="pun">=</span><span class="pln">getPosition</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">event</span><span class="pun">);</span><span class="pln">
-		</span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">selected</span><span class="pun">===</span><span class="pln">position</span><span class="pun">){</span><span class="pln">
-			selected</span><span class="pun">=-</span><span class="lit">1</span><span class="pun">;</span><span class="pln">
-		</span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
-			selected</span><span class="pun">=</span><span class="pln">position</span><span class="pun">;</span><span class="pln">
-			colorize</span><span class="pun">(</span><span class="pln">selected</span><span class="pun">,</span><span class="pln"> SELECTED_COLOR</span><span class="pun">);</span><span class="pln">
-		</span><span class="pun">}</span><span class="pln">
-		hovered</span><span class="pun">=-</span><span class="lit">1</span><span class="pun">;</span><span class="pln">
-	</span><span class="pun">}).</span><span class="pln">mousemove</span><span class="pun">(</span><span class="kwd">function</span><span class="pun">(</span><span class="kwd">event</span><span class="pun">){</span><span class="pln">
-		</span><span class="kwd">var</span><span class="pln"> pos</span><span class="pun">=</span><span class="pln">getPosition</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">event</span><span class="pun">);</span><span class="pln">
-		</span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">pos</span><span class="pun">!==</span><span class="pln">hovered</span><span class="pun">){</span><span class="pln">
-			colorize</span><span class="pun">(</span><span class="pln">hovered</span><span class="pun">,</span><span class="pln"> NONE_COLOR</span><span class="pun">);</span><span class="pln">
-			</span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">pos </span><span class="pun">!==</span><span class="pln"> selected</span><span class="pun">){</span><span class="pln">
-				colorize</span><span class="pun">(</span><span class="pln">hovered </span><span class="pun">=</span><span class="pln"> pos</span><span class="pun">,</span><span class="pln"> HOVER_COLOR</span><span class="pun">);</span><span class="pln">	
-			</span><span class="pun">}</span><span class="pln">
-		</span><span class="pun">}</span><span class="pln">
-	</span><span class="pun">});</span><span class="pln">
-	colorize</span><span class="pun">(</span><span class="pln">selected</span><span class="pun">,</span><span class="pln"> SELECTED_COLOR</span><span class="pun">);</span><span class="pln">
-</span><span class="pun">});</span></pre>
-
-
+	$('#map_div').mouseout(function(){
+		colorize(hovered, NONE_COLOR);
+		hovered=-1;
+	}).click(function(event){
+		colorize(selected, NONE_COLOR);
+		var position=getPosition(this, event);
+		if (selected===position){
+			selected=-1;
+		} else {
+			selected=position;
+			colorize(selected, SELECTED_COLOR);
+		}
+		hovered=-1;
+	}).mousemove(function(event){
+		var pos=getPosition(this, event);
+		if (pos!==hovered){
+			colorize(hovered, NONE_COLOR);
+			if (pos !== selected){
+				colorize(hovered = pos, HOVER_COLOR);	
+			}
+		}
+	});
+	colorize(selected, SELECTED_COLOR);
+});
+</pre>
 </div></div>
 </body>
 </html>
