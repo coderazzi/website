@@ -19,6 +19,53 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+	<p class="entry"><span class="entry-date">2nd September 2012</span>PSU rampage</p> 
+	 	<p> <img src="images/psu.jpg" alt="PSU" class="blog">Two weeks ago, one of my hackintoshes 
+	 	started misbehaving. It would go to sleep, but the wakeup process never completed, even the 
+	 	monitor would stay without line signal. I tried booting into Linux, but the same problem 
+	 	reappeared, so it was a problem in the hardware. Didn't have much time to elucidate on the 
+	 	possible reasons, as briefly after, the computer refused to start again. Better said, it 
+	 	would start, auto power off and try to start again, without beeps or any screen information.</p>
+
+	 	<p>These <a href='http://pcsupport.about.com/od/findbysymptom/tp/computer-wont-turn-on.htm'>website</a> 
+	 		was my best reference, specially
+	 		<a href='http://pcsupport.about.com/od/findbysymptom/ht/pconthenoff.htm'>How To Troubleshoot 
+	 			a Computer That Turns On and Then Immediately Turns Off</a>.
+	 		The problem seemed to be on the power supply, so I quickly opened my other hackintosh, and 
+	 		plugged its power supply into the dead computer: immediate success, time to change the power supply.</p>
+
+	 	<p>The guilty PSU was a <span class='mark'>Be Quiet 300 Watts</span>, about 3 years old.
+	 	   I failed to check the manufacturer warranty, which (at least now) covers 5 years,
+	 	   and without considerations on buying for second time a PSU of the same brand I purchased a 
+	 	   <span class='mark'>Be Quiet 350 Watts</span>. Plugged in -of course having to disassembly
+	 	   almost completely the computer-, and working again without (further) problems.</p>
+
+		<p>Matter is, my other hackintosh PSU's broke down just a couple of weeks later!</p>
+
+		<p>This time there were no symptoms that the guilty component would be the PSU, and I could 
+			not plug the other PSU this time -I needed a P4+4 connector, missing on the 
+			<span class='mark'>Be Quiet 350 W</span>-. Fortunately I had a voltmeter and with the
+			help of this 
+			<a href='http://pcsupport.about.com/od/toolsofthetrade/ht/power-supply-test-multimeter.htm'>reference page</a>
+			I was able to quickly verify that my +12 VDC line was supplying 12.92 volts, 
+			outside the ATX safety margin.</p>
+
+		<p>Again, time to shopping; my previous PSU was a 
+			<span class='mark'>Cooler Master Silent Pro M500</span> (500W), with single rail. 
+			This single rail was rather problematic -To swap hard disks using the hard disk rack 
+			I had to put first the computer on standby-, so I did first some googling to find the best alternative. 
+			The best help I found was a <a href='http://extreme.outervision.com/psucalculatorlite.jsp'>calculator</a> 
+			to find the required power for my system, but at the end I had to buy what my local dealer had in stock: 
+			a <span class='mark'>Be Quiet PCGH Edition</span> -500W, 80 Plus Gold-.</p>
+
+		<p>So, 100 euros poorer I could only wonder why both PSUs would die in such a short time. 
+			Initially I thought it would be due to letting the computers on suspend mode (aka hibernating for Windows), 
+			but this should not shorten specially the lifespan of the PSUs -in addition, one PSU was about 4 years old, 
+			the other 3 years old-. Other cause would be a voltage spike, but I do use surge protectors -Belkin- and 
+			seem to be working properly, so I haven't yet ruled out having had just very bad luck.
+	 	</p>
+
+
 	<p class="entry"><span class="entry-date">28th August 2012</span>Playing with Python on the GIMP</p> 
 
 	 <p> <img src="images/gimp.png" alt="gimp icon" class="blog">

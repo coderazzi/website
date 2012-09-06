@@ -1,0 +1,263 @@
+<html>
+
+<head>
+ <title>Using SSH keys</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="SSH keys">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>&gt; 03rd September 2012, 00:36 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
+
+<h1>Using SSH keys</h1>
+
+<p>A SSH connection can be established using a password -the password of the user's account on the SSH host-.  
+	This is the basic setting, and it requires the user to enter the password on each access.</p>
+
+<p>A more convenient approach can be achieved using SSH keys. Basically, a SSH key is generated, that includes 
+	in fact a pair of cryptographic keys -a public encryption key and a private decryption key.
+	The public one is transferred to any host where a SSH session is required.
+	The private one remains on the client machine or machines, and the user should ensure its security.
+	If correctly setup, the user can now access all the servers without introducing any passwords. Definitely
+	very convenient.</p>
+
+<p>There are many configurations possible to enable SSH keys. On the client side, the default configuration requires:</p>
+<ul>
+	<li>To have, on each account supporting a SSH connection, a <span class='mark'>~/.ssh</span> folder that must
+		be <span class='mark'>chmod 700</span>: that is, only accessible by the account's owner.</li>
+
+	<li>To store on this folder the SSH key, named <span class='mark'>id_rsa</span> 
+		(will be named <span class='mark'>id_dsa</span> if the SSH key's type is DSA). Furthermore, this file
+		must be <span class='mark'>chmod 600</span>: that is, only accessible by the account's owner.</li>
+</ul>
+
+<p>The command</p>
+		<pre>ssh-keygen -t rsa -b 4096</pre>
+<p>achieves these requirements, producing a 4096 bits RSA key: 
+		it creates by default the file <span class='mark'>~/.ssh/id_rsa</span> with the
+		right permissions, and, if missing, it creates also the <span class='mark'>~/.ssh</span> folder, chmodded to 700.
+		When this command is executed, the user is prompted to enter a passphrase: although is not mandatory to 
+		introduce one, it is sensible to have one in most cases.
+</p>
+
+<p>In fact, the <span class='mark'>ssh-keygen</span> creates two files: <span class='mark'>~/.ssh/id_rsa</span>,
+	the private key, and <span class='mark'>~/.ssh/id_rsa.pub</span>, that is the public key. This public
+	key can be sent to as many hosts as required -no security concerns here-.</p>
+
+<p>On the server side, the default configuration requires:</p>
+<ul>
+	<li>To have, on each account supporting a SSH connection, a <span class='mark'>~/.ssh</span> folder that must
+		be <span class='mark'>chmod 700</span>: that is, only accessible by the account's owner.</li>
+
+	<li>To store on this folder a file called <span class='mark'>authorized_keys</span>, 
+		also <span class='mark'>chmod 600</span>.
+		This file contains each accepted public key, one per line. 
+		The <a href='http://man.he.net/man5/authorized_keys'>format of this file</a> allows to specify 
+		options associated to each key, to restrict the associated SSH connection or to perform specific actions
+		when the connection is established.</li>
+	</li>
+</ul>
+
+
+<p>So, very basically, the process is:</p>
+<ol><li>If you still have no SSH key, create one -using <span class='mark'>ssh-keygen</span>-, 
+	    and store the private key as <span class='mark'>~/.ssh/id_rsa</span> on the client machine
+	    or machines.</li>
+	<li>Include the public key in the file <span class='mark'>~/.ssh/authorized_keys</span> of each account and server
+		where it is required the SSH connection: <pre>cat id_rsa.pub >> ~/.ssh/authorized_keys</pre></li>
+	<li>Ensure that the permissions are correct: chmod 700 on the <span class='mark'>~/.ssh</span> folder, and chmod 600
+		on the folder's files.</li>
+</ol>
+
+
+<p>Once this setup is in place, the exact behaviour depends on the particular linux distribution. The objective is to
+	issue the SSH connection command and not to have to enter the passphrase on each attempt. This can be achieved,
+	of course, by using SSH keys without passphrase, which is difficult to recommend on most scenarios. The
+	alternative is based on the <span class='mark'>ssh_agent</span> implementation, that provides a secure way of
+	handling the passphrase(s). In OsX, the ssh-agent is integrated with the keychain, so each time the passphare is
+	required, the Keychain will check if it already knowns the passphrase. If not, a dialog will appear, looking as:</p>
+
+<p><img src="osx_keychain.png" class="centered"/></p>
+
+<p>So, the first time the SSH access is required, the Keychain mechanisms in Os X will kick in, presenting that dialog.
+	If the password is added to the keychain, it will not be requested any longer: objective achieved.</p>
+
+<p>Similar mechanisms exist in linux, like the KWallet in KDE or the GNOME keyring. From the command line is
+   definitely possible handling the SSH certificates:</p>
+
+   <pre>ssh-add</pre>
+
+   <p>Adds the private key to the keyring, asking for the passphrase if the key has one. This command requires to
+   	have the <span class='mark'>ssh-agent</span> running -and the environment variable SSH_AUTH_SOCK correctly setup,
+   	but this will normally be the case (otherwise, starting ssh-agent automatically displays the required
+   	environment variables to set).</p>
+
+   	<p>It is also possible to add the keys to the ssh-agent automatically on each session, just by adding to your 
+   		<span class='mark'>~/.xsession</span> file the line <span class='mark'>ssh-add</span>, although this
+   		requires to have the <span class='mark'>ssh-askpass</span> package installed.</p>
+
+
+<h2>ssh-agent: use it</h2>
+
+<p>So, to be able to so SSH connections without entering each time a password, it is needed to use SSH keys.
+	And to use SSH keys without entering a passphrase, it is needed to use the ssh-agent (or Keychain in OsX).
+	And the result is not only a higher convenience, but an increased security. Quoting from this
+	<a href='http://www.debian-administration.org/users/dkg/weblog/64'>weblog entry</a>: when you authenticate 
+	to a text-based channel on a remote server, you should never have to type anything about that authentication 
+	into the channel that will eventually be controlled by the remote server.</p>
+
+<p>Of course, the security is only increased if some conditions are met: once the keyring is accessible, 
+	anybody with access to the login session can reach the SSH servers without entering any passwords or
+	passphrase. For example, a laptop with sensible SSH login keys should remain always secure -blocking sessions 
+	on standby, or after some idle time-.
+
+
+<h2>Multiple SSH keys</h2>
+
+<p>In principle, there is need for one single SSH key. But although it is overkilling having multiple keys for multiple
+   services or hosts, like, for example, one for each subversion or git repository's server, there are
+   still many scenarios where having multiple keys is the most sensible action.</p>
+
+   <p>One such scenario is to configure a SSH key without a passphrase to permit automation of operations over SSH,
+   	but most commonly is due to security concerns: a laptop could use a key that has granted access to only a
+   	subset of all the services or servers, or with granted access to accounts with lower permissions.</p>
+
+   	<p>To generate SSH keys on specific files, the flag <span class='mark'>-f</span> is used on
+   		<span class='mark'>ssh-keygen</span>:</p>
+
+		<pre>ssh-keygen -t rsa -b 4096 -f KEYS_FILE -C COMMENT</pre>
+
+	<p>The generated public key is added to the servers in the same way; the <span class='mark'>~/.ssh/authorized_keys</span>
+		file in the server can have multiple keys associated to the same client. For the client to use this 
+		new key instead of the default one, it must do so explicitly, and the way to do so depends in fact on the
+		used tool. To open a SSH connection using ssh:</p>
+
+	<pre>ssh -i KEYS_FILE user@host</pre>
+
+	<p>Or just using an alias:</p>
+
+	<pre>alias ssh="ssh -i KEYS_FILE"</pre>
+
+	<p>If the key is used for a subversion access via SSH, an environment variable can be set:</p>
+
+		<pre>export SVN_SSH="ssh -i KEYS_FILE user@host"</pre>
+
+
+	<p>It is also possible to configure SSH to directly use multiple keys, by providing a file 
+		<span class='mark'>~/.ssh/config</span>. This file can contain multiple entries such as:</p>
+
+<pre>IdentityFile ~/.ssh/id_rsa.home
+IdentityFile ~/.ssh/id_rsa.work</pre>
+
+	<p>Now, both keys are used all the time; even better, it is possible to define the key selection
+	   based on the server, like:</p>	
+
+<pre>Host *.coderazzi.net
+	IdentityFile ~/.ssh/id_rsa.coderazzi
+
+Host *.coderazzi.com
+	IdentityFile ~/.ssh/id_rsa.coderazzi.com
+	User coderazzi
+
+Host *.codingnight.net
+	IdentityFile ~/.ssh/id_rsa.cn
+	User coderazzi
+	Port 5623</pre>
+
+
+<h2>Maintenance</h2>
+
+<p>SSH keys maintenance includes the change of passphrases, and the renewal of keys</p>
+
+<p>For the same reasons that it is recommended to change periodically your account's password[s],
+	the passphrases in the SSH keys should be also periodically changed, using the 
+	flag <span class='mark'>-p</span> on <span class='mark'>ssh-keygen</span>:</p>
+
+	<pre>ssh-keygen -p [-f KEYS_FILE]</pre>
+
+<p>Changing the passphrase does not impact the public key, it only changes the private key.
+	So, if there are reasons to believe that the private key is compromised, changing the
+	passphrase is definitely not enough: new keys should be generated, and the existing public key
+	replaced on all related servers.</p>
+
+
+References:
+<a href='http://docstore.mik.ua/orelly/networking_2ndEd/ssh/ch03_03.htm'>O'Reilly site</p> 
+<a href='http://en.wikipedia.org/wiki/Secure_Shell'>wikipedia</a>
+
+<p>To setup the communication channel on a SSH session, the server provides its own <span class='mark'>public key</span> to the client; 
+	if this key is known and accepted, it will be used to encrypt the communications from the client to the server. That is, any
+	transmitted information  is encrypted using the public key of the other party; only the holder of the private key (the other party)
+	can decrypt that information. (The reality is a little more complex, using session keys that are shared by both parties, and that
+	are negotiated using the original server/client keys).</p>
+
+<p>The process to accept the server key depends on each system; in Linux (or OsX), the file <span class='mark'>~/.ssh/known_hosts</span> 
+	contain the known public keys of accepted servers; when a new key is received, the user will be prompted to accept or refuse it. If accepted, the client sends then its own <span class='mark'>public key</span> to the server.</p>
+
+
+SSH keys can be DSA or RSA; with DSA being limited to 1024 bytes, and providing no real additional security than RSA, seems a better idea to opt for RSA keys. The default is 2048 bytes, but using 4096 bytes can be sensible -depending on the target usage, of course-.
+
+
+
+
+</div></div>
+</body>
+</html>
+
+--------------
+
+
+SSH keys are the best option to setup secure SSH communications -which in fact covers a lot of options, like subversion, sftp, etc-: not only they provide higher security than a password, but also make unnecessary the sending of the password over the network.
+
+SSH keys can be DSA or RSA; with DSA being limited to 1024 bytes, and providing no real additional security than RSA, seems a better idea to opt for RSA keys. The default is 2048 bytes, but using 4096 bytes can be sensible -depending on the target usage, of course-.
+
+In OsX or Linux, the key is generated with the ssh-keygen command. A 4096 RSA key is generated as:
+
+ssh-keygen -t rsa -b 4096 -f coderazzi.key -C "coderazzi"
+
+This commands create the key on the file coderazzi.key, including the comment "coderazzi". A passphrase is then requested, although is not mandatory to introduce one (and not sensible not to do so in most cases). The passphrase can be changed later -should be done often enough, and definitely if the private key is compromised- using the command
+
+ssh-keygen -p 
+
+This creates two files: coderazzi.key contains the private key, and is to be kept safely. The public key can be made public, as expected.
+
+To make this key the default key used on communications, store it as ~/.ssh/id_rsa
+
+And it is important that the ~/.ssh directory is chmodded to 700, and ~/.ssh/id_rsa to 600
+
+
+Now, the public key must be included on any server we will communicate with. To do so, edit (or add) the file ~/.ssh/authorized_keys (chmodded to 600, with ~/.ssh to 700)), including directly the public key:
+
+cat coderazzi.key.pub > ~/.ssh/authorized_keys
+
+Now, when we communicate to a server, the ssa-agent will be trigered: this can keep the passphrase on the cache (in Os X, the keychain is used here).
+
+
+------
+
+You can use ssh-agent(1) and ssh-add(1) to type your passphrase only once for all uses of a specific key in a session. You can automatically load all your keys in the agent by adding the following lines to your ~/.xsession file:
+
+      # if use-ssh-agent is specified in /etc/X11/Xsession.options
+      # (this is the default) then you need only the second line
+      # eval ssh-agent
+      ssh-add
+The ssh-askpass package must be installed in order to run ssh-add without a terminal.
+
+----
+
+
+
+http://oroborosx.sourceforge.net/remotex.html
+
+http://muffinresearch.co.uk/archives/2010/02/08/howto-ssh-into-virtualbox-3-linux-guests/
+
+http://www.debian.org/devel/passwordlessssh
+
+
+The authenticity of host '192.168.0.21 (192.168.0.21)' can't be established.
+RSA key fingerprint is c5:51:18:c7:68:35:32:f0:c8:6b:58:86:4e:a7:85:26.
+Are you sure you want to continue connecting (yes/no)?
