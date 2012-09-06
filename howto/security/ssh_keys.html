@@ -203,54 +203,6 @@ SSH keys can be DSA or RSA; with DSA being limited to 1024 bytes, and providing 
 
 
 
-
-</div></div>
-</body>
-</html>
-
---------------
-
-
-SSH keys are the best option to setup secure SSH communications -which in fact covers a lot of options, like subversion, sftp, etc-: not only they provide higher security than a password, but also make unnecessary the sending of the password over the network.
-
-SSH keys can be DSA or RSA; with DSA being limited to 1024 bytes, and providing no real additional security than RSA, seems a better idea to opt for RSA keys. The default is 2048 bytes, but using 4096 bytes can be sensible -depending on the target usage, of course-.
-
-In OsX or Linux, the key is generated with the ssh-keygen command. A 4096 RSA key is generated as:
-
-ssh-keygen -t rsa -b 4096 -f coderazzi.key -C "coderazzi"
-
-This commands create the key on the file coderazzi.key, including the comment "coderazzi". A passphrase is then requested, although is not mandatory to introduce one (and not sensible not to do so in most cases). The passphrase can be changed later -should be done often enough, and definitely if the private key is compromised- using the command
-
-ssh-keygen -p 
-
-This creates two files: coderazzi.key contains the private key, and is to be kept safely. The public key can be made public, as expected.
-
-To make this key the default key used on communications, store it as ~/.ssh/id_rsa
-
-And it is important that the ~/.ssh directory is chmodded to 700, and ~/.ssh/id_rsa to 600
-
-
-Now, the public key must be included on any server we will communicate with. To do so, edit (or add) the file ~/.ssh/authorized_keys (chmodded to 600, with ~/.ssh to 700)), including directly the public key:
-
-cat coderazzi.key.pub > ~/.ssh/authorized_keys
-
-Now, when we communicate to a server, the ssa-agent will be trigered: this can keep the passphrase on the cache (in Os X, the keychain is used here).
-
-
-------
-
-You can use ssh-agent(1) and ssh-add(1) to type your passphrase only once for all uses of a specific key in a session. You can automatically load all your keys in the agent by adding the following lines to your ~/.xsession file:
-
-      # if use-ssh-agent is specified in /etc/X11/Xsession.options
-      # (this is the default) then you need only the second line
-      # eval ssh-agent
-      ssh-add
-The ssh-askpass package must be installed in order to run ssh-add without a terminal.
-
-----
-
-
-
 http://oroborosx.sourceforge.net/remotex.html
 
 http://muffinresearch.co.uk/archives/2010/02/08/howto-ssh-into-virtualbox-3-linux-guests/
@@ -261,3 +213,12 @@ http://www.debian.org/devel/passwordlessssh
 The authenticity of host '192.168.0.21 (192.168.0.21)' can't be established.
 RSA key fingerprint is c5:51:18:c7:68:35:32:f0:c8:6b:58:86:4e:a7:85:26.
 Are you sure you want to continue connecting (yes/no)?
+
+
+</p>
+
+
+
+</div></div>
+</body>
+</html>
