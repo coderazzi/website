@@ -184,39 +184,16 @@ Host *.codingnight.net
 	passphrase is definitely not enough: new keys should be generated, and the existing public key
 	replaced on all related servers.</p>
 
+<h2>Core stuff</h2>
 
-References:
-<a href='http://docstore.mik.ua/orelly/networking_2ndEd/ssh/ch03_03.htm'>O'Reilly site</p> 
-<a href='http://en.wikipedia.org/wiki/Secure_Shell'>wikipedia</a>
-
-<p>To setup the communication channel on a SSH session, the server provides its own <span class='mark'>public key</span> to the client; 
-	if this key is known and accepted, it will be used to encrypt the communications from the client to the server. That is, any
-	transmitted information  is encrypted using the public key of the other party; only the holder of the private key (the other party)
-	can decrypt that information. (The reality is a little more complex, using session keys that are shared by both parties, and that
-	are negotiated using the original server/client keys).</p>
-
-<p>The process to accept the server key depends on each system; in Linux (or OsX), the file <span class='mark'>~/.ssh/known_hosts</span> 
-	contain the known public keys of accepted servers; when a new key is received, the user will be prompted to accept or refuse it. If accepted, the client sends then its own <span class='mark'>public key</span> to the server.</p>
-
-
-SSH keys can be DSA or RSA; with DSA being limited to 1024 bytes, and providing no real additional security than RSA, seems a better idea to opt for RSA keys. The default is 2048 bytes, but using 4096 bytes can be sensible -depending on the target usage, of course-.
-
-
-
-http://oroborosx.sourceforge.net/remotex.html
-
-http://muffinresearch.co.uk/archives/2010/02/08/howto-ssh-into-virtualbox-3-linux-guests/
-
-http://www.debian.org/devel/passwordlessssh
-
-
-The authenticity of host '192.168.0.21 (192.168.0.21)' can't be established.
-RSA key fingerprint is c5:51:18:c7:68:35:32:f0:c8:6b:58:86:4e:a7:85:26.
-Are you sure you want to continue connecting (yes/no)?
-
-
+<p>This small tutorial covers only the basic of making a default SSH setup work on Linux or OsX. The very basics.
+	There are related concepts like the 
+	<a href='http://blog.rootshell.be/2010/11/03/bruteforcing-ssh-known_hosts-files/'>known_hosts</a> file, 
+	<a href='http://www.x.org/archive/X11R6.8.1/doc/xauth.1.html'>xauth</a>, 
+	<a href='http://www.cmdln.org/2008/02/11/restricting-ssh-commands/'>restricting ssh commands</a>, using different
+	SSH protocol versions, etc, etc, etc. 
 </p>
-
+<p>To get more familiar with the basis of SSH, I would recommend this <a href='http://docstore.mik.ua/orelly/networking_2ndEd/ssh/ch03_03.htm'>O'Reilly site</a> or the <a href='http://en.wikipedia.org/wiki/Secure_Shell'>wikipedia</a></p>
 
 
 </div></div>

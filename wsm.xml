@@ -91,7 +91,7 @@
             <item name='2010' file='blog_2010.html'/>
         </group>
         <group name='Java'>
-            <item name='IdlDepend' file='idldepend/index.htm'/>
+            <item name='GlassedPane' file='glassedpane/index.html'/>
             <group name='Table filter'>
                 <item name='Overview' file='tablefilter/index.html'/>
                 <item name='Tutorial' file='tablefilter/tutorial.html'/>
@@ -101,7 +101,7 @@
                 <item name='How to ...' file='tablefilter/howto.html'/>
                 <item name='Java 5 support' file='tablefilter/java5.html'/>
             </group>
-            <item name='GlassedPane' file='glassedpane/index.html'/>
+            <item name='IdlDepend' file='idldepend/index.htm'/>
             <group name='VirtualNet'>
                 <item name='Overview' file='virtualnet/index.htm'/>
                 <item name='Availability' file='virtualnet/availability.htm'/>
@@ -113,8 +113,8 @@
                 <item name='Versions' file='virtualnet/versions.htm'/>
             </group>
             <item name='VirtualNet2' file='virtualnet2/index.htm'/>
-            <item name='CmdLinker' file='cmdlinker/index.htm'/>
             <item name='Sensei' file='phd/index.htm' mainLink='false'/>
+            <item name='CmdLinker' file='cmdlinker/index.htm'/>
             <item name='FileSplit' file='filesplit/index.htm'/>
             <item name='Menu Applet' file='menu/index.htm'/>
             <item name='SplitImage' file='splitimage/index.htm'/>
@@ -138,6 +138,9 @@
             <item name='Code Prettify' file='javascript/prettify/index.html'/>
         </group>
         <group name='Linux'>
+            <group name='SSH'>
+                <item name='Using SSH keys' file='howto/security/ssh_keys.html'/>
+            </group>
 			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
 			<item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>
 	        <group name='Kubuntu'>
