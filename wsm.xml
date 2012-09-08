@@ -140,6 +140,7 @@
         <group name='Linux'>
             <group name='SSH'>
                 <item name='Using SSH keys' file='howto/security/ssh_keys.html'/>
+                <item name='Serving SVN on SSH' file='howto/security/ssh_svn.html'/>
             </group>
 			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
 			<item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>

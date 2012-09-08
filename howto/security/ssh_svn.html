@@ -1,0 +1,141 @@
+<html>
+
+<head>
+ <title>SSH + SVN</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="SSH SVN">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>&gt; 07th September 2012, 01:58 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
+
+<h1>Setting up SVN on SSH</h1>
+
+<p>Normally, a subversion url looks as</p>
+<pre>https://server/etc</pre>
+<p>This means that subversion is being served using HTTP(s) protocol; an alternative is to use SVN + SSH,
+	that is, to tunnel subversion on ssh.
+	The main advantage of supporting HTTP is to avoid problems with firewalls, but it is slower 
+	and implies additional setup on the server machine. 
+	This setup is anyway easy, but only if Apache is already installed; 
+	if the server favors Nginx, this setup becomes suddenly a complication.</p>
+
+<p>Having SSH + SVN does not imply, in fact, any additional work. 
+	Let's imagine we have a server account called <span class='mark'>coderazzi</span>, 
+	and assume a SVN repository called <span class='mark'>projectx</span>, located as 
+	<span class='mark'>/home/coderazzi/svn/projectx</span>. 
+	To checkout this repository on any remote machine is enough to do:</p>
+
+<pre>svn co svn+ssh://coderazzi@coderazzi.com/home/coderazzi/svn/projectx . </pre>
+
+<p>This checkout will succeed,a s far as the user enters correctly the password of the
+	account. Matter of fact -and of inconvenience-, the user will have to enter 
+	<span class='mark'>twice</span> the password.</p>
+
+<p>What is happening on the server side? 
+	Not much: the svn client action triggers the svnserver process on the server 
+	-which is created just for this transaction-, using the passed credentials; 
+	the required files are then transferred back over ssh.</p>
+
+<p>So, this setup works, but has two main problems:</p>
+
+<ol><li>Being requested the password. Twice. This can be solved using ssh keys.</li>
+	<li>Requiring the account's password. The user will likely have more services on the server, 
+		potentially sensible, and using its password for subversion purposes seems an ill idea</li></ol>
+
+<p>So, the solution passes by creating a separate account and setting up ssh keys. 
+	Any account is okay, but using <span class='mark'>svn</span> seems rather appropriated.  
+	So, on the server side do first:</p>
+
+<pre>#install subversion, if required:
+
+sudo apt-get install subversion
+
+#setup specific user
+
+sudo useradd svn
+sudo mkdir /home/svn
+sudo mkdir /home/svn/.ssh
+sudo chown -R svn:svn /home/svn
+ 
+#And request  a passwd:
+
+sudo passwd svn</pre>
+
+<p>Now, create the directory <span class='mark'>/srv/svn</span> 
+	and dump there the current repositories (or create them using <span class='mark'>svnadmin create</span>):</p>
+
+
+<pre>sudo chown -R svn:svn /srv/svn
+ 
+#Change permissions and umask to 2 to ensure correct permissions:
+
+sudo chmod 2770 -R /srv/svn/ </pre>
+
+<p>Now, instead of using the coderazzi user, we can use the more restricted svn user</p>
+
+<pre>svn co svn+ssh://svn@coderazzi.com/srv/svn/projectx . </pre>
+
+<p>To avoid the password request madness, it is obviously possible to use 
+	ssh keys on the svn account. This <a href='ssh_keys.html'>short tutorial</a>
+	describes the whole proccess of setting up ssh keys: in short, it implies having a 
+	<span class='mark'>~/.ssh</span> directory in the <span class='mark'>svn</span> user home
+	 folder (chmodded to 700), 
+	and inside a file called <span class='mark'>authorized_keys</span> (chmodded to 600). 
+	To add a specific user, we obtain his public key, and add it to the 
+	<span class='mark'>authorized_keys</span> file of the <span class='mark'>svn</span> user:</p>
+
+<pre>cat coderazzi.key.pub > ~/.ssh/authorized_keys</pre>
+
+<p>On the client side, it implies having a 
+	<span class='mark'>~/.ssh</span> directory in the user home folder (chmodded to 700), 
+	and inside a file called <span class='mark'>id_rsa</span> (chmodded to 600), containing
+	the private key -note that this is the default expected configuration, but other
+	configurations are indeed possible-. Once this is done, 
+	the user owning the coderazzi.key certificate (and its passphrase), 
+	will be able to access the subversion repository. In addition, this user does not need to know the 
+	<span class='mark'>svn</span>'s user password; however, this user can still do any normal
+	ssh session on the svn account -which in most cases seems a bad idea-.</p>
+
+<p>To avoid this, the autorized_keys file must include information to restrict the ssh operations:
+   it can include an entry that defines the command to be executed when this key is used to start
+   a ssh session. This file contain one entry for each public key, such as:</p>
+
+<pre>ssh-rsa AAAAB3....</pre>
+
+<p>To ensure that only SVN is provided, and, in addition, that only specific folders (<span class='mark'>/srv/svn</span>) 
+	are supported, we update this entry to look like:</p>
+
+<pre>command="/usr/bin/svnserve -t -r /srv/svn/",no-port-forwarding,no-pty,
+	           no-agent-forwarding,no-X11-forwarding ssh-rsa AAA...</pre>
+
+<p>(so we are setting additionally sound restrictions). Because of the entry <span class='mark'>-r /srv/svn</span>, 
+	the user does not need any longer to enter the full path to the svn folder as in:</p>
+
+<pre>svn co svn+ssh://svn@coderazzi.com/srv/svn/projectx .</pre>
+
+<p>Instead, the user can enter now directly:</p>
+
+<pre>svn co svn+ssh://svn@coderazzi.com/projectx . </pre>
+
+<p>Although this is now enough for the setup, we have assumed that the user owns a single ssh key. 
+	This can be a bad idea for security reasons, so let's assume that the user has a second key, 
+	to be used explicitly on SVN access. In this case is this second public key  what is inserted 
+	into the server' authorized_keys file for the SVN user. The key itself can be saved 
+	on the .ssh folder of the user, and he must now explicitly require this user for SVN access. To do so:</p>
+
+<pre>export SVN_SSH="ssh -i /Users/coderazzi/.ssh/coderazzi.svn.key</pre>
+
+
+
+
+
+
+
+</div></div>
+</body>
+</html>
