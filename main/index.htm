@@ -19,6 +19,52 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+	<p class="entry"><span class="entry-date">17th November 2012</span>New mobo: GA-B75M-D3P</p> 
+
+	<p><img src="images/mobo-b75m.jpg" alt="mobo icon" class="blog">I just bought a new motherboard, a Gigabyte GA-B75M-D3P: 
+		its target is linux and / or hackintosh, 
+		and I have no plans at all to install here Windows (8 or 7). </p>
+
+	<p>I do not intend any overclocking or so, and my only requirements was to have DisplayPort support to drive a 30" monitor, 
+		and SPDIF output, and this mobo got it all, for 75 euros. 
+		Jumping up the specifications to a H77 or Z77 mobo would not give me any additional value.</p>
+
+	<p>This mobo is targeted to business users, and it is definitely unassuming. 
+		It does not even have any led to show that the PSU is connected. 
+		But I installed directly 32 Gb of memory and it recognized them without any problems.</p>
+
+	<p>The only issue I have run so far into is on the BIOS update. 
+		All my previous mobos, from ASUS, support flashing the BIOS from inside the BIOS setup. 
+		Some Gigabyte mobos have similar functionality, called Q-Flash, but not this specific one. 
+		More to the shame, the manual points to this non existent utility to update the BIOS.</p>
+
+	<p>The download itself is an .EXE file. 
+		Fortunately, it is just a self extracting zip file, so it is possible to extract the contents using, in Linux:
+		<pre>7z x mb_bios_ga-b75m-d3p_f6.exe</pre></p>
+
+	<p>The contents include an autoexec.bat file, the flash utility (efiflash.exe) and the BIOS itself. 
+		Now, that Efiflash.exe can only be executed in Windows.... or, DOS. 
+		So, the solution is not so easy as to have flash support in the BIOS, 
+		and makes for additional 25 or 30 minutes of work, but at least is doable:<p>
+
+	<ul>
+		<li>Download <a href='http://unetbootin.sourceforge.net/'>unetbootin</a>.</li>
+		<li>Execute it and install the FreeDOS distribution on a USB stick (I used a 1 Gb one).</li>
+		<li>Add a directory in the USB, and copy there the Efiflash.exe files and the bios itself (B75MD3P.F6 in my case).</li>
+		<li>Boot it, and select the option Live CD. 
+			The boot is not perfect, with some errors echoed on the screen, but then you get into the almost forgotten A:&gt; prompt.</li>
+		<li>Change to C: -the USB drive-, access the created directory and enter:
+
+			<pre>Efiflash.exe B75MD3P.F6</pre>
+
+		</li>
+		<li>Done!</li>
+	</ul>
+
+	<li>PS: shame on Gigabyte for such a loose implementation, specially when the mobo seems indeed solid.</li>
+
+
+
 	<p class="entry"><span class="entry-date">17th November 2012</span>TableFilter v4.5.0</p> 
 
 	 <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">
