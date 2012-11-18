@@ -29,6 +29,7 @@
     </location>       
     <location source='css'/>
     <location source='js'/>
+    <location source='private'/>
     <location source='java/idldepend' target='idldepend'>
         <template mold='../../special.mold.htm' pattern='index.htm' dismissSourceHead='true'/>
     </location>
