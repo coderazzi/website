@@ -138,13 +138,27 @@
             <item name='Dominosa' file='javascript/dominosa/dominosa.html'/>
             <item name='Code Prettify' file='javascript/prettify/index.html'/>
         </group>
-        <group name='Linux'>
+        <group name='networking'>
             <group name='SSH'>
                 <item name='Using SSH keys' file='howto/security/ssh_keys.html'/>
                 <item name='Serving SVN on SSH' file='howto/security/ssh_svn.html'/>
             </group>
-			<item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
-			<item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>
+            <group name='OpenWRT'>
+                <group name='TL-841N'>
+                    <item name='Info' file='howto/openwrt/tl841n/index.htm'/>
+                    <item name='1 - Installation' file='howto/openwrt/tl841n/install.htm'/>
+                    <item name='2 - Vlans' file='howto/openwrt/tl841n/vlans.htm'/>
+                    <item name='3 - OpenVPN bridge' file='howto/openwrt/tl841n/openvpn-bridge.htm'/>
+                </group>
+            </group>
+        </group>        
+        <group name='Linux'>
+            <group name='Solaris'>
+                <item name='SunOS' file='solaris/index.htm'/>
+                <item name='Solaris on P5Q-E' file='solaris/p5q-e/index.htm'/>
+                <item name='OpenSolaris on P5Q-E' file='solaris/p5q-e/opensolaris.htm'/>
+                <item name='Oracle 11g' file='solaris/oracle.htm'/>
+            </group>        
 	        <group name='Kubuntu'>
 				<item name='Colors - gamma' file='howto/kubuntu/gamma.html'/>
 				<item name='Multiple monitors' file='howto/kubuntu/multiple_monitors.html'/>
@@ -153,6 +167,8 @@
 				<item name='Install [Nc10]' file='linux/meego/nc10install.html'/>
 				<item name='Brightness hotkeys' file='linux/meego/brightness.html'/>
 	        </group>		
+            <item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
+            <item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>
         </group>		
         <group name='Os X'>
             <item name='Nginx' file='howto/osx/nginx.html'/>
@@ -166,12 +182,6 @@
                 </group>
                 <item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
             </group>
-        </group>		
-        <group name='Solaris'>
-			<item name='SunOS' file='solaris/index.htm'/>
-	        <item name='Solaris on P5Q-E' file='solaris/p5q-e/index.htm'/>
-	        <item name='OpenSolaris on P5Q-E' file='solaris/p5q-e/opensolaris.htm'/>
-	        <item name='Oracle 11g' file='solaris/oracle.htm'/>
         </group>		
         <group name='PhD'>
             <item name='Sensei' file='phd/index.htm'/>

@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+ <title>OpenWRT and OpenVPN</title>
+ <link rel="stylesheet" type="text/css" href="../../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="tl-841n, openwrt">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 28th February 2013, 23:04 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>
+
+<h1>OpenWRT + OpenVPN</h1>
+
+<img src='tl841nfront.jpg' class='left'/>
+
+<p>
+    I bought a cheap router for the explicit sake of installing OpenWRT and playing with it (which originated in the unfulfilled wish to setup a SSH tunnel on my existing Netgear router with the existing official firmware).
+</p>
+
+<p>
+    The victim is a TPLink WR841N, which for 20 euros seems much more valuable than my existing Netgear WNDR3700; (in fact, after the initial zero-steps setup I was doubtful about the firmware upgrade to OpenWRT, as it seemed a really solid router).
+</p>
+
+<p>
+    The <a href='http://wiki.openwrt.org/toh/tp-link/tl-wr841nd'>OpenWRT documentation</a> for this device is not bad: the most important point is to detect the hardware version of the device (8.2 in my case), and find the associated information -which at the moment does not exist-. But by checking the documentation on other existing versions, is easy to follow some hints and download and install the correct version.
+</p>
+
+<p>
+    My main objective is very simple: I have hosts on several locations, where I run OpenVPN, and I would like to automatically being able to appear as having an IP address on those hosts. That is, by connecting to specific ports on my router, all my network traffic will appear as originating in one of those hosts.
+</p>
+
+<p>
+    To better understand OpenVPN and why I required to setup a bridge vs a point to point tunnel, I recommend reading this short <a href='http://openmaniak.com/openvpn_tutorial.php'>tutorial</a>.
+</p>
+
+<p>
+    These entries show:
+    <ul>
+        <li><a href='install.htm'>OpenWRT installation</a>: compiling own image and firmware update.</li>
+        <li><a href='vlans.htm'>Virtual interfaces setup</a>: partitioning the network into several virtual, isolated, networks.</li>
+        <li><a href='openvpn-bridge.htm'>OpenVPN bridge setup</a>: how to setup OpenVPN using bridge mode.</li>
+    </ul>
+</p>
+
+<h2>Failsafe procedure</h2>
+
+<img src='unbrickfront.jpg' class='right'/>
+<img src='unbrickback.jpg' class='right'/>
+
+<p>
+    While setting up the virtual interfaces or the bridge, a misconfiguration can 'brick' the router. That is, the router boots, but there is no way to access it.
+</p>
+
+<p>
+    This documentation explains the <a href='http://wiki.openwrt.org/doc/howto/generic.failsafe'>failsafe procedure</a> built in OpenWrt: it will attempt to bypass almost all configuration in favor of a few hard coded defaults, resulting in a router that boots up as <span class='mark'>192.168.1.1/24</span> with only essential services running. From this state you can telnet in and fix certain problems.
+</p>
+
+<p>
+    For the TL-841N, the procedure implies to power off the router, then power it on again, pressing repeatedly the reset button on the back router. If the firmware detects the reset, the second led from the left on the front of the router will
+    start blinking very fast (as opposed to the normal blinking speed that happens on normal boot). In that moment, it is possible to telnet again the router and correct any problems,
+    mounting first the file system in read-write mode:
+</p>
+
+<pre>mount_root</pre>
+
+<p>
+    Afterwards, it is sufficient to power cycle the router or just enter:
+</p>
+
+<pre>
+    reboot -f
+</pre>
+
+
+</div></div></body>
+</html>

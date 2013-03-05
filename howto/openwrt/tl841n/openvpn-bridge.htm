@@ -1,0 +1,388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+ <title>OpenVPN bridge</title>
+ <link rel="stylesheet" type="text/css" href="../../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="openvpn, openwrt, bridge">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 28th February 2013, 02:01 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>
+
+<h1>OpenVPN bridge</h1>
+
+<img src='bridge.png' class='right'/>
+<p>
+    To setup OpenVPN, there are really multiple variations. My main objective is very simple: I have hosts on several locations, where I run OpenVPN, and I would like to automatically being able to appear as having an IP address on those hosts. That is, by connecting to specific ports on my router, all my network traffic will appear as originating in one of those hosts.
+</p>
+
+<p>
+    This goal is better achieved by setting a OpenVPN bridge (as opposed to the more simple point to point tunnel approach). Security requires using a static key, or SSL/TLS + certificates for authentication and key exchange. For my objective, it is enough to use a static key, much simpler to setup.
+</p>
+
+<p>
+    The setup requires multiple steps, to setup VPN on the remote (server) side, and on the router (client) side. Note that the final client -any device connected to the router- requires no setup at all.
+</p>
+
+<h2>Configure remote server for VPN</h2>
+
+<p>
+    This configuration obviously depends on the server, which in this case runs Debian. To just slightly beef up the security, we will use port 11943 instead of the default 1194 (using UDP).    
+</p>
+
+<p>
+    To install openVPN, the server must support TUN/TAP devices. I use a VPS based on OpenVZ which lacked this support, so I had to request its inclusion to my hosting company, who obliged very quickly (the second host I use -also VPS / OpenVZ- turned my request off, which says plenty on the options that I will renew my plan with them).
+</p>
+
+<pre>sudo apt-get update
+sudo apt-get install openvpn</pre>
+
+<p>
+    generate now the static key:
+</p>    
+
+<pre>cd /etc/openvpn
+sudo openvpn --genkey --secret static.key</pre>
+
+<p>
+    And configure the tun device:
+</p>
+
+<pre>sudo vi /etc/openvpn/tap0.conf</pre>
+
+<p>
+    In this file, we enter the following contentto create a network on 10.192.168.x, where the server is itself 10.192.168.1. Note that the communications will use UDP on port 11493:
+</p>
+
+<pre>dev tap0
+ifconfig 10.192.168.1 255.255.255.0
+port 11943
+proto udp
+secret /etc/openvpn/static.key
+
+script-security 3
+keepalive 10 120
+persist-key
+persist-tun
+comp-lzo        
+
+status /var/log/openvpn-status.log
+verb 3</pre>
+
+<p>
+    Some details are very important here. If you miss in this configuration
+    the <span class='mark'>persist-tun</span> line, the tun device can be reset every two minutes (as defined by the <span class='mark'>keepalive</span> directive). In that case, the device is effectively taken down and up again. If you happen to have a dhcp server listening on that device, it will report that the network is down and will just stop serving DHCP requests.    
+</p>
+
+<p>
+    The setup can now be tested with:
+</p>
+
+<pre>sudo openvpn --config /etc/openvpn/tap0.conf --verb 6
+sudo ifconfig</pre>
+
+<p>
+    The first line will fail if there is no TAP device support. If everything goes ok, the secon line will show a device tap0 with address 10.192.168.1.
+</p>
+
+<p>
+    In debian, installation of openvpn sets it up as a service, and it will automatically use the created configuration file <span class='mark'>/etc/openvpn/tap0.conf</span>, so it is effectively sufficient to enter:</p>
+
+<pre>sudo service openvpn restart</pre>
+
+<h2>Configure OpenVPN on OpenWrt router</h2>
+
+<p>
+    We assume now than OpenVPN is installed, either as compiled in the image, or installed as a package. As reported, the TL-841N has not memoty enough to support the package option, so I had to <a href='install.htm#build'>compile</a> it in the image.
+</p>
+
+<p>
+    First thing: get the <span class='mark'>static.key</span> file that we created on the server, and copy it in the router as <span class='mark'>/etc/openvpn/static.key</span>. This file should be <span class='mark'>chmod 600</span>:
+</p>
+
+<pre>chmod 600 /etc/openvpn/static.key</pre>
+
+<p>
+    configure now the tap device
+</p>
+
+<pre>vi /etc/openvpn/tap0.conf</pre>
+
+<p>
+    And enter the following content to create a network on 10.192.168.x
+</p>
+
+<pre>remote YOUR_SERVER_IP_ADDRESS #the public IP address of the server
+dev tap0
+ifconfig 10.192.168.2 255.255.255.0
+port 11943
+proto udp
+secret /etc/openvpn/static.key
+
+keepalive 10 120
+persist-key
+persist-tun
+
+resolv-retry infinite
+mute-replay-warnings
+comp-lzo
+verb 3</pre>
+
+<p>
+    Test it now doing:
+</p>
+
+<pre>openvpn --config /etc/openvpn/tap0.conf --verb 6</pre>
+
+<p>
+    Now, the VPN connection between the server and the router is already working; it can be tested the connection doing:
+</p>
+
+<pre>ping 10.192.168.1</pre>
+
+<p>
+    NOTE: It could possibly not work if you have some firewall / iptables rules etc setup on your router. In that case, it is obviously needed to open the required ports for VPN communication.
+</p>
+
+<p>
+    Once the configuration is tested okay, we can enable the OpenVPN connection from startup by editing the file <span class='mark'>/etc/config/openvpn</span>:
+</p>
+
+<pre>vi /etc/config/openvpn</pre>
+
+<p>
+    That should contain:
+</p>
+
+<pre>config openvpn custom
+    option enabled 1
+    option config /etc/openvpn/tap0.conf</pre>
+
+
+<p>To test it, try now rebooting. Doing then on the router:</p>
+
+<pre>ifconfig</pre>
+
+<p>should show the tap0 connection. And doing ping 10.192.168.1 should work as well</p>
+
+
+
+
+<h2>Create the bridge on the router</h2>
+
+<p>
+    An assumption now is that the device has been split into several virtual interfaces (<a href='vlans.htm'>vlans<a/>). This is not strictly required, but helps with the setup, by allowing us to login in the router (the ports allocated to the bridge will connect us directly to
+    the VPN server).
+</p>
+
+<p>
+    When created the virtual interface for the router, I had configured it as (file <span class='mark'>/etc/config/network</span>):
+</p>
+
+<pre>config interface 'landenver'
+    option ifname 'eth1.2'
+    option type 'bridge'
+    option proto 'static'
+    option ipaddr '192.168.2.1'
+    option netmask '255.255.255.0'</pre>
+
+<p>
+    But to use this virtual interface as a VPN bridge, we need to change slightly this configuration, into:
+</p>
+
+<pre>config interface 'landenver'
+    option ifname 'eth1.2'
+    option proto 'static'
+    option ipaddr '192.168.2.1'
+    option netmask '255.255.255.0'</pre>
+
+<p>
+    Not including the <span class='mark'>option type bridge</span> line, means that no <span class='mark'>ifname</span> will be created for this virtual lan. Note also that the <a href='vlans.htm#dhcp'>changes</a> we had included on the router's file <span class='mark'>/etc/config/dhcp</span> related to interface <span class='mark'>landenver</span> can be commented out, as the
+    router will not be serving any DHCP leases on this interface.
+</p>
+
+<p>
+    The router contains in this moment two interfaces (<span class='mark'>tap0</span> and <span class='mark'>eth1.2</span>) that we want to bridge. This is achieved by entering:
+</p>
+
+<pre>brctl addbr br0
+brctl addif br0 tap0 
+brctl addif eth1.2</pre>
+
+<p>
+    Ready now to bring the VPN up:
+</p>
+
+<pre>ifconfig br0 up</pre>
+
+<p>
+    NOTE: if you are connected to the router via any port allocated to the VLAN, you will lose
+    now connection to the router;  to continue working on the router you need therefore to
+    connect now to other port on a separate VLAN.
+</p>
+
+<p>
+    The bridge can be easily tested now on any client attached to the router (on a port of the VLAN).On that client, allocate a static address on the VPN:
+</p>
+
+<pre>ifconfig eth0 10.198.168.201</pre>
+
+<p>
+    So the client attached to the router can now directly ping the server:
+</p>
+
+<pre>ping 10.198.168.1</pre>
+
+
+<p>
+    For this configuration to be permanent, we create in the router the file <span class='mark'>/etc/init.d/vpn-bridge</span> as the following script:
+</p>
+
+<pre>#!/bin/sh /etc/rc.common
+
+START=96
+
+SERVICE_DAEMONIZE=1
+SERVICE_WRITE_PID=1
+
+start() {
+        stop
+        ifconfig tap0 &> /dev/null || sleep 1
+        ifconfig tap0 &> /dev/null || sleep 1
+        ifconfig tap0 &> /dev/null || sleep 1
+        ifconfig tap0 &> /dev/null || sleep 1
+        ifconfig tap0 &> /dev/null || sleep 1
+        brctl addbr br0                                                     
+        brctl addif br0 tap0                                                
+        brctl addif br0 eth1.2                                              
+        ifconfig br0 up             
+}                                   
+                                    
+restart() {                         
+        start               
+}                           
+                       
+shutdown() {           
+        stop                               
+}                                          
+                                           
+stop() {                                   
+        ifconfig br0 &> /dev/null || return
+        ifconfig br0 down                  
+        brctl delbr br0                    
+}                                          
+                                           
+reload() {                                 
+        restart                            
+}</pre>
+
+<p>
+    And setup the rc.d links:
+</p>                           
+
+<pre>chmod +x /etc/init.d/vpn-bridge
+cd /etc/rc.d
+ln -sf ../init.d/vpn-bridge S98vpn-bridge</pre>
+
+<p>Now the bridge is configured and brough up on startup.</p>
+
+
+
+<h2>Get connected</h2>
+
+<p>
+    A client connected to the router is now on the same VPN as the remote server. But unless there is a DHCP daemon on the server, the client will have no IP address (ergo no real connection).Assigning a static address is not good -we want the client to be attached to different networks depending on the chosen rooter port, and we want it to be automatic-. The router itself is not envolved here anymore: it should be now a transparent tunnel between both ends: each of our client devices and the remote server.
+</p>
+
+<p>
+    So what is needed is the server providing the IP address to the client. Furthermore, we will need to setup the server so that all traffic coming from the VPN tunnel appears as coming from the server itself, to ensure full internet conectivity.
+</p>
+
+<p>
+    To provide the IP address, it is needed to have a DHCP daemon on the server. In my case, my VPS has a static IP address, but there could be already a DHCP server on the network. Never minds, we execute our own daemon serving IP addresses for the created VPN. In Debian, install the DHCP server as:
+</p>
+
+<pre>sudo apt-get install isc-dhcp-server</pre>
+
+<p>
+    We ensure now that it serves the tap0 interface:
+</p>
+
+<pre>sudo vi /etc/default/isc-dhcp-server</pre>
+
+<p>and modify the line INTERFACES to contain:</p>
+
+<pre>INTERFACES="tap0"</pre>
+
+<p>Then, the file <span class='mark'>/etc/dhcp/dhcpd.conf</span> needs some content like:</p>
+
+<pre>ddns-update-style none;
+option domain-name "codingnight.net";
+option domain-name-servers 8.8.8.8, 8.8.4.4;
+default-lease-time 43200;
+max-lease-time 86400;
+authoritative;
+log-facility local7;
+
+subnet 10.192.168.0 netmask 255.255.255.0 {
+    range 10.192.168.100 10.192.168.150;
+    option subnet-mask 255.255.255.0;
+    option broadcast-address 10.192.168.255;
+    option routers 10.192.168.1;
+}</pre>
+
+
+<p>In this way, it will serve IP addresses on the created VPN network in 10.192.168.x</p>
+
+<p>To ensure that traffic appears as coming from the server:</p>
+
+<pre>echo 1 > /proc/sys/net/ipv4/ip_forward</pre>
+
+<p>And we do this change persistent by editing the file <span class='mark'>/etc/sysctl.conf</span> and ensuring it contains:</p>
+
+<pre>net.ipv4.ip_forward = 1</pre>
+
+<p>
+    The last step is to update the <span class='mark'>iptables</span>; in my OpenVZ VPS, the ethernet driver is virtualizes as <span class='mark'>venet0</span>, so it is needed:
+</p>
+
+<pre>iptables -t nat -A POSTROUTING -s 10.192.168.0/24 -o venet0 -j MASQUERADE
+iptables -F FORWARD
+iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -s 10.192.168.0/24 -j ACCEPT
+iptables -A FORWARD -j DROP</pre>
+
+<p>
+    And we do the change persistent by entering:
+</p>
+
+<pre>iptables-save > /etc/iptables.up.rules</pre>
+
+<p>
+    If no previous iptables rules were defined, <a href='http://wiki.debian.org/iptables'>it is needed</a> to create the file <span class='mark'>/etc/network/if-pre-up.d/iptables</span> with the following content:
+</p>
+
+<pre> #!/bin/bash
+/sbin/iptables-restore &lt; /etc/iptables.up.rules</pre>
+
+<p>And chmod it:</p>
+
+<pre>sudo chmod +x /etc/network/if-pre-up.d/iptables</pre>
+
+
+<p>Now, it is enough to start the DHCP server:</p>
+
+<pre>sudo service isc-dhcp-server start</pre>
+
+<p>Presto!, any client attached to the router should receive now an IP address from the VPN server -assuming the clients are configured to receive such IP address automatically!</p>
+
+
+	</div></div>
+</body>
+</html>

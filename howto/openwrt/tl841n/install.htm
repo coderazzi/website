@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+ <title>OpenWRT on TL-WR841N</title>
+ <link rel="stylesheet" type="text/css" href="../../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="tl-841n, openwrt">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 28th February 2013, 00:39 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>
+
+<h1>OpenWRT on TL-WR841N</h1>
+
+<p>
+    The <a href='http://wiki.openwrt.org/toh/tp-link/tl-wr841nd'>OpenWRT documentation</a> for this device is not bad: the most important point is to detect the hardware version of the device (8.2 in my case), and find the associated information -which at the moment does not exist-. But by checking the documentation on other existing versions, is easy to follow some hints and download and install the correct version.
+</p>
+
+<h2>First naive install</h2>
+
+<p>
+    I discovered that my version was 8.2 and after some wandering I downloaded the most updated version: <a href='http://downloads.openwrt.org/snapshots/trunk/ar71xx/openwrt-ar71xx-generic-tl-wr841n-v8-squashfs-factory.bin'>http://downloads.openwrt.org/snapshots/trunk/ar71xx/openwrt-ar71xx-generic-tl-wr841n-v8-squashfs-factory.bin</a>, and installed it via the basic firmware upgrade in the original web interface from TP-Link.
+</p>
+
+<p>
+    On reboot, I was unable to access the original web interface in <span class='mark'>192.168.1.1</span>, but a telnet <span class='mark'>192.168.1.1</span> quickly allowed entering the console terminal. As soon as a password in provided, telnet is disabled and ssh got enabled.
+</p>
+
+<p>
+    <span class='mark'>LUCI</span> is the package required to include a web interface, which is installed in pseudo debian style:
+</p>
+
+<pre>opkg update
+opkg install luci
+/etc/init.d/uhttpd enable
+/etc/init.d/uhttpd start</pre>
+
+<p>
+    Once the uhttpd daemon is running, accessing <span class='mark'>http://192.168.1.1</span> on the web browser renders already some useful web pages to reconfigure the router. Time to install now openvpn: <pre>opkg install openvpn</pre>
+</p>
+
+<p>
+    But this fails. No such package available; the alternative is to install <span class='mark'>openvpn-nossl</span> (or the ssl variant), but it is just too much for this router: <span class='mark'>it only has 4 Mb flash memory, and that is barely enough for openWrt</span>.
+</p>
+
+<p>
+    Uninstalling LUCI is still insufficient. But there is an alternative: to compile openpnv support directly into the image (installing packages afterwards take much more memory, as the image is kept compressed on memory). Fortunately, the OpenWRT people has done a great job at simplifying the compilation and creation of new images (and the documentation is in fact very good).
+</p>
+
+
+<h2><a name='build'>Build own OpenWRT image</a></h2>
+
+<p>
+    To compile the image, it is needed a case sensitive file system, so I did the compilation in Linux, following mostly the information found on the <a href='http://wiki.openwrt.org/doc/howto/build'OpenWrt wiki</a> and on this <a href='http://debblog.philkern.de/2012/10/how-to-maintain-openwrt-installation.html'>blog entry</a>.
+</p>
+
+<pre>#get the source code
+svn co svn://svn.openwrt.org/openwrt/branches/attitude_adjustment
+
+cd attitude_adjustment
+
+#update feeds (information on available source code)
+./scripts/feeds update -a
+
+#include openpnv
+./scripts/feeds install openvpn
+
+#select packages to include on the image
+make menuconfig
+    #Target system: Atheros AR7xxx/AR9xxx
+    #Subtarget: generic
+    #Target profile: TP-LINK TL-WR841ND/N
+    #Network: choose VPN, then openvpn AND openvpn-easy-rsa (both *, not just M)
+    #ensure that in kernel modulkes, chriptography, kmdo-crypto-manager is selected
+
+#produce now the configuration file
+make defconfig
+
+#compile it
+make -j 5 #on a N ore machine, use N+1</pre>
+
+<p>
+    Done, the image is created; it is possible -and recommendable- to list the differences with the default configuration, by doing:
+</p>
+
+<pre>./scripts/diffconfig.sh > customConfig</pre>
+
+<p>
+    My customConfig file looks like:
+</p>
+
+<pre>CONFIG_TARGET_ar71xx=y
+CONFIG_TARGET_ar71xx_generic=y
+CONFIG_TARGET_ar71xx_generic_TLWR841=y
+CONFIG_OPENVPN_DISABLE_EUREPHIA=y
+CONFIG_OPENVPN_DISABLE_MANAGEMENT=y
+CONFIG_PACKAGE_kmod-crypto-hash=y
+CONFIG_PACKAGE_kmod-crypto-manager=y
+CONFIG_PACKAGE_kmod-ledtrig-usbdev=y
+CONFIG_PACKAGE_kmod-nls-base=y
+CONFIG_PACKAGE_kmod-tun=y
+CONFIG_PACKAGE_kmod-usb-core=y
+CONFIG_PACKAGE_kmod-usb-ohci=y
+CONFIG_PACKAGE_kmod-usb2=y
+CONFIG_PACKAGE_liblzo=y
+CONFIG_PACKAGE_libopenssl=y
+CONFIG_PACKAGE_openssl-util=y
+CONFIG_PACKAGE_openvpn=y
+CONFIG_PACKAGE_openvpn-easy-rsa=y
+CONFIG_PACKAGE_uboot-ar71xx-nbg460n_550n_550nh=y
+CONFIG_PACKAGE_zlib=y</pre>
+
+<p>
+    As this <a href='As this blog entry (http://debblog.philkern.de/2012/10/how-to-maintain-openwrt-installation.html'>blog entry</a> explains: to update later the image, get the new defconfig, append the customConfig file to .config and run make oldconfig.
+</p>
+
+<p>
+    The process above creates the images in <span class='mark'>bin/ar71xx</span>. I needed to load fully the image, so I required the file <span class='mark'>openwrt-ar71xx-generic-tl-wr841n-v8-squashfs-factory.bin</span>. Note: as you can see, this image takes already almost the full 4 Mb available in this device!
+</p>
+
+<p>
+    Time to update again the router's firmware, now <a href='ttp://wiki.openwrt.org/doc/howto/generic.uninstall'>from the command line</a>. The first point is to upload the image to the router (I did it running a web server using <span class='mark'>node.js</span> on my images directory, then using <span class='mark'>wget</span>), and afterwards enter:
+</p>
+
+<pre>mtd -r write /tmp/new_image.bin firmware</pre>
+
+<p>   
+    Done! Router ready to go purely barebones with just openvpn built in; no web access at all. Before setting up openvpn, I <a href='vlans.htm'>changed the configuration</a> to have multiple vlans.
+</p>
+        
+
+    </div></div>
+</body>
+</html>

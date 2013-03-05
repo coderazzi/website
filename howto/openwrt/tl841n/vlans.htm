@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+ <title>Configuring separate virtual lans on TL-WR841N</title>
+ <link rel="stylesheet" type="text/css" href="../../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="tl-841n, openwrt, vlan">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 27th February 2013, 11:11 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>
+
+<h1>Configuring separate virtual lans on TL-WR841N</h1>
+
+<img src='tl841nback.jpg' class='right'/>
+
+<p>
+	A <a href='http://en.wikipedia.org/wiki/Virtual_LAN'>Virtual Lan</a>, or vlan for short, allows partitioning the network in a set of virtual networks, mutually isolated.
+</p>
+
+<p>
+	The TL-WR841N contains four LAN ports, all belonging to the same network. With vlans, it is possible to configure those LAN ports in different manner, so that the device does not behave anymore as a switch on the 4 ports. For example, it would be possible to setup the two leftmost ports on a virtual lan: devices connected into these ports would see each other, but would have no routing to devices plugged into the rightmost ports.
+</p>
+
+<p>
+	Full information on vlans in OpenWrt can be found in the <a href='http://wiki.openwrt.org/doc/networking/network.interfaces'>network interfaces</a> document. This page includes information specific to the TL-WR841N router, configured with OpenWrt (Attitude Adjustment 12.09 release).
+</p>
+
+
+<p>
+	The default <span class='mark'>/etc/config/network</span> configuration looks like:
+</p>
+
+<pre>config interface 'loopback'
+        option ifname 'lo'
+        option proto 'static'
+        option ipaddr '127.0.0.1'
+        option netmask '255.0.0.0'
+
+config interface 'lan'
+        option ifname 'eth1'
+        option type 'bridge'
+        option proto 'static'
+        option ipaddr '192.168.1.1'
+        option netmask '255.255.255.0'
+
+config interface 'wan'
+        option ifname 'eth0'
+        option proto 'dhcp'
+
+config switch
+        option name 'switch0'
+        option reset '1'
+        option enable_vlan '1'
+
+config switch_vlan
+        option device 'switch0'
+        option vlan '1'
+        option ports '0 1 2 3 4'</pre>
+
+<p>
+	So there is a switch identified as <span class='mark'>switch0</spam>. To get info on this switch:
+</p>
+
+<pre>swconfig dev switch0 help</pre>
+
+<p>
+	Which outputs:
+</p>	
+
+<pre>switch0: eth1(AR934X built-in switch), ports: 5 (cpu @ 0), vlans: 16
+     --switch
+        Attribute 1 (int): enable_vlan (Enable VLAN mode)
+        Attribute 2 (none): apply (Activate changes in the hardware)
+        Attribute 3 (none): reset (Reset the switch)
+     --vlan
+        Attribute 1 (int): vid (VLAN ID)
+        Attribute 2 (ports): ports (VLAN port mapping)
+     --port
+        Attribute 1 (int): pvid (Primary VLAN ID)
+        Attribute 2 (string): link (Get port link information)</pre>
+
+<p>
+	So this device supports 16 vlans, and the port 0 is the CPU port; ports 1,2,3,4 are associated to the 4 LAN connections on the back of the router.
+</p>
+
+<p>
+	To get the exact matching between ports and the labelling on the router, enter now:
+</p>
+
+<pre>swconfig dev switch0 show</pre>
+
+<p>
+	And play with connecting cables to the LAN connections. For this router, I got the following allocation:
+</p>
+
+<pre>Port 0: CPU
+Port 1: LAN 4
+Port 2: LAN 1
+Port 3: LAN 2
+Port 4: LAN 3</pre>
+
+<p>
+	With the existing configuration, there is a single virtual lan, with identity 0, identified as eth1.0 (or directly eth1).
+</p>
+
+<p>
+	To configure two virtual lans, one associated to the left ports (LAN 1, LAN 2 / ports 2 and 3), and other associated to the right ports (LAN 3, LAN 4 / ports 1 and 4), we use the following configuration:
+</p>
+
+<pre>config interface 'loopback'
+        option ifname 'lo'
+        option proto 'static'
+        option ipaddr '127.0.0.1'
+        option netmask '255.0.0.0'
+
+config interface 'lan'
+        option ifname 'eth1.1'
+        option type 'bridge'
+        option proto 'static'
+        option ipaddr '192.168.1.1'
+        option netmask '255.255.255.0'
+        
+config interface 'landenver'
+        option ifname 'eth1.2'
+        option type 'bridge'
+        option proto 'static'
+        option ipaddr '192.168.2.1'
+        option netmask '255.255.255.0'
+                                                
+config interface 'wan'
+        option ifname 'eth0'
+        option proto 'dhcp'
+
+config switch
+        option name 'switch0'
+        option reset '1'
+        option enable_vlan '1'
+
+config switch_vlan 'eth1_1'
+        option device 'switch0'
+        option vlan '1'
+        option ports '2 3 0t'
+        
+config switch_vlan 'eth1_2'
+        option device 'switch0'
+        option vlan '2'
+        option ports '1 4 0t'</pre>
+
+
+<p>
+	This creates an interface called <span class='mark'>lan</span> associated to the first vlan (eth1.1), that is, to the ports labelled in the router as LAN 1, LAN2; it also creates the interface <span class='mark'>landenver</span> associated to the second vlan (eth1.2), on the remaining router ports. Note that each interface uses a different set of LAN ports (2,3 vs 1,4) and both obviously communicate with the CPU (port 0). As both access the port 0, this is tagged (0t). Detailed information on this logic is included in the <a href='http://wiki.openwrt.org/doc/uci/network/switch'>switch documentation</a> on the OpenWRT wiki page.
+</p>
+
+<p>
+	With this configuration, entering now (after restarting the network with <span class='mark'>/etc/init.d/network</span> restart:
+</p>
+
+<pre>swconfig dev switch0 show</pre>
+
+<p>
+	Will output:
+</p>
+
+<pre>Global attributes:
+        enable_vlan: 1
+Port 0:
+        pvid: 0
+        link: port:0 link:up speed:1000baseT full-duplex txflow rxflow 
+Port 1:
+        pvid: 2
+        link: port:1 link:up speed:100baseT full-duplex auto
+Port 2:
+        pvid: 1
+        link: port:2 link:up speed:100baseT full-duplex auto
+Port 3:
+        pvid: 1
+        link: port:3 link:down
+Port 4:
+        pvid: 2
+        link: port:4 link:down
+VLAN 0:
+        vid: 0
+        ports: 0t 
+VLAN 1:
+        vid: 1
+        ports: 0t 2 3 
+VLAN 2:
+        vid: 2
+        ports: 0t 1 4</pre>
+
+<p>
+	For this to fully work, we need to provide additional firewall rules, and setup dhcp for the new interface (<span class='mark'>landenver</span>): enter in <span class='mark'>/etc/config/firewall</span> the following new lines:
+</p>
+
+<pre>config zone
+      option name             landenver
+      option network          'landenver'
+      option input            ACCEPT
+      option output           ACCEPT
+      option forward          REJECT</pre>
+
+<p>
+	<a name='dhcp'>and</a>, in <span class='mark'>/etc/config/dhcp</span> add now:
+</p>
+
+<pre>config dhcp landenver
+      option interface        landenver
+      option start            200     
+      option limit            250
+      option leasetime        12h</pre>
+
+<p>
+	Time now to restart the network, and enjoy the different virtual lans:
+</p>
+
+<pre>/etc/init.d/network restart</pre>
+
+		
+
+	</div></div>
+</body>
+</html>
