@@ -89,6 +89,7 @@
     <menu id='menu'>
         <group name='Blog'>
             <item name='Current' file='index.htm'/>
+            <item name='2011' file='blog_2011.html'/>
             <item name='2010' file='blog_2010.html'/>
         </group>
         <group name='Java'>
@@ -187,6 +188,7 @@
             <item name='Sensei' file='phd/index.htm'/>
         </group>		
         <group name='Just words'>
+            <item name='2013' file='books/2013/index.htm'/>
 	        <item name='2012' file='books/2012/index.htm'/>
 	        <item name='2011' file='books/2011/index.htm'/>
 	        <item name='2010' file='books/2010/index.htm'/>
