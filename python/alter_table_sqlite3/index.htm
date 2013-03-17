@@ -1,0 +1,81 @@
+<html>
+<head>
+<title>alter_table - Python command to alter sqlite3 tables</title>
+<link rel="stylesheet" type="text/css" href="../../css/global.css">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <meta name="Keywords" content="python sqlite3 alter table">
+</head>
+<body>
+ <div id='body'>
+ <div id='content'>
+<h1>alter table - Python command to alter sqlite3 tables</h1>
+
+
+<p><span class='mark'>alter_table</span> is a python utility to alter sqlite3 tables. It allows for several
+	operations not directly supported in sqlite:</p>
+
+<ul><li>Drop columns</li>
+	<li>Rename columns</li></ul>
+
+<p>All operations are performed from the command line. The supported arguments are:</p>
+
+<ul>
+	<li>First argument: the filename with the sqlite3 database.</li>
+	<li>Next arguments: operations to perform, which can be one of:
+		<ul>
+			<li><span class='mark'>table:-column</span> drops the specified column in the given table.</li>
+			<li><span class='mark'>table:column=new_name</span> renames the specified column in the given table with the new provided name</li>
+		</ul>
+		An argument can provide several operations at once, like in: <span class='mark'>table:column=new_name:-column</span>
+	</li>
+</ul>	
+
+<p>The utility generates a new database, on a file on the same path with the same name as the original, but prepending <span class='mark'>altered-</span></p>
+
+<h2><a name='restrictions'>Restrictions</a></h2>
+
+<p>When a column in a table is dropped renamed, the related indexes are automatically recreated (or removed), reflecting the new names
+	given to the columns.</p>
+
+<p>There could be additional side effects on altering tables: triggers and views require additional updates, but <span class='mark'>alter_table</span> does not perform these. So the user must ensure proper recreation of triggers and views if required (indexes are properly updated)</p>
+
+
+
+<h2><a name='download'>Download</a></h2>
+
+<ul>
+	<li>Current version is 0.1, released the 17th March 2013: <a href='alter_table.py'>alter_table.py</a></li>
+</ul>
+
+<p><span class='mark'>alter_table</span> is open source, with the 
+following generic python license:</p>
+
+<pre>Copyright (c) Luis M. Pena &lt;lu@coderazzi.net&gt;  All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+Redistributions in bytecode form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in
+the documentation and/or other materials provided with the
+distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</pre>
+
+</div></div>
+</body>
+</html>
