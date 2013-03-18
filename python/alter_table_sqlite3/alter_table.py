@@ -44,7 +44,7 @@ def exit(msg):
 
 def showHelp():
     out=sys.stderr
-    print >> out, 'alter_table.oy v0.1 (c) Coderazzi'
+    print >> out, 'alter_table.py v0.1 (c) Coderazzi'
     print >> out, 'Utility to rename or drop columns in sqlite3 tables'
     print >> out, '\narguments: filename table[:alter_op]+'
     print >> out, '       where operations are one or more of:'
