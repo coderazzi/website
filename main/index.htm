@@ -19,6 +19,15 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+	<p class="entry"><span class="entry-date">22nd March 2013</span>More sqlite3 tables alterations</p> 
+
+	 <p><img src="images/database.png" alt="database icon" class="blog">During a current migration of a project to <span class='mark'>Django</span>, I wanted to make explicit the usage of a primary key on a table that lacked it (using the default rowid column
+	 	instead).</p>
+	 <p>My previous release of <a href='python/alter_table_sqlite3/index.htm'>alter_table</a> did not support renaming the
+	 	rowid column, so I have released a new version (0.20) with this support. Adding some more functionality, the utility also
+	 	supports now reordering columns in tables.</p>
+
+
 	<p class="entry"><span class="entry-date">17th March 2013</span>Altering sqlite3 tables</p> 
 
 	 <p><img src="images/database.png" alt="database icon" class="blog"><span class='mark'>sqlite3</span> does not support some basic SQL operations, more specially dropping or renaming columns.</p>
