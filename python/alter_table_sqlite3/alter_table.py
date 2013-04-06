@@ -44,7 +44,7 @@ def exit(msg):
 
 def showHelp():
     out=sys.stderr
-    print >> out, 'alter_table.py v0.20 (c) Coderazzi'
+    print >> out, 'alter_table.py v0.21 (c) Coderazzi'
     print >> out, 'Utility to rename or drop columns in sqlite3 tables'
     print >> out, '\narguments: filename table[:alter_op]+'
     print >> out, '       where operations are one or more of:'
@@ -248,9 +248,9 @@ def handle(filename, changes, reorder):
                 
 
 if __name__=='__main__':
-    reorder, changes, filename = [], {}, sys.argv[1]
-    if len(sys.argv)<3 or filename[0]=='-':
+    if len(sys.argv)<3 or sys.argv[1][0]=='-':
         showHelp()
+    reorder, changes, filename = [], {}, sys.argv[1]
     if not os.path.exists(filename) or os.path.isdir(filename):
         exit('Invalid sqlite3 file: %s' % filename)
     opArgs = sys.argv[2:]

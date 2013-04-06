@@ -19,6 +19,29 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+	<p class="entry"><span class="entry-date">6th April 2013</span>Autocounters in Django ORM</p> 
+
+	 <p><img src="images/django.png" alt="django icon" class="blog">Fighting today in Django ORM, how to use a typical autocounter. Let's say we have a database table with two columns called name and value, being name the primary key. The idea is to be able to increment the value associated to a key, that will be used for some external purpose(s). As the <a href='https://docs.djangoproject.com/en/dev/ref/models/instances/'>Django documentation</a> mentions, this implies a solution such as:</p>
+
+<pre>product = Product.objects.get(name='Venezuelan Beaver Cheese')
+product.number_sold += 1
+product.save()</pre>
+
+	<p>And the same documentation shows the race condition problem: two thread or processes could perform the same operation, resulting in the counter being increased only once. The Django ORM solution makes use of <a href='https://docs.djangoproject.com/en/dev/topics/db/queries/#query-expressions'>F() expressions</a>:</p>
+
+<pre>from django.db.models import F
+product = Product.objects.get(name='Venezuelan Beaver Cheese')
+product.number_sold = F('number_sold') + 1
+product.save()</pre>
+
+	<p>With this code, the counter is effectively robust and better performant. The problem is, how to get hold on the incremented value? It is needed to reload the object to access the actual value:</p>
+
+<pre>sold = Products.objects.get(pk=product.pk).number_sold</pre>
+
+	<p>Which brings back the original race condition in a different way: now, two simultaneous processes would effectively increase twice the counter, but both could get the same counter value!</p>
+
+	<p>This is not a problem of Django, but of the underlying database, and F() expressions can still be helpful if the counter's value is not required. If this is not the case, trying to overcome the counter problem using exclusively the Django ORM approach is an invitation to lose a few hours testing all possible approaches :-(</p>
+
 	<p class="entry"><span class="entry-date">22nd March 2013</span>More sqlite3 tables alterations</p> 
 
 	 <p><img src="images/database.png" alt="database icon" class="blog">During a current migration of a project to <span class='mark'>Django</span>, I wanted to make explicit the usage of a primary key on a table that lacked it (using the default rowid column
