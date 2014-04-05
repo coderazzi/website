@@ -1,0 +1,290 @@
+<html>
+
+<head>
+ <title>Coderazzi - Luis M. Pena's home page</title>
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Description" content="homepage">
+<style type="text/css">
+<!--
+.entry  { margin-left: -10px; margin-right: -10px; padding-top:30px; padding-bottom:10px; background: #eee;color: #b95959; text-align: left; font-family: courier, monospace; font-size: 16px; }
+.entry-date  { padding-right:60px; font-family: courier, monospace; color: #222; font-family: courier, monospace; font-size: 11px;}
+img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; width:96px}
+img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
+-->
+</style>
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+	<p class="entry"><span class="entry-date">7th December 2012</span>Mountain Lion clean install on Snow Leopard Macbook Pro</p> 
+
+	<p><img src="images/macpro.png" alt="macbook pro icon" class="blog">I purchased Mountain Lion a for a new Hackintosh, and decided finally to upgrade my reliable Snow Leopard in a early-2011 Macbook Pro. I thought it would be better to do a fresh install: I am rather active keeping backups of the important stuff-, so this would be a great opportunity to get rid of so much software I had been installing during the last 20 months.</p>
+
+	<p>But Apple had preferred to not offer such option to its customers -for the sake of simplicity, as I guess that is what the majority of users do-.</p>
+
+	<p>One option to do this clean install is (see <a href='http://osxdaily.com/2012/02/17/make-bootable-os-x-10-8-mountain-lion-usb-install-drive/'>link</a>) to make a bootable USB drive, copy there the required installation files and boot the Mac with it. But I was rather curious on the usage of the recovery partition -where a fresh install can be done as well-. So I created a exact copy of my hard disk -disk utility, restore to separate partition (on a external USB disk)-, to avoid any problems, and booted into the recovery partition.</p>
+
+	<p>Now, this was one of my points of interest. My Macbook Pro lacked such recovery partition, so the process involved a download of the image, from where it boots -all transparent to the user, just slower than in the presence of the physical partition-. Then I was greeted, among other, with the disk utility and the option to install OsX. I erased my hard disk, and proceeded to the OsX install.</p>
+
+	<p>First doubt: the system displays clearly that it will install Lion, in so far as my computer is eligible to do so. I didn't want to install Lion, and I was in fact not eligible for a free upgrade, and I hadn't purchased a Lion license. All the same I continued with the process. A Mountain Lion install on top of a fresh Lion install would not be that bad, and perhaps the process would connect to the App Store and see that I had a Mountain Lion license, so perhaps the option to install Mountain Lion would be offered at some point in the installation process.</p>
+
+	<p>I was almost right: I am prompted to introduce my App Store credentials and..... the installation is aborted, complaining that I have no Lion license. That was indeed a shame: the whole process was almost perfect, but the BIOS had no was to handle future OsX updates.</p>
+
+	<p>In that moment, my Macbook Pro was half way its target: was totally clean :-)</p>
+
+	<p>Fortunately, I could complete the process by booting into the external USB disk and launching there the Mountain Lion installation -to install it on the laptop's SSD, of course-.</p>
+
+	<p>Summary: if you are going to do a fresh install, you should normally have a full backup first, and the disk utility erase/restore process is perfect for that. At that point, the best option is to boot into that external disk and launch there the disk utility to erase the laptop's hard disk, and then the Mountain Lion installation package.
+ 	</p>
+
+	<p class="entry"><span class="entry-date">17th November 2012</span>New mobo: GA-B75M-D3P</p> 
+
+	<p><img src="images/mobo-b75m.jpg" alt="mobo icon" class="blog">I just bought a new motherboard, a Gigabyte GA-B75M-D3P: 
+		its target is linux and / or hackintosh, 
+		and I have no plans at all to install here Windows (8 or 7). </p>
+
+	<p>I do not intend any overclocking or so, and my only requirements was to have DisplayPort support to drive a 30" monitor, 
+		and SPDIF output, and this mobo got it all, for 75 euros. 
+		Jumping up the specifications to a H77 or Z77 mobo would not give me any additional value.</p>
+
+	<p>This mobo is targeted to business users, and it is definitely unassuming. 
+		It does not even have any led to show that the PSU is connected. 
+		But I installed directly 32 Gb of memory and it recognized them without any problems.</p>
+
+	<p>The only issue I have run so far into is on the BIOS update. 
+		All my previous mobos, from ASUS, support flashing the BIOS from inside the BIOS setup. 
+		Some Gigabyte mobos have similar functionality, called Q-Flash, but not this specific one. 
+		More to the shame, the manual points to this non existent utility to update the BIOS.</p>
+
+	<p>The download itself is an .EXE file. 
+		Fortunately, it is just a self extracting zip file, so it is possible to extract the contents using, in Linux:
+		<pre>7z x mb_bios_ga-b75m-d3p_f6.exe</pre></p>
+
+	<p>The contents include an autoexec.bat file, the flash utility (efiflash.exe) and the BIOS itself. 
+		Now, that Efiflash.exe can only be executed in Windows.... or, DOS. 
+		So, the solution is not so easy as to have flash support in the BIOS, 
+		and makes for additional 25 or 30 minutes of work, but at least is doable:<p>
+
+	<ul>
+		<li>Download <a href='http://unetbootin.sourceforge.net/'>unetbootin</a>.</li>
+		<li>Execute it and install the FreeDOS distribution on a USB stick (I used a 1 Gb one).</li>
+		<li>Add a directory in the USB, and copy there the Efiflash.exe files and the bios itself (B75MD3P.F6 in my case).</li>
+		<li>Boot it, and select the option Live CD. 
+			The boot is not perfect, with some errors echoed on the screen, but then you get into the almost forgotten A:&gt; prompt.</li>
+		<li>Change to C: -the USB drive-, access the created directory and enter:
+
+			<pre>Efiflash.exe B75MD3P.F6</pre>
+
+		</li>
+		<li>Done!</li>
+	</ul>
+
+	<li>PS: shame on Gigabyte for such a loose implementation, specially when the mobo seems indeed solid.</li>
+
+
+
+	<p class="entry"><span class="entry-date">17th November 2012</span>TableFilter v4.5.0</p> 
+
+	 <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">
+	 New version, <a href='tablefilter/index.html'>4.5.0</a>, for the library.</p>
+	 <p>This release fundamentally introduces new functionality to handle properly the rendering of cells with html content.
+	 	As minor update, the filter' constructor allows defining directly advanced capabilities to populate the auto choices
+	 	directly, as this was the favourite way to use the library -even if I would hardly recommend it-.</p>
+
+	 <p>Available already on the central maven repositories.</p>
+
+
+	<p class="entry"><span class="entry-date">7th September 2012</span>SSH keys</p> 
+	 	<p> <img src="images/ssh.png" alt="SSH" class="blog">I have been using SSH for ages,
+	 		mostly like a secure replacement to telnet, without really entering to understand
+	 		all the stuff behind, and worse, without getting more benefits out of all
+	 		the advantages that SSH and SSH tunneling provides. Still a long way, but enough
+	 		now as to write a tutorial on usage and 
+	 		<a href='howto/security/ssh_keys.html'>setup of SSH keys</a>, and of 
+	 		<a href='howto/security/ssh_svn.html'>serving subversion on SSH.</a>
+	 	    </p>
+
+	<p class="entry"><span class="entry-date">2nd September 2012</span>PSU rampage</p> 
+	 	<p> <img src="images/psu.jpg" alt="PSU" class="blog">Two weeks ago, one of my hackintoshes 
+	 	started misbehaving. It would go to sleep, but the wakeup process never completed, even the 
+	 	monitor would stay without line signal. I tried booting into Linux, but the same problem 
+	 	reappeared, so it was a problem in the hardware. Didn't have much time to elucidate on the 
+	 	possible reasons, as briefly after, the computer refused to start again. Better said, it 
+	 	would start, auto power off and try to start again, without beeps or any screen information.</p>
+
+	 	<p>These <a href='http://pcsupport.about.com/od/findbysymptom/tp/computer-wont-turn-on.htm'>website</a> 
+	 		was my best reference, specially
+	 		<a href='http://pcsupport.about.com/od/findbysymptom/ht/pconthenoff.htm'>How To Troubleshoot 
+	 			a Computer That Turns On and Then Immediately Turns Off</a>.
+	 		The problem seemed to be on the power supply, so I quickly opened my other hackintosh, and 
+	 		plugged its power supply into the dead computer: immediate success, time to change the power supply.</p>
+
+	 	<p>The guilty PSU was a <span class='mark'>Be Quiet 300 Watts</span>, about 3 years old.
+	 	   I failed to check the manufacturer warranty, which (at least now) covers 5 years,
+	 	   and without considerations on buying for second time a PSU of the same brand I purchased a 
+	 	   <span class='mark'>Be Quiet 350 Watts</span>. Plugged in -of course having to disassembly
+	 	   almost completely the computer-, and working again without (further) problems.</p>
+
+		<p>Matter is, my other hackintosh PSU's broke down just a couple of weeks later!</p>
+
+		<p>This time there were no symptoms that the guilty component would be the PSU, and I could 
+			not plug the other PSU this time -I needed a P4+4 connector, missing on the 
+			<span class='mark'>Be Quiet 350 W</span>-. Fortunately I had a voltmeter and with the
+			help of this 
+			<a href='http://pcsupport.about.com/od/toolsofthetrade/ht/power-supply-test-multimeter.htm'>reference page</a>
+			I was able to quickly verify that my +12 VDC line was supplying 12.92 volts, 
+			outside the ATX safety margin.</p>
+
+		<p>Again, time to shopping; my previous PSU was a 
+			<span class='mark'>Cooler Master Silent Pro M500</span> (500W), with single rail. 
+			This single rail was rather problematic -To swap hard disks using the hard disk rack 
+			I had to put first the computer on standby-, so I did first some googling to find the best alternative. 
+			The best help I found was a <a href='http://extreme.outervision.com/psucalculatorlite.jsp'>calculator</a> 
+			to find the required power for my system, but at the end I had to buy what my local dealer had in stock: 
+			a <span class='mark'>Be Quiet PCGH Edition</span> -500W, 80 Plus Gold-.</p>
+
+		<p>So, 100 euros poorer I could only wonder why both PSUs would die in such a short time. 
+			Initially I thought it would be due to letting the computers on suspend mode (aka hibernating for Windows), 
+			but this should not shorten specially the lifespan of the PSUs -in addition, one PSU was about 4 years old, 
+			the other 3 years old-. Other cause would be a voltage spike, but I do use surge protectors -Belkin- and 
+			seem to be working properly, so I haven't yet ruled out having had just very bad luck.
+	 	</p>
+
+
+	<p class="entry"><span class="entry-date">28th August 2012</span>Playing with Python on the GIMP</p> 
+
+	 <p> <img src="images/gimp.png" alt="gimp icon" class="blog">
+	 	For a website I am developing, I wanted to use an image map where the user could specify a given position.
+	 	The image would be simple, just small circles on predefined positions, and the user would need to select just one such circle.
+	 	This seemed a very suitable scenario to use PythonFu, the scripting language in GIMP that allows to create images
+	 	programmatically (or alter them, or define plugins).</p>
+
+	 	<p>The lack of documentation (and experience) made the experiment longer than required, but it was a great way to
+	 	get into PythonFu. <a href='python/gimp/pythonfu.html'>Here</a> is the script that I created, together with the
+	 	associated javascript and my comments on the whole experience.</p>
+
+
+
+
+	<p class="entry"><span class="entry-date">23rd August 2012</span>TableFilter v4.4.0</p> 
+
+	 <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">
+	 New version, <a href='tablefilter/index.html'>4.4.0</a>, for the library.</p>
+	 <p>It is a minor update, although some interfaces are updated, hereby the version bump. The release focuses on the capability
+	 	to keep the status of the filter header across executions: the editor interfaces expose now functionality to extract and
+	 	restore the filter's history, and the classes supporting custom choices implement now the Serializable interface.</p>
+
+	 <p>Available already on the central maven repositories.</p>
+
+
+
+	<p class="entry"><span class="entry-date">12th July 2012</span>Sublime Text 2 and .erb formatting</p> 
+
+	<p><img src='images/sublime.png' alt="Sublime Text 2" class='blog'/>
+		For the last weeks, I have been using the editor <a href='http://www.sublimetext.com/2'>Sublime Text 2</a>, and I find it
+		rather good, with the huge improvement over <a href='http://macromates.com/'>TextMate</a> of being cross platform. 
+		Obviously Emacs or Vi have already this advantage, but after many years using them and being at best only 
+		semi-proficient, I am really open to use other editors.</p>
+
+	<p>The plugin architecture is great, and after installing the required <a href='http://wbond.net/sublime_packages/package_control'>package control plugin</a>, it was time to start enhancing the editor -check this <a href='http://net.tutsplus.com/tutorials/tools-and-tips/sublime-text-2-tips-and-tricks/'>link</a> for some tips on using this editor-.</p>
+
+	<p>Sublime copes obviously with .html files, but it lacks an auto formatter. I installed 
+		<a href='https://github.com/victorporof/Sublime-HTMLPrettify'>Sublime-HTMLPrettify</a>, that formats properly .html files,
+		but alas, the rather requivalent .html.erb files are left untouched. The solution is just to edit the file 
+		<span class='mark'>run.js</span>, located in Packages/Sublime-HTMLPrettify/scripts and convert the lines:</p>
+<pre>if (source.match(".html" + "$") == ".html") {
+	log(style_html(data, option));
+}
+else if (source.match(".css" + "$") == ".css") {
+	log(cssbeautify(data, option));
+}</pre>
+      <p>into:</p>
+<pre>if (source.match(".html" + "$") == ".html") {
+	log(style_html(data, option));
+}
+else if (source.match(".html.erb" + "$") == ".html.erb") {
+	log(style_html(data, option));
+}
+else if (source.match(".css" + "$") == ".css") {
+	log(cssbeautify(data, option));
+}</pre>
+	
+	<p>Obviously it just formats the .html.erb as pure html file, but so far seems fine to me.</p>
+
+	<p class="entry"><span class="entry-date">12th July 2012</span>Recovering SVN revisions</p> 
+
+	<p><img src='images/rsync.png' alt="Rsync" class='blog'/>
+		For my current development, I am using SVN repositories hosted at <a href='http://www.sliksvn.com/'>slik subversion</a>, 
+			but I still keep some older respositories on my own server -precisely
+			the server that crashed badly last weekend-; with backups rather up to date, the recovery was rather fast, and I was only
+			faced with some checkouts that were now desynchronized: that is, on my development machine I had a revision that was newer
+			than expected, and I could just not commit the changes.
+	</p>
+
+	<p>With <span class='mark'>rsync</span>, the solution was very easy: checkout the most updated version from the server, and
+		synchronized the version on my development machine, ensuring that the .svn files where untouched:</p>
+
+<pre>svn checkout REPOSITORY website.svn
+cp -R website website.backup                      #just in case
+find website -name ".svn" -exec rm -Rf \{\} \;    #error messages can be NORMALLY dismissed
+rsync -vr website/ website.svn/</pre>	
+
+
+	<p class="entry"><span class="entry-date">19th June 2012</span>Installing Nginx on OsX</p> 
+
+	<p><img src='images/nginx.gif' alt="NGinx" class='blog'/>
+		<a href='howto/osx/nginx.html'>Installing Nginx in Osx</a> should be as easy as downloading the available source distribution, and compiling it;
+		the only issue in OsX is that Nginx requires PCRE (Perl compatible regular expressions), and this library
+		is only partially available in Snow Leopard.</p>
+
+	<p>So, to install Nginx, it is needed to download <a href='http://www.pcre.org/'>PCRE</a>, in
+		addition to <a href='http://nginx.org/en/download.html'>nginx</a>, uncompress both files into 
+	    any temporal folders, and type:</p>
+
+<pre>cd /tmp/nginx-1.3.1
+./configure --with-http_ssl_module --with-pcre=../pcre-8.20 --with-pcre-jit --with-http_ssl_module
+make
+sudo make install</pre>
+
+	<p>This will install it in <span class='code'>/usr/local/nginx</span>; To install it in another location, add the option <span class='code'>--prefix=target</span> to the second line above (./configure ...)</p>
+
+
+	<p class="entry"><span class="entry-date">9th February 2012</span>ICS on Galaxy S</p> 
+
+	<p> <img src='images/galaxys.png' alt="Samsung Galaxy S i9000 icon" class='blog'/>
+		On my Galaxy S I9000 I had installed <a href='http://www.darkyrom.com'>DarkyRom</a> 
+		quite a long time ago, and, overall, I was pretty satisfied with the speed and usability. 
+		I had replaced the launcher with the excellent ADWLauncher EX, and using the SwiftKey X keyboard, plus, 
+		of course, customizations on the themes, icons, etc. 
+		However, I was experiencing lately too many application crashes, so I decided to get some more stable ROM.</p>
+		
+	<p> After considering the <a href='http://miuiandroid.com/'>MIUI</a> and 
+		<a href='http://www.cyanogenmod.com/'>cyanogenmod</a> ROMs, I backed up the system and 
+		installed the stable mod of Cyanogenmod (CM7). But even applying the extra download for 
+		Google apps, I could not get GMail installed -or any of the Google apps-. After a 
+		reinstallation -fast and painless, but also fruitless-, I planned to try the MIUI ROM... 
+		but then decided on the experimental Cyanogenmod CM9 based on ICS.</p>
+		
+	<p>	The XDA <a href='http://forum.xda-developers.com/showthread.php?t=1363593'>forum</a>, plus this 
+		<a href='http://www.theandroidsoul.com/cyanogenmod-9-cm9-by-teamhacksung-for-galaxy-s-i9000-ics-android-4-0-3/'>page</a>
+		provided the complete information to download and install it. So I have been running it now for 
+		a few days (build 15) and it works fantastic. </p>
+		
+	<p> As most reviews point out, ICS looks and behaves much greater than Gingerbread (I have not seen any
+		Honeycomb device); but overall, it looks initially like a subtle refinement on the GUI. However,
+		these refinements just kept summing up, until I realized that I was greatly impressed with it.
+		And much of this effect is due to the Roboto font, indeed.</p>
+		
+	<p> Then, the added bonus of having (finally) a Chrome version on Android is just priceless.
+		And even better, knowing that my 2 years old phone is handling it properly; I cannot 
+		recommend it enough, to install and try this version on the Galaxy S. I bet it will stay, only
+		to be eventually replaced by a later beta or the final CM9 version.
+	</p>
+	
+ </div>
+</div>
+</body>
+</html>

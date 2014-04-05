@@ -89,6 +89,8 @@
     <menu id='menu'>
         <group name='Blog'>
             <item name='Current' file='index.htm'/>
+            <item name='2013' file='blog_2013.html'/>
+            <item name='2012' file='blog_2012.html'/>
             <item name='2011' file='blog_2011.html'/>
             <item name='2010' file='blog_2010.html'/>
         </group>
@@ -183,6 +185,7 @@
                     <item name='With snow' file='osx/p5q-e/snowleopard/index.htm'/>
                 </group>
                 <item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
+                <item name='Sleep/hibernation' file='osx/hibernation.htm'/>
             </group>
         </group>		
         <group name='PhD'>

@@ -1,0 +1,47 @@
+<html>
+<head>
+ <title>Sleep / hibernation on Hackintosh</title>
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="sleep hibernation hackintosh">
+ </head>
+<body>
+ <div id='body'>
+ <div id='content'>
+ 
+
+<p class="timestamp">&gt; 31st March 2014</p>  
+
+<h1>Sleep / hibernation on Hackintosh</h1>
+
+  <p> I use a SDD on my Hackintosh, with just 128 Gb plus a HDD for Music, etc. From the 128 Gb, I use in fact only 98 Gb in OsX, and the rest goes to a Linux partition.</p>
+
+  <p>It is a desktop, 32 Gb of memory, usually running for months before requiring a reboot, and most of the time sleeping.Waking up is very fast, works much better than my old Vista installation (unfair comparison), or even recent Linux installations.</p>
+
+  <p>Last days I started having problems putting the computer to sleep: it would start the process, switching off the monitor signal, audio, and then the computer itself, just to restart immediately. Then, a message started appearing complaining that my startup disk was almost full. Checking the space didn't show anything extraordinary: the normal scenario where more and more programs get installed, more work done, and the 128 Gb are suddenly too little.</p>
+
+  <p>Only one file called my attention: <span class='code'>/private/var/vm/sleepimage</span>, at 16 Gb, but removing it seemed out of place: this file is automatically created by OsX to keep the memory saved on disk, for out of power scenarios. In fact, this was probably the case why my box didn't manage to get to sleep; having 32 Gb RAM would have required storing 32 Gb on disk, and that space was just not available (in fact, this is not necessarily the case, as the dynamic pager can page out inactive pages prior to hibernation).</p>
+
+  <p>One possibility was moving the file to the HDD; going to sleep and waking up would slow down, but the SDD lifetime would probably improve, not to mention the SDD free space. But then I realized that I didn't need this file. You see, OsX has several sleeping modes, which can be set using pmset, such as:</p>
+
+  <pre>sudo pmset -a hibernatemode 3</pre>
+
+  <p>Doing man pmset shows the possible modes, with only 3 recommended values:
+    <ul><li>0: no hibernation, plain sleep. RAM keeps powered, in case of power loss, full reboot is required. Default for desktops.</li>
+    <li>3: safe sleep, default for portables. RAM keeps powered, but is also stored on disk. Even on power loss, the prior state can be recovered.</li>
+    <li>25: hibernation. RAM gets saved on disk, and removes power to memory. Sleep and wake up slower.</li></ul></p>
+
+  <p>In my hackintosh, the hibernation mode was 3 (pmset -g hibernatemode), but, in case of a power loss, I had to reboot anyway the computer, so the best solution is:</p>
+
+  <pre>sudo pmset -a hibernatemode 0</pre>
+
+  <p>followed by</p>
+
+  <pre>sudo rm /private/var/vm/sleepimage</pre>
+
+  <p>Magically, my disk space usage went from 97% to 60%. And sleeping? Thanks for asking: works perfectly; in fact, somehow faster -no more needs to store 16 Gb, even on a SDD-</p>
+
+
+</div></div>
+</body>
+</html>
