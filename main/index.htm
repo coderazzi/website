@@ -19,6 +19,22 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+	<p class="entry"><span class="entry-date">21st June 2014</span>Rails 4</p> 
+
+	<p> <img src='images/rails.png' alt='ruby on rails icon' class='blog'/>I was updating a website done in Rails 3 to 
+	Rails 4, following the usual guides to have a smooth migration, which helped definitely smoothing the update. A nasty problem I found was related to the way that model associations are now handled; in Rails 3, they return an Array, while in Rails 4 its is returned a CollectionProxy; nothing to object if the new class exposes the same interface (methods), but that is not the case.</p>
+	<p>So all the calls to the suddenly deprecated methods are naturally broken. Of course, there are always good reasons to such deprecation... isn't? This <a href='https://github.com/rails/rails/pull/12236'>discussion</a> sheds some light on the reasoning behind: <quote>Because it causes confusion where you think you are changing the relation/association and you actually is not. The database is still the same.</quote> So calling delete_if does not change the database, and the name is therefore confussing, so let's get ride of the method? Somebody replies here that the reasoning is ridiculous, people should know enough to save the underlying model after calling delete_if, but the answer only addresses the mention to ridiculous.... typical.</p>
+	<p>So if you have some code in Rails 3 doing something as:</p>
+
+	<pre>model.has_many_assoc.delete_if{|c| ...}</pre>
+
+	<p>You need to convert it to:</p>
+
+	<pre>model.has_many_assoc.select{|c| ...}.each{|c| c.delete}</pre>
+
+	<p>Well, thanks for that, very helpful, guys!</p>
+
+
 	<p class="entry"><span class="entry-date">5th April 2014</span>Windows X</p> 
 
 	<p> <img src='images/windowsx.png' alt='windows icon' class='blog'/>I had recently to help a friend moving a Windows 8 installation from HDD to SSD. He had bough the laptop, requested the SSD, and the morons just placed the SSD inside the laptop, but performed no installation whatsoever: the SSD was not even formatted and my friend would not see it from inside Windows.</p>
