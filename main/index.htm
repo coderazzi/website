@@ -19,6 +19,16 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='body'>
  <div id='content'>
 
+
+	<p class="entry"><span class="entry-date">29st June 2014</span>Ubuntu 1 / Windows 0</p> 
+
+	<p> <img src='images/wubuntu.jpg' alt='ubuntu vs windows' class='blog'/>I was updating a  After my brief fighting with Windows 8 on a friend's laptop, I though I would stayed clear from Windows for a little while.</p><p>
+	
+	No luck; my friend updated the system to Windows 8.1, and on the process something failed. He would then be welcome with an error message, and the system would enter recovery mode. Fortunately, I had created the USB recovery drive, so it was just a matter of recovering the system... Nope. The USB stick would not be recognised. I had created the recovery partitions, as expected, provided the system with a proper USB to create the recovery drive, and no errors had been raised. But, when needed, there was no way to recover the system with that drive. I changed the UEFI options to recognise the USB stick as a valid boot option, it started the recovery process, and then informed me that something was missing on the system. What? Well, probably, some of the recovery partitions: these were available, but, in truth, I do not know what my friend had done on his 8.1 upgrade.</p><p>
+	So, doing some general user action (system upgrade), the recovery partition is (probably) lost, and the recovery drive cannot recover the system, and cannot either reinitialise the system to its pristine status. </p><p>
+	Fine, then, what can be done? Of course, you can always reinstall Windows, right? Of course not. You can create a recovery drive, which seems unable to reinitialise the system. If there is no recovery partitions available, no matter how big is your USB stick, Windows just doesn't install all the information needed to restart the system. I cannot stop comparing this complexity with the utter simplicity of managing the installation of a OsX or Linux system and stare in total awe. </p><p>
+	But wondering on these complications would not help my friend recover his system. On the short time he used Windows 8 he was all but happy, and having to wait now to get (and pay!) for the installation media from Asus didn't really excite him. I proposed him trying Ubuntu and he accepted. Installation took me minutes, and the system booted in perfect state. He has been using Ubuntu since then, and, for the time being, he seems content with the system. It is a very recent Asus -N7500JV-, with SSD, and the whole hardware is properly recognised. I know that there will be issues, like trying to run a Windows program that he forgot to mention, and that cannot run well in a virtual machine or using Wine, but for the time, the great recovery mechanisms of Windows have won a new Ubuntu fan. Go figure.</p>
+
 	<p class="entry"><span class="entry-date">21st June 2014</span>Rails 4</p> 
 
 	<p> <img src='images/rails.png' alt='ruby on rails icon' class='blog'/>I was updating a website done in Rails 3 to 
@@ -32,7 +42,7 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
 
 	<pre>model.has_many_assoc.select{|c| ...}.each{|c| c.delete}</pre>
 
-	<p>But only in some cases, as it depends in fact on the association in place. Well, thanks for that, very helpful, guys!</p>
+	<p>But only in some cases, as it depends in fact on the operation and association in place. Well, thanks for that, very helpful, guys!</p>
 
 
 	<p class="entry"><span class="entry-date">5th April 2014</span>Windows X</p> 
