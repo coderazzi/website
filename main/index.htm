@@ -20,9 +20,14 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='content'>
 
 
+	<p class="entry"><span class="entry-date">2nd July 2014</span>Ready Player One</p> 
+
+	<p> <img src='books/2014/readyplayerone.png' alt='redy player one' class='blog'/>I just finished Ready Player One, wanting to reach the end of the story and dreading at the same time finishing it. The plot of story, the games played inside games inside games, the old computers of the 70's and early '80s, the fascination for the music and movies makes this <a href='books/2014/index.html#readyplayerone'>book</a> an instant recommendation. In fact, I listened to the audiobook, and with the great job of the narrator I would even recommended better the audio version.
+	</p>	
+
 	<p class="entry"><span class="entry-date">29th June 2014</span>Ubuntu 1 / Windows 0</p> 
 
-	<p> <img src='images/wubuntu.jpg' alt='ubuntu vs windows' class='blog'/>I was updating a  After my brief fighting with Windows 8 on a friend's laptop, I though I would stayed clear from Windows for a little while.</p><p>
+	<p> <img src='images/wubuntu.jpg' alt='ubuntu vs windows' class='blog'/>After my brief fighting with Windows 8 on a friend's laptop, I though I would stayed clear from Windows for a little while.</p><p>
 	
 	No luck; my friend updated the system to Windows 8.1, and on the process something failed. He would then be welcome with an error message, and the system would enter recovery mode. Fortunately, I had created the USB recovery drive, so it was just a matter of recovering the system... Nope. The USB stick would not be recognised. I had created the recovery partitions, as expected, provided the system with a proper USB to create the recovery drive, and no errors had been raised. But, when needed, there was no way to recover the system with that drive. I changed the UEFI options to recognise the USB stick as a valid boot option, it started the recovery process, and then informed me that something was missing on the system. What? Well, probably, some of the recovery partitions: these were available, but, in truth, I do not know what my friend had done on his 8.1 upgrade.</p><p>
 	So, doing some general user action (system upgrade), the recovery partition is (probably) lost, and the recovery drive cannot recover the system, and cannot either reinitialise the system to its pristine status. </p><p>
@@ -33,7 +38,7 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
 
 	<p> <img src='images/rails.png' alt='ruby on rails icon' class='blog'/>I was updating a website done in Rails 3 to 
 	Rails 4, following the usual guides to have a smooth migration, which helped definitely smoothing the update. A nasty problem I found was related to the way that model associations are now handled; in Rails 3, they return an Array, while in Rails 4 its is returned a CollectionProxy; nothing to object if the new class exposes the same interface (methods), but that is not the case.</p>
-	<p>So all the calls to the suddenly deprecated methods are naturally broken. Of course, there are always good reasons to such deprecation... isn't? This <a href='https://github.com/rails/rails/pull/12236'>discussion</a> sheds some light on the reasoning behind: <quote>Because it causes confusion where you think you are changing the relation/association and you actually is not. The database is still the same.</quote> So calling delete_if does not change the database, and the name is therefore confussing, so let's get ride of the method? Somebody replies here that the reasoning is ridiculous, people should know enough to save the underlying model after calling delete_if, but the answer only addresses the mention to ridiculous.... typical.</p>
+	<p>So all the calls to the suddenly deprecated methods are naturally broken. Of course, there are always good reasons to such deprecation... isn't? This <a href='https://github.com/rails/rails/pull/12236'>discussion</a> sheds some light on the reasoning behind: <quote>Because it causes confusion where you think you are changing the relation/association and you actually do not. The database is still the same.</quote> So calling delete_if does not change the database, and the name is therefore confussing, so let's get ride of the method? Somebody replies here that the reasoning is ridiculous, people should know enough to save the underlying model after calling delete_if, but the answer only addresses the mention to ridiculous.... typical.</p>
 	<p>So if you have some code in Rails 3 doing something as:</p>
 
 	<pre>model.has_many_assoc.delete_if{|c| ...}</pre>
