@@ -185,6 +185,7 @@
                     <item name='With snow' file='osx/p5q-e/snowleopard/index.htm'/>
                 </group>
                 <item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
+                <item name='Gigabyte GA-B75M' file='osx/ga-b75m/index.htm'/>
                 <item name='Sleep/hibernation' file='osx/hibernation.htm'/>
             </group>
         </group>		
