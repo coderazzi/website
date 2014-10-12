@@ -24,7 +24,7 @@ $(function() {
 		f(function(){$('#toclip').val($('#input_source').html()).focus().select();});
 	};
 	var prettify = function(){transform(prettyPrint)};
-	$('#prettify').click(prettyPrint);
+	$('#prettify').click(prettify);
 	$('#uglify').click(function(){transform(noPrettyPrint)});
 	prettify();
 });

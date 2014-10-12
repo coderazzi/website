@@ -20,6 +20,16 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='content'>
 
 
+	<p class="entry"><span class="entry-date">12th October 2014</span>KVM network restart</p> 
+
+	<p> 
+		<img src='images/network.png' alt='shutdown' class='blog'/>While working with KVM virtual networks, it arises often enough the need to edit the network definition, like editing new MAC / IP mappings. This causes all the associated guests to lose network connectivity, and it is required to detach / re-attach their network interfaces. There is a <a href='http://git.zaytsev.net/?p=anubis-puppet.git;a=blob;f=manifests/files/common/network-restart'>shell script</a> to perform this operation on the default network, with a few constraints.
+	</p>
+	<p>
+		To avoid those constraints and allow the attachment of any network, I wrote the following python script, that requires as arguments the network or networks to reattach: <a href='kvm/net-restart/index.html'>(permanent link)</a>
+	</p>
+
+
 	<p class="entry"><span class="entry-date">5th October 2014</span>Mavericks on GA-B75M</p> 
 
 	<p> 
@@ -33,15 +43,6 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
 	<p>
 		Today I decided to upgrade my existing Mountain Lion installation to Mavericks, or, better said, to scrap the Mountain Lion system to have a clean Mavericks one. Again, the <a href='osx/ga-b75m/index.htm'>process</a> was very simple, and all my hardware is perfectly running under OsX, missing only the VT-D functionality.
 	</p>
-
-
-
-	<p class="entry"><span class="entry-date">25th September 2014</span>Listening point</p> 
-
-	<p> <img src='books/2014/endersgame.png' class='blog'/><img src='books/2014/aptpupil.png' class='blog'/>
-		<img src='books/2014/mrmercedes.png' class='blog'/><img src='books/2014/seriouslyiamkidding.png' class='blog'/>
-		While still reading paperbacks, time constraints favour my listening to audiobooks. And, as far as the narrator does a good job
-		-and in the vast majority of audiobooks so far, the narrator is really great-, I would say that an audiobook can be a much better experience than reading. Of course, the version needs to be unabridged, but, again, that is the usual case. From the last 4 audiobooks I read these last two months, I would highly recommend <a href='books/2014/index.html#mrmercedes'>Mr Mercedes</a>, from Stephen King.</p>
 
 
 

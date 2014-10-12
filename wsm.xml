@@ -24,6 +24,9 @@
     <location source='solaris'>
         <template mold='../mold.htm'/>
     </location>       
+    <location source='kvm'>
+        <template mold='../mold.htm'/>
+    </location>       
     <location source='phd'>
         <template mold='../mold.htm'/>
     </location>       
@@ -174,6 +177,9 @@
             <item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
             <item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>
         </group>		
+        <group name='KVM'>
+            <item name='Network restart' file='kvm/net-restart/index.html'/>
+        </group>
         <group name='Os X'>
             <item name='Nginx' file='howto/osx/nginx.html'/>
             <item name='PostgreSQL / Rails' file='howto/osx/pg_rails.html'/>
