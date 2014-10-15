@@ -4,17 +4,18 @@
 #       network interfaces are detached / reattached
 #
 # (c) Luis M Pena <coderazzi@gmail.com> 2014
-#     Version 1.0
+#     Version 1.1
 #
 # This work is herewith placed in public domain.
 
 
-import argparse, libvirt, sys, time
+import argparse, libvirt, sys, time, subprocess
 import xml.etree.ElementTree as XTree
 
 clParser = argparse.ArgumentParser(description='VIRT network restarter')
 clParser.add_argument('networks', type=str, nargs='+')
 clParser.add_argument('-c', '--connect')
+clParser.add_argument('-n', '--no-iptables', action='store_true')
 args = clParser.parse_args()
 
 
@@ -31,6 +32,7 @@ for network in args.networks:
     except:
         print >> sys.stderr, 'Invalid network name:', network
         continue
+    iptables = None if args.no_iptables else subprocess.check_output(['iptables-save'])
     print 'Stopping network', network
     net.destroy()
     for did in conn.listDomainsID():
@@ -56,3 +58,11 @@ if devices:
     for domain, mac, xml in devices:
         print 'Attaching device', mac,'to domain', domain.name()
         domain.attachDevice(xml)
+    if iptables:
+        print 'Restoring now iptables....'
+        p = subprocess.Popen(['iptables-restore'], 
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = p.communicate(iptables)
+        if p.returncode:
+            print stdout
+            print >> sys.stderr, stderr

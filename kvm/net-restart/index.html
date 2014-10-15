@@ -22,10 +22,12 @@
 	<img src='network.png' class='right'/>
 
 	<p> 
-		While working with KVM virtual networks, it arises often enough the need to edit the network definition, like editing new MAC / IP mappings. This causes all the associated guests to lose network connectivity, and it is required to detach / re-attach their network interfaces. There is a <a href='http://git.zaytsev.net/?p=anubis-puppet.git;a=blob;f=manifests/files/common/network-restart'>shell script</a> to perform this operation on the default network, with a few constraints.
+		While working with KVM virtual networks, it arises often enough the need to edit the network definition, like editing DHCP assignments. This causes all the associated guests to lose network connectivity, and it is required to detach / re-attach their network interfaces. There is a <a href='http://git.zaytsev.net/?p=anubis-puppet.git;a=blob;f=manifests/files/common/network-restart'>shell script</a> to perform this operation on the default network, with a few constraints.
 	</p>
-	<p>
-		To avoid those constraints and allow the attachment of any network, I wrote the following <a href='./net_restart.py'>python script</a>, that requires as arguments the network or networks to reattach:
+
+    <p>
+        The documented constraints relates to modifying only the default network, and to assume all guests having just one 
+        network interface. To avoid those constraints and allow the attachment of any network, I wrote the following <a href='./net_restart.py'>python script</a>, that requires as arguments the network or networks to reattach:
 	</p>
 
 
@@ -36,17 +38,18 @@
 #       network interfaces are detached / reattached
 #
 # (c) Luis M Pena <coderazzi@gmail.com> 2014
-#     Version 1.0
+#     Version 1.1
 #
 # This work is herewith placed in public domain.
 
 
-import argparse, libvirt, sys, time
+import argparse, libvirt, sys, time, subprocess
 import xml.etree.ElementTree as XTree
 
 clParser = argparse.ArgumentParser(description='VIRT network restarter')
 clParser.add_argument('networks', type=str, nargs='+')
 clParser.add_argument('-c', '--connect')
+clParser.add_argument('-n', '--no-iptables', action='store_true')
 args = clParser.parse_args()
 
 
@@ -63,6 +66,7 @@ for network in args.networks:
     except:
         print >> sys.stderr, 'Invalid network name:', network
         continue
+    iptables = None if args.no_iptables else subprocess.check_output(['iptables-save'])
     print 'Stopping network', network
     net.destroy()
     for did in conn.listDomainsID():
@@ -88,8 +92,19 @@ if devices:
     for domain, mac, xml in devices:
         print 'Attaching device', mac,'to domain', domain.name()
         domain.attachDevice(xml)
+    if iptables:
+        print 'Restoring now iptables....'
+        p = subprocess.Popen(['iptables-restore'], 
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = p.communicate(iptables)
+        if p.returncode:
+            print stdout
+            print >> sys.stderr, stderr
 </pre>
 
+    <p>
+        Note that there will likely be networking issues after restarting the network, due to the way KVM handles the iptable rules. The best way to avoid these issues is to save / restore the iptables around the script call, which is what this script does by default. To avoid the iptables call, use the argument -n. 
+    </p>
 
 </div></div>
 </body>
