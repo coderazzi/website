@@ -1,0 +1,61 @@
+<html>
+<head>
+ <title>Yosemite on Gigabyte GA-B75M</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="sleep hibernation hackintosh">
+ </head>
+<body>
+ <div id='body'>
+ <div id='content'>
+ 
+
+<p class="timestamp">&gt; 9th November 2014</p>  
+
+<h1>Yosemite on Gigabyte GA-B75M</h1>
+
+	<p>
+		This post describes the steps to install Os X Yosemite on my system, described <a href='index.html'>here</a>.
+	</p>
+
+	<p>
+		My system had already <a href='mavericks.html'>Mavericks installed</a>, so I received the notification to upgrade the system to Yosemite. I started it, using the default Apple procedure, just to download the app image. Once downloaded, I stopped the installation. I intended to do in any case a clean installation,
+		so I didn't even check the possibility of doing an upgrade instead of a from-scratch installation.
+	</p>
+
+	<p>
+		After having the Yosemite installation app, I downloaded <a href='http://www.tonymacx86.com/unibeast/'>UniBeast 5.0.2</a>. I used the same BIOS settings already used in Mavericks: default ones, ensuring that XHCI and EHCI handoff are enabled, and VT is also enabled, but <b>VT-D must be disabled</b>.
+	</p>
+
+	<p>
+		After installation, it is needed to start Multibeast 7.0.2 to fix the correct drivers. The correct installation for my system requires:
+		<ul>
+			<li>Quick Start: select DSDT free</li>
+			<li>Drivers: <ul>
+				<li>Audio: add ALC887/888b current</li>
+				<li>Disk: add 10.10 TRIM patch ( 3rd party SATA already selected )</li>
+				<li>Graphics: nothing</li>
+				<li>Misc: no changes (FakeSMC already selected)</li>
+				<li>Network: Realtek: add RTL81xx</li>
+				<li>System: no changes (nothing selected)</li>
+			</ul></li>
+			<li>Bootloaders: Chimera (already selected)</li>
+			<li>Customize: No changes, already selected: <ul>
+				<li>Basic Boot options</li>
+				<li>Generate CPU states</li>
+				<li>Hibernate mode -desktop</li>
+				<li>Kext dev Mode (needed to use unsigned kexts)</li>
+				<li>Use kernel cache</li>
+			</ul></li>
+		</ul>
+	</p>
+
+		<img src='yosemite.png'/> 
+
+	<p>
+		Checking the logs, I saw that even the AppleHDA assertions displayed on Mavericks were gone. really a flawless go!
+	</p>
+
+</div></div>
+</body>
+</html>

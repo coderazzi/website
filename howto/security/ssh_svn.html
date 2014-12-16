@@ -12,6 +12,7 @@
  <div id='content'>
 
 <p class='timestamp'>&gt; 07th September 2012, 01:58 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
+<p class='timestamp'>&gt; Updated: 3rd November, 01:02 [<a href='#viewvc'>viewvc</a>]</p>  
 
 <h1>Setting up SVN on SSH</h1>
 
@@ -132,7 +133,55 @@ sudo chmod 2770 -R /srv/svn/ </pre>
 
 
 
+<h2><a name='viewvc'>Web browsing support</a></h2>
 
+<p>A problem with this approach is losing the ability to browse the subversion repositories in a web browser.
+The solution is setting up <a href='http://viewvc.org/'>ViewVC</a></p>
+
+<p>Installation is as simple as downloading and expanding it to a suitable location, such as <span class='code'>/opt/viewvc</span>. The only file absolutely requiring some configuration is <span class='code'>viewvc.conf</span>, to provide the SVN repository locations. In my case, I had to include:</p>
+
+<pre>root_parents = /srv/svn: svn</pre>
+
+<p>Although it is possible to run its standalone server, the obvious advantage is integrating it into the available nginx engine. However,
+providing the correct nginx configuration time took me longer than expected. This is my final ViewVC / nginx configuration:</p>
+
+<pre>server {
+        listen 80;
+        server_name svn.coderazzi.net;
+
+        access_log /var/log/nginx/svn.access.log;
+        error_log  /var/log/nginx/svn.error.log;
+
+        root /opt/viewvc;
+
+        location ~ ^/viewvc.cgi$ {
+                auth_basic "SVN access login";
+                auth_basic_user_file /home/coderazzi/www/coderazzi.net/cgi/.htpasswd;
+                gzip off;
+                fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+                fastcgi_param   DOCUMENT_ROOT           $document_root;
+                fastcgi_param   SCRIPT_FILENAME         /opt/viewvc/viewvc.cgi;
+        }
+        location ~ ^/$ {
+                rewrite .* http://svn.coderazzi.net/viewvc.cgi;
+                break;
+        }
+        location /templates {
+        }
+        location ~ /(.+)$ {
+                auth_basic "SVN access login";
+                auth_basic_user_file /home/coderazzi/www/coderazzi.net/cgi/.htpasswd;
+                gzip off;
+                fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+                fastcgi_param   DOCUMENT_ROOT           $document_root;
+                fastcgi_param   SCRIPT_FILENAME         /opt/viewvc/viewvc.cgi;
+                fastcgi_param   PATH_INFO               $1;
+                fastcgi_param   QUERY_STRING            $query_string;
+
+        }
+}</pre>
+
+<p>To customize it, it is needed to override the values for <b>server_name</b>, <b>root</b> and <b>SCRIPT_FILENAME</b>, plus, of course, your very own <b>auth_basic_user_file</b></p>.
 
 
 

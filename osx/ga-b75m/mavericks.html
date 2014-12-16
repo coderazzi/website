@@ -1,0 +1,69 @@
+<html>
+<head>
+ <title>Mavericks on Gigabyte GA-B75M</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="sleep hibernation hackintosh">
+ </head>
+<body>
+ <div id='body'>
+ <div id='content'>
+ 
+
+<p class="timestamp">&gt; 4th October 2014</p>  
+<p class="timestamp">last update: &gt; 9th November 2014 &nbsp;&nbsp;&nbsp;&nbsp;</p>  
+
+<h1>Mavericks on Gigabyte GA-B75M</h1>
+
+	<p>
+		This post describes the steps to install Mavericks on my system, described <a href='index.html'>here</a>.
+	</p>
+
+	<p>
+		To install Mavericks, I used <a href='http://www.tonymacx86.com/unibeast/'>UniBeast 4.0.3</a>. To obtain a copy of the required Mavericks 
+		installation application from Apple, I used a MacBook Pro; downloaded the app, and performed the steps required to install it on a USB stick, 
+		as described in the <a href='http://www.tonymacx86.com'>tonymacx86</a> site. Note that I didn't upgrade my Mountain Lion system, opting
+		instead for a clean installation.
+	</p>
+
+	<p>
+		Mavericks installation was flawless. The only important bits were to ensure that the BIOS settings were correct: in fact, 
+		BIOS settings are basically the default ones. In special, VT is enabled, but <b>VT-D must be disabled</b>. Also, XHCI and EHCI handoff must be enabled.
+	</p>
+
+	<p>
+		After installation, it is needed to start Multibeast 6.5.0 to fix the correct drivers. My only issue with Multibeast is that it was not clear for me whether it runs progressively or not: if you miss one driver and want to add it, you should still provide all the required drivers, as otherwise something can be
+		missing. On the other side, my failure to select the correct network driver on the first step meant that the incorrect driver was still installed at the end,
+		requiring a (very simple) manual action to remove it.
+	</p>
+
+	<p> The correct installation for my system requires:
+		<ul>
+			<li>Quick Start: select DSDT free</li>
+			<li>Drivers: <ul>
+				<li>Audio: add ALC887/888b current</li>
+				<li>Disk: add 10.9.4+ TRIM patch ( 3rd party SATA already selected )</li>
+				<li>Graphics: nothing</li>
+				<li>Misc: no changes (FakeSMC already selected)</li>
+				<li>Network: Realtek: add RTL81xx</li>
+				<li>System: no changes ( AppleRTC patch already selected )</li>
+			</ul></li>
+			<li>Bootloaders: Chimera (already selected)</li>
+			<li>Customize: No changes, already selected: <ul>
+				<li>Basic Boot options</li>
+				<li>Generate CPU states</li>
+				<li>Hibernate mode -desktop</li>
+				<li>Use kernel cache</li>
+			</ul></li>
+		</ul>
+	</p>
+
+		<img src='macbeast.png'/> 
+
+	<p>
+		Checking the logs, I discovered one additional error, which had already appeared on my initial Mountain Lion installation: Sound assertions in AppleHDA*. This error does not seem to affect the normal behaviour of the sound system, but I tried replacing the Realtek ALCxxx audio driver with the VoodooHDA one; unfortunately, this didn't work at all, with the driver reporting no found devices. Back to the ALC887 driver.
+	</p>
+
+</div></div>
+</body>
+</html>

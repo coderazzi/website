@@ -20,6 +20,95 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
  <div id='content'>
 
 
+	<p class="entry"><span class="entry-date">15th December 2014</span>Listening point</p> 
+
+	<p> <img src='books/2014/thescorchtrials.jpg' class='blog'/><img src='books/2014/thedeathcure.jpg' class='blog'/>
+		<img src='books/2014/thesenseofanending.jpg' class='blog'/><img src='books/2014/thesafeman.jpg' class='blog'/>
+		While reading two paperbacks -which I am still distant to complete-, I had again more time to listening audiobooks, and the last four where a mixed bag.
+		<a href='books/2014/index.html#senseofanending'>Julian Barnes</a> made definitely for any time lost with the deceptive Maze Runner trilogy, 
+		and <a href='books/2014/index.html#safeman'>The Safe Man</a> by Michael Connelly was a nice and unexpected surprise from this author.
+	</p>
+
+
+
+	<p class="entry"><span class="entry-date">9th November 2014</span>Yosemite on GA-B75M</p> 
+
+	<p> 
+		<img src='osx/ga-b75m/case.png' alt='shutdown' class='blog'/>I updated my Mountain Lion installation to Mavericks just one month ago; 
+		I knew that Yosemite was on the pipeline, but I still thought that the very first release of Yosemite would have quite a few bugs, as
+		to rush to install it. 
+	</p>
+	<p>
+		Looking to the screenshots from Yosemite, I decided to try it on a separate hard disk; if I had problems or the looks didn't suit me
+		that much, I could revert to Mavericks, or, as I have planning all along, to switch to Ubuntu 14.10.
+	</p>
+	<p>
+		As it happens, the <a href='osx/ga-b75m/yosemite.html'>Yosemite installation</a> was really fast on my Hackintosh, and it looks much much better than Mavericks, so it is a keeper. I partitioned my SSD to use now as well Ubuntu, so let's see where I spend more time of both operative systems...</p>
+
+
+
+
+	<p class="entry"><span class="entry-date">8th November 2014</span>Samsung EVO 840 performance restoration without Windows</p> 
+
+	<p> 
+		<img src='images/drive.png' alt='ssd' class='blog'/>The firmware update provided by Samsung to restore the performance on the Samsung EVO 840 is, as usual for firmware / BIOS updates, a DOS program. There is also a Windows program, but it handles only NTFS partitions, so even in the case of having some Windows installation available, it seems to be unable to handle other partitions, like ext4 or HFS+. In these cases, it is definitely needed to go the DOS route.
+	</p>
+	<p>
+		The update from Samsung does not include, as expected, a DOS installation, but the process is very simple: download and install a FreeDOS (for example) image to a USB stick, add the firmware update and reboot the machine, booting from the USB stick.
+	</p>
+	<p>
+		This <a href='At http://chtaube.eu/computers/freedos/bootable-usb/'>site</a> contains images of <a href='http://www.freedos.org/'>FreeDOS</a> available for different USB sizes. For drives over 2 GB, the current download is: <a href='http://ftp.chtaube.eu/pub/FreeDOS/bootable-usb/FreeDOS-1.1-memstick-2-2048M.img.bz2'>http://ftp.chtaube.eu/pub/FreeDOS/bootable-usb/FreeDOS-1.1-memstick-2-2048M.img.bz2</a>
+	</p>
+	<p>
+		After download, open the terminal and access the downloads folder, and the unzip the file:
+	</p>
+	<pre>bunzip2 FreeDOS-1.1-memstick-2-2048M.img.bz2</pre>
+
+	<p>Insert now the USB drive and get the device name; this can be accomplished in several ways; the easiest one is, from the Os X command line, to do:</p>
+
+	<pre>diskutil list</pre>
+
+	<p>In my case, I can see that /dev/disk4 is a 16GB drive, with one partition (disk4s1). The first step is to unmount this drive, and then transfer the image:</p>
+
+	<pre>diskutil unmountDisk /dev/disk4
+sudo dd if=FreeDOS-1.1-memstick-2-2048M.img of=/dev/disk4 bs=512k</pre>
+
+	<p>
+		After some time (over 10 minutes, in my case), try reinserting the disk, which should appear as <b>FreeDOS</b>. Open it; now we can copy here the directory <b>840Per</b> included in the provided Samsung 840 distribution. Time to reboot, and start the firmware update application!
+	</p>
+
+
+
+
+	<p class="entry"><span class="entry-date">2nd November 2014</span>Locale issues</p> 
+
+	<p> 
+		<img src='images/attention.png' alt='attention' class='blog'/>Whenever I setup a new system, the usual problem with the locale bites me, something along:
+	</p>
+	<pre>warning: cannot set LC_CTYPE locale
+warning: environment variable LC_CTYPE is UTF-8
+warning: please check that your locale name is correct</pre>
+	<p>
+		In Os X or Linux, the best solution is to edit the file <b>~/.bash_profile</b>, adding for English UTF:
+	</p>
+	<pre>export LANG="en_US.UTF-8"
+export LC_COLLATE="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export LC_MESSAGES="en_US.UTF-8"
+export LC_MONETARY="en_US.UTF-8"
+export LC_NUMERIC="en_US.UTF-8"
+export LC_TIME="en_US.UTF-8"
+export LC_ALL=</pre>
+	<p>
+		Instead of <b>en_US.UTF-8</b> is possible to just use <b>C</b>, or any other locale as provided by <span class='code'>locale -a</span>
+	</p>
+	<p>
+		In Debian, to ensure that the appropiate locale are installed, it is needed to run <span class='code'>dpkg-reconfigure locales</span>, and there select <b>en_US.UTF-8</b> -also as default-. 
+	</p>
+
+
+
+
 	<p class="entry"><span class="entry-date">12th October 2014</span>KVM network restart</p> 
 
 	<p> 
@@ -41,7 +130,7 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
 	</p>
 
 	<p>
-		Today I decided to upgrade my existing Mountain Lion installation to Mavericks, or, better said, to scrap the Mountain Lion system to have a clean Mavericks one. Again, the <a href='osx/ga-b75m/index.htm'>process</a> was very simple, and all my hardware is perfectly running under OsX, missing only the VT-D functionality.
+		Today I decided to upgrade my existing Mountain Lion installation to Mavericks, or, better said, to scrap the Mountain Lion system to have a clean Mavericks one. Again, the <a href='osx/ga-b75m/mavericks.html'>process</a> was very simple, and all my hardware is perfectly running under OsX, missing only the VT-D functionality.
 	</p>
 
 
