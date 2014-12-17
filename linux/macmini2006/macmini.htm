@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+ <title>Linux on MacMini (2006 model)</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="ubuntu, linux, mac mini">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>&gt; 17th December 2014, 23:58 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lux</p>
+
+	<h1>Linux on MacMini (2006 model)</h1>
+
+	<img src='macmini.png' class='right'/>
+
+	<p>
+		I bought in 2006 a MacMini. That year there were two MacMini releases, 
+		mine corresponding to the older model (MA206LL/A, Model Number A1176, Model Id: Macmini1,1), 
+		with a 1.66 GHz Intel Core Duo (32 bits).
+	</p>
+	<p>
+		It had a slow 80Gb harddisk and 512 Mb of memory, which I immediately updated to 1 Gb. 
+		It run Os X Tiger; eventually it would be upgraded to Leopard and then to Snow Leopard.
+		It was never my main computer, and by 2011, at latest, it had been safely stored in some storage box. 
+		My main computer in 2006 was a 2003 Dell laptop, and when its power supply died those Christmas, 
+		I could not use the Mac Mini as replacement, and I bought quickly an Acer desktop. 
+		Although I later replaced the Dell's power supply, the Acer desktop would become my main computer 
+		until the end of 2008, when I built up my first Hackintosh.
+	</p>
+	<p>
+		The Acer desktop was a noisy beast, and is definitely the only computer I have owned which I have 
+		professed zero love. Is still alive, upgraded from the original Windows XP to Windows Vista, and 
+		has been lent to one friend or other for the best of 4 years. At some moment I measured the 
+		energy it used, and it was somewhere around 150 Watts; mind you, it had a discrete graphics 
+		card (Nvidia GT8600), but the Mac Mini, slightly older, only drew 20-25 watts on same conditions.
+	</p>
+	<p>
+		The quietness and low power requirements of the MacMini made me think recently about upgrading 
+		this machine and use it as generic home server. I had a 128 SSD unused, so I needed only purchasing 
+		the CPU and memory. Prices were really low: a much improved Core 2 Duo T7200 (64 bits) costed me 16 
+		euros in Ebay, and 2 modules of 1 Gb costed 15 euros in Amazon, so the full upgrade was just around 
+		30 euros. In fact, this machine could have been upgraded to a T7600 and 4 Gb (although only using a 
+		bit over 3 Gb), but that upgrade was almost 100 euros. 
+	</p>
+	<p>
+		Funny that the very latest MacMini is rather cheap, at 520 euros, but accepts no user upgrades at all...
+	</p>
+	<p>
+		The upgrade was not simple, but neither overly complicated. The guides from 
+		<a href='https://www.ifixit.com/'>iFixit</a> made definitely all the difference:
+
+		<ul>
+			<li><a href='https://www.ifixit.com/Guide/Mac+mini+Model+A1176+Hard+Drive+Replacement/1108'>Hard disk replacement</a></li>
+			<li><a href='https://www.ifixit.com/Guide/Mac+mini+Model+A1176+Core+2+Duo+Processor+Replacement/1178'>CPU replacement</a></li>
+			<li><a href='https://www.ifixit.com/Guide/Mac+mini+Model+A1176+RAM+Replacement/1110'>Memory update</a></li>
+		</ul>
+	</p>
+
+	<p>
+		<img src='speaker.jpg' class='right'/>
+		These updates were purely mechanical (but my dexterity played definitely against me here :-). 
+		One additional change I did at this level was disconnecting the speaker, displayed on the right figure, also from iFixit.
+		Listening the bell each time I boot the machine was definitely no pleasure...
+	</p>
+	<p>
+		In addition to these physical changes, I had to update the firmware; the default one would not recognise 
+		USB 2.0 keyboards until the operating system was running. Although I have USB 1.1 keyboards, the 
+		default one is an Apple USB 2.0. There is a way to upgrade the initial firmware (Macmini1,1) to (Macmini2,1), 
+		which would also allow me to add additional RAM. This upgrade is documented 
+		<a href='http://forums.macrumors.com/showthread.php?t=1197875'>here</a>, see the 24th post, by 
+		Diogenes, Nov 20, 2011, 01:31 PM. It contains a zip file (...) and instructions to perform the update, 
+		which must be done from OsX. For completeness, I am including 
+		<a href='EFIupdaterMacMini.zip'>the EFI updater archive</a>, although I would 
+		recommend download it from the original post, in case some updates are made on the meantime...
+	</p>
+	<p>
+		To install the operative system, the best option in this machine is to use the CD-ROM. 
+		After some considerations about using FreeBSD, I decided to install Ubuntu 14.10 server (64 bits) - 
+		OsX was never an option, and, in any case, the latest version of OsX that could be installed in this 
+		machine would have been OsX Lion.
+	</p>
+	<p>
+		Now, there is a problem: This is a 32-bit EFI Mac, and its just refuses to boot from a UEFI(X64)+BIOS 
+		bootable CD/DVD, which as it goes, is the format of the Ubuntu server installation disc. 
+		There is a solution: to remove UEFI support from the CD first.
+	</p>
+
+<pre>#1 Install xorriso
+apt-get install xorriso
+
+#mount the original Ubuntu ISO
+mkdir /mnt/iso
+mount -o loop ubuntu-14.10-server-amd64.iso /mnt/iso
+
+#3 create the new ISO, wihout EFI
+xorriso -as mkisofs -iso-level 3 -full-iso9660-filenames -volid "archisolabel" \
+	-appid "Ubuntu Linux CD" -publisher "Ubuntu" -preparer "prepared by coderazzi" \
+	-eltorito-boot isolinux/isolinux.bin -eltorito-catalog isolinux/boot.cat \
+	-no-emul-boot -boot-load-size 4 -boot-info-table -output ubuntu-no-uefi.iso /mnt/iso/
+
+#4 burn the CD
+wodim -tao dev=/dev/cdrom -v -data ubuntu-no-uefi.iso</pre>
+
+	<p>
+		Now, this CD can be used to install Ubuntu without problems. And now my MacMini is happily running Ubuntu Server...
+	</p>
+
+</div></div>
+</body>
+</html>

@@ -176,6 +176,7 @@
 	        </group>		
             <item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
             <item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>
+            <item name='Mac Mini upgrade' file='linux/macmini2006/macmini.htm'/>
         </group>		
         <group name='KVM'>
             <item name='Network restart' file='kvm/net-restart/index.html'/>
