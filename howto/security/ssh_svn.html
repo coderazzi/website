@@ -166,7 +166,7 @@ providing the correct nginx configuration time took me longer than expected. Thi
                 rewrite .* http://svn.coderazzi.net/viewvc.cgi;
                 break;
         }
-        location /templates {
+        location ^~ /templates/ {
         }
         location ~ /(.+)$ {
                 auth_basic "SVN access login";

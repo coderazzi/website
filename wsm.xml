@@ -204,6 +204,7 @@
             <item name='Sensei' file='phd/index.htm'/>
         </group>		
         <group name='Just words'>
+            <item name='2015' file='books/2015/index.htm'/>
             <item name='2014' file='books/2014/index.htm'/>
             <item name='2013' file='books/2013/index.htm'/>
 	        <item name='2012' file='books/2012/index.htm'/>
