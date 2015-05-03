@@ -1,25 +1,10 @@
 <html>
-
-<head>
- <title>Coderazzi - Luis M. Pena's home page</title>
- <link rel="stylesheet" type="text/css" href="../css/global.css">
- <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
- <meta name="Description" content="homepage">
-<style type="text/css">
-<!--
-.entry  { margin-left: -10px; margin-right: -10px; padding-top:30px; padding-bottom:10px; background: #eee;color: #b95959; text-align: left; font-family: courier, monospace; font-size: 16px; }
-.entry-date  { padding-right:60px; font-family: courier, monospace; color: #222; font-family: courier, monospace; font-size: 11px;}
-img.blog {float: left; margin-right: 20px; margin-bottom: 10px; height:96px ; width:96px}
-img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
--->
-</style>
-</head>
-
+<head></head>
 <body>
  <div id='body'>
  <div id='content'>
 
-	<p class="entry"><span class="entry-date">26th October 2013</span>Lame Mr Linkedin</p> 
+	<p class="blog-entry"><span class="blog-entry-date">26th October 2013</span>Lame Mr Linkedin</p> 
 
 	 <p> <img src="images/linkedin.png" alt="linkedin icon" class="blog">I have been procrastinating on an update to my CV, 
 	 so I was very surprised when my wife congratulated me early today because I was finally doing it. After disabusing her of her idea, I asked why she had figured that out. and the guilty part was..... LinkedIn.
@@ -29,7 +14,7 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
 	In fact, all the skills were correct, but I had entered them all at once, a few years ago; I hadn't updated anything at all in the past days -even in the past months-. so I guess this is the way that LinkedIn uses to spur your curiosity, check profiles
 	and keep the networking that is essential for LinkedIn operations: lame, Mr. LinkedIn, very lame</p>
 
-	<p class="entry"><span class="entry-date">30th June 2013</span>TableFilter v5.1.1</p> 
+	<p class="blog-entry"><span class="blog-entry-date">30th June 2013</span>TableFilter v5.1.1</p> 
 
 	 <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">New release for this 
 	 	<a href='tablefilter/index.html'>Java library</a>, solving a minor issue, but requiring updating the API
@@ -37,7 +22,7 @@ img.blog_fix {float: left; margin-right: 20px; margin-bottom: 10px;}
 
 	 <br><br><br>
 
-	<p class="entry"><span class="entry-date">6th April 2013</span>Autocounters in Django ORM</p> 
+	<p class="blog-entry"><span class="blog-entry-date">6th April 2013</span>Autocounters in Django ORM</p> 
 
 	 <p><img src="images/django.png" alt="django icon" class="blog">Fighting today in Django ORM, how to use a typical autocounter. Let's say we have a database table with two columns called name and value, being name the primary key. The idea is to be able to increment the value associated to a key, that will be used for some external purpose(s). As the <a href='https://docs.djangoproject.com/en/dev/ref/models/instances/'>Django documentation</a> mentions, this implies a solution such as:</p>
 
@@ -60,7 +45,7 @@ product.save()</pre>
 
 	<p>This is not a problem of Django, but of the underlying database, and F() expressions can still be helpful if the counter's value is not required. If this is not the case, trying to overcome the counter problem using exclusively the Django ORM approach is an invitation to lose a few hours testing all possible approaches :-(</p>
 
-	<p class="entry"><span class="entry-date">22nd March 2013</span>More sqlite3 tables alterations</p> 
+	<p class="blog-entry"><span class="blog-entry-date">22nd March 2013</span>More sqlite3 tables alterations</p> 
 
 	 <p><img src="images/database.png" alt="database icon" class="blog">During a current migration of a project to <span class='mark'>Django</span>, I wanted to make explicit the usage of a primary key on a table that lacked it (using the default rowid column
 	 	instead).</p>
@@ -69,13 +54,13 @@ product.save()</pre>
 	 	supports now reordering columns in tables.</p>
 
 
-	<p class="entry"><span class="entry-date">17th March 2013</span>Altering sqlite3 tables</p> 
+	<p class="blog-entry"><span class="blog-entry-date">17th March 2013</span>Altering sqlite3 tables</p> 
 
 	 <p><img src="images/database.png" alt="database icon" class="blog"><span class='mark'>sqlite3</span> does not support some basic SQL operations, more specially dropping or renaming columns.</p>
 
 	 <p><a href='python/alter_table_sqlite3/index.htm'>alter_table</a> is a python utility that supports specifically these two operations. It modifies the tables and any related indexes; however, if there are views or triggers depending on the altered tables, the user must recreate them.</p>
 
-	<p class="entry"><span class="entry-date">14th March 2013</span>PI day!</p> 
+	<p class="blog-entry"><span class="blog-entry-date">14th March 2013</span>PI day!</p> 
 
 	 <p><img src="images/thoughts.jpg" alt="brain puzzles icon" class="blog">Stumbled by mistake on a wikihow page about <a href='http://www.wikihow.com/Celebrate-Pi-Day'>How to Celebrate Pi Day</a>. No words to describe it.</p>
 	 <p>Fortunately, I also stumbled on this page on <a href='http://pu.inf.uni-tuebingen.de/users/klaeren/epigrams.html'>Epigrams on Programming</a>, by Alan J. Perlis. Some jewels, in the order they appear:</p>
@@ -88,7 +73,7 @@ product.save()</pre>
 	 <p>And, just for fun:</p>
 	 <ul><li>[110]: Editing is a rewording activity.</li></ul>
 
-	<p class="entry"><span class="entry-date">12th March 2013</span>TableFilter v5.0.0</p> 
+	<p class="blog-entry"><span class="blog-entry-date">12th March 2013</span>TableFilter v5.0.0</p> 
 
 	 <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">I just released a new version for
 	 <a href='tablefilter/index.html'>table filter</a>, a library to enable Excel-like filtering on Swing tables.</p>
@@ -97,7 +82,7 @@ product.save()</pre>
 
 	 <p>So, good riddance, to the Java 5 support!</p>
 
-	<p class="entry"><span class="entry-date">3rd March 2013</span>Playing with OpenWRT</p> 
+	<p class="blog-entry"><span class="blog-entry-date">3rd March 2013</span>Playing with OpenWRT</p> 
 
 	<p><img src="images/tl841n.jpg" alt="router icon" class="blog">I bought a cheap router, a TPLink 841N, for the explicit sake of installing OpenWRT and playing with it (which originated in the unfulfilled wish to setup a SSH tunnel on my existing Netgear router with the existing official firmware).</p>
 

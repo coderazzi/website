@@ -1,0 +1,32 @@
+.blog-entry  { 
+	margin-left: -10px; 
+	margin-right: -10px; 
+	padding-top:30px; 
+	padding-bottom:10px; 
+	background: #eee;
+	color: #b95959; 
+	text-align: left; 
+	font-family: courier, monospace; 
+	font-size: 16px; 
+}
+
+.blog-entry-date  { 
+	padding-right: 60px; 
+	color: #222; 
+	font-family: courier, monospace; 
+	font-size: 11px;
+}
+
+img.blog {
+	float: left; 
+	margin-right: 20px; 
+	margin-bottom: 10px; 
+	height:96px ; 
+	width:96px
+}
+
+img.blog_fix {
+	float: left; 
+	margin-right: 20px; 
+	margin-bottom: 10px;
+}

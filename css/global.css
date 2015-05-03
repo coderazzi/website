@@ -3,6 +3,8 @@ body
 	background-color: #eee;
 	padding: 0px;
 	margin: 0px; 
+	font-size: 14px;
+	font-family: "Trebuchet MS", "lucida grande", verdana, sans-serif;
 }
  
 h1 
@@ -45,23 +47,13 @@ img.centered
  
 #body
 {
-	max-width:800px;
-
-	padding: 10px;
-	color: #696969;
-	background-color: white;
-
-	font-size: 14px;
-	font-family: "Trebuchet MS", "lucida grande", verdana, sans-serif;
-	line-height: 1.6em;
-	
 	margin-bottom: 120px;
 }
 
-#content 
-{
-	font-size: 14px;
-	font-family: "Trebuchet MS", "lucida grande", verdana, sans-serif;
+#content  {
+	padding: 0.5em 2em 2em 2em;
+	color: #696969;
+	background-color: white;
 	line-height: 1.6em;
 }
 

@@ -4,10 +4,11 @@
 <transform source='.'>
     <alltemplates cssMoldClass='wsmreplace'>
         <replace what='cssdir' withdir='css'/>
+        <replace what='jsdir' withdir='js'/>
         <replace what='wsmdoc' withdoc='full'/>
     </alltemplates>
     <location source='main' target='.'>
-        <template mold='../mold.htm'/>
+        <template mold='../blog.htm'/>
     </location>       
     <location source='java' target='.'>
         <template mold='../mold.htm'/>
