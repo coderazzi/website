@@ -1,6 +1,4 @@
-.navcontainer
-{
-	background: #eee;
+.navcontainer {
 	margin: 0;
 	padding: 0;
 	font-family: georgia, serif;
@@ -9,8 +7,7 @@
 	text-transform: lowercase;
 }
 
-ul.navlist
-{
+ul.navlist {
 	text-align: left;
 	list-style: none;
 	padding: 0px;
@@ -18,15 +15,13 @@ ul.navlist
 	width: 140px;
 }
 
-ul.navlist li
-{
+ul.navlist li {
 	display: block;
 	margin: 0;
 	padding: 0;
 }
 
-ul.navlist li a
-{
+ul.navlist li a {
 	display: block;
 	width: 100%;
 	padding: 0.5em 0 0.5em 2em;
@@ -40,26 +35,39 @@ ul.navlist li a
 
 .navcontainer>ul.navlist li a { width: auto; }
 
-ul.navlist li.active a
-{
+ul.navlist li.active a {
 	background: #eee;
 	color: #800000;
 }
 
-ul.navlist li a:hover, ul.navlist li.active a:hover
-{
+ul.navlist li a:hover, ul.navlist li.active a:hover {
 	color: #800000;
 	background: transparent;
 	border-color: #aaa #ddd #ddd #ccc;
 }
 
-ul.navlist a.justtext, ul.navlist a.justtext:hover
-{
+ul.navlist a.justtext, ul.navlist a.justtext:hover {
 	background: #eee;
 	color: black;
 	border-color: #ccc;
 	text-transform: none;
 }
 
-@media (min-width: 992px) { 
+
+@media only screen and (max-width: 992px) {
+	.navcontainer {
+		background: rgba(255,255,255,.4);
+		min-width: 224px;
+		padding-bottom: 24px;
+	}
+
+	ul.navlist li {
+		background: white;
+	}
+}
+
+@media only screen and (min-width: 992px) { 
+	.navcontainer {
+		background: #eee;
+	}
 }
