@@ -45,18 +45,6 @@ img.centered
 	margin-bottom: 32px;
 }
  
-#body
-{
-	margin-bottom: 120px;
-}
-
-#content  {
-	padding: 0.5em 2em 2em 2em;
-	color: #696969;
-	background-color: white;
-	line-height: 1.6em;
-}
-
 .centered
 {
 	display: block;
@@ -76,13 +64,6 @@ img.centered
 {
 	color: #494949;
 	font-style: italic;
-}
-
-
-#copyright
-{
-	margin-top: 60px;
-	text-align: right;
 }
 
 

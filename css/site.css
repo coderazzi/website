@@ -1,3 +1,24 @@
+#body
+{
+	margin-bottom: 12px;
+}
+
+#content  {
+	padding: 0.5em 2em 2em 2em;
+	color: #696969;
+	background-color: white;
+	line-height: 1.6em;
+}
+
+#copyright
+{
+	margin-top: 12px;
+	padding: 12px;
+	text-align: right;
+	background: #666;
+	color: white
+}
+
 #container {
 	max-width: 1000px;
 	height: 100%;

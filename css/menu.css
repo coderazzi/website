@@ -60,3 +60,6 @@ ul.navlist a.justtext, ul.navlist a.justtext:hover
 	border-color: #ccc;
 	text-transform: none;
 }
+
+@media (min-width: 992px) { 
+}
