@@ -9,18 +9,19 @@
 	line-height: 1.6em;
 }
 
+#container {
+	height: 100%;
+	margin: 0px auto;
+}
+
 #copyright
 {
 	margin-top: 24px;
 	padding: 12px;
 	text-align: right;
 	background: #666;
-	color: white
-}
-
-#container {
-	height: 100%;
-	margin: 0px auto;
+	color: white;
+	background: url(menu.png) #666 no-repeat -9999px -9999px; 
 }
 
 #header {
@@ -28,6 +29,7 @@
 	height: 52px;
 	padding: 10px 10px 10px 56px;
 	margin-bottom: 12px;
+	background: url(menu-open.png) white no-repeat -9999px -9999px; 
 }
 
 #header div{
