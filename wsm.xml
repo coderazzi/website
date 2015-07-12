@@ -93,6 +93,7 @@
     <menu id='menu'>
         <group name='Blog'>
             <item name='Current' file='index.htm'/>
+            <item name='2014' file='blog_2014.html'/>
             <item name='2013' file='blog_2013.html'/>
             <item name='2012' file='blog_2012.html'/>
             <item name='2011' file='blog_2011.html'/>
@@ -167,7 +168,7 @@
                 <item name='OpenSolaris on P5Q-E' file='solaris/p5q-e/opensolaris.htm'/>
                 <item name='Oracle 11g' file='solaris/oracle.htm'/>
             </group>        
-	        <group name='Kubuntu'>
+	        <group name='Ubuntu'>
 				<item name='Colors - gamma' file='howto/kubuntu/gamma.html'/>
 				<item name='Multiple monitors' file='howto/kubuntu/multiple_monitors.html'/>
 	        </group>		
