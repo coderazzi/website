@@ -1,0 +1,68 @@
+<html>
+
+<head>
+ <title>Listening on Debian on ssh on different port</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="SSH port">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>&gt; 18th July 2015, 23:08 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lux</p>  
+
+<h1>Listening on Debian on SSH on different port</h1>
+
+<p>I am totally sold to the explanations on why putting SSH on any other port than 22 is a 
+	<a href='https://www.adayinthelifeof.nl/2012/03/12/why-putting-ssh-on-another-port-than-22-is-bad-idea/'>bad idea</a>
+	but it is my experience that keeping enabled the port 22 is asking for problems. It can be restricted to explicit IP
+	addresses, etc, but, otherwise, changing the port seems a sound idea. Mind you, it is probably just discarding 
+	the unexperienced vector attacks, but even so, unless you are the unique user in that machine and keep a good 
+	password policy, a vector attack can eventually score, so disabling the port 22 and moving anywhere else can indeed
+	help.</p>
+
+<p>In Debian Jessie (8.x), it is just needed to link the ssh daemon itself and ensure that the configuration files for the
+	duplicated daemon are in place; the following procedure does not remove the access to port 22, it is your responsibility to 
+	disable it or to enhance its security (like limiting inbound IPs, etc). What this procedure does is adding a secondary
+	daemon listening on a secondary port:</p>
+
+
+<pre>
+ln -sf /usr/sbin/sshd /usr/sbin/ssh2d
+
+cp /etc/pam.d/sshd /etc/pam.d/ssh2d
+
+sed -e s/ssh/ssh2/g /etc/init.d/ssh | sed -e s^etc/ssh2^etc/ssh^g > /etc/init.d/ssh2
+
+cp /etc/default/ssh /etc/default/ssh2
+
+cp /etc/ssh/sshd_config /etc/ssh/ssh2d_config
+</pre>
+
+  <p>It is needed now to ensure that the linked daemon (/usr/bin/ssh2d) uses the proper configuration file:</p>
+
+ <pre>vi /etc/default/ssh2
+    # ensure that the line with SSHD_OPTS is extended to contain:
+    SSHD_OPTS='-f /etc/ssh/ssh2d_config -o PidFile=/var/run/ssh2d.pid'
+ </pre>
+
+   <p>Now, change the port in the configuration file <b>/etc/ssh/ssh2d_config</b>:</p>
+
+ <pre>vi /etc/ssh/ssh2d_config
+	# look for line Port 22, and replace it with Port XXXX
+	# look, if any, for line including PermitRootLogin and 
+	# add it, if not found, or edit it, 
+	# to contain PermitRootLogin=no
+</pre>
+
+	<p>Time now to enable the new SSH service, listening on a separate port:</p>
+
+<pre>systemctl enable ssh2
+systemctl start ssh2</pre>
+	
+
+</div></div>
+</body>
+</html>

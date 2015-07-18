@@ -8,6 +8,21 @@
  <div id='body'>
  <div id='content'>
 
+	<p class="blog-entry"><span class="blog-entry-date">18th July 2015</span>SSH daemon port</p> 
+
+	 <p> <img src="images/debian.png" alt="debian icon" class="blog">I am totally sold to the explanations on why putting SSH on any other port than 22 is a 
+	<a href='https://www.adayinthelifeof.nl/2012/03/12/why-putting-ssh-on-another-port-than-22-is-bad-idea/'>bad idea</a>
+	but it is my experience that keeping enabled the port 22 is asking for problems. It can be restricted to explicit IP
+	addresses, etc, but, otherwise, changing the port seems a sound idea. Mind you, it is probably just discarding 
+	the unexperienced vector attacks, but even so, unless you are the unique user in that machine and keep a good 
+	password policy, a vector attack can eventually score, so disabling the port 22 and moving anywhere else can indeed
+	help.
+	 </p>
+
+	<p>In Debian Jessie (8.x), it is just needed to link the ssh daemon itself and ensure that the configuration files for the
+	duplicated daemon are in place; the following procedure does not remove the access to port 22, it is your responsibility to 
+	disable it or to enhance its security (like limiting inbound IPs, etc). See the whole procedure <a href='howto/security/ssh_port_debian.html'>here</a></p>
+
 	<p class="blog-entry"><span class="blog-entry-date">12th July 2015</span>Ubuntu workspaces</p> 
 
 	 <p> <img src="images/workspaces.png" alt="workspaces" class="blog">I like enabling workspaces in Ubuntu, and then my favourite shortcuts are Super+number workspace to switch to the given workspace.</p>
@@ -19,8 +34,10 @@
 
 	<p class="blog-entry"><span class="blog-entry-date">12th July 2015</span>Reading point</p> 
 
-	<p> <img src='books/2015/snowcrash.png' class='blog'/><img src='books/2015/revival.jpg' class='blog'/>
-		<img src='books/2015/winter_of_the_world.png' class='blog'/><img src='books/2015/revelation_space.png' class='blog'/>
+	<p> <a href='books/2015/index.htm#snowcrash'><img src='books/2015/snowcrash.png' class='blog'/></a>
+		<a href='books/2015/index.htm#revival'><img src='books/2015/revival.jpg' class='blog'/></a>
+		<a href='books/2015/index.htm#winter_of_the_world'><img src='books/2015/winter_of_the_world.png' class='blog'/></a>
+		<a href='books/2015/index.htm#revelation_space'><img src='books/2015/revelation_space.png' class='blog'/></a>
 		Only one audiobook in the last months -that I finished, in fact I started a few others that I considered not good enough-, devoting much more time to paperbacks. And the focus was on fiction, with a lot of AI: snowcrash, and even better, Revelation Space. The counter weight was Winter of the World, still fiction, but with a lot of historic background.
 	</p>
 

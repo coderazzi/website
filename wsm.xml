@@ -151,6 +151,7 @@
             <group name='SSH'>
                 <item name='Using SSH keys' file='howto/security/ssh_keys.html'/>
                 <item name='Serving SVN on SSH' file='howto/security/ssh_svn.html'/>
+                <item name='SSH daemon on different port' file='howto/security/ssh_port_debian.html'/>
             </group>
             <group name='OpenWRT'>
                 <group name='TL-841N'>
