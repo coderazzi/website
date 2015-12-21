@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+    <title>Using multiple NICs on Linux</title>
+    <link rel="stylesheet" type="text/css" href="../css/global.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <meta name="Keywords" content="linux, nic">
+    <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class='timestamp'>&gt; 21st December 2015, 20:16 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lux</p>
+
+        <h1>Using multiple NICs on Linux</h1>
+
+        <img src='dualnic.png' class='right'/>
+
+        <p>
+            A Linux machine -or virtual machine-, can require having multiple ethernet cards, each on a separate LAN.
+            One reason for this can be to separate network traffic; for example, all management traffic can be routed
+            to one NIC, while the another NIC handles all other traffic.
+        </p>
+        <p>
+            With one single NIC, the default Linux installation will automatically set it up as a static or dynamic
+            IP address, and a default gateway.
+            When there are multiple NICs, gateway routing becomes an issue.
+            Basically, there is initially only one default gateway, associated to one of the NICs,
+            and all outgoing traffic will be sent on that default gateway / NIC.
+            If there is incoming traffic on the other NIC, the answer is not sent back via the same route,
+            being then effectively lost.
+        </p>
+        </p>
+        <p>
+            This <a href='http://brainscraps.wikia.com/wiki/Setup_Gateway_Routing_On_Multiple_Network_Interfaces'>page</a>
+            explains correctly the problem happening when using multiple NICs.
+        </p>
+        <p>
+            The solution is to create routing tables on each interface; to enable multiple routing tables,
+            it is needed to edit the file
+            <pre>/etc/iproute2/rt_tables</pre>
+            Add to the end of this file one entry for each NIC. For this example, let's assume just two NICs,
+            eth0 and eth1.
+            We add two lines to the <b>/etc/iproute2/rt_tables</b> file
+
+<pre>1	eth0
+2	eth1</pre>
+
+            The names on the second column is the names given to the tables, and do not need to match the ethernet
+            interface. It could be, instead:
+
+<pre>1	eth0table
+2	eth1table</pre>
+
+            Now, it is needed to setup the routes. This differ in <b>debian</b> and <b>centos</b>
+
+
+
+
+        <h2>Debian : setting up multiple routes</h2>
+
+        <p>In Debian, all information is setup in the file <pre>/etc/network/interfaces</pre>
+            For example, assuming static IP addresses, this file could look like:<p>
+
+<pre>source /etc/network/interfaces.d/*
+
+auto lo
+iface lo inet loopback
+
+allow-hotplug eth0
+iface eth0 inet static
+        hwaddress ether 94:57:a5:5e:5a:e4
+        address 172.30.250.231
+        netmask 255.255.255.0
+        network 172.30.250.0
+        broadcast 172.30.250.255
+        up ip route add 172.30.250.0/24 dev eth0 table eth0
+        up ip route add default via 172.30.250.254 dev eth0 table eth0
+        up ip rule add from 172.30.250.231/32 table eth0
+        up ip rule add to 172.30.250.231/32 table eth0
+
+allow-hotplug eth1
+iface eth1 inet static
+        hwaddress ether 94:57:a5:5e:5a:e5
+        address 172.16.251.211
+        netmask 255.255.255.0
+        network 172.16.251.0
+        broadcast 172.16.251.255
+        gateway 172.16.251.254
+        dns-nameservers 8.8.8.8
+        up ip route add 172.16.251.0/24 dev eth1 table eth1
+        up ip route add default via 172.16.251.254 dev eth1 table eth1
+        up ip rule add from 172.16.251.211/32 table eth1
+        up ip rule add to 172.16.251.211/32 table eth1
+</pre>
+
+        <p>
+            Note that, for each interface, we are adding two lines to setup the routes, and two lines to setup the rules.
+            Also, note that the table names provided in the file <b>/etc/iproute2/rt_tables</b> are here fully required.
+            For the interface <b>eth0</b>, we have:
+        </p>
+
+        <ol>
+            <li><b>up ip route add 172.30.250.0/24 dev eth0 table eth0</b>
+                That is, when the interface gets up, add the route to the subnet of this interface (172.30.250.0/24)
+                via this device (eth0). Furthermore, this route is define in the table eth0
+            </li>
+            <li>
+                <b>up ip route add default via 172.30.250.254 dev eth0 table eth0</b>
+                Here, the default gateway (172.30.250.254) is specified.
+            </li>
+            <li>
+                <b>up ip rule add from 172.30.250.231/32 table eth0</b>
+                Basic rule. Traffic from this interface's address (172.30.250.231) is handled by the table route eth0
+            </li>
+            <li>
+                <b>up ip rule add to 172.30.250.231/32 table eth0</b>
+                Basic rule. Traffic to this interface's address (172.30.250.231) is handled by the table route eth0
+            </li>
+        </ol>
+
+
+        <p>
+            Finally, it is important to note that in this file, only eth1 defines a <b>gateway</b>. eth0 does not have one defined.
+        </p>
+
+
+
+        <h2>CentOS : setting up multiple routes</h2>
+
+        <p>The information is now split into multiple files, all located in
+            <b>/etc/sysconfig/network-scripts/</b> (plus the file <b>/etc/iproute2/rt_tables already described</b>)
+        </p>
+
+        <p>
+            First, let's assume that NetworkManager is not used. If used, the first step is to disable it:
+        </p>
+
+<pre>service NetworkManager stop
+chkconfig NetworkManager off
+service network start
+chkconfig network on</pre>
+
+        <p>
+            Each NIC has its own files in <b>/etc/sysconfig/network-scripts/</b>. For eth0, the files of interest are:
+        </p>
+
+        <ul>
+            <li>ifcfg-eth0</li>
+            <li>route-eth0</li>
+            <li>rule-eth0</li>
+        </ul>
+
+        <p>Assuming now that this interface is setup dynamically using DHCP, the file <b>ifcfg-eth0</b> could look like:</p>
+
+<pre>NM_CONTROLLED="no"
+BOOTPROTO=dhcp
+DEFROUTE="yes"
+DEVICE="eth0"
+HWADDR=00:16:3e:91:30:8e
+NAME="eth0"
+ONBOOT=yes
+PREFIX="24"
+TYPE="Ethernet"
+UUID=0e2935a0-f57d-4f44-96f3-3bff8f8606ea</pre>
+
+        <p>That is: not controlled by network manager, using DHCP, and defining a default route.</p>
+
+        <p>The file <b>route-eth0</b>, using the ip syntax, would look like:</p>
+
+<pre>192.168.201.0 dev eth0 src 192.168.201.132 table eth0
+default via 192.168.201.1 dev eth0 table eth0</pre>
+
+        <p>That is, we define the route to subnet 192.168.201.0 using this interface, and we provide a default gateway (192.168.201.1) for this traffic</p>
+
+        <p>The file <b>rule-eth0</b> just defines the conditions to use this route table:
+
+<pre>from 192.168.201.132 table eth0
+to 192.168.201.132 table eth0</pre>
+
+        <p>
+            Very much like in the Debian case. However, this is the dynamic IP address, makes no sense dumping here
+            the received IP, which can eventually change.
+            There is no need in this case to have the files <b>route-eth0</b> or <b>rule-eth0</b>.
+            But the files for eth1 are definitely required. These files can look very similar.
+            In the case of <b>ifcfg-eth1</b> two details are important:
+        </p>
+<pre>DEFROUTE=no
+#GATEWAY=not defined</pre>
+
+
+    </div></div>
+</body>
+</html>

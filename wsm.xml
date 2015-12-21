@@ -163,6 +163,9 @@
             </group>
         </group>        
         <group name='Linux'>
+            <group name='CentOS'>
+                <item name='Hostname via DHCP' file='linux/centos/centos_hostname_and_dhcp.htm'/>
+            </group>
             <group name='Solaris'>
                 <item name='SunOS' file='solaris/index.htm'/>
                 <item name='Solaris on P5Q-E' file='solaris/p5q-e/index.htm'/>
@@ -176,11 +179,14 @@
 	        <group name='Meego'>
 				<item name='Install [Nc10]' file='linux/meego/nc10install.html'/>
 				<item name='Brightness hotkeys' file='linux/meego/brightness.html'/>
-	        </group>		
-            <item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
-            <item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>
-            <item name='Mac Mini upgrade' file='linux/macmini2006/macmini.htm'/>
-        </group>		
+	        </group>
+            <group name='misc'>
+                <item name='Dual NIC on Linux' file='linux/dual_nic_linux.htm'/>
+                <item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>
+                <item name='Mac Mini upgrade' file='linux/macmini2006/macmini.htm'/>
+                <item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
+            </group>
+        </group>
         <group name='KVM'>
             <item name='Network restart' file='kvm/net-restart/index.html'/>
         </group>

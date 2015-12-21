@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+    <title>CentOS - Hostname via DHCP</title>
+    <link rel="stylesheet" type="text/css" href="../../css/global.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <meta name="Keywords" content="linux, centos, hostname, dhcp">
+    <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class='timestamp'>&gt; 21st December 2015, 21:09 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lux</p>
+
+        <h1>CentOS - Hostname via DHCP</h1>
+
+        <p>
+            I created a CentOS Virtual Machine using static IP addressing.
+            Afterwards, I changed the networking to use instead DHCP, so that the name would be properly obtained from the DHCP server.
+            Eventually, I performed a set of operations, including adding a second NIC and disabling the Network Manager.
+            And, along the way, the hostname reverted to the initial static hostname that I had initially allocated.
+        </p>
+        <p>
+            I looked for the usual suspects, including <b>/etc/hosts</b> and <b>/etc/hostname</b>, but nothing seemed wrong.
+            I checked the file <b>/etc/sysconfig/network-scripts/network-functions</b>, that contains a function called <b>need_hostname</b>
+        </p>
+<pre>
+need_hostname ()
+{
+    CHECK_HOSTNAME=$(hostname)
+    if [ "$CHECK_HOSTNAME" = "(none)" -o "$CHECK_HOSTNAME" = "localhost" -o \
+        "$CHECK_HOSTNAME" = "localhost.localdomain" ]; then
+        return 0
+    else
+        return 1
+    fi
+}</pre>
+
+        <p>
+            And the problem was that, on the first line, CHECK_HOSTNAME was initialized with the initial static hostname (centos7).
+        </p>
+
+        <p>
+            The command <b>hostamectl</b> gave some additional information:
+        </p>
+
+<pre>
+   Static hostname: n/a
+Transient hostname: centos7
+         Icon name: computer
+           Chassis: n/a
+        Machine ID: 5c9e46abd14b479ab95c2488fc96de55
+           Boot ID: 297819ceb8f848ceb2379c9dc629d214
+    Virtualization: kvm
+  Operating System: CentOS Linux 7 (Core)
+       CPE OS Name: cpe:/o:centos:centos:7
+            Kernel: Linux 3.10.0-229.20.1.el7.x86_64
+      Architecture: x86_64
+</pre>
+        <p>
+            Now, looking to the function <b>need_hostname</b> above,
+            I realized that any name except (none) or localhost ot localhost.domain would imply that no hostname was required.
+            Ok, time to change the transient hostname:
+        </p>
+<pre>hostnamectl set-hostname '' --transient</pre>
+
+        <p>
+            But this does nothing: that is the transient name, each time the machine is rebooted, is lost.
+            What is needed is to set the static hostname, so the following line should solve this issue:
+        </p>
+<pre>
+    hostnamectl set-hostname localhost --static
+</pre>
+
+
+    </div></div>
+</body>
+</html>
