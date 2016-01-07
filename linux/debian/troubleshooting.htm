@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+    <title>Debian - Troubleshooting</title>
+    <link rel="stylesheet" type="text/css" href="../../css/global.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <meta name="Keywords" content="linux, debian, troubleshooting">
+    <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class='timestamp'>&gt; 7th January 2016, 22:07 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lux</p>
+
+        <h1>Debian - Troubleshooting</h1>
+
+        <h3>apt-update: There is no public key available for the following key ID</h3>
+
+        <pre>sudo apt-get install debian-archive-keyring
+sudo apt-key update</pre>
+
+
+        <h3>Upgrade Debian Linux system from Wheezy to Jessie stable release</h3>
+
+        <p>Just extracted from <a href="http://linuxconfig.org/how-to-upgrade-debian-linux-system-from-wheezy-to-jessie-stable-release">linuxconfig.org</a>:</p>
+<pre>apt-get update
+apt-get upgrade -y
+apt-get dist-upgrade -y
+sed -i 's/wheezy/jessie/g' /etc/apt/sources.list
+apt-get update
+apt-get upgrade -y
+apt-get dist-upgrade -y
+reboot</pre>
+
+    </div>
+</div>
+</body>
+</html>

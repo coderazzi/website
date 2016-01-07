@@ -163,8 +163,13 @@
             </group>
         </group>        
         <group name='Linux'>
+            <group name='Debian'>
+                <item name='Troubleshooting' file='linux/debian/troubleshooting.htm'/>
+                <item name='Dual NIC on Linux' file='linux/dual_nic_linux.htm'/>
+            </group>
             <group name='CentOS'>
                 <item name='Hostname via DHCP' file='linux/centos/centos_hostname_and_dhcp.htm'/>
+                <item name='Dual NIC on Linux' file='linux/dual_nic_linux.htm'/>
             </group>
             <group name='Solaris'>
                 <item name='SunOS' file='solaris/index.htm'/>
@@ -181,10 +186,10 @@
 				<item name='Brightness hotkeys' file='linux/meego/brightness.html'/>
 	        </group>
             <group name='misc'>
-                <item name='Dual NIC on Linux' file='linux/dual_nic_linux.htm'/>
                 <item name='Linux as winservice' file='linux/linuxaswinservice.htm'/>
                 <item name='Mac Mini upgrade' file='linux/macmini2006/macmini.htm'/>
                 <item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
+                <item name='Dual NIC on Linux' file='linux/dual_nic_linux.htm'/>
             </group>
         </group>
         <group name='KVM'>
