@@ -166,6 +166,7 @@
             <group name='Debian'>
                 <item name='Troubleshooting' file='linux/debian/troubleshooting.htm'/>
                 <item name='Dual NIC on Linux' file='linux/dual_nic_linux.htm'/>
+                <item name='Install redmine' file='linux/debian/redmine.htm'/>
             </group>
             <group name='CentOS'>
                 <item name='Hostname via DHCP' file='linux/centos/centos_hostname_and_dhcp.htm'/>

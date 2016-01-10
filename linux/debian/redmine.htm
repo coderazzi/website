@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+    <title>Debian - Install Redmine</title>
+    <link rel="stylesheet" type="text/css" href="../../css/global.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <meta name="Keywords" content="linux, debian, redmine">
+    <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class='timestamp'>&gt; 10th January 2016, 23:18 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lux</p>
+
+        <h1>Install Redmine on Debian</h1>
+
+        These instructions apply for Debian Wheezy. However, I read most of the information to do so from the following
+        URLs, one realted to Debian Squeeze, and other for Jessie, so it seems like these instructions should be quite
+        generic for Debian:
+
+        <ul>
+            <li><a href="https://wiki.debian.org/redmine">Debian wiki</a></li>
+            <li><a href="https://www.debian-administration.org/article/673/Installing_Redmine_with_MySQL_Thin_and_Redmine_on_Debian_Squeeze">
+                Debian administration site
+            </a></li>
+        </ul>
+
+
+        <h3>Install PostgreSQL</h3>
+
+        <p>Obviously, use any other database (MySQL, Sqlite), if that is your choice.</p>
+        <p>Installing PostgreSQL, it is important to ensure that there are no problems with the locales; otherwise, no
+        cluster is created and, effectively, there will be no PostgreSQL instance running
+        (run dpkg-reconfigure locales to ensure this).</p>
+
+        <pre>apt-get install -y postgresql</pre>
+
+
+        <h3>Install Redmine with PostgreSQL support</h3>
+
+        <pre>apt-get install -y redmine redmine-pgsql</pre>
+
+        <p>answer Yes to the database configuration question, using the pgsql package, no password required (ident used)</p>
+
+
+        <h3>Install Nginx, Thin and SSL certificates support</h3>
+
+        <p>This is an opinionated installation, where I think it is better to use PostgreSQL and NGINX, than MySQL and
+        Apache, for example</p>
+
+        <pre>apt-get install -y thin nginx ssl-cert</pre>
+
+        <h3>Prepare filesystem</h3>
+
+        <pre>mkdir -p /var/lib/redmine/sockets/
+mkdir -p /var/lib/thin/
+mkdir -p /var/log/thin
+
+ln -sf /etc/thin1.9.1 /etc/thin         # note this will change with the ruby version
+
+chown www-data:www-data /var/lib/thin/
+chown www-data:www-data /var/log/thin/
+chown www-data:www-data /var/lib/redmine/sockets/</pre>
+
+        <h3>Configure thin</h3>
+
+<pre>cd /etc/thin
+
+thin config --config /etc/thin/redmine.yml --chdir /usr/share/redmine \
+        --environment production --socket /var/lib/redmine/sockets/thin.sock \
+        --daemonize --log /var/log/thin/redmine.log --pid /var/lib/thin/redmine.pid \
+        --user www-data --group www-data --servers 2
+
+chmod 644 /etc/thin/redmine.yml</pre>
+
+        <p>This configuration will launch two thin processes.</p>
+
+        <p>To ensure that logs get rotated, add the following <i>logrotate</i>configuration:</p>
+
+<pre>cat &lt;&lt; EOF &gt; /etc/logrotate.d/thin
+/var/log/thin/*.log {
+    daily
+    missingok
+    rotate 52
+    compress
+    delaycompress
+    notifempty
+    create 640 root adm
+    sharedscripts
+    postrotate
+        /etc/init.d/thin restart >/dev/null
+    endscript
+}
+EOF</pre>
+
+
+        <h3>Configure nginx</h3>
+
+        <pre>rm /etc/nginx/sites-enabled/default
+
+cd /etc/nginx/sites-available/
+
+cat &lt;&lt; 'EOF' &gt; redmine.conf
+upstream redmine {
+    server unix:/var/lib/redmine/sockets/thin.0.sock;
+    server unix:/var/lib/redmine/sockets/thin.1.sock;
+}
+
+server {
+    listen 80;
+    listen   [::]:80 default ipv6only=on;
+    server_name bugs.coderazzi.net;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+
+    listen   443;
+    listen   [::]:443 default ipv6only=on;
+
+    ssl on;
+    ssl_certificate /etc/nginx/1_bugs.coderazzi.net_bundle.crt;
+    ssl_certificate_key /etc/nginx/ssl.key;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers ALL:!DH:!EXPORT:!RC4:+HIGH:+MEDIUM:!LOW:!aNULL:!eNULL;
+
+    server_name  bugs.coderazzi.net;
+    server_name_in_redirect off;
+
+    access_log  /var/log/nginx/redmine.access.log;
+    error_log  /var/log/nginx/redmine.error.log;
+
+    proxy_set_header   Host $http_host;
+    proxy_redirect off;
+
+    location / {
+        root   /usr/share/redmine/public;
+
+        error_page 404  404.html;
+        error_page 500 502 503 504  500.html;
+
+
+        try_files $uri/index.html $uri.html $uri @redmine;
+    }
+
+    location @redmine {
+        proxy_pass http://redmine;
+    }
+}
+EOF
+
+ln -sf /etc/nginx/sites-available/redmine.conf /etc/nginx/sites-enabled/
+
+service nginx start</pre>
+
+        <p>This configuration assumes that the URL is <b>bugs.coderazzi.net</b>, and that it has SSL support. Furthermore,
+        it expectes the SSL key and CRT file on the given locations</p>
+
+
+        <h3>Configure mail support</h3>
+
+        <p>To handle email, configure sendmail or exim. For both cases, create the redmine configuration file, and
+            restart all required processes:</p>
+
+        <pre>cat &lt;&lt; EOF &gt;  /etc/redmine/default/configuration.yml
+production:
+    email_delivery:
+        delivery_method: :smtp
+        smtp_settings:
+            address: 127.0.0.1
+            port: 25
+            domain: bugs.coderazzi.net
+            authentication: :none
+EOF
+
+service thin restart
+service nginx restart</pre>
+
+        <h4>Alternative 1: configuring sendmail</h4>
+
+        <p>We need now to edit sendmail' configuration, installing it before if required:</p>
+
+        <pre>sudo sendmailconfig</pre>
+
+        <ul>
+            <li>Configure sendmail with the existing /etc/mail/sendmail.conf? [Y] => Y</li>
+            <li>Configure sendmail with the existing /etc/mail/sendmail.mc? [Y] ==> N</li>
+            <ul>
+                <li>Put correct mail name: bugs.coderazzi.net</li>
+                <li>All other options, left as proposed</li>
+            </ul>
+        </ul>
+
+
+        <h4>Alternative 2: configuring Exim</h4>
+
+        <ul>
+            <li>General type of mail configuration : internet site; mail is sent and received directly using SMTP</li>
+            <li>System Mail name: bugs.coderazzi.net</li>
+            <li>IP-addresses to listen on for incoming SMTP connections: 127.0.0.1 ; ::1</li>
+            <li>Other destinations for which mail is accepted:</li>
+            <li>Domains to relay mail for:</li>
+            <li>Machines to relay email for:</li>
+            <li>Keep number of DNS-queries minimal (Dial-on-Demand)?  No</li>
+            <li>Delivery method for local mail:   mbox format in /var/mail/</li>
+            <li>Split configuration into small files? No</li>
+            <li>Root and postmaster mail recipient: coderazzi</li>
+        </ul>
+
+
+    <h3>Configure redmine</h3>
+
+    <p>The default debian installation creates a default user and password to access Redmine, both being <b>admin</b></p>
+
+
+    </div>
+</div>
+</body>
+</html>
