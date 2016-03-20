@@ -149,9 +149,10 @@
         </group>
         <group name='networking'>
             <group name='SSH'>
-                <item name='Using SSH keys' file='howto/security/ssh_keys.html'/>
+                <item name='Two factor authentication' file='howto/security/ssh_2factorauth.html'/>
                 <item name='Serving SVN on SSH' file='howto/security/ssh_svn.html'/>
                 <item name='SSH daemon on different port' file='howto/security/ssh_port_debian.html'/>
+                <item name='Using SSH keys' file='howto/security/ssh_keys.html'/>
             </group>
             <group name='OpenWRT'>
                 <group name='TL-841N'>
@@ -219,6 +220,7 @@
             <item name='Sensei' file='phd/index.htm'/>
         </group>		
         <group name='Just words'>
+            <item name='2016' file='books/2016/index.htm'/>
             <item name='2015' file='books/2015/index.htm'/>
             <item name='2014' file='books/2014/index.htm'/>
             <item name='2013' file='books/2013/index.htm'/>

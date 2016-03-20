@@ -11,17 +11,22 @@
  <div id='body'>
  <div id='content'>
 
-<p class='timestamp'>&gt; 14th July 2016, 03:44 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lux</p>
+<p class='timestamp'>&gt; 14th January 2016, 03:44 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lux</p>
+<p class='timestamp'>&gt; Updated: 18th March, 13:02 [<a href='#viewvc'>viewvc</a>]</p>
 
-    <h1>SSH: two-factor authentication</h1>
+     <h1>SSH: two-factor authentication</h1>
 
-    <p>This must be the best way to strengh the security on your ssh connection for those cases where ssh keys are not
-	available: <a href='http://www.arm-blog.com/using-2-factor-authentication-for-ssh/'>Using 2 factor authentication for SSH</a></p>
+     <img src='gauth.png' class='right'/>
+
+     <p>This must be the <a href='howto/security/ssh_2factorauth.html'>best way</a> to strengthen the security
+         on your ssh connection for those cases where ssh keys are not
+	    available: <a href='http://www.arm-blog.com/using-2-factor-authentication-for-ssh/'>Using 2 factor authentication for SSH</a></p>
 
      <h3>Install Google Authenticator app in your smartphone</h3>
 
      <p>It is available in the
          <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Android Play Store</a>
+         and the
          <a href="https://itunes.apple.com/en/app/google-authenticator/id388497605?mt=8">iOs App Store</a>.
      </p>
 
@@ -32,17 +37,22 @@
 
      <p>The source code is at
          <a href="'https://github.com/google/google-authenticator/archive/master.zip">https://github.com/google/google-authenticator/archive/master.zip</a>
-         It can be installed for debian directly:
+         and it can be installed for debian directly:
      </p>
 
      <pre>apt-get install libpam-google-authenticator</pre>
 
      <h3>Execute the Google Authenticator software on the server</h3>
 
+     <p>This authenticator must be executed using the account that will be used to login in the system; if there are multiple
+     accounts, it must be executed once per account.</p>
+
      <pre>google-authenticator</pre>
 
      <p>This asks several questions -all should be answered with <b>y</b>es-, and will display a QR code that can be loaded directly on the smartphone app,
-     together with the secret key, verification code and emergency scratch codes.</p>
+     together with the <b>secret key</b>, verification code and emergency scratch codes.</p>
+
+     <p>To configure the app, load the QR on the phone, or enter alternatively the provided secret key</p>
 
      <h3>Configuring PAM and SSH</h3>
 
@@ -58,6 +68,15 @@
         <p>Finally, restart ssh:</p>
 
          <pre>service ssh restart</pre>
+
+
+     <h3>Updating / regenerating new authentication code</h3>
+
+     <p>Just execute again the authenticator on the server:</p>
+
+     <pre>google-authenticator</pre>
+
+     <p>And load the new codes on the phone</p>
 
 
 </div></div>

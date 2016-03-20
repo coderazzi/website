@@ -8,6 +8,66 @@
  <div id='body'>
  <div id='content'>
 
+	 <p class="blog-entry"><span class="blog-entry-date">20th March 2016</span>Rclone</p>
+
+	 <p> <img src="images/rclone.jpg" alt="rclone" class="blog"> A few years ago, I setup a poor man backup system for a
+         site using <b>rsync</b> and <a href='https://www.dropbox.com/install?os=lnx'>Dropbox</a>.
+         Eventually, the database and associated files required more than 2 Gb, and still following the poor man habits,
+         I had a look at <a href="https://www.google.com/drive/>"gdrive</a>; unfortunately, Google does not have
+         an official headless linux client.
+     </p>
+     <p>
+         But there are several unofficial clients. Like <a href="https://github.com/iwonbigbro/gsync">gsync</a>,
+         which tries to provide rsync functionality, being still severely limited. I opted better for other client,
+         <a href="http://rclone.org/">rclone</a>, which does not only support GDrive, but also Dropbox, Amazon S3,
+         Backblaze, etc. The documentation is very complete, the setup really simple, and its functionality covers all
+         my scenarios.
+     </p>
+		 Installation instructions only cover directly Linux, and for some reason it puts the executable into <b>sbin</b>,
+         which is all but useful -the idea is to be executed, with different credentials, by each user. Finally, I used
+         the following instructions for Linux:
+	 </p>
+
+     <pre>cd /tmp
+wget http://downloads.rclone.org/rclone-current-linux-amd64.zip
+unzip cd rclone-current-linux-amd64.zip
+
+sudo cp rclone-current-linux-amd64/rclone /usr/local/bin
+sudo chown root:root /usr/local/bin/rclone
+sudo chmod 755 /usr/local/bin/rclone
+
+#install manpage
+sudo mkdir -p /usr/local/share/man/man1
+sudo cp rclone-current-linux-amd64/rclone.1 /usr/local/share/man/man1/
+sudo mandb</pre>
+
+     </p>
+         And almost the same instructions for OsX:
+     </p>
+
+     <pre>cd /tmp
+wget http://downloads.rclone.org/rclone-current-osx-amd64.zip
+unzip cd rclone-current-osx-amd64.zip
+
+sudo cp rclone-current-osx-amd64/rclone /usr/local/bin
+sudo chown root:root /usr/local/bin/rclone
+sudo chmod 755 /usr/local/bin/rclone
+
+#install manpage
+sudo mkdir -p /usr/local/share/man/man1
+sudo cp rclone-current-osx-amd64/rclone.1 /usr/local/share/man/man1/</pre>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">18th March 2016</span>Two factor authentication with SSH</p>
+
+	 <p> <img src="images/gauth.png" alt="google authenticator icon" class="blog"> This must be
+		 <a href='howto/security/ssh_2factorauth.html'>the best way</a> to strengthen the security on your
+		 ssh connection for those cases where ssh keys are not available.
+	 <p>
+		 Tip copied from this <a href='http://www.arm-blog.com/using-2-factor-authentication-for-ssh/'>arm-blog</a>
+	 </p>
+
+
 	 <p class="blog-entry"><span class="blog-entry-date">10th January 2016</span>Redmine on Debian</p>
 
 	 <p> <img src="images/redmine.png" alt="redmine icon" class="blog"> Added
