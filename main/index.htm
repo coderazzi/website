@@ -8,6 +8,33 @@
  <div id='body'>
  <div id='content'>
 
+     <p class="blog-entry"><span class="blog-entry-date">21st March 2016</span>VirtualBox guest additions on headless</p>
+
+     <p> <img src="images/vbox.png" alt="virtualbox" class="blog"> Normally, I run virtualbox machines in headless mode,
+         so it is useless installing an OS with full GUI. I favor in this cases a debian installation (minimal, using
+         the netinst CD), and ensuring that PAE/NX is enabled in System/Processor.
+     </p><p>
+        It is still helpful to install the virtualbox guest additions to improve the performance, but the usual way
+        -Devices/Install Guest Additions CD Image...- doesn't work. In this case, the best procedure is to download them
+        and perform a manual install. For the current version, 5.0.16:
+     </p>
+
+     <pre>cd /tmp
+wget http://download.virtualbox.org/virtualbox/5.0.16/VBoxGuestAdditions_5.0.16.iso
+mkdir iso
+sudo -s
+apt-get install -y dkms
+mount -o loop VBoxGuestAdditions_5.0.16.iso iso
+sh iso/VBoxLinuxAdditions.run --nox11
+umount iso
+rm -Rf iso VBoxGuestAdditions_5.0.16.iso</pre>
+
+     <p>This will install the extensions, and produce a final warning:</p>
+     <pre>Could not find the X.Org or XFree86 Window System, skipping.</pre>
+     <p>This warning is okay. It is possible to check if the additions are installed by invoking:</p>
+     <pre>lsmod | grep vboxguest</pre>
+
+
 	 <p class="blog-entry"><span class="blog-entry-date">20th March 2016</span>Rclone</p>
 
 	 <p> <img src="images/rclone.jpg" alt="rclone" class="blog"> A few years ago, I setup a poor man backup system for a
