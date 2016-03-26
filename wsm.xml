@@ -93,6 +93,7 @@
     <menu id='menu'>
         <group name='Blog'>
             <item name='Current' file='index.htm'/>
+            <item name='2015' file='blog_2015.html'/>
             <item name='2014' file='blog_2014.html'/>
             <item name='2013' file='blog_2013.html'/>
             <item name='2012' file='blog_2012.html'/>
