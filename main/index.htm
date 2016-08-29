@@ -56,33 +56,35 @@ rm -Rf iso VBoxGuestAdditions_5.0.16.iso</pre>
 	 </p>
 
      <pre>cd /tmp
-wget http://downloads.rclone.org/rclone-current-linux-amd64.zip
-unzip cd rclone-current-linux-amd64.zip
+wget http://downloads.rclone.org/rclone-v1.28-linux-amd64.zip
+unzip cd rclone-v1.28-linux-amd64.zip
 
-sudo cp rclone-current-linux-amd64/rclone /usr/local/bin
+sudo cp rclone-v1.28-linux-amd64/rclone /usr/local/bin
 sudo chown root:root /usr/local/bin/rclone
 sudo chmod 755 /usr/local/bin/rclone
 
 #install manpage
 sudo mkdir -p /usr/local/share/man/man1
-sudo cp rclone-current-linux-amd64/rclone.1 /usr/local/share/man/man1/
-sudo mandb</pre>
+sudo cp rclone-v1.28-linux-amd64/rclone.1 /usr/local/share/man/man1/
+sudo mandb
+rm -Rf rclone-v1.18-linux-amd64*</pre>
 
      </p>
          And almost the same instructions for OsX:
      </p>
 
      <pre>cd /tmp
-wget http://downloads.rclone.org/rclone-current-osx-amd64.zip
-unzip cd rclone-current-osx-amd64.zip
+wget http://downloads.rclone.org/rclone-v1.28-osx-amd64.zip
+unzip rclone-v1.28-osx-amd64.zip
 
-sudo cp rclone-current-osx-amd64/rclone /usr/local/bin
-sudo chown root:root /usr/local/bin/rclone
+sudo cp rclone-v1.28-osx-amd64/rclone /usr/local/bin
+sudo chown root:wheel /usr/local/bin/rclone
 sudo chmod 755 /usr/local/bin/rclone
 
 #install manpage
 sudo mkdir -p /usr/local/share/man/man1
-sudo cp rclone-current-osx-amd64/rclone.1 /usr/local/share/man/man1/</pre>
+sudo cp rclone-v1.28-osx-amd64/rclone.1 /usr/local/share/man/man1/
+rm -Rf rclone-v1.18-osx-amd64*</pre>
 
 
      <p class="blog-entry"><span class="blog-entry-date">18th March 2016</span>Two factor authentication with SSH</p>

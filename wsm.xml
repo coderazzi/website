@@ -210,7 +210,7 @@
                 </group>
                 <item name='Asus P5N7A-VM' file='osx/p5n7a-vm/index.htm'/>
                 <group name='Gigabyte GA-B75M'>
-                    <item name='Os X built' file='osx/ga-b75m/index.htm'/>
+                    <item name='Os X built' file='osx/ga-b75m/index.html'/>
                     <item name='Mavericks' file='osx/ga-b75m/mavericks.html'/>
                     <item name='Yosemite' file='osx/ga-b75m/yosemite.html'/>
                 </group>
