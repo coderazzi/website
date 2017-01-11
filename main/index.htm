@@ -8,6 +8,135 @@
  <div id='body'>
  <div id='content'>
 
+
+     <p class="blog-entry"><span class="blog-entry-date">10th January 2017</span>Batch editing Google contacts</p>
+
+     <p> <img src="images/contatcs.png" alt="google contatcs" class="blog">The new <a href='https://contacts.google.com'>Google contacts</a> application is very nice.
+     It looks great, and it offers good functionality, like merging of duplicates. Editing contacts works perfectly, but it can only be done one contact at a time.
+     I was migrating contacts from a non smartphone, and the migration had converted them into an ugly 'Family name; surname' format, such as 'Trumpy; Donald'.
+         And as slick as the user interface is, editing by hand over 300 contacts was a boring perspective.</p>
+
+     <p>Automation to rescue: export contacts, process them with a python script, import them again. Do, in Google Contacts, press 'More', then export, then read
+     the popup warning and head to the <a href="https://www.google.com/contacts/u/0/?cplus=0#contacts">old</a> Google Contacts application,
+             as the new one seems to be unable to export the contacts. Press again the More button, again on export, and choose Google CSV format.</p>
+
+     <p>The script to convert the contacts is as simple as:</p>
+
+     <pre>
+ import csv
+ with open('google.csv', newline='', encoding='utf16') as f:
+     contacts=list(csv.reader(f))
+
+ for contact in contacts:
+     colon = contact[1].find(';')
+     if colon > 0:
+         name = "%s %s" % (contact[1][colon+1:], contact[1][0:colon])
+         contact[0] = contact[1] = name
+
+ with open('google-out.csv', 'w', newline='') as f:
+     csv.writer(f).writerows(contacts)
+     </pre>
+
+     <p>This reads the exported <b>google.csv</b> file, and creates a new <b>google-out.csv</b> file; in the old Google Contacts application,
+         remove now all contacts, and then initiate the Import process, passing the created file. Easy as pie.</p>
+
+     <p>The previous script shows a very basic transformation; the important aspects are: (1) it is needed <b>Python 3</b> to run this script,
+     as its CSV reader handles properly the unicode format. (2) The input format seems to be UTF-16 (it was definitely on my OsX machine). (3) However,
+         it was reimported as UTF-8 without issues.</p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">26th November 2016</span>Finally! oh, no!</p>
+
+     <p> <img src="images/ohreally.jpg" alt="dell xps 13" class="blog">
+     I have a Macbook Pro 13" early 2011. I upgraded it manually, the memory to 8Gb and the hard disk to a SSD of 128 Gb (and later to other of 256 Gb).
+     Battery is down to about 3 hours and I was planning to buy the revamped Macbook Pro as soon as it would be released.
+     So I was one more of those Macbook Pro fans completely astonished to see what Apple was releasing.
+     </p>
+     <p>
+     Personally, the touch bar seems a total compromise: missing the touch screen (which I am neither fond of),
+     lacking real useful buttons (wrong, the useful buttons seems to be always on on the touch bar), and looking like the Apple way to say 'Look, we are innovating!'
+     </p>
+     <p>
+     My macbook is RELIABLE; has come with me to really remote areas in Bangladesh, Philippines, Benin, Eritrea or Mozambique, and it has answered like a pro.
+     The available ethernet connection has saved me more times than I could count. The magsafe connector has very probably avoided a few accidents and when/if it gets
+     even retired, my macbook pro should get its own urn.
+     </p>
+     <p>
+     What is offering now Apple? Only USB-C (oh, well), no magsafe (sigh!), no ethernet connector (augh!), touch bar (oh, my, my), solded memory and storage ($*&#^$!)?
+     Together with an old CPU (okaysh, but not very okaysh), and the limitation of 16 Gb (yeah, I know, more memory would impact battery time). And then, the butterfly
+     keyboard, which is unpleasant, and seems not that reliable. See that I do not even mention the price; I would not mind paying the Apple tax for a worthy product!
+     </p>
+     <p>
+     My company provided me with a Dell XPS 13, developer edition, and I was thinking about hackintoshing it. I have 3 hackintoshes -all desktops-, and this was looking like
+     a good way to get a proper Apple laptop without the limitations of the latest Apple models.
+     </p>
+     <p>
+     But is this the case? The XPS 13 has more connectors, but still lacks the one I consider important (Ethernet), which is just not possible with laptops this thick
+     (but I do not care about their thickness!!). As in the Macbook, the memory is soldered, so you get what you buy, and that is also limited to 16 Gb.
+     In Luxembourg, the only XPS 13 Linux with 16 Gb memory comes with a 512 Gb SDD (256 would have been enough for me, specially when it can be upgraded), and with
+     the touchscreen at great resolution (basic 1920x resolution is enough for me, specially when i
+         t improves battery life,and touchscreen is something that I still need to find useful),
+         it costs, with core i7-7500u processor, 1800 euros, with an ongoing promotion down to 1600 euros. It has approximately the same size as the Macbook Pro, and for me,
+     the same limitations.
+     </p>
+     <p>
+     Screen-wise, the Dell has higher resolution, and the Apple better brightness -which at this size it means for me  a bonus point for the Apple-.
+     The Dell's keyboard is better, and the trackpad works good, but it cannot be compared with the Macbook pro.
+     I like / love linux, but the desktop experience is subpar to MacOS, and the full integration with the hardware means that
+     even when the Macbook battery is smaller, its performance would be normally better that on the Dell.
+     </p>
+     <p>
+     The Macbook Pro, 13 inches without the silly touch bar costs 1875 euros. This provides a 256 Gb SSD, enough for my taste, but goes up to 2100 euros for the 512 Gb SSD.
+     The core i5 processor (i5-6360U), can be upgraded to (i7-6660U), for 'just' 350 euros, raising the total price to 2445 euros.
+     So, the Dell XPS13 with a newer i7 processor costs 645 euros less, and with the current promotion, 800 euros less, a cool 33% cheaper.
+     I find in fact a better approach opting for the touch bar version, and staying with the core i5 version -the i7 is anyway only dual core-. For 'just' 2165 euros
+     you get 16 Gb memory, 256 Gb SSD and a core i5 a 2.9 GHz, plenty speedier than the non touch-bar one (hint: Apple wants you to get the touch bar)
+     </p>
+     <p>
+     Personally again, I think that the Apple is all but Pro. I do not think that the Dell is more Pro at all, just cheaper for the same ambitions.
+         If I would go now the Apple way, I think I will try a real 4-core machine, on its 15" envelop. The basic 15 inches gives a 4 core processor, 16 G memory and 256 Gb SSD for 2600 euros,
+     including a discrete graphics card in the mix.
+
+     </p>
+     <p>
+    Or, well, I will just give up on these manufacturers, and enjoy my Dell for the time being, perhaps I will hackintosh it for the pleasure of it,
+     and I guess I will still invest some money on Apple stock... and on a new battery for my reliable Macbook 2011 (real) pro.
+     </p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">24th November 2016</span>Ubuntu 16.10 on Dell XPS 13 (9350)</p>
+
+     <p> <img src="images/xps.jpg" alt="dell xps 13" class="blog">I got a Dell Xps 13 recently, the
+         developer edition that comes with Ubuntu. It is not the latest model (9360), with the Kaby Lake processor,
+         but the previous one (9350) with Skylake. These two versions differ not only on the processor,
+         but also on the Wifi card and the Ubuntu version; while the 9360 model comes with Ubuntu 16.04 installed,
+         Dell does only provide Ubuntu 14.04 for the 9350 model.
+     </p>
+     <p>
+         Ubuntu 16.04 includes Linux kernel 4.4, with incomplete support for Skylake processors; kernel 4.6 included
+         specific support for Dell XPS 13 systems, and Ubuntu 16.10 comes with kernel 4.8. Installing Ubuntu 16.10 on
+         this laptop is a no-brainer, all works fine directly.
+     </p>
+     <p>
+         My laptop is the model with touchscreen and high resolution (3200x1800); the fonts appear too little, so it is
+         better to go to settings / displays and choose a 2x scale (or any scale at will).
+     </p>
+     <p>
+         The other problem that appears with the touchscreen is that Ubuntu installs by default a library implementing
+         braille support. Entering
+         <pre>sudo tcpdump -i lo</pre>
+         shows a lot of traffic on the loopback interface from port 4101. To disable it:
+        <pre>sudo apt-get purge brltty xbrlapi</pre>
+        (which an additional reboot)
+     </p>
+     <p>
+         Although everything works fine, there are some quirks. For example, the touchscreen works until the machine
+         goes to sleep with the closed lid. To have it working again, it is needed to close-reopen quickly the lid.
+     </p>
+
+
+
+
      <p class="blog-entry"><span class="blog-entry-date">10th November 2016</span>TableFilter v5.3.0</p>
 
      <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">New release for this
