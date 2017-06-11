@@ -9,9 +9,92 @@
  <div id='content'>
 
 
+     <p class="blog-entry"><span class="blog-entry-date">1st May 2017</span>DisplayPort on Ubuntu</p>
+     <p> <img src='images/monitor.png' alt='monitor' class='blog'/>There is an
+         <a href="https://bugs.launchpad.net/ubuntu/+bug/1313539">ongoing issue</a> with using
+         monitors in Ubuntu connected via DisplayPort: monitor shows black screen and "no input signal"
+         after turning the monitor off and on manually</p>
+
+     <p>Turning off a DisplayPort-connected monitor is treated the same as disconnecting it, and somehow
+         X11 does not recover from this. I have seen this error related to
+         <a href="https://devtalk.nvidia.com/default/topic/932936/dp1-2-connected-monitor-cannot-be-turned-on-again-with-dpms/">Nvidia</a>
+         and <a href="https://bugs.freedesktop.org/show_bug.cgi?id=46711">Radeon</a> cards, but in my case
+         I have a Intel HD4000, and the error is exactly the same.</p>
+
+     <p>And it happens with just all kind of monitors, including my Dell U3011.
+         A proposed <a href="https://superuser.com/questions/630555/turning-displayport-monitor-off-disables-monitor-completely">solution</a>
+         is to disable DDC/CI on the monitor itself, but this didn't solve anything for me.</p>
+
+     <p>A solution I have found is to press Ctrl+Alt+F6 (or +F5, etc), to open a TTY console,
+        and then pressing Ctrl+Alt+F7 to get back to X11. But it works sporadically, sometimes having
+        to press these keys several times, or creating new TTY consoles, like pressing Ctrl+Alt+F2 to
+        create a TTY2 if the 6 had been already created before.</p>
+
+     <p>Other provided
+         <a href="https://askubuntu.com/questions/546818/displayport-monitor-not-detected-if-switched-off-and-on-again">solution</a>
+        is to ssh from another machine and run:
+
+         <pre>env DISPLAY=:0 xset dpms force off
+env DISPLAY=:0 xset dpms force on</pre>
+
+        In this case, the best option is to create a shell script <b>/usr/local/bin/display-port-wake-up.sh</b> with
+     this content, open Settings, Keyboard, Shortcuts, and create a custom shortcut (in my case, Ctrl + Alt + W).
+     This solution works always, but there is a catch: the shortcut is only available when the user is logged in,
+     so if the system is asking the user password to unlock the screen. the shortcut will not work. In this
+     case, it is needed to enter blindly the password, press Enter, and then press the shortcut.
+     </p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">30th April 2017</span>Moving Ubuntu to separate disk</p>
+
+     <p> <img src='images/drive.png' alt='drive' class='blog'/>After a few weeks with my new Ubuntu installation,
+         I was able to do all my usual tasks without missing OsX. So far, I have found only two issues: display port
+         monitor not awaking some times, and some crashes in Steam.</p>
+
+     <p>But the main issue has appeared when trying to it setup for Android development... and running out of space.
+         So, the original hackintosh disk, which was in standby, had to go, and the idea was to clone my existing
+         installation to the other disk.</p>
+
+     <p>So I reformatted the hackintosh drive, just to find that I had removed the EFI partition that booted the
+         Ubuntu system... My solution was to launch the Ubuntu installer, and install Ubuntu again on the new drive
+         (the previous Hackintosh drive), taking care of having one EFI partition, plus a big ext4 one. Once I had
+         Ubuntu installed, I launched again the installation system, mounted the old partition under /media/old, and
+         the new one under /media/new, and then copied all the important files:</p>
+
+     <pre>sudo cp -R --preserve=all bin/ etc/ home/ lib/ lib64/
+            opt/ root/ run/ sbin/ usr/ var/ /media/new/</pre>
+
+     <p>Then edit the file /etc/fstab to change the UUID of the disks, and presto!</p>
+
+     <p class="blog-entry"><span class="blog-entry-date">13th April 2017</span>Setting up Ubuntu</p>
+
+     <p> <img src="images/configuration.jpg" alt="Ubuntu configuration" class="blog">Setting up a Ubuntu computer seems
+         to be my fate of late. And each time I do it, I need to do the same Google searches: how to configure workspaces, how
+         to define my shortcuts, how to make Guake start at runtime, etc</p>
+
+     <p>So I have collected <a href="linux/ubuntu/my_setup.htm">all the steps</a> I take to configure a Ubuntu machine, from a generic point of view, not
+     describing all the applications I finally use, but definitely including all details to configure Ubuntu as
+     I like it. It seems weird to show these steps for a Ubuntu 16.10 installation on the same day that Ubuntu 17.04
+     is published, but I will definitely comment on any changes.</p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">12th April 2017</span>Ciao, Hackintosh</p>
+
+     <p> <img src="images/ciao-apple.png" alt="ciao hackintosh" class="blog">I have been setting up my computers as
+     Hackintoshes since 2009; currently I have a Mac laptop, with the latest Sierra installation, and a Dell laptop, running
+     Ubuntu 16.10, plus two desktop computers, one running Windows Vista and Snow Leopard (yep, both run still perfectly fine),
+     and the other with MacOs Sierra. At work I use exclusively Linux, and I had been wondering for a long time on
+     my reasons to keep my Hackintoshes at home.</p>
+
+     <p>As of last weekend, this question has been answered, fare well, Hackintosh. I will keep the old desktop running
+     Snow Leopard, and my Apple laptop running MacOs, but I definitely see no point on not using Ubuntu
+     as my first OS choice. My choice is rather simple to do, as none of the programs I use lack a Linux version,
+         with the exception of Evernote, which I can still handle via its Web interface.</p>
+
+
      <p class="blog-entry"><span class="blog-entry-date">10th January 2017</span>Batch editing Google contacts</p>
 
-     <p> <img src="images/contatcs.png" alt="google contatcs" class="blog">The new <a href='https://contacts.google.com'>Google contacts</a> application is very nice.
+     <p> <img src="images/contatcs.png" alt="google contacts" class="blog">The new <a href='https://contacts.google.com'>Google contacts</a> application is very nice.
      It looks great, and it offers good functionality, like merging of duplicates. Editing contacts works perfectly, but it can only be done one contact at a time.
      I was migrating contacts from a non smartphone, and the migration had converted them into an ugly 'Family name; surname' format, such as 'Trumpy; Donald'.
          And as slick as the user interface is, editing by hand over 300 contacts was a boring perspective.</p>
@@ -43,207 +126,6 @@
      <p>The previous script shows a very basic transformation; the important aspects are: (1) it is needed <b>Python 3</b> to run this script,
      as its CSV reader handles properly the unicode format. (2) The input format seems to be UTF-16 (it was definitely on my OsX machine). (3) However,
          it was reimported as UTF-8 without issues.</p>
-
-
-     <p class="blog-entry"><span class="blog-entry-date">26th November 2016</span>Finally! oh, no!</p>
-
-     <p> <img src="images/ohreally.jpg" alt="dell xps 13" class="blog">
-     I have a Macbook Pro 13" early 2011. I upgraded it manually, the memory to 8Gb and the hard disk to a SSD of 128 Gb (and later to other of 256 Gb).
-     Battery is down to about 3 hours and I was planning to buy the revamped Macbook Pro as soon as it would be released.
-     So I was one more of those Macbook Pro fans completely astonished to see what Apple was releasing.
-     </p>
-     <p>
-     Personally, the touch bar seems a total compromise: missing the touch screen (which I am neither fond of),
-     lacking real useful buttons (wrong, the useful buttons seems to be always on on the touch bar), and looking like the Apple way to say 'Look, we are innovating!'
-     </p>
-     <p>
-     My macbook is RELIABLE; has come with me to really remote areas in Bangladesh, Philippines, Benin, Eritrea or Mozambique, and it has answered like a pro.
-     The available ethernet connection has saved me more times than I could count. The magsafe connector has very probably avoided a few accidents and when/if it gets
-     even retired, my macbook pro should get its own urn.
-     </p>
-     <p>
-     What is offering now Apple? Only USB-C (oh, well), no magsafe (sigh!), no ethernet connector (augh!), touch bar (oh, my, my), solded memory and storage ($*&#^$!)?
-     Together with an old CPU (okaysh, but not very okaysh), and the limitation of 16 Gb (yeah, I know, more memory would impact battery time). And then, the butterfly
-     keyboard, which is unpleasant, and seems not that reliable. See that I do not even mention the price; I would not mind paying the Apple tax for a worthy product!
-     </p>
-     <p>
-     My company provided me with a Dell XPS 13, developer edition, and I was thinking about hackintoshing it. I have 3 hackintoshes -all desktops-, and this was looking like
-     a good way to get a proper Apple laptop without the limitations of the latest Apple models.
-     </p>
-     <p>
-     But is this the case? The XPS 13 has more connectors, but still lacks the one I consider important (Ethernet), which is just not possible with laptops this thick
-     (but I do not care about their thickness!!). As in the Macbook, the memory is soldered, so you get what you buy, and that is also limited to 16 Gb.
-     In Luxembourg, the only XPS 13 Linux with 16 Gb memory comes with a 512 Gb SDD (256 would have been enough for me, specially when it can be upgraded), and with
-     the touchscreen at great resolution (basic 1920x resolution is enough for me, specially when i
-         t improves battery life,and touchscreen is something that I still need to find useful),
-         it costs, with core i7-7500u processor, 1800 euros, with an ongoing promotion down to 1600 euros. It has approximately the same size as the Macbook Pro, and for me,
-     the same limitations.
-     </p>
-     <p>
-     Screen-wise, the Dell has higher resolution, and the Apple better brightness -which at this size it means for me  a bonus point for the Apple-.
-     The Dell's keyboard is better, and the trackpad works good, but it cannot be compared with the Macbook pro.
-     I like / love linux, but the desktop experience is subpar to MacOS, and the full integration with the hardware means that
-     even when the Macbook battery is smaller, its performance would be normally better that on the Dell.
-     </p>
-     <p>
-     The Macbook Pro, 13 inches without the silly touch bar costs 1875 euros. This provides a 256 Gb SSD, enough for my taste, but goes up to 2100 euros for the 512 Gb SSD.
-     The core i5 processor (i5-6360U), can be upgraded to (i7-6660U), for 'just' 350 euros, raising the total price to 2445 euros.
-     So, the Dell XPS13 with a newer i7 processor costs 645 euros less, and with the current promotion, 800 euros less, a cool 33% cheaper.
-     I find in fact a better approach opting for the touch bar version, and staying with the core i5 version -the i7 is anyway only dual core-. For 'just' 2165 euros
-     you get 16 Gb memory, 256 Gb SSD and a core i5 a 2.9 GHz, plenty speedier than the non touch-bar one (hint: Apple wants you to get the touch bar)
-     </p>
-     <p>
-     Personally again, I think that the Apple is all but Pro. I do not think that the Dell is more Pro at all, just cheaper for the same ambitions.
-         If I would go now the Apple way, I think I will try a real 4-core machine, on its 15" envelop. The basic 15 inches gives a 4 core processor, 16 G memory and 256 Gb SSD for 2600 euros,
-     including a discrete graphics card in the mix.
-
-     </p>
-     <p>
-    Or, well, I will just give up on these manufacturers, and enjoy my Dell for the time being, perhaps I will hackintosh it for the pleasure of it,
-     and I guess I will still invest some money on Apple stock... and on a new battery for my reliable Macbook 2011 (real) pro.
-     </p>
-
-
-     <p class="blog-entry"><span class="blog-entry-date">24th November 2016</span>Ubuntu 16.10 on Dell XPS 13 (9350)</p>
-
-     <p> <img src="images/xps.jpg" alt="dell xps 13" class="blog">I got a Dell Xps 13 recently, the
-         developer edition that comes with Ubuntu. It is not the latest model (9360), with the Kaby Lake processor,
-         but the previous one (9350) with Skylake. These two versions differ not only on the processor,
-         but also on the Wifi card and the Ubuntu version; while the 9360 model comes with Ubuntu 16.04 installed,
-         Dell does only provide Ubuntu 14.04 for the 9350 model.
-     </p>
-     <p>
-         Ubuntu 16.04 includes Linux kernel 4.4, with incomplete support for Skylake processors; kernel 4.6 included
-         specific support for Dell XPS 13 systems, and Ubuntu 16.10 comes with kernel 4.8. Installing Ubuntu 16.10 on
-         this laptop is a no-brainer, all works fine directly.
-     </p>
-     <p>
-         My laptop is the model with touchscreen and high resolution (3200x1800); the fonts appear too little, so it is
-         better to go to settings / displays and choose a 2x scale (or any scale at will).
-     </p>
-     <p>
-         The other problem that appears with the touchscreen is that Ubuntu installs by default a library implementing
-         braille support. Entering
-         <pre>sudo tcpdump -i lo</pre>
-         shows a lot of traffic on the loopback interface from port 4101. To disable it:
-        <pre>sudo apt-get purge brltty xbrlapi</pre>
-        (which an additional reboot)
-     </p>
-     <p>
-         Although everything works fine, there are some quirks. For example, the touchscreen works until the machine
-         goes to sleep with the closed lid. To have it working again, it is needed to close-reopen quickly the lid.
-     </p>
-
-
-
-
-     <p class="blog-entry"><span class="blog-entry-date">10th November 2016</span>TableFilter v5.3.0</p>
-
-     <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">New release for this
-         <a href='tablefilter/index.html'>Java library</a>, implementing some requested functionality: the possibility
-         to filter entries that <b>contain</b> some text -initially, the default operator would only display entries
-         starting with a given expression
-     </p>
-
-
-
-     <p class="blog-entry"><span class="blog-entry-date">21st March 2016</span>VirtualBox guest additions on headless</p>
-
-     <p> <img src="images/vbox.png" alt="virtualbox" class="blog"> Normally, I run virtualbox machines in headless mode,
-         so it is useless installing an OS with full GUI. I favor in this cases a debian installation (minimal, using
-         the netinst CD), and ensuring that PAE/NX is enabled in System/Processor.
-     </p><p>
-        It is still helpful to install the virtualbox guest additions to improve the performance, but the usual way
-        -Devices/Install Guest Additions CD Image...- doesn't work. In this case, the best procedure is to download them
-        and perform a manual install. For the current version, 5.0.16:
-     </p>
-
-     <pre>cd /tmp
-wget http://download.virtualbox.org/virtualbox/5.0.16/VBoxGuestAdditions_5.0.16.iso
-mkdir iso
-sudo -s
-apt-get install -y dkms
-mount -o loop VBoxGuestAdditions_5.0.16.iso iso
-sh iso/VBoxLinuxAdditions.run --nox11
-umount iso
-rm -Rf iso VBoxGuestAdditions_5.0.16.iso</pre>
-
-     <p>This will install the extensions, and produce a final warning:</p>
-     <pre>Could not find the X.Org or XFree86 Window System, skipping.</pre>
-     <p>This warning is okay. It is possible to check if the additions are installed by invoking:</p>
-     <pre>lsmod | grep vboxguest</pre>
-
-
-	 <p class="blog-entry"><span class="blog-entry-date">20th March 2016</span>Rclone</p>
-
-	 <p> <img src="images/rclone.jpg" alt="rclone" class="blog"> A few years ago, I setup a poor man backup system for a
-         site using <b>rsync</b> and <a href='https://www.dropbox.com/install?os=lnx'>Dropbox</a>.
-         Eventually, the database and associated files required more than 2 Gb, and still following the poor man habits,
-         I had a look at <a href="https://www.google.com/drive/>"gdrive</a>; unfortunately, Google does not have
-         an official headless linux client.
-     </p>
-     <p>
-         But there are several unofficial clients. Like <a href="https://github.com/iwonbigbro/gsync">gsync</a>,
-         which tries to provide rsync functionality, being still severely limited. I opted better for other client,
-         <a href="http://rclone.org/">rclone</a>, which does not only support GDrive, but also Dropbox, Amazon S3,
-         Backblaze, etc. The documentation is very complete, the setup really simple, and its functionality covers all
-         my scenarios.
-     </p>
-		 Installation instructions only cover directly Linux, and for some reason it puts the executable into <b>sbin</b>,
-         which is all but useful -the idea is to be executed, with different credentials, by each user. Finally, I used
-         the following instructions for Linux:
-	 </p>
-
-     <pre>cd /tmp
-wget http://downloads.rclone.org/rclone-v1.28-linux-amd64.zip
-unzip cd rclone-v1.28-linux-amd64.zip
-
-sudo cp rclone-v1.28-linux-amd64/rclone /usr/local/bin
-sudo chown root:root /usr/local/bin/rclone
-sudo chmod 755 /usr/local/bin/rclone
-
-#install manpage
-sudo mkdir -p /usr/local/share/man/man1
-sudo cp rclone-v1.28-linux-amd64/rclone.1 /usr/local/share/man/man1/
-sudo mandb
-rm -Rf rclone-v1.18-linux-amd64*</pre>
-
-     </p>
-         And almost the same instructions for OsX:
-     </p>
-
-     <pre>cd /tmp
-wget http://downloads.rclone.org/rclone-v1.28-osx-amd64.zip
-unzip rclone-v1.28-osx-amd64.zip
-
-sudo cp rclone-v1.28-osx-amd64/rclone /usr/local/bin
-sudo chown root:wheel /usr/local/bin/rclone
-sudo chmod 755 /usr/local/bin/rclone
-
-#install manpage
-sudo mkdir -p /usr/local/share/man/man1
-sudo cp rclone-v1.28-osx-amd64/rclone.1 /usr/local/share/man/man1/
-rm -Rf rclone-v1.18-osx-amd64*</pre>
-
-
-     <p class="blog-entry"><span class="blog-entry-date">18th March 2016</span>Two factor authentication with SSH</p>
-
-	 <p> <img src="images/gauth.png" alt="google authenticator icon" class="blog"> This must be
-		 <a href='howto/security/ssh_2factorauth.html'>the best way</a> to strengthen the security on your
-		 ssh connection for those cases where ssh keys are not available.
-	 <p>
-		 Tip copied from this <a href='http://www.arm-blog.com/using-2-factor-authentication-for-ssh/'>arm-blog</a>
-	 </p>
-
-
-	 <p class="blog-entry"><span class="blog-entry-date">10th January 2016</span>Redmine on Debian</p>
-
-	 <p> <img src="images/redmine.png" alt="redmine icon" class="blog"> Added
-		 <a href="linux/debian/redmine.htm">instructions</a> to install
-		 <a href="http://www.redmine.org/">Redmine</a> on Debian, using PostgreSQL and Nginx.
-	 </p><p>
-	 	The main problem was in fact setting up correctly email support (and then, trying to scape the SPAM folders in Google).
-	 </p>
 
 
 

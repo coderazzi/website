@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+    <title>Ubuntu - My setup</title>
+    <link rel="stylesheet" type="text/css" href="../../css/global.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <meta name="Keywords" content="linux, ubuntu">
+    <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+<p id='body'>
+    <div id='content'>
+
+        <p class='timestamp'>&gt; 12th April 2017, 22:37 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lux</p>
+
+        <h1>My own setup for Ubuntu</h1>
+
+            <p>These are the steps I normally use to setup a Ubuntu distribution, currently up to Yakketi Yak (16.10)</p>
+
+            <p>This setup only defines the initial installations and basic system configuration, not all the programs that I
+            eventually install.</p>
+
+
+            <h2>Installations</h2>
+
+                <ul>
+                    <li>From Ubuntu software center, install:<ul>
+                        <li>Dropbox</li>
+                        <li>Tweak tool</li>
+                        <li>Unity tweak tool</li>
+                        <li>CompizConfig Settings Manager</li>
+                        <li>Guake terminal</li>
+                    </ul></li>
+
+
+                    <li>From their sites, install:<ul>
+                        <li>Install chrome, from <a href='https://www.google.com/chrome/browser'>chrome site</a></li>
+                        <li>Install sublime, from <a href="https://www.sublimetext.com/3">sublime site</a></li></ul>
+                    </li>
+
+                    <li>From the command line, using apt-get, install:<ul>
+                        <li>Keepassx, vim, vlc and additional compiz config plugins:
+
+                            <pre>sudo apt-get install keepassx vlc vim compiz-plugins</pre>
+                        </li>
+                        <li>ExFat drives and HFS+ support:
+
+                            <pre>sudo apt-get install exfat-utils exfat-fuse hgsprogs</pre>
+                        </li></ul>
+                    </li>
+                </ul>
+
+            <h2>Configuration</h2>
+
+                <h3>Show full time in top bar</h3>
+
+                    <p>Open on top bar the Time & Date settings, and on Clock, check Weekday and 'Date and month',
+                        then choose 24-hour time</p>
+
+                <h3>Ensure that desktop is not handled by gnome</h3>
+
+                    <pre>gsettings set org.gnome.desktop.background show-desktop-icons false</pre>
+
+                    <p>This is a setting to be used repeatedly. While this value is false, it is not possible to
+                        change the wallpaper, so, at least to replace it, his value will have to be set to true at
+                        some moment.</p>
+
+                <h3>Remove from Nautilus entries to Documents, Music, Pictures, Videos and Desktop</h3>
+
+                    <pre>vi ~/.config/user-dirs.dirs</pre>
+
+                    <p>Modify all entries that should not appear. For example, to have only a DOWNLOAD folder, this file should have
+                        the following content:</p>
+
+                    <pre>XDG_DOWNLOAD_DIR="$HOME/Downloads"
+XDG_DESKTOP_DIR="$HOME/"
+XDG_TEMPLATES_DIR="$HOME/"
+XDG_PUBLICSHARE_DIR="$HOME/"
+XDG_DOCUMENTS_DIR="$HOME/"
+XDG_MUSIC_DIR="$HOME/"
+XDG_PICTURES_DIR="$HOME/"
+XDG_VIDEOS_DIR="$HOME/"</pre>
+
+                    <p>Afterwards, it is needed to reset nautilus</p>
+                    <pre>killall nautilus</pre>
+
+                <h3>Show files as list in nautilus, in small size</h3>
+
+                    <pre>gsettings set org.gnome.nautilus.preferences default-folder-viewer list-view
+gsettings set org.gnome.nautilus.list-view default-zoom-level small
+killall nautilus</pre>
+
+
+                <h3>Modify Unity search, to be less invasive</h3>
+                    <p>Open Unity tweak tool / Search: uncheck 'search online sources', uncheck 'Show More suggestions', uncheck 'Enable
+                        search on your files'</p>
+
+
+                <h3>Unity shortcuts and workspaces</h3>
+
+                    <p>By default, ALT opens the HUD, which can be useful, but not as much as to require such a simple shortcut: it will be
+                        changed to CTRL + ALT + SPACE.</p>
+                    <p>Also by default, SUPER opens the launcher. Used to Spotlight in OsX, I prefer using Super+Space for this. In
+                        addition, having SUPER reserved to the launcher,
+                        it means that Super+1 will open the first icon in the launcher, Super+2 the second one, etc. I prefer using these
+                        shortcuts to select workspaces</p>
+
+                    <ul>
+                        <li>Open CompizConfig Settings Manager
+                            <ul>
+                                <li>Go to window management, and enable the Put plugin</li>
+                            </ul>
+                        </li>
+                        <li>Open Settings / Appearance / Behaviour
+                            <ul>
+                                <li>Check Enable workspaces</li>
+                            </ul>
+                        </li>
+                        <li>Open Settings / Keyboard / Shortcuts
+                            <ul>
+                                <li>Launchers / Key to show the HUD: Ctrl + Alt + space</li>
+                                <li>Typing / Switch to next source : disable (backspace) [otherwise, it uses Super+Space]</li>
+                                <li>Typing / Switch to previous source : disable (backspace)</li>
+                            </ul>
+                        </li>
+                        <li>Open Unity tweak tool / Additional / Keyboard shortcuts
+                            <ul>
+                                <li>Choose Super + Space for 'Show the launcher'</li>
+                                <li>No need to do here: Choose Alt + Space for HUD</li>
+                            </ul>
+                        </li>
+                        <li>Open Settings / Keyboard / Shortcuts
+                            <ul>
+                                <li>Navigation / move window to workspace 1 : disable (backspace)</li>
+                                <li>Navigation / Switch to workspace 1 : Super + 1</li>
+                                <li>Navigation / Switch to workspace 2 : Super + 2</li>
+                                <li>Navigation / Switch to workspace 3 : Super + 3</li>
+                                <li>Navigation / Switch to workspace 4 : Super + 4</li>
+                                <li>Navigation / Switch to workspace left / right / above /below : ALT + Super + (Left / Right / Up/ Down)
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p>Note that:
+                        <ul>
+                            <li>Ctrl + Super + Arrow keys can be used now to resize and move window to specific locations.</li>
+                            <li>Super + numeric keypad allows to move windows to specific positions</li>
+                            <li>Super + S allows a workspace view.</li>
+                            <li>Super + W allows a expo view</li>
+                        </ul>
+                    </p>
+
+
+                <h3>Enable workspace wallpapers</h3>
+
+                    <p>Open CompizConfig Settings Manager<ul>
+
+                        <li>Go to Utility and enable Wallpaper plugin</li>
+                        <li>Now, add one wallpaper per worspace</li>
+                    </ul></p>
+
+                <h3>Launcher icons</h3>
+
+                    <p>Unlock from launcher: amazon, all LibreOffice icons.</p>
+                    <p>Open terminal, chrome, sublime -> right click on their launcher icon and click on 'Lock to launcher'
+                        etc</p>
+
+
+                <h3>Start guake at login</h3>
+
+                    <p>Open Startup Applications (use launcher), press add, enter Guake as name, and /usr/bin/guake as command</p>
+
+
+                <h3>On a Mac keyboard, avoid having to press Fn to key F1 to F12</h3>
+
+                    <pre>sudo -s
+echo options hid_apple fnmode=2 > /etc/modprobe.d/hid_apple.conf
+update-initramfs -u
+reboot</pre>
+
+                   For the current session (but it is lost after reboot), it is possible to just issue:
+<pre>echo options hid_apple fnmode=2 | sudo tee -a /etc/modprobe.d/hid_apple.conf</pre>
+
+                </h3>
+
+
+            </div>
+        </div>
+    </body>
+</html>
