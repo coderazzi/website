@@ -223,6 +223,7 @@
             <item name='Sensei' file='phd/index.htm'/>
         </group>		
         <group name='Just words'>
+            <item name='2017' file='books/2017/index.htm'/>
             <item name='2016' file='books/2016/index.htm'/>
             <item name='2015' file='books/2015/index.htm'/>
             <item name='2014' file='books/2014/index.htm'/>
