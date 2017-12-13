@@ -9,6 +9,52 @@
  <div id='content'>
 
 
+     <p class="blog-entry"><span class="blog-entry-date">11th December 2017</span>Bollocks UI</p>
+     
+     <p><img src='images/bad.png' alt='bollocks interface' class='blog'/>I read this interesting <a href='https://www.nngroup.com/articles/flat-ui-less-attention-cause-uncertainty/'>article</a> on the (wrong) effect of using flat UI, where users are found to require longer times to grasp the meaning of the UI elements in web pages, delaying therefore their actions.</p>
+
+
+     <p>Bollocks, but not so much as trying the latest Nautilus interface, the default file navigator in Ubuntu 17.04. Creating a new folder requires double clicking on the folder contents and selecting the firt option (New folder). But note that selecting the parent folder and right clicking shows a menu where the option to create this new folder does not appear. Furthermore, Nautilus has an application menu, but the option to create a menu is all but missing.</p>
+
+     <p>When you right click on the folder content, the first option is indeed 'New Folder', and it displays very handily its shortcut: Shift+Ctrl+N. BUT: what happens if the folder contains too many files/sub folders? There is no way to right click on empty content, and there is no way to create a new folder except by knowing the shortcut.</p>
+
+     <p>I guess that one or more developers went just too far on their quest to simplify the interface.</p>
+
+
+
+
+     <p class="blog-entry"><span class="blog-entry-date">5th December 2017</span>OS Agnostic</p>
+     
+     <p><img src='images/agnostic.png' alt='macos again' class='blog'/>Yep, after 6 months in Ubuntu land, the Wayland switch -or the associated bugs- dropped me back into the arms of
+     Hackintoshing</p>
+
+     <p>Not happy about it, but Wayland is at the moment no go in my configuration; and MacOs installation was really simple, just a couple of hicups. The whole installation process is described <a href='osx/ga-b75m/high-sierra.html'>here</a></p>
+
+     <p>Switching operative systes is now an almost painless process. I do not rely on the cloud to store my files -just a few ones, which in fact host most of my configuration information. As a result, installing a new operative system normally implies:</p>
+
+     <ul>
+        <li>The OS installation itself -30 minutes for Ubuntu, a few hours for Hackintosh</li>
+        <li>OS Configuration, a 15 minutes process once I have it correcly documented</li>
+        <li>Programs installation, a 60 minutes process, using software centers and command line</li>
+        <li>Copying my common folders, either from the old drive or from a backup, which takes up to 3 hours-.
+        </li>
+    </ul>
+
+
+
+     <p class="blog-entry"><span class="blog-entry-date">5th December 2017</span>Ubuntu 17.10</p>
+
+     <p><img src='images/selfkill.png' alt='wayland suicide' class='blog'/>Six months ago, after repeated issues with Hackintosh, I moved to Ubuntu 17.04, and all was well.</p>
+
+     <p>Then it came Ubuntu 17.10, with the move from Unity, and the introduction to Wayland, and man, was that a big change. It was supposed to be, like every last Ubuntu releases, a minor upgrade, almost more of an update than a real move.</p>
+     <p>Suppossitions.</p>
+     <p>But. That workspaces do not work anymore as they used to do with Unity, that shortkeys seem to only work randomly, that Steam seems much slower and it seems to exhibit a gap between the cursor pointer and the exact pointed location are for me just inconveniences; but that whenever the monitor goes to sleep, Wayland performs a swift Harakiri, with all X programs getting killed, is a major showstopper. I cannot justify all the lost time.</p>
+     <p>What is special on my setup to produce such an outlier crash? No idea, I use a embedded Intel HD 4000 solution with DisplayPort connection; I have tried disabling DCI on the monitor, without success. For me, Ubuntu 17.10 is, on this machine, no go.</p>
+     <p>I have filled a <a href='https://bugs.launchpad.net/ubuntu/+source/kubuntu-meta/+bug/1734998'>bug<a/> for this problem , but no solution or activity so far...</p>
+     <p>I could stay with 17.04, but that means a very short security period with upgrades. I could try installing 16.04, a LTS solution, or, as I have done, let the upgrade Ubuntu 17.10 in place, hoping for updates to solve my issue, and have a new Hackintosh try, on a separate drive. Let's see how the fight Ubuntu Wayland vs Hackinstosh works for me in the close future...</p>
+     <p>Note: on 28th November, I have switched back to Ubuntu, upgraded, dist-upgraded and rebooted. But Wayland persists on its suicidal ways....</p>
+
+
      <p class="blog-entry"><span class="blog-entry-date">1st May 2017</span>DisplayPort on Ubuntu</p>
      <p> <img src='images/monitor.png' alt='monitor' class='blog'/>There is an
          <a href="https://bugs.launchpad.net/ubuntu/+bug/1313539">ongoing issue</a> with using

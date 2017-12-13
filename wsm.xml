@@ -215,6 +215,7 @@
                     <item name='Os X built' file='osx/ga-b75m/index.html'/>
                     <item name='Mavericks' file='osx/ga-b75m/mavericks.html'/>
                     <item name='Yosemite' file='osx/ga-b75m/yosemite.html'/>
+                    <item name='High Sierra' file='osx/ga-b75m/high-sierra.html'/>
                 </group>
                 <item name='Sleep/hibernation' file='osx/hibernation.htm'/>
             </group>

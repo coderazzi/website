@@ -1,0 +1,73 @@
+<html>
+<head>
+ <title>High Sierra on Gigabyte GA-B75M</title>
+ <link rel="stylesheet" type="text/css" href="../../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="high sierra hackintosh">
+ </head>
+<body>
+ <div id='body'>
+ <div id='content'>
+ 
+
+<p class="timestamp">&gt; 5th December 2017</p>  
+
+<h1>High Sierra on Gigabyte GA-B75M</h1>
+
+	<p>
+		This post describes the steps to install MacOs High Sierra from scratch on my system, described <a href='index.html'>here</a>.
+	</p>
+
+	<p>
+		I have installed Mavericks, Yosemite and Sierra, using Unibeast for the first two versions, and Clover for the latest; but, after issues with Sierra, I had installed instead Ubuntu, and the new High Sierra install is therefore from scratch, not a OsX upgrade.
+	</p>
+
+	<p>
+		What in the past had been a interesting computer experiment, it is now decidely an almost too simple installation procedure. As <i>special</i> steps I just modified the proposed config.plist from Clover Configurator with the following values:<ul>
+		<li>cpuid: 0x0306a0, for my Ivy Bridge i7 3770 cpu</li>
+		<li>Set the key AppleIntelCPUPM to true</li>
+		<li>For my gigabyte board, set the AppleRTC key to true as well.</li></ul>
+	</p>
+
+	<p>
+		I do not even now if whithout these changes I would have ended with a working Hackintosh! In any case, I can start MacOS using UEFI
+	</p>
+
+	<p>
+		The result is not a working proposal. All works, including sound, that never did in the past. It is true that the sound backside connectors are non-functionning, and I need to use the speaker jack, but all considered, I am fine with it. It goes to sleep nicely, although it requires well overy 30 seconds to accomplish it; afterwards, it wakes up easily. 
+	</p>
+	<p>
+		However, if I let the computer on its own, the day after I find a switched on computer with a blanck screen, and checking the logs show me a dead system: why it switches back to life, but does not really recover? It sounds to me, remotely, like something related to <a href='http://coderazzi.net/osx/hibernation.htm'>hibernation</a>: that is, system goes to sleep; after some time, the system wakes up to do a proper hibernation, but then, for some reason, it fails.
+	</p>
+	<p>
+		Checking the power management settings <pre>pmset -g</pre>, I find in fact that the hibernatemode is already zero, which should have prevente my whole issue. However, somehow, the sleep image file <i>/var/vm/sleepimage</i> is there.
+		This Apple forum <a href='https://discussions.apple.com/thread/7524823?start=0&tstart=0'>discussion</a> shows that an additional step is needed:
+
+		<pre>sudo nvram "use-nvramrc?"=false</pre>
+	</p>
+	<p>		Alas, this step does not solve the issue, so I went back to tuning the power settings:
+		<pre>
+		sudo pmset -a standby 0
+		sudo pmset -a womp 0
+		sudo pmset -a powernap 0
+		sudo pmset -a autopoweroff 0
+		</pre>
+
+		Some explanations:<ul>
+			<li>standby: sets whether to hibernate when a Mac has been asleep for a set period; this writes memory to disk and powers down memory</li>
+			<li>womp: the same as wake for network access in the power settings pane		powernap: the same as power nap in the power settings pane</li>
+			<li>autopoweroff: after sleeping a specifed period, the system will write an hibernation image and go into a lower power chipset sleep</li>
+		</ul>
+
+		These settings solve the issue. However, what I had seen was that the computer was slept for approximately 4.5 hours before waking up dead, and the standbydelay was 10000 (in seconds, less than 3 hours), and the autopoweroffdelay was 28800 (in minutes, 48 hours). So I presume the problem would be related to powernap. In any case, it makes sense letting the standby and autopoweroff settings disabled, once it is decided to disable hibernation.
+	</p>
+
+	<p>The second issue I got is that I cannot hot swap hard drives. <ul>
+		<li>I tried this <a href='https://rampagedev.wordpress.com/more-guides/hot-plugging-to-your-sata-ports'>approach</a> but it didn't work.</li>
+		<li>I have two SATA controllers, an Intel chipset and a Marvell 88SE9172. Allegedly, the AHCI_3rdParty_eSATA.kext seems to provide hotswap functionality for this Marvell controller. but that is not the case.</li>
+		<li>What works is having a hard disk inserted in the rack when MacOS starts. It will appear in System Information as not removable, but in fact the drive can be ejected, and hot swapped. </li>
+	</p>
+
+</div></div>
+</body>
+</html>

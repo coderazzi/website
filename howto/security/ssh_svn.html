@@ -12,7 +12,7 @@
  <div id='content'>
 
 <p class='timestamp'>&gt; 07th September 2012, 01:58 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
-<p class='timestamp'>&gt; Updated: 3rd November, 01:02 [<a href='#viewvc'>viewvc</a>]</p>  
+<p class='timestamp'>&gt; Updated: 13th December 2017, 20:15</p>
 
 <h1>Setting up SVN on SSH</h1>
 
@@ -131,6 +131,19 @@ sudo chmod 2770 -R /srv/svn/ </pre>
 
 <pre>export SVN_SSH="ssh -i /Users/coderazzi/.ssh/coderazzi.svn.key</pre>
 
+
+<span>One better alternative to this approach is to define a new entry in the ssh configuration file <span class='mark'>~/.ssh/config</span>
+
+
+<pre>Host coderazzi.net
+        IdentityFile ~/.ssh/svn_id_rsa
+        User svn
+        Hostname 51.254.207.228
+        Port 22
+</pre>
+
+		 <p>Note that there can be more than one entry for host coderazzi.net, if different users are specified.
+			 BUT the first entry in the configuration file should be the default one</p>
 
 
 <h2><a name='viewvc'>Web browsing support</a></h2>
