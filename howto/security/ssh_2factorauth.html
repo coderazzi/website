@@ -79,6 +79,17 @@
      <p>And load the new codes on the phone</p>
 
 
+     <h3>Configuring two factor authentication for specific users</h3>
+
+     <p>The above configuration requires all users to use two factor authentication. This can be restrained to specific
+         users by using the <span class="mark">Match</span> clause in the <span class="mark">/etc/ssh/sshd_config</span> file:</p>
+
+     <pre>Match User svn
+     ChallengeResponseAuthentication no</pre>
+
+     Unfortunately, at least under Debian, ChallengeResponseAuthentication is not supported as a Match subqualifier.
+
+
 </div></div>
 </body>
 </html>
