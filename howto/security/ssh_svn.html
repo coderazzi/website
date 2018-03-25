@@ -12,9 +12,16 @@
  <div id='content'>
 
 <p class='timestamp'>&gt; 07th September 2012, 01:58 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duss</p>  
-<p class='timestamp'>&gt; Updated: 13th December 2017, 20:15</p>
+<p class='timestamp'>&gt; Updated: 24th March 2018, 13:57</p>
 
-<h1>Setting up SVN on SSH</h1>
+ <ul>
+	 <li><a href='#setup'>Setting up SVN on SSH</a></li>
+	 <li><a href='#repositories'>Repositories</a></li>
+	 <li><a href='#viewvc'>Web browsing support</a></li>
+ </ul>
+
+
+<h1><a name='setup'>Setting up SVN on SSH</a></h1>
 
 <p>Normally, a subversion url looks as</p>
 <pre>https://server/etc</pre>
@@ -144,6 +151,47 @@ sudo chmod 2770 -R /srv/svn/ </pre>
 
 		 <p>Note that there can be more than one entry for host coderazzi.net, if different users are specified.
 			 BUT the first entry in the configuration file should be the default one</p>
+
+
+
+<h2><a name='repositories'>Repositories</a></h2>
+
+<p>The process to handle new repositories is done directly <b>on the server</b>, and it is therefore not impacted by how svn is served;
+for example, for a repository called website, available on the created /srv/svn location:</p>
+<pre>
+sudo svnadmin create /srv/svn/website
+sudo chmod -R 770 /srv/svn/website
+</pre>
+
+<p>To import now content into the newly created repository, using ssh keys, <b>on the client</b> that currently holds that content:</p>
+
+<pre>svn import cdf svn+ssh://svn@coderazzi.net/website -m "initial one"</pre>
+
+<p>Which should then be immediately checked out to start working on the versioned folder:</p>
+
+<pre>svn co svn+ssh://svn@coderazzi.net/website [folder-name]</pre>
+
+<p>Alternatively, if using the conventional structure supporting branches, tags, the initial import would look like:</p>
+
+<pre>svn import cdf svn+ssh://svn@coderazzi.net/website/trunk -m "initial one"</pre>
+
+<p>And creation of tags, branches would be as easy as:</p>
+
+<pre>svn copy svn+ssh://svn@coderazzi.net/website/trunk \
+	svn+ssh://svn@coderazzi.net/website/tags/v0.20 -m "v 0.20"</pre>
+
+
+<p>These usages of the repository from the client side are only valid if the ssh key is used.
+	If, on the contrary, the user needs at any moment to access it without this key, just with credentials, the
+	complete repository path would be required. That is, instead of:</p>
+
+<pre>svn co svn+ssh://svn@coderazzi.net/website</pre>
+
+<p>The user would do:</p>
+
+<pre>svn co svn+ssh://svn@coderazzi.net/srv/svn/website</pre>
+
+</p>
 
 
 <h2><a name='viewvc'>Web browsing support</a></h2>
