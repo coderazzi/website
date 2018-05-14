@@ -9,6 +9,71 @@
  <div id='content'>
 
 
+     <p class="blog-entry"><span class="blog-entry-date">14th May 2018</span>Argument parsing in python</p>
+
+     <p><img src='images/python.jpg' alt='python' class='blog'/>Almost 10 years ago, I thought about
+         implementing a new solution for arguments parsing in python.</p>
+
+     <p>Basically, existing solutions (now and then) instruct a parser on the expected options and flags, and the
+         parser handles the arguments, catching any errors and producing a beautiful help summary automatically.
+         The major issue is the flexibility of the parser to define the correct arguments syntax:
+         for example, whether it is possible to specify incompatible options, flags, etc.:
+         two options --verbose and --quiet can be incompatible, or action <b>scan</b> could require a
+         mandatory <b>--source</b> option.
+         Additionally, if the parser is flexible enough to provide this functionality,
+         it can be quite difficult to program, or to make changes at a later stage.</p>
+
+     <p>My idea was to define class methods that could handle each possible combination of arguments,
+         and the parser would extract that information without further effort from the programmer.
+         That is: express what each operation requires, and expect that the parser
+         would handle all the required logic:</p>
+
+     <pre>class Example(OptionMatcher):
+
+	@optset
+	def handle_common_flag(self, mail_option):
+		...
+
+	@optmatcher
+	def handle_compression(self, file, compress_flag=False):
+		...
+
+	@optmatcher(flags='verbose', options='mode')
+	def handle(self, file, verbose=False, mode='simple', where=None):
+		...	</pre>
+
+     <p>It does not only simplifies arguments handling, and expresses clearly the purpose, but
+         adding / removing options or flags or operations is in fact very easy</p>
+
+     <p>I implemented this solution shortly after, and then started adding functionality as required.
+         Looking to the history of the project, I invested around 10 months on this projects, although I do not
+         remember anymore the associated effort -the optmatch.py file has just 800 lines of code, plus
+         comments, plus tests and documentation-.</p>
+
+     <p>And then I used it in some of my projects, a few people contacted me about it,
+         and it was included in a some other projects, but it was definitely not a success.
+         In fact, when I needed to do arguments parsing on scripts at work, I would normally default to
+         a standard solution <a href='https://docs.python.org/3/library/argparse.html'>argparse</a></p>
+
+     <p>A few weeks ago I was once again in the dilemma of creating a minor personal application, and I
+         started using <b>argparse</b>. Soon I got into the familiar territory of having incompatible options,
+         flags for only specific actions, and to express different actions under the same script.
+         This meant adding code after the parsing to handle all these issues.
+         And, after a while, adding a new option required quite a lot of effort just to handle all
+         properly, so I remembered my own unloved library, and decided to give it a try, again.</p>
+
+     <p>And that was it, like falling for some old love :-)</p>
+
+     <p>So I have spent a few hours updating the library -it was only supporting camel case notation on parameters,
+         and now it supports the more standard underscores-,
+         and, more importantly, uploading it to the standard Python Package Index (PyPI),
+         so it can now be easily installed as:
+        <pre>pip install optmatch</pre>.
+        Even better, support for python 2 and 3 is now included in a single file.
+     </p>
+
+
+
      <p class="blog-entry"><span class="blog-entry-date">11th December 2017</span>Bollocks UI</p>
      
      <p><img src='images/bad.png' alt='bollocks interface' class='blog'/>I read this interesting <a href='https://www.nngroup.com/articles/flat-ui-less-attention-cause-uncertainty/'>article</a> on the (wrong) effect of using flat UI, where users are found to require longer times to grasp the meaning of the UI elements in web pages, delaying therefore their actions.</p>
