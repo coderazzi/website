@@ -17,7 +17,6 @@
 <p class="timestamp">&gt; 26th January 2002 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stuttgart</p>  
 
  <h1>VirtualNet 2</h1>
- <div class='hr'>&nbsp;</div>
 
  <p>
  <img src="icon.gif" alt="virtualnet screen capture" class="right border">
@@ -54,7 +53,6 @@
  application is written in Java, but the application using the
  virtual net can be written on any language, provided it has a
  CORBA mapping.</p>
- <div class='hr'>&nbsp;</div>
 
  <h2><a name="History" id="History">History</a></h2>
 
@@ -100,7 +98,6 @@
  a CORBA COMM_FAILURE exception is raised, simulating completely
  the real case behaviour. This checking is done twice: when the
  remote object is accessed, and when the answer is sent.</p>
- <div class='hr'>&nbsp;</div>
 
  <h2><a name="CreateAVirtualNet" id="CreateAVirtualNet">Create a
  virtual net</a></h2>
@@ -215,7 +212,6 @@ Use [-help] [-nograph] [-verbose] [-port=xxx] file
     </tr></table>
    
    
- <div class='hr'>&nbsp;</div>
 
  <h2><a name="UseVirtualNet" id="UseVirtualNet">Use the virtual
  net</a></h2>
@@ -271,7 +267,6 @@ args=vnet2user.Interceptor.setup(user, args, props);
  showing the use of this interceptor.</p>
 
  <p>Another interceptor for C++ will be included shortly.</p>
- <div class='hr'>&nbsp;</div>
 
  <h2><a name="ClientProtocol" id="ClientProtocol">Client
  protocol</a></h2>
@@ -297,7 +292,7 @@ args=vnet2user.Interceptor.setup(user, args, props);
   <li>It receives the name of the node to host; this node is
   specified as an array of bytes, holding the first byte the number
   of bytes to read. The node name must be in UTF-8 format:
-  byte order specified by a mandatory initial byte-order mark.</li>
+  byte?order specified by a mandatory initial byte-order mark.</li>
 
   <li>A byte is returned. Return value can be 0 to indicate success
   or FF to indicate error. In this case, a return value of FF means
@@ -318,7 +313,6 @@ args=vnet2user.Interceptor.setup(user, args, props);
   Anycase, a value 0 will always means success and any other value
   is an error flag</li>
  </ol>
- <div class='hr'>&nbsp;</div>
 
  <h2><a name="VersionAndBugs" id="VersionAndBugs">Version and
  bugs</a></h2>
@@ -348,7 +342,6 @@ args=vnet2user.Interceptor.setup(user, args, props);
 
  <p>In addition, the C++ interceptor will be included with the next
  version.</p>
- <div class='hr'>&nbsp;</div>
 
  <h2><a name="LicenseAndDownload" id="LicenseAndDownload">License
  and download</a></h2>
@@ -383,7 +376,6 @@ java -jar vnet2.jar
   <li>vnet2user binary code (.jar file, 11 KB): <a href=
   "vnet2user.jar">vnet2user.jar</a></li>
  </ul>
- <div class='hr'>&nbsp;</div>
 
  <h2><a name="Example" id="Example">Example</a></h2>
 
