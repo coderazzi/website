@@ -9,6 +9,132 @@
  <div id='content'>
 
 
+     <p class="blog-entry"><span class="blog-entry-date">7th May 2020</span>Moving from Bitbucket</p>
+
+     <p> <img src="images/bitbucket.png" alt="table filter icon" class="blog">Exactly five years ago, almost to the day,
+         in May 2015, I had to <a href="blog_2015.html#tobitbucket">move</a> my source repositories from
+         <a href='http://google-opensource.blogspot.com/2015/03/farewell-to-google-code.html'>Google Code</a>
+         to Bitbucket. </p>
+
+     <p> At that moment, Google Code recommended Github as hosting replacement, but I preferred to keep using
+         Mercurial. Five years later, all my professional experience relates to Git (with some usage of SVN and even
+         still CVS), and I can definitely understand the shift on focus in Bitbucket, deprecating any Mercurial
+         usage.</p>
+
+     <p> However, Bitbucket's total lack of support on how to migrate existing projects to Git is definitely a
+         regrettable attitude after these years of great support. There are good tools to support the migration from
+         Mercurial to Git -I used myself <a href="https://github.com/frej/fast-export">fast-export</a>, but
+         Bitbucket does not support the conversion of a repository from Mercurial to Git, even if the upload of the
+         converted files were a manual process. And deleting the repository and creating a new one would mean the
+         loss of the project's issues. </p>
+
+     <p> I decided to move to Github, and the move was helped with a
+         <a href="https://github.com/jeffwidman/bitbucket-issue-migration">tool</a> to migrate the issues directly
+         from BitBucket to Git. I tries using this other
+         <a href="https://github.com/viniciusban/bitbucket_issues_to_github">tool</a> at first, but it gave me too many
+         problems. In any case, they are proof of the issues that many people are having with the demise of
+         Mercurial support at Bitbucket... </p>
+
+     <p> Farewell, BitBucket.</p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">7th May 2020</span>TableFilter v5.5.2</p>
+
+     <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">New release for this
+         <a href='tablefilter/index.html'>Java library</a>, with no functionality changes at all, just
+         required to update the documentation and links after the move from Bitbucket
+     </p>
+     <p> The source code and the issues management is now hosted in Github, and of course, the code has moved
+         from Mercurial to Git. It is a funny coincidence: I started using SVN for the version control, and
+         moved to Mercurial the 5th May 2010, using Google Code to host the repository. Exactly five years later,
+         the 5th May 2015, I had to move from Google Code to Bitbucket, and almost exactly other 5 years later,
+         the 7th May 2020, I have completed the migration from Bitbucket to Github. Which means ten years and two days
+         of good Mercurial support. Shame that Bitbucket is kicking it out...
+     </p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">4th May 2020</span>Internal GPU</p>
+
+     <p> <img src='images/llcube.png' alt='Cube computer upgrade' class='blog_fix'/>
+         The Intel HD Graphics 4000 included in my aging i3770 CPU cannot handle the 3840x1600 resolution of my new
+         monitor, so I had to shop for a new GPU card. I believe I should I have stayed with my initial choice, a
+         passive GT1030, but at the end I choose the max power than my 400 watts PSU could feed: a GTX 1650 super.
+     </p>
+
+     <p> I had expected a easy setup, disabling the internal GPU and initialize only the PCI express GPU, but
+         my motherboard was crashing continuously. At the end, the only BIOS settings allowing me to boot was
+         having the internal CPU enabled and setting the GPU initialization to Auto or IFGX (internal).
+     </p>
+
+     <p> Using Ubuntu 20.04, no configuration is needed to use simultaneously the internal GPU and the Nvidia card,
+         all worked flawless immediately when attaching a monitor to each GPU.
+     </p>
+
+     <p class="blog-entry"><span class="blog-entry-date">4th May 2020</span>Spoiled geek</p>
+
+     <p> <img src='images/14vs30.png' alt='monitor size comparison' class='blog_fix'/>Spoiled geek:
+         geek who orders a 38" monitors and, on first impression, thinks: is not THAT big.<br>
+
+         Funny part, I wrote in <a href="blog_2011.html#spoiled">2011</a> on the same impression I had with
+         a 30" monitor, the Dell U3011,</p>
+
+     <p> But, in fact, this time I think it is the right impression. It is very wide, about 20 cm wider than
+         the 30" monitor, but it is also narrower: 5 cm smaller, but with small bezels, so it just translates to
+         3 cm less display height. Which I don't miss: it is easier (at least to me) the horizontal neck move than
+         the vertical one.
+    </p>
+
+     <p> My original intention was to get a 34 curved wide monitor. Glad I decided this size, and in fact, I am left
+         wondering on the much bigger, but equally priced Dell U4919DW. The last one is much more curved, but it is
+         also (3 cm) narrower, with 30 cm more width than my 38" selection. This made me think that the ergonomics
+         were quite a bit skewed. Plus, I was considering a move from 30" to 34" and then to 38", so a
+         49" monitor was really one step too long. But perhaps the extra curvature helps with
+         the ergonomics, perhaps up-sizing to 49" would have been the good, bold move...
+     </p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">3rd May 2020</span>DD-WRT issues</p>
+
+     <p> <img src="images/tl841n.jpg" alt="dd-wrt" class="blog">In the last 24 months, I have added three entries to
+         this blog. As all procrastination woes go, there is an excuse: I intended to move my static site generation
+         from my own custom solution to Hugo, but I didn't dedicate it time enough and the migration never happened,
+         but on the meantime I would just not write more entries...
+     </p>
+     <p>
+         My custom blog solution is a C# program I wrote almost 15 years ago, so I fully intend to move to Hugo or else
+         in some future time. It works fine, and pretty fast (a few seconds for this site), but would take me many hours
+         any single modification. I had even also a python solution to synchronize my local folders to my server's
+         location, which at some time in the last 15 years was replaced by a simple rsync script, which, of course,
+         expect some direct connection to the port 22 on my dynamic public IP address. For security reasons, that port
+         is closed on my home router, and I only open it when required.
+     </p>
+     <p>
+         As complexity increases with time, my previous port opening moved to... multiple ports opening, as I had
+         decided to secure a part of my home network. But trying to access the final router, where I had flashed
+         DD-WRT, I couldn't remember the password, and it was not available in my KeePass files, so after many many
+         logon attempts, I had to reset the firmware. And, for the sake of it, upgrade the router.
+     </p>
+     <p>
+         But upgrading, or installing the DD-WRT firmware is not simple. If you visit its
+         <a hred="https://wiki.dd-wrt.com/wiki/index.php/Index:FAQ">wiki</a>, you receive a big warning to not use
+         the <a href="https://dd-wrt.com/support/router-database/>router database">router database</a>. It offers two
+         alternatives: Kong builds, which additional testing are not available since July 2019, and beta builds,
+         which, by definition, seem a coin toss.
+     </p>
+     <p>
+         After upgrading, I had still network access, but the Wifi access was gone. SSIDs were broadcast, radios were
+         on, but my phone couldn't see them. Funny point, the DD-WRT Status page offers a gadget to scan the network,
+         but it was asking me to enable the Wireless network -of course, giving no hints on how to do so...
+     </p>
+     <p>
+         Solution was the usual way: reboot the router, and the 2.4 GHz SSID appeared in my phone. To get also the
+         5 GHz SSID I had to move the wireless channel from Auto to a specific channel. My router is a Netgear
+         WNDR 3700, its last official Netgear firmware is dated on 2011. I am definitely glad the only issues I had
+         with the DD-WRT firmware were so easy to solve.
+     </p>
+
+
+
      <p class="blog-entry"><span class="blog-entry-date">22nd February 2019</span>TableFilter v5.5.1</p>
 
      <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">New release for this
