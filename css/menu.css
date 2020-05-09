@@ -1,17 +1,16 @@
 .navcontainer {
-	margin: 0;
-	padding: 0;
 	border-right: 1px solid #aaa;
 	font-size: 15px;
-	font-weight: 900;
+	font-weight: 400;
 	text-align: center;
 	text-transform: lowercase;
+	background: white;
 }
 
 ul.navlist {
 	text-align: left;
 	list-style: none;
-	padding: 0px;
+	padding: 0;
 	margin: 0 0 0 15px;
 	width: 140px;
 }
@@ -38,7 +37,6 @@ ul.navlist li.active a {
 	font-weight: 900;
 	border-top: 1px solid #aaa;
 	border-bottom: 1px solid #aaa;
-	/*color: #aa2222;*/
 }
 
 ul.navlist li a:hover, ul.navlist li.active a:hover {
@@ -47,28 +45,22 @@ ul.navlist li a:hover, ul.navlist li.active a:hover {
 }
 
 ul.navlist a.justtext, ul.navlist a.justtext:hover {
-	font-weight: 900;
 	font-style: italic;
-	/*background: yellow;*/
-	/*color: black;*/
-	/*text-transform: none;*/
 }
 
 
 @media only screen and (max-width: 992px) {
-	.navcontainer {
-		background: rgba(255,255,255,.4);
-		min-width: 224px;
-		padding-bottom: 24px;
-	}
 
-	ul.navlist li {
-		background: white;
+	.navcontainer {
+		border-bottom: 1px solid #aaa;
 	}
 }
 
-@media only screen and (min-width: 992px) { 
+@media only screen and (min-height: 800px) {
+
 	.navcontainer {
-		background: white;
+		width: 200px;
+		position: fixed;
 	}
 }
+

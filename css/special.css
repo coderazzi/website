@@ -43,19 +43,21 @@ td
 
 .mark 
 {
-	font-weight: bold; 
+	font-weight: 400;
 	font-style: italic;
 }
 
 .options 
 {
-	font-weight: bold; 
+	font-weight: 900;
 	font-style: italic; 
 	font-size: 0.90em;
 }
 
 .code 
 {
-	display: inline; 
+	display: inline-block;
 	font-family: monospace;
+	font-size: 14px;
+	background: #f7f7f7;
 }

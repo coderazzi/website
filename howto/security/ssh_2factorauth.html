@@ -20,7 +20,7 @@
          on your ssh connection for those cases where ssh keys are not
 	    available: <a href='http://www.arm-blog.com/using-2-factor-authentication-for-ssh/'>Using 2 factor authentication for SSH</a></p>
 
-     <h3>Install Google Authenticator app in your smartphone</h3>
+     <h4>Install Google Authenticator app in your smartphone</h4>
 
      <p>It is available in the
          <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Android Play Store</a>
@@ -31,7 +31,7 @@
      <p>It could be installed on a computer via the <a href="http://www.nongnu.org/oath-toolkit/">Oath Toolkit</a>,
          but in this case it would be better using SSH keys (or none, if unsecure).</p>
 
-    <h3>Install Google Authenticator software on the server</h3>
+    <h4>Install Google Authenticator software on the server</h4>
 
      <p>The source code is at
          <a href="https://github.com/google/google-authenticator/archive/master.zip">https://github.com/google/google-authenticator/archive/master.zip</a>
@@ -40,7 +40,7 @@
 
      <pre>apt-get install libpam-google-authenticator</pre>
 
-     <h3>Execute the Google Authenticator software on the server</h3>
+     <h4>Execute the Google Authenticator software on the server</h4>
 
      <p>This authenticator must be executed using the account that will be used to login in the system; if there are multiple
      accounts, it must be executed once per account.</p>
@@ -52,7 +52,7 @@
 
      <p>To configure the app, load the QR on the phone, or enter alternatively the provided secret key</p>
 
-     <h3>Configuring PAM and SSH</h3>
+     <h4>Configuring PAM and SSH</h4>
 
         <p>With sudo access:</p>
 
@@ -68,7 +68,7 @@
          <pre>service ssh restart</pre>
 
 
-     <h3>Updating / regenerating new authentication code</h3>
+     <h4>Updating / regenerating new authentication code</h4>
 
      <p>Just execute again the authenticator on the server:</p>
 
@@ -77,7 +77,7 @@
      <p>And load the new codes on the phone</p>
 
 
-     <h3>Configuring two factor authentication for specific users</h3>
+     <h4>Configuring two factor authentication for specific users</h4>
 
      <p>The above configuration requires all users to use two factor authentication. This can be restrained to specific
          users by using the <span class="mark">Match</span> clause in the <span class="mark">/etc/ssh/sshd_config</span> file:</p>

@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -63,7 +63,7 @@ config switch_vlan
         option ports '0 1 2 3 4'</pre>
 
 <p>
-	So there is a switch identified as <span class='mark'>switch0</spam>. To get info on this switch:
+	So there is a switch identified as <span class='mark'>switch0</span>. To get info on this switch:
 </p>
 
 <pre>swconfig dev switch0 help</pre>
@@ -205,7 +205,7 @@ VLAN 2:
       option forward          REJECT</pre>
 
 <p>
-	<a name='dhcp'>and</a>, in <span class='mark'>/etc/config/dhcp</span> add now:
+	<a id='dhcp'>and</a>, in <span class='mark'>/etc/config/dhcp</span> add now:
 </p>
 
 <pre>config dhcp landenver

@@ -7,9 +7,8 @@
 	margin-left: -10px; 
 	margin-right: -10px; 
 	padding-top:60px;
-	padding-bottom:0px;
+	padding-bottom:0;
 	background: white; /*#f7f7f7;*/
-	color: #a22;
 	color: black;
 	text-align: left; 
 	font-size: 28px;
@@ -17,13 +16,17 @@
 }
 
 .blog-entry-date  { 
-	/*padding-right: 60px; */
 	display: inline-block;
 	width: 12em;
-	/*color: #a66;*/
-	font-family: courier, monospace; 
+	font-family: courier, monospace;
 	font-size: 14px;
 }
+
+.blog-entry-date:before {
+	content:url('calendar.png');
+	padding-right: 4px;
+}
+
 
 img.blog {
 	float: left; 

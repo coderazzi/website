@@ -5,22 +5,6 @@
 <meta name="Description" content="Glass Pane for swing">
 <meta name="Keywords" content="Glass pane swing java">
 <meta name="Author" content="LuisM Pena / coderazzi">
-<style type="text/css">
-<!--
-  body  { background: white;max-width:800px;padding: 0px;               
-            font-family: Verdana, Helvetica, Trebuchet MS, Trebuchet, Arial;}
-  #content {margin: 0 4em 4em 9em; background: white; font-size: 0.90em;}
-  #note    {float: right; font-size: 0.8em;}
-  h1 { background: #6666ff; margin: 0px 10px 20px 0px; padding: 10px; 
-       font-size: 2em; color: #f0f0ff;}
-  h2 { background: #8888ff; margin: 30px 10px 20px 40px; padding: 8px; 
-       font-size: 1.6em}
-  .centered{display: block; margin-left: auto; margin-right: auto;text-align: center;}
-  .mark {font-weight: bold; font-style: italic;}
-  .code {display: inline; font-family: monospace;}
-  
--->
-</style>
 </head>
 <body><div id='content'>
 
@@ -61,7 +45,7 @@
     <a href='http://www.j2ee.me/javase/6/docs/api/javax/swing/JComponent.html'>JComponent</a>. 
     Although it is intended to be kind of a glass blocking the normal component, 
     it could be any other component to replace the usual one. 
-    In this sense, GlassedPane is implementing a subset of the funcionality 
+    In this sense, GlassedPane is implementing a subset of the functionality
     directly provided by the 
     <a href='http://java.sun.com/javase/6/docs/api/javax/swing/JLayeredPane.html'>JLayeredPane</a>: 
     indeed, <span class='mark'>the behaviour provided by GlassedPane can be implemented 
@@ -69,7 +53,7 @@
     its value is to simplify its usage for the specific glass scenario</span>.</p>
 
 
-<h2><a name='usage'>Usage and javadoc</a></h2>
+<h2><a id='usage'>Usage and javadoc</a></h2>
 
 <p>The javadoc information for the library is 
 available <a href='api/index.html'>here</a></p>
@@ -94,7 +78,7 @@ jSplitPane1.setLeftComponent(glassPane);</pre>
 <pre>glassPane.getGlassPane().setVisible(booleanValue);</pre>
 
 
-<h2><a name='behaviour'>Default behaviour</a></h2>
+<h2><a id='behaviour'>Default behaviour</a></h2>
 
 <p>By default, the content pane is a 
 <a href='http://java.sun.com/javase/6/docs/api/javax/swing/JPanel.html'>JPanel</a>,
@@ -109,7 +93,7 @@ the normal API to set other component, using the method
 <a href='api/net/coderazzi/glasspane/GlassedPane.html#setGlassPane(java.awt.Component)'>GlassedPane.setGlassPane</a></p>
 
 <p>The default glass pane merely blocks the user access to the content behind, and is displayed in a grayed semitransparent
-color. It is possible to define also the default color and degree of transparency, using system properties:
+  color. It is possible to define also the default color and degree of transparency, using system properties:</p>
 <ul><li>Change the default background, by defining the system property 
 <span class='mark'>&quot;net.coderazzi.glasspane.glasscolor&quot;</span>,
 defined as <a href='api/net/coderazzi/glasspane/GlassPane.html#GLASS_COLOR_PROPERTY'>GlassPane.GLASS_COLOR_PROPERTY</a></li>
@@ -117,11 +101,11 @@ defined as <a href='api/net/coderazzi/glasspane/GlassPane.html#GLASS_COLOR_PROPE
     <span class='mark'>&quot;net.coderazzi.glasspane.glasstransparency&quot;</span>, 
     defined as <a href='api/net/coderazzi/glasspane/GlassPane.html#GLASS_TRANSPARENCY_PROPERTY'>GlassPane.GLASS_TRANSPARENCY_PROPERTY</a></li>
 </ul>
-Alternatively, it is possible to just invoke 
-<a href='api/net/coderazzi/glasspane/GlassPane.html#setColor(java.awt.Color)'>GlassPane.setColor</a> on the GlassPane instance.
-</p>
+<p>Alternatively, it is possible to just invoke
+<a href='api/net/coderazzi/glasspane/GlassPane.html#setColor(java.awt.Color)'>GlassPane.setColor</a> on the GlassPane
+  instance.</p>
 
-<p>The library is provided with a second GlassPane, 
+  <p>The library is provided with a second GlassPane,
 <a href='api/net/coderazzi/glasspane/LabelGlassPane.html'>LabelGlassPane</a>, with adds a 
 <a href='http://www.j2ee.me/javase/6/docs/api/javax/swing/JLabel.html'>JLabel</a>, centered
 automatically in the GlassPane. It is possible to setup a message or an icon. By default, it will 
@@ -129,7 +113,7 @@ use the icon found on the system property
 <span class='mark'>&quot;net.coderazzi.glasspane.labelicon&quot;</span>, defined as
   <a href='api/net/coderazzi/glasspane/LabelGlassPane.html#GLASS_MESSAGE_ICON_PROPERTY'>LabelGlassPane.GLASS_MESSAGE_ICON_PROPERTY</a>.</p>
 
-<h2><a name='similar'>Similar functionality</a></h2>
+<h2><a id='similar'>Similar functionality</a></h2>
 
 <p>Before writting this component, I checked for existing implementations. I liked specially this one in 
 <a href='http://rabbit-hole.blogspot.com/2006/04/decoratingoverpainting-swing.html'>The Rabbit Hole</a>.
@@ -140,7 +124,7 @@ of TODOs inside discouraged me, together with the notion to have to implement th
 -not being able to just using a JLabel, with an icon / animated icon-.</p>
 
 
-<h2><a name='download'>Download</a></h2>
+<h2><a id='download'>Download</a></h2>
 
 <p>This component is available with the MIT open source license (see below its text).</p>
 
@@ -148,7 +132,7 @@ of TODOs inside discouraged me, together with the notion to have to implement th
     <li><a href='glasspane-1-0-0.zip'>glasspane-1-0-0.zip</a></li></ul>
 </li></ul>
 
-<h2><a name='license'>License</a></h2>
+<h2><a id='license'>License</a></h2>
 
 <p><span class='mark'>GlassPane</span> is available under the MIT license.</p>
 

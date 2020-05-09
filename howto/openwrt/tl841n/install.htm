@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -40,8 +40,8 @@ opkg install luci
 /etc/init.d/uhttpd start</pre>
 
 <p>
-    Once the uhttpd daemon is running, accessing <span class='mark'>http://192.168.1.1</span> on the web browser renders already some useful web pages to reconfigure the router. Time to install now openvpn: <pre>opkg install openvpn</pre>
-</p>
+    Once the uhttpd daemon is running, accessing <span class='mark'>http://192.168.1.1</span> on the web browser renders already some useful web pages to reconfigure the router. Time to install now openvpn:</p>
+     <pre>opkg install openvpn</pre>
 
 <p>
     But this fails. No such package available; the alternative is to install <span class='mark'>openvpn-nossl</span> (or the ssl variant), but it is just too much for this router: <span class='mark'>it only has 4 Mb flash memory, and that is barely enough for openWrt</span>.
@@ -52,10 +52,10 @@ opkg install luci
 </p>
 
 
-<h2><a name='build'>Build own OpenWRT image</a></h2>
+<h2><a id='build'>Build own OpenWRT image</a></h2>
 
 <p>
-    To compile the image, it is needed a case sensitive file system, so I did the compilation in Linux, following mostly the information found on the <a href='http://wiki.openwrt.org/doc/howto/build'OpenWrt wiki</a> and on this <a href='http://debblog.philkern.de/2012/10/how-to-maintain-openwrt-installation.html'>blog entry</a>.
+    To compile the image, it is needed a case sensitive file system, so I did the compilation in Linux, following mostly the information found on the <a href='http://wiki.openwrt.org/doc/howto/build'>OpenWrt wiki</a> and on this <a href='http://debblog.philkern.de/2012/10/how-to-maintain-openwrt-installation.html'>blog entry</a>.
 </p>
 
 <pre>#get the source code
