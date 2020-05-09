@@ -180,3 +180,7 @@ img.centered
 img.book-img {
 	background: white;
 }
+
+b {
+	font-weight: 400;
+}
