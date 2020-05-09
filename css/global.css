@@ -133,16 +133,21 @@ img.centered
 .timestamp
 {
     font-family: courier, monospace;
-    /*background: black;*/
-    color: #444;
+	color: #666;
 	font-size: 13px;
 	font-weight: 900;
 	text-align: right;
 }
 
-.timestamp_location
+.timestamp:before {
+	content:url('calendar.png');
+	padding-right: 4px;
+}
+
+.timestamp_update
 {
-	margin-right: 2em;
+	margin-right: .4em;
+	font-size: 10px;
 	font-style: italic;
 }
 

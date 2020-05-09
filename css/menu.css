@@ -33,10 +33,12 @@ ul.navlist li a {
 .navcontainer>ul.navlist li a { width: auto; }
 
 ul.navlist li.active a {
+	font-size: 110%;
+	color: black;
 	font-weight: 900;
 	border-top: 1px solid #aaa;
 	border-bottom: 1px solid #aaa;
-	color: #aa2222;
+	/*color: #aa2222;*/
 }
 
 ul.navlist li a:hover, ul.navlist li.active a:hover {
