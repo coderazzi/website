@@ -4,20 +4,20 @@
 	border-bottom: 1px solid #aaa;
 }
 .blog-entry  {
-	margin-left: -10px; 
+	margin-left: -10px;
 	margin-right: -10px; 
 	padding-top:60px;
 	padding-bottom:0;
 	background: white; /*#f7f7f7;*/
 	color: black;
 	text-align: left; 
-	font-size: 28px;
+	font-size: 20px;
 	font-weight: 900;
 }
 
 .blog-entry-date  { 
 	display: inline-block;
-	width: 12em;
+	width: 13em;
 	font-family: courier, monospace;
 	font-size: 14px;
 }
@@ -33,7 +33,7 @@ img.blog {
 	margin-right: 20px; 
 	margin-bottom: 10px; 
 	height:96px ; 
-	width:96px
+	width:96px;
 }
 
 img.blog_fix {

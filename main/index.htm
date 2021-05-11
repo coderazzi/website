@@ -9,6 +9,89 @@
  <div id='content'>
 
 
+     <p class="blog-entry"><span class="blog-entry-date">9th May 2021</span>CodeArtifact + Maven Idea plugin</p>
+
+     <p> <img src="codeartifact-maven/icon.svg" alt="codeartifact+maven icon" class="blog">In a new project, we
+         needed to publish artifacts to a repository in AWS, using CodeArtifact. Instructions to do so are very
+         <a href="https://docs.aws.amazon.com/codeartifact/latest/ug/maven-mvn.html">clear</a>, but they are a poor
+         fit when using an integrated environment as Intellij Idea.
+     </p>
+
+     <p>Basically, you would need to update an environment variable with an authorization token obtained by invoking
+         a aws cli command. After setting the environment, you would need to launch the IDE -from inside that
+         environment-. And as the token needs to be refreshed, it is needed to quit the
+         IDE and repeat the process every 12 hours. </p>
+
+     <p>The solution was easy: instead of referring in the maven settings file to an environment variable,
+         include there directly the received AWS token. And, to automate the process, better than using an independent
+         script, why not having a Intellij Idea plugin that implements exactly this?</p>
+
+     <p>This plugin is defined <a href="codeartifact-maven/index.htm">here</a>, already published in the public
+         Idea plugins repository, and available in <a href="https://github.com/coderazzi/codeartifact_maven">Github</a></p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">6th March 2021</span>TableFilter v5.5.3</p>
+
+     <p> <img src="images/tablefilter.png" alt="table filter icon" class="blog">New release for this
+         <a href='tablefilter/index.html'>Java library</a>, with a small patch covering a rare null pointer
+         exception.
+     </p>
+     <p> The source code and the issues management is now hosted in Github, and of course, the code has moved
+         from Mercurial to Git. It is a funny coincidence: I started using SVN for the version control, and
+         moved to Mercurial the 5th May 2010, using Google Code to host the repository. Exactly five years later,
+         the 5th May 2015, I had to move from Google Code to Bitbucket, and almost exactly other 5 years later,
+         the 7th May 2020, I have completed the migration from Bitbucket to Github. Which means ten years and two days
+         of good Mercurial support. Shame that Bitbucket is kicking it out...
+     </p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">20th February 2021</span>Recovering Touch Id on Macbook pro</p>
+
+     <p> <img src="images/macpro.png" alt="macbook pro icon" class="blog">In Summer 2019, my daughter gave me a badly
+         closed bottle of Fanta, with I placed in my laptop bag, together with my Macbook Pro. A short while later,
+         I learnt two things: that my bag was quite watertight and that the macbook was a well built machine that
+         had survived unscathed the Fanta puddle experience.
+     </p><p>
+         This happened during a flight to some holidays, where I used little or less the laptop, but eventually I
+         realized that my fingerprint was not recognized anymore. Somehow I linked both experiences together,
+         assuming that the liquid has affected / broken the T1 chip that handles the Touch Id. However, this seems
+         a faulty theory, as T1 is used for other things -like  driving the Touch bar' screen, which still worked fine.
+     </p><p>
+         I tried the possible <a href="https://windowsreport.com/mac/unable-complete-touch-id-setup/">options</a>
+         to get it working again. I could not remove existing fingerprints, resetting the NVRAM helped nothing, and
+         a problem reported by other users -removing Symantec Endpoint protection- was definitely not my problem.
+     </p><p>
+         The only unproven solution was reinstalling MacOs. I had bought my laptop with Sierra installed, I had
+         dismissed High Sierra and installed Mojave at some point, but didn't see any benefit on installing Catalina.
+         Now, I was 30 months late, and Big Sur was calling, so I decided to go the hard way and install it from scratch,
+         as a last try to get Touch Id working again.
+     </p><p>
+          And it did it. I am happy to have Touch Id working again, but dismayed to know that it can fail again -Fanta
+         likely notwithstanding, and there is no obvious way to get it working again, except for a full re-installation.
+     </p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">10th May 2020</span>Setting up Ubuntu, 20/04 edition</p>
+
+     <p> <img src="images/configuration.jpg" alt="Ubuntu configuration" class="blog">For the LTS editions of Ubuntu,
+         I prefer to start with a new slate, copying my SSD disk to some external backup, and performing a destructive
+         installation, erasing the whole SSD. And as this means having to reconfigure Ubuntu completely, I keep
+         my record of all the steps I take</p>
+
+     <p>I have updated <a href="linux/ubuntu/my_setup.htm">my Ubuntu setup</a> to list these steps: how to configure
+         workspaces, how to define my shortcuts, how to make Guake start at runtime, etc. </p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">9th May2020</span>New optmatch version, first non beta</p>
+
+     <p><img src='images/python.jpg' alt='python' class='blog'/>Version 1.0.0 of
+         <a href="python/optmatch/index.htm">optmatch</a> is now available on pypi.</p>
+
+     <p>After two years without issues, I took advantage of the need to update the documentation to include the
+      new references to Github hosting to update the version to non beta.</p>
+
+
+
      <p class="blog-entry"><span class="blog-entry-date">7th May 2020</span>Moving from Bitbucket</p>
 
      <p> <img src="images/bitbucket.png" alt="table filter icon" class="blog">Exactly five years ago, almost to the day,
