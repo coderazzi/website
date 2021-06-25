@@ -9,6 +9,90 @@
  <div id='content'>
 
 
+     <p class="blog-entry"><span class="blog-entry-date">26th June 2021</span>Corsair 280X Build</p>
+
+     <p> <img src="images/corsair280x.png" alt="corsair 280x case" class="blog">Last time I built my own computer
+         was in 2012. That was a quad core i3770 with 32 Gb that has served me well since then.
+         I do very little gaming (just Civ V) and most processing is handled in some remote machine,
+         so I haven't seen the need to upgrade to a newer machine.
+         But some operations start indeed to seem quite slow, and the PC can be noisy enough to be noticed as
+         soon as something requires some CPU power. Adding to this some problems with the video output,
+         I decided to get a new build.</p>
+
+     <p>Nothing fancy: a Ryzen 5600x, and favouring small cases, I went for a matx mobo, the Asrock B550M Pro4 on a
+         Corsair 280X box. Back in 2012, LianLi was the case to have, all brushed aluminium, high quality.
+         This time, I was rooting for the LianLi PC-011D mini, but I had already purchased the Corsair case for a
+         friend' build that finally hadn't happened, so I decided to use it for my build.</p>
+
+     <p>My previous build used a LianLi PC-V351 case, a small evolution of the PC-V350 that I had already used
+         previously. These are nice cases, but not nice cases to tinker with.
+         Opening it requires definitely a screw driver -6 screws to open any of the side panels-.
+         Reaching the hard drives case could be done without screwdrivers, but fighting the connection of a small fan
+         sitting behind. Any PCI card modification required opening the case totally, taking the motherboard out
+         -all wires out-, and re-building it. Nice case, but nightmarish.</p>
+
+     <p>The Corsair 280X is 40% bigger: just a bit wider, less deep, and full 10cm higher: it looks bigger, but just
+         slightly, until you start building the PC and realize how much space you have.
+         And how well is all organized, and how well built is the case. It includes two fans that are totally silent.
+     </p>
+
+     <p>
+         I had purchased a Noctua cooler to replace the Wraith Stealth cooler that comes with the Ryzen 5600X,
+         and thought initially on returning it: the default cooler has a distinct noise, but I thought that once
+         closed the case, with its fans, you would not hear it.
+         Then I mounted the Noctua NH-L12S, and I could not really know when the system was on or off,
+         even when the case was still open! Kudos as well to the power supply, the also silent be quiet! Pure Power 11.
+     </p>
+
+     <p>
+         The only thing that bummers me about the build is a detail on the motherboard:
+         the second M2 slot does not have all the lanes it should, so any PCI3 SSD you place there will run at lower
+         speeds. I bought a cheap NVMe - PCIe adapter for 14 euros, and my measures are:
+
+     <table class="basic-table">
+         <thead>
+         <tr>
+             <th class="tg-0lax"></th>
+             <th class="tg-0lax">Average read</th>
+             <th class="tg-0lax">Average write</th>
+             <th class="tg-0lax">Access time</th>
+         </tr>
+         </thead>
+         <tbody>
+         <tr>
+             <td class="tg-0lax">PCIe4 M2.1 slot</td>
+             <td class="tg-baqh">3.5 Gb/s</td>
+             <td class="tg-baqh">615.3 Mb/s</td>
+             <td class="tg-baqh">0.02 ms</td>
+         </tr>
+         <tr>
+             <td class="tg-0lax">PCIe3 M2.2 slot</td>
+             <td class="tg-baqh">1.6 Gb/s</td>
+             <td class="tg-baqh">615.3 Mb/s</td>
+             <td class="tg-baqh">0.02 ms</td>
+         </tr>
+         <tr>
+             <td class="tg-0lax">PCIe adapter</td>
+             <td class="tg-baqh">2.9 Gb/s</td>
+             <td class="tg-baqh">605.8 Mb/s</td>
+             <td class="tg-baqh">0.02 ms</td>
+         </tr>
+         </tbody>
+     </table>
+
+     </p>
+
+     <p>
+         So, same access time and average write, but definitely better using the additional adapter than the
+         M2.2 slot. Which is therefore useless.
+     </p>
+
+     <p>
+         The only doubt I have now is that the case is beautiful, easy to serve, but mostly empty. How better a
+         mini-itx build could have been...
+     </p>
+
+
      <p class="blog-entry"><span class="blog-entry-date">9th May 2021</span>CodeArtifact + Maven Idea plugin</p>
 
      <p> <img src="codeartifact-maven/icon.svg" alt="codeartifact+maven icon" class="blog">In a new project, we
