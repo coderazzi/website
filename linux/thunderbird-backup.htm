@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <title>Backing up a Thunderbird profile</title>
+ <link rel="stylesheet" type="text/css" href="../css/global.css">
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="thunderbird">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+ <p class='timestamp'>4th July 2021</p>
+<h1>Doing a backup of a thunderbird profile</h1>
+
+<img src='/images/thunderbird.png' class='right'/>
+
+	 <p>The first step is to locate the profile that you are using in Thunderbird.
+		 In Thunderbird, click on the <b>Help</b> menu, then <b>More troubleshooting information</b>: under
+		 <b>Profile Directory</b> a button <b>Open Directory</b> will show the right location.
+		 In my case, using snap, this looks as:
+		 <pre>~/snap/thunderbird/common/.thunderbird/coderazzi.default</pre>
+	 </p>
+
+	 <p>A complete backup of Thunderbird implies copying this folder, but, depending on your mailboxes,
+		 this can be rather large. If all your mail accounts are IMAP accounts, the messages exist on the remote
+		 server, and it is enough to backup the settings. Creating on a new computer a new profile with these
+		 settings would effectively provide you with a copy of the original configuration.
+	 </p>
+
+	 <p>To copy just the profile,
+		 <a href="http://kb.mozillazine.org/Transferring_data_to_a_new_profile_-_Thunderbird#Identify_what_you_want_to_salvage">this site</a>
+		 lists the files that must be copied. However, it seems a bit outdated, and I use usually just backup the
+		 following files (discarding currently *.mab user.js persdict.dat):</p>
+	 <pre>tar zcvf ~/thunder.tgz prefs.js cert9.db key4.db logins.json</pre>
+
+	 <p>To restore a full backup, the official way would be unzipping it under the .thunderbird folder
+		 (likely on a new PC), and then starting the profile manager:</p>
+
+	 <pre>thunderbird -profilemanager</pre>
+
+	 <p>Create here a new profile, checking the box 'Use the selected profile without asking at startup',
+	 	press Continue to enter any profile name of your choice, and press the 'Choose Folder' button to select the folder
+		 you just unzipped.</p>
+
+	 <p>In the case that you are setting up Thunderbird anew (again, likely on a new PC), the alternative is to just
+		 find the default profile directory, as detailed above, delete its content, and unzip directly the backed up files
+		 into that folder.</p>
+
+ </div>
+ </div>
+</body>
+</html>

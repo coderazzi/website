@@ -191,6 +191,7 @@
                 <item name='Mac Mini upgrade' file='linux/macmini2006/macmini.htm'/>
                 <item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
                 <item name='Dual NIC on Linux' file='linux/dual_nic_linux.htm'/>
+                <item name='Thunderbird backup' file='linux/thunderbird-backup.htm'/>
             </group>
         </group>
         <group name='KVM'>
