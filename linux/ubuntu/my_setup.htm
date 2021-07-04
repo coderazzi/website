@@ -31,31 +31,56 @@
                 updates during the installation and to install 3rd party software.</li>
 
             <li>Install basic applications from the command line:
-                <pre>sudo apt install -y gnome-tweaks dconf-editor guake vim curl exfat-utils exfat-fuse</pre>
+                <pre>sudo apt install -y gnome-tweaks git make dconf-editor guake vim curl exfat-utils exfat-fuse</pre>
             </li>
             <li>Install sensors applications, from the command line:
                 <pre>sudo apt install -y lm-sensors psensor</pre>
-                <pre>sensors-detect</pre>
+                <pre>sudo sensors-detect</pre>
+                <pre>/etc/init.d/kmod start</pre>
+            </li>
+            <li>Install additional applications from the command line:
+                <pre>sudo apt install virtualbox slack</pre>
             </li>
             <li>Install applications using the Ubuntu Software Center:
                 <ul>
                     <li>Authy</li>
                     <li>Gimp</li>
                     <li>Intellij Idea Ultimate</li>
-                    <li>KeePassXC</li>
+                    <li>KeePassXC (snap version)</li>
                     <li>LibreOffice</li>
+                    <li>Slack</li>
                     <li>Thunderbird</li>
                     <li>VLC</li>
                 </ul>
             </li>
             <li>Install applications using their own installers / instructions:
                 <ul>
-                    <li>Brave browser</li>
-                    <li>Chrome browser</li>
-                    <li>Opera browser</li>
-                    <li>Sublime text</li>
-                    <li>Truecrypt</li>
+                    <li><a="https://www.dropbox.com/install">Dropbox</a></li>
+                    <li><a href="https://brave.com/download/">Brave browser</a></li>
+                    <li><a href="https://www.google.com/chrome/">Chrome browser</a></li>
+                    <li><a href="https://www.opera.com/download">Opera browser</a></li>
+                    <li><a href="https://vivaldi.com/download/">Vivaldi browser</a></li>
+                    <li><a href="https://www.sublimetext.com/3">Sublime text 3</a>. Once opened, it will ask to
+                    download a new version: answer no, then enter the licence for Sublime 3, go to preferences / settings
+                    and enter <b>{"update_check": false}</b> in the user settings</li>
+                    <li>Truecrypt : no link offered, I have my own debian package download from safer times...</li>
                 </ul>
+            </li>
+        </ul>
+
+        <h2>Nvidia</h2>
+
+        <p>I keep using either Intel embedded GPUs or Nvidia cards. For the computers with Nvidia cards,
+            I find myself sometimes in a 640x480 resolution. This normally requires re-installing the nvidia driver
+            (which I normally install instead of the nouveau driver). The reinstallation can be done:
+        </p>
+        <ul>
+            <li>Opening the "Additional Drivers" application, going to "Additional Drivers" and selecting the
+                    preferred option (difficult to see in a 640x480 resolution).
+            </li>
+            <li>
+                In a terminal window, issuing: <code>sudo apt-get install nvidia-driver-460</code>
+                (or whichever is the current version)
             </li>
         </ul>
 
@@ -68,10 +93,10 @@
                 then go to the Regional Formats tab in the application and choose English (Ireland),
                 then apply system-wide. This step will require a logout / login.</li>
 
-            <li><b>Desktop configuration</b>: open <b>Teaks</b> application
+            <li><b>Desktop configuration</b>: open <b>Tweaks</b> application
                 <ul>
-                    <li>Extensions - <b>desktop icons</b:
-                        do not show, and hide as well personal folder and trash</li>
+                    <li>Extensions - <b>desktop icons</b>: set to off, and press the configuration button:
+                        hide  personal folder and trash</li>
                     <li><b>Workspaces</b>: Disable dynamic workspaces, enable 4 static workspaces</li>
                     <li><b>Keyboard and Mouse</b>:
                         <ul>
@@ -79,9 +104,9 @@
                                 use it better for switching workspaces, as it is done on Mac</li>
                             <li>Additional layout options:
                                 <ul>
-                                    <li><b>Caps lock behaviour</b>: Caps lock is disabled</li>
                                     <li><b>Miscellaneous compatibility options</b>:
                                         Numeric Keypad always enter digits</li>
+                                    <li><b>Caps lock behaviour</b>: Caps lock is disabled (not the Disable option)</li>
                                 </ul>
                             </li>
                         </ul>
@@ -100,11 +125,21 @@
                 </ul>
             </li>
 
+            <li><b>Disable edges tiling (windows snapping / resizing when brought to the edges)</b>:
+                <ul>
+                    <li>gsettings set org.gnome.mutter edge-tiling false</li>
+                    <li>gsettings set org.gnome.shell.overrides edge-tiling false</li>
+                </ul>
+            </li>
+
             <li>Open <b>settings</b> application.
                 <ul>
                     <li>Appearance: Dock : Autohide</li>
                     <li>Search : Only enable files and calculator</li>
                     <li>Power : Power Button Action : Suspend</li>
+                    <li>Power: Power saving: 4 minutes</li>
+                    <li>Privacy / Screen Lock / Blank screen delay: 4 minutes</li>
+                    <li>Privacy / Screen Lock / Automatic Screen lock delay: 30 minutes</li>
                     <li>Keyboard shorcuts
                         <ul>
                             <li>Home folder: Windows E</li>
@@ -132,9 +167,9 @@
                     <li>Remove from Nautilus entries to Documents, Music, Pictures, Videos and Desktop:
                         Open the file <b>~/.config/user-dirs.dirs</b>, and modify all entries that should not
                         appear. For example, to have only a DOWNLOAD folder, this file should have
-                        the following content:
+                        the following content (note that XDG_DESKTOP_DIR keeps its original value):
                         <pre>XDG_DOWNLOAD_DIR="$HOME/Downloads"
-XDG_DESKTOP_DIR="$HOME/"
+XDG_DESKTOP_DIR="$HOME/Desktop"
 XDG_TEMPLATES_DIR="$HOME/"
 XDG_PUBLICSHARE_DIR="$HOME/"
 XDG_DOCUMENTS_DIR="$HOME/"
@@ -144,8 +179,7 @@ XDG_VIDEOS_DIR="$HOME/"</pre>
                     </li>
                     <li>Show files as list in nautilus, in small size:
                         <pre>gsettings set org.gnome.nautilus.preferences default-folder-viewer list-view
-gsettings set org.gnome.nautilus.list-view default-zoom-level small
-killall nautilus</pre>
+gsettings set org.gnome.nautilus.list-view default-zoom-level small</pre>
                     </li>
                     <li>It is needed to reset nautilus:
                         <pre>killall nautilus</pre>
@@ -159,7 +193,8 @@ killall nautilus</pre>
                 Guake as name, and /usr/bin/guake as command</li>
 
             <li>On a Mac keyboard, avoid having to press Fn to key F1 to F12:
-                <pre>sudo -s
+                <pre>
+    sudo -s
     echo options hid_apple fnmode=2 > /etc/modprobe.d/hid_apple.conf
     update-initramfs -u</pre>
 
@@ -177,23 +212,86 @@ gnome-extensions enable hidetopbar@mathieu.bidon.ca
             </li>
         </ul>
 
-        <h2>Final steps</h2>
+        <h2>Browsers configuration</h2>
 
         <ul>
-            <li><b>Block notifications across the browsers</b>:
+            <li><b>Block notifications across the browsers, and maximize privacy</b>:
                 <ul>
-                    <li>Chrome: settings / Privacy and security / Notifications: set off
-                        <b>Sites can ask to send notifications</b></li>
-                    <li>Firefox: preferences / Privacy and security / Permissions: Notifications: set the chekbox
-                        <b>Block new requests asking to allow notifications</b>, then save the changes</li>
-                    <li>Opera: enter the URL: opera://settings/content/notifications , then set
-                        <b>Sites can ask to send notifications</b> off</li>
-                    <li>Brave: settings / scroll down to Advanced and press on Advanced / Privacy and security /
-                            Site and Shield settings / Notifications: set off
-                        <b>Sites can ask to send notifications</b></li>
+                    <li>Brave:
+                        <ul>
+                            <li>Settings:
+                                <ul>
+                                    <li>Sync: activate it across devices, syncing bookmarks, extensions, settings and theme</li>
+                                    <li>Shields: Trackers & ads blocking: aggressive</li>
+                                    <li>Social media blocking: disable Facebook, Linkedin</li>
+                                    <li>Additional settings: autofill: passwords: do not offer to save passwords</li>
+                                </ul>
+                            </li>
+                            <li>Extensions: include uBlocker (Adblock tool for Chrome)</li>
+                            <li>settings / Additional settings / Privacy and security /
+                                Site and Shield settings / Notifications: set off
+                                <b>Sites can ask to send notifications</b>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Chrome: enable synchronization using account.
+                        <ul>
+                            <li>Settings:
+                                <ul>
+                                    <li>autofill / passwords: do not offer to save passwords</li>
+                                    <li>security / safe browsing: standard protection</li>
+                                    <li>privacy and security / Site Settings / Notifications:
+                                        <b>Don't allow sites to send notifications</b>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Firefox: enable synchronization with firefox login.
+                        <ul>
+                            <li>Enable bookmarks: mouse right-click at the right of the URL bar, select
+                            Bookmark toolbar, click on Always Show</li>
+                            <li>Settings / Privacy and security:
+                                <ul>
+                                    <li>Enhanced tracking protection: Strict</li>
+                                    <li>Logins and passwords: uncheck Ask to save logins and passwords for websites</li>
+                                    <li>Permissions: Notifications: set the checkbox
+                                        <b>Block new requests asking to allow notifications</b>, then save the changes
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Opera:
+                        <ul>
+                            <li>Advanced settings: Privacy protection</li>
+                            <ul>
+                                <li>Block ads</li>
+                                <li>Block trackers</li>
+                            </ul>
+                            <li>enter the URL: opera://settings/content/notifications , then set
+                                <b>Sites can ask to send notifications</b> off
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Vivaldi:
+                        <ul>
+                            <li>Webpages, notifications: block</li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         </ul>
+
+        <h2>SSH settings</h2>
+
+        <p>Basically, follow these <a href="/howto/security/ssh_keys.html">instructions</a></p>
+        <pre>ssh-keygen -t rsa -b 4096</pre>
+        <p>Then copy the public id in the ~/.ssh/authorized_keys files of the reachable hosts.</p>
+
+        <p>I use different keys for other services, like git. To generate any additional key with a comment</p>
+        <pre>ssh-keygen -t rsa -b 4096 -f hg_id_rsa -C coderazzi@summer-git,hg</pre>
+
 
         <p>Finally, reboot the system for all configuration changes to take place.</p>
     </div>
