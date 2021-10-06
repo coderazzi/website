@@ -9,6 +9,63 @@
  <div id='content'>
 
 
+     <p class="blog-entry"><span class="blog-entry-date">6th October 2021</span>Virtualbox on Macbook Pro</p>
+
+     <p><img src="images/vbox.png" alt="virtualbox icon" class="blog">A client requires that I access my remote
+         Windows machine through Citrix. At home I only have Linux or Mac computers, and whenever I login into Citrix,
+         and from there launch the remote desktop, the keyboard mapping is just broken. Entering simple characters like
+         a semicolon is a matter of trying the key several times: it will display a different character, until
+         eventually the semicolon appears. You develop quite an artistic to use copy and paste...</p>
+
+     <p>However, if I use a Windows virtual machine in Linux, the mapping works. Mind you, it implies that I am using
+         a virtual machine to access some cloud bridge that links me to my remote desktop. Beautiful.</p>
+
+     <p>But using a Windows virtual machine in the Macbook, using virtualbox, shows abysmal performance. Plus, the
+         screen will appear very tiny, requiring upscaling it (Virtualbox settings, Display, Scale factor). The best
+         solution I have found to overcome this is executing Virtualbox in
+         <a href="https://mkyong.com/mac/virtualbox-running-slow-and-lag-on-macos-macbook-pro/">low resolution</a>:
+     </p>
+
+     <ol>
+         <li>Open Finder, then go to Applications and select VirtualBox</li>
+         <li>Right clicks VirtualBox and select <b>Show Package Contents</b></li>
+         <li>Select now VirtualBoxVM Under Contents/Resources</li>
+         <li>Right click VirtualBoxVM and select <b>Get Info</b></li>
+         <li>Check the checkbox <b>Open in Low Resolution</b></li>
+    </ol>
+
+     <p>Unfortunately, it affects all the virtual machines, and the display looks definitely worse,
+         but the performance becomes really acceptable. I get that using Parallels or Vmware fusion would be a
+         more performant solution, at a price (plus I could not transfer my Windows license).
+
+
+     <p class="blog-entry"><span class="blog-entry-date">19th Sep 2021</span>Cancelling tasks</p>
+
+     <p><img src="codeartifact-maven/icon.svg" alt="codeartifact+maven icon" class="blog">When I developed
+         my first Intellij Idea plugin <a href="codeartifact-maven/index.htm">here</a>, I did the usual customary checks,
+         and, pressed to share it with my team, I uploaded it to the Idea market place</p>
+
+     <p>The logic of the plugin is quite simple: read a file, obtain a token by invoking the aws binary with
+         specified parameters, and then updating the initial file. These tasks are executed normally very quickly, but
+         the modal dialog that shows the progress included a Cancel button, which I failed to handle. My initial thought
+         was that the Idea runtime would just cancel the progress and stop my background thread. Which is definitely
+         wrong: Java had initially a thread.stop method which was quickly deprecated. Although it can be used, it should
+         not be used, and the Idea runtime definitely would be quite poor if it used it.
+     </p>
+
+     <p>So Intellij Idea does the obvious: sets a flag if cancel is pressed, and it is the thread's task to check it
+         regularly. Definitely a better solution, although the resulting code is uglier, invoking at almost every step
+         a isCancelled() method.
+     </p>
+
+     <p>And once I had to invest some time to have this running, I decided to decorate the plugin: in my rush, the
+         initial version was just a bunch of labels + input fields. The presence of an image make it somehow better
+         (or so I believe):
+     </p>
+     <img class='centered' src="codeartifact-maven/window.png">
+
+
+
      <p class="blog-entry"><span class="blog-entry-date">4th July 2021</span>Backing up Thunderbird</p>
 
      <p> <img src="images/thunderbird.png" alt="thunderbird icon" class="blog">Each time aI setup a new
