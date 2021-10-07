@@ -9,6 +9,43 @@
  <div id='content'>
 
 
+     <p class="blog-entry"><span class="blog-entry-date">7th October 2021</span>sudo docker cp</p>
+
+     <p><img src="images/docker.svg" alt="docker icon" class="blog">Last time (I hope) that the command</p>
+
+     <pre>sudo docker cp</pre>
+
+     <p>bites me. To access docker I need sudo access, and the files are copied in the target folder, owned by root.
+         Not only I cannot likely access them, but if any folder within does not have a+w permissions, I cannot remove
+         them either, as my sudo access is only limited.
+     </p>
+
+     <p>Thanks to this <a href="https://stackoverflow.com/questions/46613326/file-ownership-after-docker-cp/52446394">stackoverflow</a>
+        link, I can use now instead the following python script to just copy from container source to host target:</p>
+
+     <pre>
+from subprocess import Popen, PIPE, CalledProcessError
+import sys
+import tarfile
+
+def main(source, target_folder):
+    export_args = ['sudo', 'docker', 'cp', source, '-']
+    exporter = Popen(export_args, stdout=PIPE)
+    tar_file = tarfile.open(fileobj=exporter.stdout, mode='r|')
+    tar_file.extractall(target_folder, members=exclude_root(tar_file))
+    exporter.wait()
+    if exporter.returncode:
+        raise CalledProcessError(exporter.returncode, export_args)
+
+def exclude_root(tarinfos):
+    for tarinfo in tarinfos:
+        print(tarinfo.name)
+        if tarinfo.name != '.':
+            tarinfo.mode |= 0o600
+            yield tarinfo
+
+main(sys.argv[1], sys.argv[2])</pre>
+
      <p class="blog-entry"><span class="blog-entry-date">6th October 2021</span>Virtualbox on Macbook Pro</p>
 
      <p><img src="images/vbox.png" alt="virtualbox icon" class="blog">A client requires that I access my remote
@@ -36,7 +73,18 @@
 
      <p>Unfortunately, it affects all the virtual machines, and the display looks definitely worse,
          but the performance becomes really acceptable. I get that using Parallels or Vmware fusion would be a
-         more performant solution, at a price (plus I could not transfer my Windows license).
+         more performant solution, at a price (plus I could not transfer my Windows license).</p>
+
+     <p>A detail that still killed me was I needed Windows just to launch the remote desktop in Citrix. But inside Citrix,
+         ALT+TAB would just show me the processes in Windows, not those in Citrix. Likewise, all hotkeys would be
+         captured by the Windows virtual machine, rendering them mostly useless.
+         Citrix to the <a href="https://support.citrix.com/article/CTX232298">rescue</a>: open regedit in the Windows
+         virtual machine and set the value <b>Remote</b> in the following two keys:
+         <ul>
+            <li>HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Citrix\ICA Client\Engine\Lockdown Profiles\All Regions\Lockdown\Virtual Channels\Keyboard</li>
+            <li>HKEY_CURRENT_USER\SOFTWARE\Citrix\ICAClient\Engine\Lockdown Profiles\All Regions\Lockdown\Virtual Channels\Keyboard\ </li>
+        </ul>
+     </p>
 
 
      <p class="blog-entry"><span class="blog-entry-date">19th Sep 2021</span>Cancelling tasks</p>
@@ -758,7 +806,7 @@ rm -Rf iso VBoxGuestAdditions_5.0.16.iso</pre>
      <p> <img src="images/rclone.jpg" alt="rclone" class="blog"> A few years ago, I setup a poor man backup system for a
          site using <b>rsync</b> and <a href='https://www.dropbox.com/install?os=lnx'>Dropbox</a>.
          Eventually, the database and associated files required more than 2 Gb, and still following the poor man habits,
-         I had a look at <a href="https://www.google.com/drive/>"gdrive</a>; unfortunately, Google does not have
+         I had a look at <a href="https://www.google.com/drive/>"gdrive</p>; unfortunately, Google does not have
          an official headless linux client.
      </p>
      <p>
