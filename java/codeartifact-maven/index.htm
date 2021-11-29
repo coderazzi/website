@@ -37,7 +37,8 @@
   </pre>
 
   <p>The token CODEARTIFACT_AUTH_TOKEN needs to be refreshed every 12 hours (by default) by doing:</p>
-  <pre>export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain DOMAIN --domain-owner DOMAIN_OWNER --query authorizationToken --output text`</pre>
+  <pre>export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain DOMAIN \
+      --domain-owner DOMAIN_OWNER --query authorizationToken --output text`</pre>
 
   <p>After issuing the previous command, the environment that executes the command has authorized access to CodeCommit</p>
 
@@ -69,25 +70,42 @@
 
  <h2>Installation</h2>
 
-     <p>Plugin available in Intellij Idea public plugin repository, as CodeArtifact+Maven</p>
+     <p>The <a href="https://plugins.jetbrains.com/plugin/16777-aws-codeartifact--maven">plugin</a>
+         is available in Intellij Idea public plugin repository, as CodeArtifact+Maven.</p>
 
  <h2>Usage</h2>
 
   <p>After installation, a menu entry appear under Tools: <b>Generate AWS CodeArtifact credentials for Maven</b></p>
 
   <p>When selected, a window appears to enter the required details:</p>
-  <img class='centered' src="window.png">
+  <img class='centered' src="new-window.png">
   <ul>
    <li><b>Domain</b>: the domain in AWS</li>
    <li><b>Domain Owner</b>: the account owner, something like 023174738914</li>
-   <li><b>Maven: server id:</b> the server name provided in your maven settings file -as following the instructions from AWS-</li>
-   <li><b>Maven: settings file:</b> the location of the maven settings file, usually under ~/.m2</li>
+   <li><b>Maven server id:</b> the server name provided in your maven settings file -as following the instructions from AWS-.
+       Starting on version 2.0, this is a dropdown menu, pre-filled with the values obtained from the maven settings file:
+       it extracts all the servers where the username is <b>aws</b>
+   </li>
+   <li><b>Maven settings file</b>: the location of the maven settings file, usually under ~/.m2</li>
    <li><b>AWS cli path</b>: the location of the aws executable, cabe specified as aws if it can be found in the path</li>
   </ul>
 
   <p>The button Generate credentials will initiate the requests of a token to AWS and its inclusion in the maven settings file</p>
 
-  </div>
+     <h2>Versions</h2>
+     <ul>
+         <li>Version 2.0.1 : 27th Nov 2021: Removed use of deprecated API, improved dialog layout.</li>
+         <li>Version 2.0.0 : 24th Nov 2021: Changed GUI to use dropdowns with serverIds extracted from maven settings file.</li>
+         <li>Version 1.1.1 : 23rd Sep 2021: solved bug: "Do not request resource from classloader using path with leading slash".</li>
+         <li>Version 1.1.0 : 19th Sep 2021: proper implementation of Cancel button.</li>
+         <li>Version 1.0.5 : 13th May 2021: corrected html tags on plugin description and readme.md files</li>
+         <li>Version 1.0.4 : 12th May 2021: removed missing image from plugin description.</li>
+         <li>Version 1.0.3 : 11th May 2021: compiled with JDK.</li>
+         <li>Version 1.0.2 : 10th May 2021: changed name to prefix it with AWS, to facilitate searches.</li>
+         <li>Version 1.0.1 : 10th May 2021: added AWS cli path</li>
+     </ul>
+
+ </div>
  </div>
 </body>
 </html>
