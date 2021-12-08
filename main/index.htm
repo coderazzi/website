@@ -9,16 +9,34 @@
  <div id='content'>
 
 
-     <p class="blog-entry"><span class="blog-entry-date">29th Nov 2021</span>Updated plugin</p>
+     <p class="blog-entry"><span class="blog-entry-date">8th Dec 2021</span>Windows: Git pull error on ssh-rsa</p>
 
-     <p><img src="codeartifact-maven/icon.svg" alt="codeartifact+maven icon" class="blog">Update to the
-         <a href="codeartifact-maven/index.htm">AWS Coderartifact - maven Intellij Idea plugin</a>,
-         to support multiple repositories.</p>
+     <p><img src="images/ssh.png" alt="ssh icon" class="blog">Trying to update today my AWS CodeCommit repository in
+     my Windows virtual machine suddenly stopped, with the following error:
+         <pre>Unable to negotiate with 52.94.48.161 port 22: no matching host key type found.
+Their offer: ssh-rsa
+fatal: Could not read from remote repository.
 
-     <p>The server ids are now automatically extracted from the maven settings file, using the servers whose
-         associated username is <b>aws</b>.</p>
+Please make sure you have the correct access rights
+and the repository exists.</pre>
+     </p>
 
-     <img class='centered' src="codeartifact-maven/new-window.png">
+     <p>The access is done via ssh, so I thought there was an error on my .ssh/config file, or perhaps I had updated
+     my ssh key in AWS and forgotten to download it to this box. After many checks, everything was fine, yet I couldn't
+     git pull.</p>
+
+     <p><a href="https://stackoverflow.com/questions/69864565/unable-to-negotiate-with-aws-codecommit-no-matching-host-key-type-found">
+         Stack overflow</a> had the solution -although due to its formatting, the solution was still not clear:
+         it was needed to change the .ssh/config entry to look like:</p>
+
+     <pre>Host git-codecommit.*.amazonaws.com
+  IdentityFile ~/.ssh/aws
+  HostKeyAlgorithms +ssh-rsa
+  PubkeyAcceptedKeyTypes +ssh-rsa
+  User xxxxxx
+     </pre>
+
+
 
 
 
