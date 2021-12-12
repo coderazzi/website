@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+
+<html>
+<head>
+    <title>Openapi 4 AWS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <link rel="stylesheet" type="text/css" href="../css/global.css">
+    <meta name="Description" content="Openapi 4 AWS">
+    <meta name="Keywords" content="openapi aws maven">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class="timestamp">12th Dec 2021</p>
+        <h1 id="openapi-4-aws">Openapi 4 AWS</h1>
+            <ul>
+                <li>Website: <a href="https://coderazzi.net/openapi4aws">https://coderazzi.net/openapi4aws</a></li>
+                <li>Github: <a href="https://github.com/coderazzi/openapi4aws">https://github.com/coderazzi/openapi4aws</a></li>
+                <li>License: MIT license</li>
+            </ul>
+            <p>This is utility to enrich an openapi specification with information specific for the AWS API Gateway.
+                It allows defining route integrations and authorizers to do automatic (re-)imports in API Gateway.</p>
+            <p>The openapi specification is extended on two parts:</p>
+            <ul>
+                <li>security: optionally, adding one or more authorizers.</li>
+                <li>paths: extending each method with the associated authorizer and defining an endpoint.</li>
+            </ul>
+            <p>The input to this utility is passed as parameters:</p>
+            <h2 id="security-authorizers">Security / Authorizers</h2>
+            <p>To specify an authorizer, use the following mandatory parameters:</p>
+            <ul>
+                <li><strong>security.name</strong>: name of the authorizer</li>
+                <li><strong>security.audience</strong>: comma separated list of audiences for this authorizer.</li>
+                <li><strong>security.issuer</strong></li>
+            </ul>
+            <p>The following two parameters are currently optional:</p>
+            <ul>
+                <li><em>security.type=<strong>oauth2</strong></em>: currently, it can be only defined as &quot;oauth2&quot;.</li>
+                <li><em>security.authorizer_type=<strong>jwt</strong></em>: currently, it can be only defined as &quot;jwt&quot;.
+                </li>
+            </ul>
+            <p>Multiple authorizers can be defined using a comma separated list in <strong>security.name</strong>, i.e.:</p>
+            <pre>security.name=authorizer1, authorizer2</pre>
+
+            <p>It is possible then to specify a different parameter for each authorizer using the syntax:</p>
+            <ul>
+                <li><strong>security.audience.<em>SECURITY_NAME</em></strong>=audience</li>
+                <li><strong>security.issuer.<em>SECURITY_NAME</em></strong>=issuer</li>
+            </ul>
+            <h2 id="paths-integrations">Paths / Integrations</h2>
+            <p>To define routes, the syntax is:</p>
+            <ul>
+                <li><strong>path.<em>PATH</em></strong>=full_uri[,security_name,scopes]*</li>
+            </ul>
+            <p>For example:</p>
+            <pre>path.user.post=http://3.64.241.104:12121/user/post</pre>
+
+            <p>This will define an endpoint for the route /user/post, using no security.
+                Alternatively, security plus scopes can be specified:</p>
+                <pre>path.user.post=http://3.64.241.104:12121user/post,authorizer1,user.email,user.id</pre>
+
+            <p>In this case, it uses the authorizer with name &quot;authorizer1&quot;, with scopes &quot;user.email&quot;
+                and &quot;user.id&quot;</p>
+            <h2 id="paths-integrations-using-tags">Paths / Integrations Using tags</h2>
+            <p>A better option to define integrations is defining openapi tags associated for that path,
+                and using then the following parameters:</p>
+            <ul>
+                <li><strong>specification.<em>TAG</em></strong>=uri[,security_name,scopes]*</li>
+            </ul>
+            <p>For example, if a route <em>/user/post</em> has an associated tag <em>Frontend</em>, and we define:</p>
+            <pre>specification.Frontend=http://3.64.241.105:12121</pre>
+
+            <p>This path will be extended to use the endpoint: <code>http://3.64.241.105:12121/user/post</code></p>
+            <h2 id="versions">Versions</h2>
+            <ul>
+                <li>1.0 : 12th December 2021.</li>
+            </ul>
+
+    </div>
+</div>
+</body>

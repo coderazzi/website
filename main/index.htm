@@ -9,6 +9,26 @@
  <div id='content'>
 
 
+     <p class="blog-entry"><span class="blog-entry-date">12th Dec 2021</span>OpenAPI for AWS</p>
+
+     <p><img src="images/openapi4aws.png" alt="open4aws icon" class="blog">I am working on a project where we define
+         the interfaces of all microservices using Swagger, and then generate the API gateway specification
+         dynamically. AWS allows importing an openapi specification to define an API gateway, and it supports
+         specific AWS directives to define endpoints, and authorizers (security). As this information is dynamic
+         (mainly the endpoints), we do not want to add it to the otherwise static microservices definitions, but
+         add it to the final specification at some later stage.</p>
+
+     <p>Here it comes a new utility, <a href="openapi4aws/index.html">openapi4aws</a> that does exactly that: it
+         requires one or more files to update and a definition of the authorizers and all possible endpoints, and
+         overwrites those files to include the full AWS information. This way, it is possible to re-import the
+         specification to a working API gateway without having to manually / procedurally define its integration
+         with the backend implementation</p>
+
+     <p>It is available in maven central, and the source is available in Github with an open source MIT license.</p>
+
+
+
+
      <p class="blog-entry"><span class="blog-entry-date">8th Dec 2021</span>Windows: Git pull error on ssh-rsa</p>
 
      <p><img src="images/ssh.png" alt="ssh icon" class="blog">Trying to update today my AWS CodeCommit repository in
@@ -26,14 +46,10 @@ and the repository exists.</pre>
      git pull.</p>
 
      <p><a href="https://stackoverflow.com/questions/69864565/unable-to-negotiate-with-aws-codecommit-no-matching-host-key-type-found">
-         Stack overflow</a> had the solution -although due to its formatting, the solution was still not clear:
-         it was needed to change the .ssh/config entry to look like:</p>
+         Stack overflow</a> had the solution, it was needed to change the .ssh/config entry to look like:</p>
 
-     <pre>Host git-codecommit.*.amazonaws.com
-  IdentityFile ~/.ssh/aws
-  HostKeyAlgorithms +ssh-rsa
-  PubkeyAcceptedKeyTypes +ssh-rsa
-  User xxxxxx
+     <pre>
+         
      </pre>
 
 
