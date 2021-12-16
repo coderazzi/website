@@ -15,6 +15,7 @@
 
         <p class="timestamp">12th Dec 2021</p>
         <h1 id="openapi-4-aws">Openapi 4 AWS</h1>
+            <img src="./openapi4aws.svg" class="right" width="180px" height="180px">
             <ul>
                 <li>Website: <a href="https://coderazzi.net/openapi4aws">https://coderazzi.net/openapi4aws</a></li>
                 <li>Github: <a href="https://github.com/coderazzi/openapi4aws">https://github.com/coderazzi/openapi4aws</a></li>
@@ -31,34 +32,36 @@
             <h2 id="security-authorizers">Security / Authorizers</h2>
             <p>To specify an authorizer, use the following mandatory parameters:</p>
             <ul>
-                <li><strong>security.name</strong>: name of the authorizer</li>
-                <li><strong>security.audience</strong>: comma separated list of audiences for this authorizer.</li>
-                <li><strong>security.issuer</strong></li>
+                <li><b>authorizer.name</b>: name of the authorizer</li>
+                <li><b>authorizer.identity-source</b>: header containing the authorization, like: $request.header.Authorization</li>
+                <li><b>authorizer.audience</b>: comma separated list of audiences for this authorizer.</li>
+                <li><b>authorizer.issuer</b></li>
             </ul>
             <p>The following two parameters are currently optional:</p>
             <ul>
-                <li><em>security.type=<strong>oauth2</strong></em>: currently, it can be only defined as &quot;oauth2&quot;.</li>
-                <li><em>security.authorizer_type=<strong>jwt</strong></em>: currently, it can be only defined as &quot;jwt&quot;.
+                <li><em>authorizer.authorization-type=<b>oauth2</b></em>: currently, it can be only defined as &quot;oauth2&quot;.</li>
+                <li><em>authorizer.type=<b>jwt</b></em>: currently, it can be only defined as &quot;jwt&quot;.
                 </li>
             </ul>
-            <p>Multiple authorizers can be defined using a comma separated list in <strong>security.name</strong>, i.e.:</p>
-            <pre>security.name=authorizer1, authorizer2</pre>
+            <p>Multiple authorizers can be defined using a comma separated list in <b>authorizer.name</b>, i.e.:</p>
+            <pre>authorizer.name=authorizer1, authorizer2</pre>
 
             <p>It is possible then to specify a different parameter for each authorizer using the syntax:</p>
             <ul>
-                <li><strong>security.audience.<em>SECURITY_NAME</em></strong>=audience</li>
-                <li><strong>security.issuer.<em>SECURITY_NAME</em></strong>=issuer</li>
+                <li><b>authorizer.audience.<em>AUTHORIZER_NAME</em></b>=audience</li>
+                <li><b>authorizer.issuer.<em>AUTHORIZER_NAME</em></b>=issuer</li>
             </ul>
+
             <h2 id="paths-integrations">Paths / Integrations</h2>
             <p>To define routes, the syntax is:</p>
             <ul>
-                <li><strong>path.<em>PATH</em></strong>=full_uri[,security_name,scopes]*</li>
+                <li><b>path.<em>PATH</em></b>=full_uri[,authorizer_name,scopes]*</li>
             </ul>
             <p>For example:</p>
             <pre>path.user.post=http://3.64.241.104:12121/user/post</pre>
 
-            <p>This will define an endpoint for the route /user/post, using no security.
-                Alternatively, security plus scopes can be specified:</p>
+            <p>This will define an endpoint for the route /user/post, using no authorizers.
+                Alternatively, authorizer plus scopes can be specified:</p>
                 <pre>path.user.post=http://3.64.241.104:12121user/post,authorizer1,user.email,user.id</pre>
 
             <p>In this case, it uses the authorizer with name &quot;authorizer1&quot;, with scopes &quot;user.email&quot;
@@ -67,15 +70,30 @@
             <p>A better option to define integrations is defining openapi tags associated for that path,
                 and using then the following parameters:</p>
             <ul>
-                <li><strong>specification.<em>TAG</em></strong>=uri[,security_name,scopes]*</li>
+                <li><b>tag.<em>TAG</em></b>=uri[,authorizer_name,scopes]*</li>
             </ul>
             <p>For example, if a route <em>/user/post</em> has an associated tag <em>Frontend</em>, and we define:</p>
-            <pre>specification.Frontend=http://3.64.241.105:12121</pre>
+            <pre>tag.Frontend=http://3.64.241.105:12121</pre>
 
             <p>This path will be extended to use the endpoint: <code>http://3.64.241.105:12121/user/post</code></p>
+
+            <h2 id="defining-input-output">Defining input / output</h2>
+
+            <p>Three parameters manage the input / output tasks:</p>
+            <ul>
+                <li><b>filename</b>: allows to specify the input files to process, and it is possible to repeat this
+                parameter multiple times. It is an error if the designed filename does not exist.</li>
+                <li><b>glob</b>: which supports specifying the input using filename patterns.
+                It is not an error if this pattern matches no names in the file system.</li>
+                <li><b>output-folder</b>: optional, defines the output folder.
+                    If not specified, the input files will be overwritten.</li>
+            </ul>
+
+
             <h2 id="versions">Versions</h2>
             <ul>
-                <li>1.0 : 12th December 2021.</li>
+                <li>1.0.0 : 12th December 2021.</li>
+                <li>1.0.1 : 14th December 2021: refactoring</li>
             </ul>
 
     </div>
