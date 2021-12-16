@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+
+<html>
+<head>
+    <title>Openapi 4 AWS - cli</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <link rel="stylesheet" type="text/css" href="../css/global.css">
+    <meta name="Description" content="Openapi 4 AWS - maven plugin">
+    <meta name="Keywords" content="openapi aws maven plugin">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class="timestamp">16th Dec 2021</p>
+        <h1 id="openapi-4-aws">Openapi 4 AWS maven plugin</h1>
+        <img src="./openapi4aws.svg" class="right" width="180px" height="180px">
+        <ul>
+            <li>Github: <a href="https://github.com/coderazzi/openapi4aws-maven-plugin">https://github.com/coderazzi/openapi4aws-maven-plugin</a></li>
+            <li>Maven central: <a href="https://mvnrepository.com/artifact/net.coderazzi/openapi4aws-maven-plugin">
+                https://mvnrepository.com/artifact/net.coderazzi/openapi4aws-maven-plugin</a></li>
+            <li>License: MIT license</li>
+        </ul>
+        <p>This is utility to enrich an openapi specification with information specific for the AWS API Gateway.
+            It allows defining route integrations and authorizers to do automatic (re-)imports in API Gateway.</p>
+
+        <p>This is a maven plugin for the <a href="https://coderazzi.net/openapi4aws">openapi4aws</a> utility:
+            as a maven plugin, all the information is passed using the configuration in the pom file.
+            A configuration example is given below. For the details of each field,
+            please refer to the openapi4aws utility (<a href="https://github.com/coderazzi/openapi4aws">https://github.com/coderazzi/openapi4aws</a>)</p>
+        <pre>
+&lt;plugin&gt;
+    &lt;groupId&gt;net.coderazzi&lt;/groupId&gt;
+    &lt;artifactId&gt;openapi4aws-maven-plugin&lt;/artifactId&gt;
+    &lt;configuration&gt;
+      &lt;authorizers&gt;
+        &lt;authorizer&gt;
+          &lt;name&gt;DubaixCognito&lt;/name&gt;
+          &lt;identity-source&gt;$request.header.Authorization&lt;/identity-source&gt;
+          &lt;issuer&gt;https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_1T9bfKHNp&lt;/issuer&gt;
+          &lt;audiences&gt;
+            &lt;audience&gt;2f0m9fcoiejij4316u574aq259&lt;/audience&gt;
+            &lt;audience&gt;7ac34sujrb8gmvj2b6blpi7ruu&lt;/audience&gt;
+          &lt;/audiences&gt;
+          &lt;authorization-type&gt;oauth2&lt;/authorization-type&gt;
+        &lt;/authorizer&gt;
+      &lt;/authorizers&gt;
+      &lt;integrations&gt;
+        &lt;path-integration&gt;
+          &lt;path&gt;/user/scope&lt;/path&gt;
+          &lt;uri&gt;http://3.64.241.104:12122/path&lt;/uri&gt;
+          &lt;authorizer&gt;DubaixCognito&lt;/authorizer&gt;
+          &lt;scopes&gt;
+            &lt;scope&gt;user.email&lt;/scope&gt;
+            &lt;scope&gt;user.id&lt;/scope&gt;
+          &lt;/scopes&gt;
+        &lt;/path-integration&gt;
+        &lt;tag-integration&gt;
+          &lt;tag&gt;Frontend&lt;/tag&gt;
+          &lt;uri&gt;http://3.64.241.104:12121/tmp/&lt;/uri&gt;
+        &lt;/tag-integration&gt;
+      &lt;/integrations&gt;
+      &lt;transforms&gt;
+        &lt;transform&gt;
+          &lt;filenames&gt;
+            &lt;filename&gt;use.yaml&lt;/filename&gt;
+          &lt;/filenames&gt;
+          &lt;output-folder&gt;target&lt;/output-folder&gt;
+        &lt;/transform&gt;
+      &lt;/transforms&gt;
+    &lt;/configuration&gt;
+    &lt;executions&gt;
+      &lt;execution&gt;
+        &lt;phase&gt;package&lt;/phase&gt;
+        &lt;goals&gt;
+          &lt;goal&gt;transform&lt;/goal&gt;
+        &lt;/goals&gt;
+      &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;
+    </pre>
+
+
+    </div>
+</div>
+
+</div>
+</body>

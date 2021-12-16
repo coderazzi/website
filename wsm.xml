@@ -98,7 +98,11 @@
         </group>
         <group name='Java'>
             <item name='AWS+Maven' file='codeartifact-maven/index.htm'/>
-            <item name='OpenAPI4AWS' file='openapi4aws/index.htm'/>
+            <group name='OpenAPI4AWS'>
+                <item name='Overview' file='openapi4aws/index.htm'/>
+                <item name='cli' file='openapi4aws/cli.htm'/>
+                <item name='maven' file='openapi4aws/maven.htm'/>
+            </group>
             <group name='Table filter'>
                 <item name='Overview' file='tablefilter/index.html'/>
                 <item name='Tutorial' file='tablefilter/tutorial.html'/>
