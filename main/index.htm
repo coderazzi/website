@@ -9,6 +9,52 @@
  <div id='content'>
 
 
+
+     <p class="blog-entry"><span class="blog-entry-date">16th Dec 2021</span>Git origins and main/master</p>
+
+     <p><img src="images/ssh.png" alt="ssh icon" class="blog">
+         I keep source code repositories in <a href="https://github.com/coderazzi">github</a>,
+         but not for all my projects. I keep also my own git repository on a VPS, backed up regularly,
+         which hosts my private projects, plus the public ones hosted in github.</p>
+
+     <p>To keep a repository synchronized both to Github and to my private Git repository,
+         I usually create first my private git repository, then create a repository in Github with the same name.
+         Afterwards, I need to add github as a remote repository; for example, for my project
+         <a href="https://github.com/coderazzi/openapi4aws-maven-plugin">openapi4aws-maven-plugin</a>, I would do:</p>
+
+     <pre>git remote add github git@github.com:coderazzi/openapi4aws-maven-plugin.git
+git push -u github main</pre>
+
+     <p>Now, changes can be pushed to my private repository doing:</p>
+
+     <pre>git push origin</pre>
+
+     <p>And to Github doing:</p>
+
+     <pre>git push github</pre>
+
+     <p>Github did recently (October 2020) a migration on the default branch, from <i>master</i> to <i>main</i>,
+         which means that, at least for any new repositories, I would better follow the same approach to ensure
+         that I can push changes to github and my own private git server.</p>
+
+     <p>In my private repository, I can rename my default created branch from <i>master</i> to <i>main</i> doing:</p>
+
+     <pre>git branch -m master main
+git push -u origin main
+git push origin --delete master</pre>
+
+     <p>But this last command will likely fail, with a message: <b>deletion of the current branch prohibited</b>.
+         To solve it, go to the git server, and access the folder where the git repository is stored, then do:</p>
+
+     <pre>git symbolic-ref HEAD refs/heads/main</pre>
+
+     <p>Now, on the local repository, the command <code>git push origin --delete master</code>  will work as expected</p>
+
+
+
+
+
+
      <p class="blog-entry"><span class="blog-entry-date">12th Dec 2021</span>OpenAPI for AWS</p>
 
      <p><img src="images/openapi4aws.png" alt="open4aws icon" class="blog">I am working on a project where we define
