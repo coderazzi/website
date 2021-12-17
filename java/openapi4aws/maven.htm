@@ -39,10 +39,17 @@
           &lt;name&gt;DubaixCognito&lt;/name&gt;
           &lt;identity-source&gt;$request.header.Authorization&lt;/identity-source&gt;
           &lt;issuer&gt;https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_1T9bfKHNp&lt;/issuer&gt;
-          &lt;audiences&gt;
-            &lt;audience&gt;2f0m9fcoiejij4316u574aq259&lt;/audience&gt;
-            &lt;audience&gt;7ac34sujrb8gmvj2b6blpi7ruu&lt;/audience&gt;
-          &lt;/audiences&gt;
+          &lt;audience&gt;
+            &lt;id&gt;2f0m9fcoiejij4316u574aq259&lt;/id&gt;
+            &lt;id&gt;7ac34sujrb8gmvj2b6blpi7ruu&lt;/id&gt;
+          &lt;/audience&gt;
+          &lt;authorization-type&gt;oauth2&lt;/authorization-type&gt;
+        &lt;/authorizer&gt;
+        &lt;authorizer&gt;
+          &lt;name&gt;Unused&lt;/name&gt;
+          &lt;identity-source&gt;$request.header.Authorization&lt;/identity-source&gt;
+          &lt;issuer&gt;https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_1T9bfKHNp&lt;/issuer&gt;
+          &lt;audience&gt;2f0m9fcoiejij4316u574aq259&lt;/audience&gt;
           &lt;authorization-type&gt;oauth2&lt;/authorization-type&gt;
         &lt;/authorizer&gt;
       &lt;/authorizers&gt;
@@ -63,10 +70,15 @@
       &lt;/integrations&gt;
       &lt;transforms&gt;
         &lt;transform&gt;
-          &lt;filenames&gt;
-            &lt;filename&gt;use.yaml&lt;/filename&gt;
-          &lt;/filenames&gt;
+          &lt;input&gt;use.yaml&lt;/input&gt;
+          &lt;glob-input&gt;*.yaml2&lt;/glob-input&gt;
           &lt;output-folder&gt;target&lt;/output-folder&gt;
+        &lt;/transform&gt;
+        &lt;transform&gt;
+          &lt;input&gt;
+            &lt;filename&gt;one.yaml&lt;/filename&gt;
+            &lt;filename&gt;otherFile.yaml&lt;/filename&gt;
+          &lt;/input&gt;
         &lt;/transform&gt;
       &lt;/transforms&gt;
     &lt;/configuration&gt;
@@ -81,6 +93,32 @@
 &lt;/plugin&gt;
     </pre>
 
+        <p>It is possible to define this long XML configuration in one or more external files, or just using
+            a mix of in-pom definitions and external property files. For example: </p>
+
+        <pre>
+    &lt;configuration&gt;
+      &lt;external&gt;openapi4aws.settings&lt;/external&gt;
+      &lt;transforms&gt;
+        &lt;transform&gt;
+          &lt;input&gt;use.yaml&lt;/input&gt;
+        &lt;/transform&gt;
+      &lt;/transforms&gt;
+    &lt;/configuration&gt;
+        </pre>
+
+        <p>The external file defines the configuration values using the
+            <a href="https://github.com/coderazzi/openapi4aws">openapi4aws cli configuration</a>.
+            An example of such configuration file is:</p>
+
+        <pre># a simple comment
+authorizer.name=DubaixCognito,Other
+authorizer.identity-source=$request.header.Authorization
+authorizer.audience=2f0m9fcoiejij4316u574aq259,7ac34sujrb8gmvj2b6blpi7ruu
+authorizer.issuer=https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_1T9bfKHNp
+
+tag.Frontend=http://3.64.241.104:12121/tmp/,DubaixCognito,user.email,user.id
+path.user.scope2=http://OTHER_PATH:12122/path,Other,user.email</pre>
 
     </div>
 </div>
