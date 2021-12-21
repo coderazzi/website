@@ -94,14 +94,13 @@ and the repository exists.</pre>
      <p><a href="https://stackoverflow.com/questions/69864565/unable-to-negotiate-with-aws-codecommit-no-matching-host-key-type-found">
          Stack overflow</a> had the solution, it was needed to change the .ssh/config entry to look like:</p>
 
-     <pre>
-         
-     </pre>
+     <pre>Host git-codecommit.*.amazonaws.com
+IdentityFile ~/.ssh/aws
+User ....
+HostKeyAlgorithms +ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa</pre>
 
-
-
-
-
+     <p>(Adding the last two lines)</p>
 
      <p class="blog-entry"><span class="blog-entry-date">7th October 2021</span>sudo docker cp</p>
 
