@@ -132,11 +132,12 @@
             <item name='SplitImage' file='splitimage/index.htm'/>
         </group>
         <group name='python'>
-            <item name='sqlite3' file='python/alter_table_sqlite3/index.htm'/>
-			<item name='optmatch' file='python/optmatch/index.htm'/>
+            <item name='openapi4aws' file='python/openapi4aws/index.htm'/>
+            <item name='optmatch' file='python/optmatch/index.htm'/>
             <item name='Gimp / PythonFu' file='python/gimp/pythonfu.html'/>
-			<item name='Decorators' file='tnotes/python/decoratorsWithoutArguments.html'/>
-			<item name='2.x to 3.0' file='tnotes/python/migrating2to3.html'/>
+            <item name='Decorators' file='tnotes/python/decoratorsWithoutArguments.html'/>
+            <item name='2.x to 3.0' file='tnotes/python/migrating2to3.html'/>
+            <item name='sqlite3' file='python/alter_table_sqlite3/index.htm'/>
         </group>
         <group name='c#'>
             <item name='XmlObjects' file='csharp/xmlobjects/index.htm'/>

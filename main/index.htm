@@ -10,9 +10,30 @@
 
 
 
+     <p class="blog-entry"><span class="blog-entry-date">5th Jan 2022</span>OpenAPI for AWS - python</p>
+
+     <p><img src="images/openapi4aws.png" alt="open4aws icon" class="blog">The
+         <a href="openapi4aws/index.html">openapi4aws</a> utility had an initial implementation in python, and
+         I developed the java / maven version to have a clean integration in our build processes, which uses maven.</p>
+
+     <p>After integrating it in our maven poms, we had still the need to update the resulting API gateway
+         specifications on the fly, to reflect changes in the used k8s endpoints. So I decided to modify the
+         original python implementation to reflect the changes introduced in the java version.</p>
+
+     <p>The result is a single python file with under 250 lines of code, and two thirds of the code is used
+        just to handle the configuration parameters. I had fun migrating the data structured from Java -implemented
+        as classes- to Python, where I used a mix of classes, dictionaries and data classes.</p>
+
+     <p>This <a href="python/openapi4aws/index.html">version</a>
+         is available as a python <a href="https://pypi.org/project/openapi4aws">wheel</a></p>
+
+
+
+
+
      <p class="blog-entry"><span class="blog-entry-date">16th Dec 2021</span>Git origins and main/master</p>
 
-     <p><img src="images/ssh.png" alt="ssh icon" class="blog">
+     <p><img src="images/agnostic.png" alt="cleanup icon" class="blog">
          I keep source code repositories in <a href="https://github.com/coderazzi">github</a>,
          but not for all my projects. I keep also my own git repository on a VPS, backed up regularly,
          which hosts my private projects, plus the public ones hosted in github.</p>

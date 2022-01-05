@@ -2,32 +2,52 @@
 
 <html>
 <head>
-    <title>Openapi 4 AWS - cli</title>
+    <title>Openapi 4 AWS</title>
     <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
-    <link rel="stylesheet" type="text/css" href="../css/global.css">
-    <meta name="Description" content="Openapi 4 AWS - command line interface">
-    <meta name="Keywords" content="openapi aws cli interface">
+    <link rel="stylesheet" type="text/css" href="../../css/global.css">
+    <meta name="Description" content="Openapi 4 AWS python">
+    <meta name="Keywords" content="openapi aws maven python">
 </head>
 
 <body>
 <div id='body'>
     <div id='content'>
 
-        <p class="timestamp">16th Dec 2021</p>
-        <h1 id="openapi-4-aws">Openapi 4 AWS command line interface</h1>
-        <img src="./openapi4aws.svg" class="right" width="180px" height="180px">
+        <p class="timestamp">2nd Jan 2022</p>
+        <h1 id="openapi-4-aws">Openapi 4 AWS / python</h1>
+        <img src="../../openapi4aws/openapi4aws.svg" class="right" width="180px" height="180px">
         <ul>
-            <li>Github: <a href="https://github.com/coderazzi/openapi4aws">https://github.com/coderazzi/openapi4aws</a></li>
-            <li>Maven central: <a href="https://mvnrepository.com/artifact/net.coderazzi/openapi4aws">https://mvnrepository.com/artifact/net.coderazzi/openapi4aws</a></li>
+            <li>Website: <a href="https://coderazzi.net/python/openapi4aws">https://coderazzi.net/python/openapi4aws</a></li>
+            <li>Github: <a href="https://github.com/coderazzi/openapi4aws-python">https://github.com/coderazzi/openapi4aws-python</a></li>
+            <li>Pypi: <a href="https://pypi.org/project/openapi4aws">https://pypi.org/project/openapi4aws</a></li>
             <li>License: MIT license</li>
         </ul>
+
         <p>This is utility to enrich an openapi specification with information specific for the AWS API Gateway.
             It allows defining route integrations and authorizers to do automatic (re-)imports in API Gateway.</p>
 
-        <p>There is a <a href="maven.htm">maven plugin</a> covering this functionality, as well as a standalone
-        <a href="/python/optmatch">python</a> version</p>
+        <p>This page corresponds to the python version, there is also available a
+            <a href="../../openapi4aws/index.htm">java / maven</a> version
+        </p>
 
-        <h2 id="security-authorizers">Security / Authorizers</h2>
+        <h2>Installation</h2>
+
+        <p>This utility is available as a python 3 <a href="https://pypi.org/project/openapi4aws/">wheel</a>:</p>
+
+        <pre>pip install openapi4aws</pre>
+
+        <p>Or can be downloaded and accessed directly, it is implemented in a single python 3
+            <a href='https://github.com/coderazzi/openapi4aws-python/blob/main/src/openapi4aws.py'>file</a>.</p>
+
+        <h2>Usage</h2>
+
+        <p>The openapi specification is extended on two parts:</p>
+        <ul>
+            <li>security: optionally, adding one or more authorizers.</li>
+            <li>paths: extending each method with the associated authorizer and defining an endpoint.</li>
+        </ul>
+
+        <h3 id="security-authorizers">Security / Authorizers</h3>
         <p>To specify an authorizer, use the following mandatory parameters:</p>
         <ul>
             <li><b>authorizer.name</b>: name of the authorizer</li>
@@ -50,7 +70,7 @@
             <li><b>authorizer.issuer.<em>AUTHORIZER_NAME</em></b>=issuer</li>
         </ul>
 
-        <h2 id="paths-integrations">Paths / Integrations</h2>
+        <h3 id="paths-integrations">Paths / Integrations</h3>
         <p>To define routes, the syntax is:</p>
         <ul>
             <li><b>path.<em>PATH</em></b>=full_uri[,authorizer_name,scopes]*</li>
@@ -64,7 +84,7 @@
 
         <p>In this case, it uses the authorizer with name &quot;authorizer1&quot;, with scopes &quot;user.email&quot;
             and &quot;user.id&quot;</p>
-        <h2 id="paths-integrations-using-tags">Paths / Integrations Using tags</h2>
+        <h3 id="paths-integrations-using-tags">Paths / Integrations Using tags</h3>
         <p>A better option to define integrations is defining openapi tags associated for that path,
             and using then the following parameters:</p>
         <ul>
@@ -75,7 +95,7 @@
 
         <p>This path will be extended to use the endpoint: <code>http://3.64.241.105:12121/user/post</code></p>
 
-        <h2 id="defining-input-output">Defining input / output</h2>
+        <h3 id="defining-input-output">Defining input / output</h3>
 
         <p>Three parameters manage the input / output tasks:</p>
         <ul>
@@ -87,7 +107,7 @@
                 If not specified, the input files will be overwritten.</li>
         </ul>
 
-        <h2 id="defining-separate-file">Defining the configuration in a separate file</h2>
+        <h3 id="defining-separate-file">Defining the configuration in a separate file</h3>
 
         <p>It is possible to specify any configuration parameters in a separate file, using the argument:</p>
 
@@ -109,17 +129,12 @@ authorizer.issuer=https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_1T9bfKHN
 tag.Frontend=http://3.64.241.104:12121/tmp/,DubaixCognito,user.email,user.id
 path.user.scope2=http://OTHER_PATH:12122/path,Other,user.email</pre>
 
-        <h2 id="usage">Usage</h2>
+        <h2 id="versions">Versions</h2>
+        <ul>
+            <li>1.2.0 :  1st January 2022: first public version, aligned with existing java versions</li>
+            <li>1.2.1 :  5th January 2022: solved wheel issue, missing requirement</li>
+        </ul>
 
-        <p>To use the utility from the command line, build it or download from maven central.
-            The version with built-in dependencies is available as (link depends on version used):
-            <a href="https://repo1.maven.org/maven2/net/coderazzi/openapi4aws/1.1.1/openapi4aws-1.1.1-jar-with-dependencies.jar">
-                https://repo1.maven.org/maven2/net/coderazzi/openapi4aws/1.1.1/openapi4aws-1.1.1-jar-with-dependencies.jar
-            </a>
-        </p>
-
-        <pre>java -jar openapi4aws-1.0.2-jar-with-dependencies.jar --configuration=conf.prop</pre>
     </div>
 </div>
 </body>
-
