@@ -73,6 +73,9 @@
     <location source='tnotes'>
         <template mold='../mold.htm'/>
     </location>
+    <location source='misc'>
+        <template mold='../mold.htm'/>
+    </location>
     <location source='howto'>
         <template mold='../mold.htm'/>
     </location>
@@ -198,10 +201,11 @@
                 <item name='Synergy patch' file='linux/synergy.patch/index.htm'/>
                 <item name='Dual NIC on Linux' file='linux/dual_nic_linux.htm'/>
                 <item name='Thunderbird backup' file='linux/thunderbird-backup.htm'/>
+                <item name='KVM Network restart' file='kvm/net-restart/index.html'/>
             </group>
         </group>
-        <group name='KVM'>
-            <item name='Network restart' file='kvm/net-restart/index.html'/>
+        <group name='Misc'>
+            <item name='Obsidian' file='misc/obsidian/obsidian.html'/>
         </group>
         <group name='Os X'>
             <item name='Nginx' file='howto/osx/nginx.html'/>

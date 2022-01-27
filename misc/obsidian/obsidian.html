@@ -1,0 +1,127 @@
+<html>
+
+<head>
+    <title>Obsidian</title>
+    <link rel="stylesheet" type="text/css" href="../../css/global.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <meta name="Keywords" content="Obsidian">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class='timestamp'>27th January 2022</p>
+
+        <h1>Obsidian</h1>
+
+        <img src="./obsidian.svg" class="right" width="300px" height="300px">
+
+        <p>I have been using a basic editor to keep all my notes, and the result is definitely sub-optimal.</p>
+
+        <p>Evernote had worked quite fine in the past, and I do not recall well why I stopped using it:
+            probably the lack of a linux client, or the web interface letting me down too many times.</p>
+
+        <p>I have started now using Obsidian and it looks pretty nice: it stores the notes in markdown,
+            so it is basically plain text. It is less visually appealing than Evernote, but the linking
+            and navigation between notes is clearly an advantage.</p>
+
+        <h2>Installation</h2>
+
+        <p>For an Ubuntu setup, the obsidian webpage (https://obsidian.md/) includes the latest obsidian version as an AppImage.</p>
+        <p>I download it as ~/development/external/Obsidian-0.13.19.AppImage folder, and link it without version information as:</p>
+
+        <pre>ln -sf Obsidian-0.13.19.AppImage Obsidian.AppImage</pre>
+
+        <p>Then start directly the app from this folder:</p>
+
+        <pre>./Obsidian.AppImage</pre>
+
+        <p>From a separate terminal, using mount command, you can see that the application is mounted as:</p>
+
+        <pre>/home/coderazzi/development/external/Obsidian-0.13.19.AppImage on
+/tmp/.mount_Obsidi5r6aN1 type fuse.Obsidian-0.13.19.AppImage (ro,nosuid,nodev,relatime,user_id=1000,group_id=1000)</pre>
+
+        <p>Go to the mounted folder:</p>
+
+        <pre>cd /tmp/.mount_Obsidi5r6aN1</pre>
+
+        <p>And copy several files:</p>
+
+        <pre>cp obsidian.png ~/.local/share/icons
+cp obsidian.desktop ~/.local/share/applications/</pre>
+
+        <p>Finally, edit this last file:</p>
+
+        <pre>vi ~/.local/share/applications/obsidian.desktop</pre>
+
+        <p>So that the two following fields look like:</p>
+
+        <pre>Exec=/home/coderazzi/development/external/Obsidian.AppImage
+Icon=/home/coderazzi/.local/share/icons/obsidian.png</pre>
+
+        <p>Done, exit the application, and it can now be launched using the Ubuntu launcher</p>
+
+
+        <h2>Sharing obsidian among my own devices</h2>
+
+        <p>To share among my computers, I use Dropbox / OneDrive, but I wanted to have it as well under git,
+            to have some version control.</p>
+
+        <p>Having a local git repository under Dropbox seems a recipe for disaster, in case Dropbox does
+            some wrong choice on colliding files under the .git folder.</p>
+
+        <p>Fortunately, dropbox supports ignoring folders: https://help.dropbox.com/files-folders/restore-delete/ignored-files</p>
+
+        <p>In linux,</p>
+
+        <pre>attr -s com.dropbox.ignored -V 1 /home/coderazzi/Dropbox/Obsidian/.git</pre>
+
+        <p>(in Ubuntu, this requires installing first attr: sudo apt-get install attr)</p>
+
+        <p>Now, all the devices sharing that folder can modify the files, using Dropbox synchronization.<br>
+        And although any of the devices could clone the git repository into the Dropbox folder, only one should control it.<br>
+        In my case, my main computer does the git control: if any of the other devices needs access to other versions, etc,
+            they can clone the repository outside the Dropbox folder, and perform any changes.</p>
+
+        <h2>My settings</h2>
+
+        <ul>
+            <li>Editor</li>
+            <ul>
+                <li>Show frontmatter : no</li>
+                <li>Fold heading: yes</li>
+                <li>Spellcheck: no</li>
+                <li>Auto pair brackets: no</li>
+                <li>Auto pair Makrdown syntax: no</li>
+            </ul>
+            <li>Files and links</li>
+            <ul>
+                <li>Deleted files: Move to Obsidian trash</li>
+                <li>Use [[Wikilinks]] : no</li>
+                <li>Detect all file extensions: yes</li>
+            </ul>
+            <li>Appearance</li>
+            <ul>
+                <li>Base theme: Dark</li>
+                <li>Themes: Blue Opaz</li>
+            </ul>
+            <li>Core plugins</li>
+            <ul>
+                <li>Add tag pane</li>
+            </ul>
+            <li>Community plugins</li>
+            <ul>
+                <li>Advanced tables</li>
+                <li>Editor syntax highlight</li>
+                <li>Sliding panes</li>
+                <li>Admonition</li>
+                <li>Excalidraw</li>
+                <li>Mindmap</li>
+            </ul>
+        </ul>
+    </div></div>
+</body>
+</html>
+
+
