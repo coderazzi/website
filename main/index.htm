@@ -8,6 +8,141 @@
  <div id='body'>
  <div id='content'>
 
+     <p class="blog-entry"><span class="blog-entry-date">17th March 2022</span>Comparing AWS and GCP Certification</p>
+
+     <p><img src="images/architecture.png" alt="aws sysops icon" class="blog">
+         After my <a href="#aws-certification">previous blog</a> on the AWS certification, I would like to compare it with GCP, both on difficulty and
+         overall interest and approach.</p>
+
+     <p>In my view, AWS exams are very AWS-centric, you can mostly discard any exam answer that includes non AWS
+         technology or cumbersome processes, like writing custom scripts, etc:
+         allegedly, AWS has already developed some automation processes for you.</p>
+
+     <p>Google exams are much more open, more focused on software architecture, and choosing a non Google technology on
+         any exam question is often the answer.
+         But Google exams are less demanding, with more time to answer each question-, and overall I find them easier,
+         as long as you have an architecture background.</p>
+
+     <p>There are not as many services in GCP as in AWS, but there are also much fewer courses online with good quality.
+         As an additional remark, I find GCP much more consistent in their services implementation.
+         In AWS you can understand the background of the processes and still wonder why some specific processes work
+         the way they do, and the answer is probably that they haven't got the time yet to implement it in a different manner.
+     </p>
+
+     <p>Perhaps more importantly: how interesting is it to get the AWS or GCP certification?
+         Very, very much. CV-wise is definitely a nice to have, and a good discriminator.
+         But better than this, it is a good way to expose yourself to a lot of technologies that you probably don't touch
+         on a daily basis.</p>
+
+     <p>Said this, I find more interesting, globally, the Google certification than the AWS one,
+         in that it focuses much more on plain Architecture, site reliability, and technologies that you can use inside
+         or outside GCP.
+         The AWS professional architecture certification focuses in many aspects very specific to AWS,
+         like AWS organizations, hybrid scenarios, migrations to AWS, that have no scope on your architecturing work outside AWS.
+     </p>
+
+
+     <p class="blog-entry"><span class="blog-entry-date">17th March 2022</span><a id="aws-certification">AWS Certification</a></p>
+
+     <p><img src="images/aws-certified.png" alt="aws sysops icon" class="blog">
+         I completed yesterday my AWS re-certification, the three associate and the two professional levels, so I wanted to write some of my observations on the process.
+     </p>
+
+     <ul>
+         <li>In 2016 I got the associate Architect certification. I did it reading one book: <i>Host Your Web Site In
+             The Cloud</i>, By Jeff Barr (978-0980576832). This was a book already outdated -from 2010-, so I had quite
+             a lot of hands-on and reading the AWS documentation. Plenty easier than now, of course.
+         </li>
+         <li>Although my certification expired in 2018, I had one additional year to meet the recertification deadline,
+             and I effectively passed it in 2019. The certifications expire now in three years instead of two, but
+             somehow I had expected to have that additional year for the recertification deadline, which seems not to
+             be anymore the case. As a result, I have had a few stressful months to comply with the deadlines
+             (bad planning on my side).
+         </li>
+         <li>In 2019 I purchased three courses in Udemy, one for each associate exam, from Ryan Kroonenburg (cloudguru).
+             At around 10$ each, they have had tremendous value, as they were mostly my only source to pass the
+             certifications in 2019, and again in 2022. However, they are now a bit outdated: perhaps not much, as they
+             added a few videos, but considering that you need to get a 720 mark in the exam,
+             any missing concept is a problem.
+         </li>
+         <li>In 2019, I passed the professional exams by going through the AWS whitepapers, after passing the associate
+             exams. Lots of reading, lots of learning, lots of time spent on the process, which I had at the time.
+             In 2022 I have found a new course in Udemy for the Architect exam, by Stephane Maarek, that is really good.
+             I have used another course from him for the DevOps exam, which is arguably better having more
+             hands-on experience, but I definitely preferred the only-slides approach of the Architect course.
+         </li>
+         <li>I have required a bit less than seven weeks to study and pass the exams. Considering working and spare time,
+             this amounts to around four to five days for each course, so it is quite a lot of dedication.
+             And I know that is quite a short time, but my professional activity involves both architecture and
+             AWS projects management, so I was not starting from scratch.
+         </li>
+         <li>The courses above focus too much on the exams, and the kind of questions you can face.
+             As a result, they can enter into detail into some areas just for the benefit of some specific exam question.
+             They lack a focus on explaining the background of the issue, which is what you need, not only to master AWS,
+             but also to pass the examination. If you understand why or how AWS implements Cloudwatch subscription
+             filters, you should be able to answer immediately that a subscription filter cannot export data to S3
+             directly, but that it needs something like Kinesis Firehose to do so.
+             Why do some actions handle only SNS notifications while others allow lambda integrations?
+             If you focus on AWS this way, you will understand it much better, and have many more options to pass the exam.
+         </li>
+         <li>The associate certifications have a different scope than the professional ones, it is not just about difficulty.
+             They require a more hands-on approach, a more detailed view of specific concepts, including
+             performance, metrics, etc. However, passing the professional certification automatically renews the
+             associates ones below: not sure why, as, again, the scope is different.
+         </li>
+         <li>Studying gor the associate certifications facilitates studying afterwards for the professional ones.
+             But studying the professional ones, much broader in scope, would make it much easier to pass the associate
+             ones. I would suggest trying the associate exams first, and passing them or not, go then for the professional ones.
+         </li>
+         <li>The DevOps professional exam was the most difficult exam for me: from the very first question I was walking in quicksands.
+             I was definitely far less prepared, but the questions were also much trickier.
+             It was the only exam that I had just a few minutes left, and I had managed my time carefully.
+         </li>
+         <li>The exams are not easy. The professional ones require a lot of knowledge.
+             Plus, you have 2m 40 seconds to answer one question, and many questions are long enough to require that time
+             just to understand the problem. Normally, for one-answer questions, there are only two answers out of
+             four that make sense, and thinking long enough gives you the answer -if you have the time, that is-.
+             For the Devops, the final two acceptable answers for each question still make plenty of sense,
+             you need to know the specific AWS implementation to get the answer right.
+         </li>
+     </ul>
+
+
+
+     <p class="blog-entry"><span class="blog-entry-date">22nd Feb 2022</span>AWS SysOps certification</p>
+
+     <p><img src="images/aws-sysops-associate.png" alt="aws sysops icon" class="blog">
+         I am currently doing the re-certification for my AWS certificates: I hold the three associate
+         certifications (Solutions Architect, SysOps Administrator, Developer) and the two professional
+         ones (Solutions Architect, DevOps Engineer).</p>
+
+     <p>I have renewed this month the three associates, and I am not sure if I will have the time to
+        renew the two professional ones before expiration, in 4 weeks.</p>
+
+     <p>The experience so far is that the exams are getting more complicated, definitely no more
+        simple questions like which service would better fit a given functionality, and more ambiguous
+        scenarios. In the case of the SysOps, there were now, in addition to the quizz questions, three
+        exam labs, with the consequence that the result was not available anymore immediately after the exam,
+        unfortunately.</p>
+
+     <p>I had 50 questions in my test; I have seen other people mentioning 53 and 55, so I am not sure if
+        there is some randomness in the number of questions, or just the normal evolution of the test.
+         I do usual administration in AWS, but the three tasks requested during the exam were definitely outside
+         my expertise. Moreover, the usual help support is missing, as documented, so you need to perform
+         those tasks quite blindly. Still, the console design in AWS follows good practices and most tasks
+         can be performed quite intuitively; I think I passed them without too many issues, and the
+         final report was fine on my performance during the labs. As a note, copying and pasting during the labs
+         is definitely a headache and something that should be improved for these labs.
+     </p>
+
+     <p>After the exam there is just a note that the results will be received in 5 business days. The official
+        documentation mentions that this CAN be the case: I imagine that passing perfectly the 50 quiz questions
+         could already provide a 790 score, enough to pass the test even with the worst results during the lab
+         questions. I received the results, like for all my exams, on the day after the examination, at 21:01 in the
+         evening.
+     </p>
+
+
 
      <p class="blog-entry"><span class="blog-entry-date">27th Jan 2022</span>Obsidian</p>
 
