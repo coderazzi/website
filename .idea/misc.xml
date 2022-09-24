@@ -30,6 +30,9 @@
     </entry>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" default="true" />
+  <component name="ProjectType">
+    <option name="id" value="jpab" />
+  </component>
   <component name="SvnBranchConfigurationManager">
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>

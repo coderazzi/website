@@ -8,6 +8,36 @@
  <div id='body'>
  <div id='content'>
 
+     <p class="blog-entry"><span class="blog-entry-date">25th September 2022</span>Virtualbox mount points</p>
+
+     <p><img src="images/vbox.png" alt="virtualbox icon" class="blog">
+         Starting a Linux virtual machine in Virtualbox, I got the typical emergency mode error</p>
+
+     <pre>Welcome to emergency mode!
+After logging in, type “journalctl -xb” to view system logs,
+“systemctl reboot” to reboot, “systemctl default” or ^D to try again to boot into default mode.</pre>
+
+     <p>The error was related to a shared folder I had setup, which was not accessible. The entry in /etc/fstab read:</p>
+
+     <pre>Infrastructure	/mnt/infrastructure 	vboxsf 	rw,nosuid,nodev,relatime,uid=1000,gid=1000	0	0</pre>
+
+     <p>And checking the virtualbox machine settings, I was still creating the mount point:
+         <img src="images/vbox-shared-folder.jpg" alt="virtualbox shared folder"></p>
+
+     <p>The problem was that the virtual box application had been updated, as well as its extensions, but the
+         guest additions had not been updated in the virtual machine. As a result, the shared point was not
+         reachable, and because there was no <b>nofail</b> attribute in the mount point, the kernel entered into
+         emergency mode.
+     </p>
+
+     <p>To solve the issue:</p>
+
+     <pre>cd /opt/VBoxGuestAdditions-6.1.26/init
+sudo ./vboxadd setup
+sudo reboot</pre>
+
+     <p>Obviously, update the first line to reflect the current guest additions version (6.1.26 in my case)</p>
+
      <p class="blog-entry"><span class="blog-entry-date">29th March 2022</span>Pixel 6</p>
 
      <p><img src="images/pixel6.png" alt="aws sysops icon" class="blog">
