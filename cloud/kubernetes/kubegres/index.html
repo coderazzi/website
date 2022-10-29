@@ -24,11 +24,7 @@
 <h2>PVC issue</h2>
 
 	<p>
-		The AWS EKS cluster I use for testing has just three nodes -with the total PODs load supported by just two nodes-.<br>
-        This allows me to support the failure of one node, which happens much more often than I had originally expected.
-    </p>
-     <p>
-        The last Kubernetes upgrade in the cluster, from 1.22 to 1.23 caused a major interruption, losing all nodes -due to the Amazon EBS CSI driver update-.
+		The AWS EKS cluster I use for testing has two nodes; the last Kubernetes upgrade in the cluster, from 1.22 to 1.23 caused a major interruption, losing all nodes -due to the Amazon EBS CSI driver update-.
          <br>After this, I experienced one more single node failure, and since then,
          the replica pod created by Postgres failed to start, and without this replica, no backups were created.
          The problem was the usual error of <b>volume node affinity conflict</b>:
