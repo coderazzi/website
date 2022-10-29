@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+ <title>Kubernetes - Kubegres operator</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+ <meta name="Keywords" content="cloud, kubernetes, aws, kubegres">
+ <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+ <div id='body'>
+ <div id='content'>
+
+<p class='timestamp'>29th October 2022</p>
+<h1>Kubegres - PostgreSql operator for Kubernetes</h1>
+     <img src='../Kubernetes.svg' class='right' width="200"/>
+     <p>
+         I have been using in a test AWS Kubernetes environment, <a href="https://github.com/reactive-tech/kubegres">Kubegres</a>, a PostreSql operator, without any issues.<br>
+         The version I installed was 1.15, using one replica with backups (to EFS) enabled.<br>
+         The operator does not seem to be in heavy development -or it is considered mostly stable-. There is a new 1.16 version since September 2022, but I haven't tried yet the upgrade.
+     </p>
+
+<h2>PVC issue</h2>
+
+	<p>
+		The AWS EKS cluster I use for testing has just three nodes -with the total PODs load supported by just two nodes-.<br>
+        This allows me to support the failure of one node, which happens much more often than I had originally expected.
+    </p>
+     <p>
+        The last Kubernetes upgrade in the cluster, from 1.22 to 1.23 caused a major interruption, losing all nodes -due to the Amazon EBS CSI driver update-.
+         <br>After this, I experienced one more single node failure, and since then,
+         the replica pod created by Postgres failed to start, and without this replica, no backups were created.
+         The problem was the usual error of <b>volume node affinity conflict</b>:
+	</p>
+
+     <pre>kubectl describe pod db-kubegres-4-0</pre>
+
+     <p>This command shows, among other things, the node where it is allocated: ip-192-168-12-87.eu-west-2.compute.internal,
+         the allocated volumes, and displays the error event: <b>0/2 nodes are available: 2 node(s) had volume node affinity conflict</b>.</br>
+        This is an error usually related to the PV associated to the POD, so let's pay attention to the volume claim displayed
+         in the previous message:
+	</p>
+
+     <pre>Volumes:
+  postgres-db:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  postgres-db-db-kubegres-4-0
+    ReadOnly:   false
+</pre>
+
+     <p>So the POD, which lives in the node ip-192-168-12-87.eu-west-2.compute.internal, has a PVC called postgres-db-db-kubegres-4-0.
+     Let's describe the node, and then the PVC and associated PV:</p>
+
+     <pre>k describe node ip-192-168-12-87.eu-west-2.compute.internal
+
+    ..........
+    Labels:             topology.ebs.csi.aws.com/zone=eu-west-2a
+                        topology.kubernetes.io/region=eu-west-2
+                        topology.kubernetes.io/zone=eu-west-2a
+    ..........</pre>
+
+     <pre>kubectl describe pvc postgres-db-db-kubegres-4-0
+
+     ...........
+     Volume:        pvc-dd3648f3-579c-44a7-b8f2-594c2bb958bc
+     ...........
+     Annotations:
+        volume.kubernetes.io/selected-node: ip-192-168-69-151.eu-west-2.compute.internal
+     ...........</pre>
+
+     <p>So the node is in zone eu-west-2a. The associated PVC is related to the wrong node: ip-192-168-69-151, instead
+     of the allocated one (ip-192-168-12-87). Furthermore, this node doesn't exist in my cluster, I can only assume that
+         it existed at some time, before some of the failures I have experienced.  <br>
+         The result is that the associated PV is in a different zone (eu-west-2c) than the POD node:</p>
+
+     <pre>kubectl describe pv pvc-dd3648f3-579c-44a7-b8f2-594c2bb958bc
+
+     ...........
+     Labels:            topology.kubernetes.io/region=eu-west-2
+                        topology.kubernetes.io/zone=eu-west-2c</pre>
+
+     <p>So the PV is on eu-west-2c, and the pod, in eu-west-2a, cannot find it. Deleting the POD doesn't help, it
+         reassigns the same PVC / PV, to recover from failures. It is needed to delete the PVC -which will automatically
+         remove the PV-, recreate the PVC with the valid node definition, and then delete the POD. Now, kubegres will
+         recreate it using the new PVC definition, which will allocate the PV in the right zone.<br>
+         The new PVC is defined reusing the previous definition, removing all the unnecessary parts and changing
+        the node annotation:</p>
+
+     <pre>apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: ebs.csi.aws.com
+    volume.kubernetes.io/selected-node: ip-192-168-12-87.eu-west-2.compute.internal
+    volume.kubernetes.io/storage-provisioner: ebs.csi.aws.com
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app: db-kubegres
+    index: "4"
+  name: postgres-db-db-kubegres-4-0
+  namespace: dubaix
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1800Mi
+  storageClassName: gp2
+  volumeMode: Filesystem
+</pre>
+
+     <p>With this definition, the solution is:</p>
+
+     <pre>kubectl delete pvc postgres-db-db-kubegres-4-0
+kubectl apply -f pvc.yaml
+kubectl delete pod db-kubegres-4-0
+</pre>
+
+     <p>As a note, the existing Kubegres PODS are db-kubegres-2-0 (main) and db-kubegres-4-0 (replica).
+     And there are PVCs for db-kubegres-1-0 (unused), db-kubegres-2-0, db-kubegres-3-0 (unused), and the newly created db-kubegres-4-0.
+         The PVC for db-kubegres-3-0 exhibits the same error, allocated to a wrong node.
+
+
+</div></div>
+</body>
+</html>
+
+

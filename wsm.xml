@@ -24,8 +24,11 @@
     </location>       
     <location source='solaris'>
         <template mold='../mold.htm'/>
-    </location>       
+    </location>
     <location source='kvm'>
+        <template mold='../mold.htm'/>
+    </location>
+    <location source='cloud'>
         <template mold='../mold.htm'/>
     </location>       
     <location source='phd'>
@@ -154,7 +157,10 @@
             <item name='Dominosa' file='javascript/dominosa/dominosa.html'/>
             <item name='Code Prettify' file='javascript/prettify/index.html'/>
         </group>
-        <group name='networking'>
+        <group name='net + cloud'>
+            <group name='Kubernetes'>
+                <item name='Kubegres - PVC isue' file='cloud/kubernetes/kubegres/index.html'/>
+            </group>
             <group name='SSH'>
                 <item name='Two factor authentication' file='howto/security/ssh_2factorauth.html'/>
                 <item name='Serving SVN on SSH' file='howto/security/ssh_svn.html'/>
@@ -169,7 +175,7 @@
                     <item name='3 - OpenVPN bridge' file='howto/openwrt/tl841n/openvpn-bridge.htm'/>
                 </group>
             </group>
-        </group>        
+        </group>
         <group name='Linux'>
             <group name='Debian'>
                 <item name='Troubleshooting' file='linux/debian/troubleshooting.htm'/>

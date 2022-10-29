@@ -8,6 +8,19 @@
  <div id='body'>
  <div id='content'>
 
+     <p class="blog-entry"><span class="blog-entry-date">29th October 2022</span>Kubegres K8s operator</p>
+
+     <p><img src="cloud/kubernetes/Kubernetes.svg" alt="kubernetes icon" class="blog">
+         I have been using in a test AWS Kubernetes environment, <a href="https://github.com/reactive-tech/kubegres">Kubegres</a>, a PostreSql operator, without any issues.<br>
+         The version I installed was 1.15, using one replica with backups (to EFS) enabled.<br>
+         The operator does not seem to be in heavy development -or it is considered mostly stable-. There is a new 1.16 version since September 2022, but I haven't tried yet the upgrade.
+         <br>
+        Alas, I had my first <a href="cloud/kubernetes/kubegres/index.html">issue</a> recently, when the replica POD failed to start, which resulted in missing backups.
+     All due to the usual error of <b>volume node affinity conflict</b>, caused by a more bizarre error behind.</p>
+
+
+
+
      <p class="blog-entry"><span class="blog-entry-date">25th September 2022</span>Virtualbox mount points</p>
 
      <p><img src="images/vbox.png" alt="virtualbox icon" class="blog">
