@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+
+<head>
+    <title>AWS - cli MFA</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <meta name="Keywords" content="cloud, aws, mfa">
+    <meta name="Author" content="Luis M. Pena">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class='timestamp'>16th November 2022</p>
+        <h1>AWS - MFA and CLI</h1>
+
+            <p>IAM allows to associate a MFA device user to a user. That user can then be prompted to enter a temprary token provided by that device, in addition to the password, to access the AWS console.</p>
+            <p>Enabling MFA for a given user is done by going to the IAM center, selecting security credentials for a given user and enabling a MFA device. With a registered MFA device, MFA becomes enabled and the user needs to provide the MFA token to access the console.
+                But these services can be still accessed  using the access keys (CLI access), and enabling the MFA device has no impact on this access.</p>
+            <p>Before understanding how MFA can be enabled for programmatic access, it must be noted that AWS (<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#enable-mfa-for-privileged-users">https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#enable-mfa-for-privileged-users</a>) recommends using IAM roles for human users and workloads that access your AWS resources so that they use temporary credentials. This, as opposed to the  long term credentials that the user access keys represent.</p>
+            <p>The objective here is to ensure that the user enters the MFA token when it does programmatic access, using IAM roles or not. </p>
+            <h2 id="programmatic-access-and-mfa-without-iam-roles">Programmatic access and MFA without  IAM roles</h2>
+            <p>We create a user, and assign a MFA virtual device. We assign access keys and  configure the CLI using aws configure.</p>
+            <p>For initial testing purposes, we assign a single policy to this user:</p>
+            <pre><code>{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "s3:ListAllMyBuckets",
+                    "s3:ListBucket",
+                    "iam:ListMFADevices"
+                ],
+                "Resource": "*"
+            }
+        ]
+    }</code></pre>
+
+        <p>With this policy, we are able to execute <strong>aws s3 ls</strong>. The user has MFA enabled, but this does not impact the CLI access.
+            There is AS blog post : How can I require MFA authentication for IAM users that use the AWS CLI (<a href="https://aws.amazon.com/premiumsupport/knowledge-center/mfa-iam-user-aws-cli/">https://aws.amazon.com/premiumsupport/knowledge-center/mfa-iam-user-aws-cli/</a>), which defines the policy that must be enabled for the user. Adapted to our existing policy, the result is:</p>
+            <pre><code>{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "s3:ListAllMyBuckets",
+                    "s3:ListBucket",
+                    "iam:ListMFADevices"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Sid": "BlockMostAccessUnlessSignedInWithMFA",
+                "Effect": "Deny",
+                "NotAction": [
+                    "iam:CreateVirtualMFADevice",
+                    "iam:DeleteVirtualMFADevice",
+                    "iam:ListVirtualMFADevices",
+                    "iam:EnableMFADevice",
+                    "iam:ResyncMFADevice",
+                    "iam:ListAccountAliases",
+                    "iam:ListUsers",
+                    "iam:ListSSHPublicKeys",
+                    "iam:ListAccessKeys",
+                    "iam:ListServiceSpecificCredentials",
+                    "iam:ListMFADevices",
+                    "iam:GetAccountSummary",
+                    "sts:GetSessionToken"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "BoolIfExists": {
+                        "aws:MultiFactorAuthPresent": "false",
+                        "aws:ViaAWSService": "false"
+                    }
+                }
+            }
+        ]
+    }</code></pre>
+
+        <p>With this extended policy, executing <strong>aws s3 ls</strong> fails with access denied. The solution is in this another AWS post: How do I use an MFA token to authenticate access to my AWS resources through the AWS CLI? (<a href="https://aws.amazon.com/premiumsupport/knowledge-center/authenticate-mfa-cli/">https://aws.amazon.com/premiumsupport/knowledge-center/authenticate-mfa-cli/</a>):</p>
+            <pre><code>aws sts get-session-token --serial-number arn:aws:iam::012174738912:mfa/coderazzi@gmail.com --token-code 315715 </code></pre>
+
+        <p>This returns temporal credentials valid for 12 hours, unless a  duration is specified in the previous command. If the token is invalid, it fails with message:</p>
+            <pre><code>    An error occurred (AccessDenied) when calling the GetSessionToken operation:
+                MultiFactorAuthentication failed with invalid MFA one time pass code.</code></pre>
+
+        <p>Otherwise, the output message includes the credentials information:</p>
+            <pre><code>{
+        "Credentials": {
+            "AccessKeyId": "ASIAQPOK6K7QJ466NEUN",
+            "SecretAccessKey": "wtGvlwnB1HJgeI3CBcQgOKMLFJsntYkDjupEfRIu",
+            "SessionToken": "IQoJb3JpZ2luX2VjENz//////////wEaCW ...........",
+            "Expiration": "2022-09-12T00:00:45+00:00"
+        }
+    }</code></pre>
+
+        <p>Doing now:</p>
+            <pre><code>export AWS_ACCESS_KEY_ID=ASIAQPOK6K7QJ466NEUN
+    export AWS_SECRET_ACCESS_KEY=wtGvlwnB1HJgeI3CBcQgOKMLFJsntYkDjupEfRIu
+    export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjENz//////////wEaCWV1L................</code></pre>
+
+        <p>Enables us to access S3 again.</p>
+            <p>Calling again <strong>aws sts get-session-token</strong> will fail if these environment variables are set, so it is first required to do:</p>
+            <pre><code>unset AWS_ACCESS_KEY_ID
+    unset AWS_SECRET_ACCESS_KEY
+    unset AWS_SESSION_TOKEN</code></pre>
+
+        <p>So this solution is mostly complete. The only drawback is that we are not prompted to enter a MFA token in response to our commands: it is out responsability to retrieve the session token and set the environment variables before issuing the AWS access commands.</p>
+            <p>With this solution, instead of setting/unsetting environment variables, an alternative is using temporary credentials with named profiles:</p>
+            <pre><code>[mfa]
+    aws_access_key_id = ASIAQPOK6K7QPZMOC7WT
+    aws_secret_access_key = nY3JvrGO0LvGvL9o3nsoI06qEhsqSeXoAQyCAQBT
+    aws_session_token = IQoJb3JpZ2luX2VjEGUaCWV1LXdlc...............</code></pre>
+
+        <p>Then, it is posible to access the AWS service speicfying this profile:</p>
+            <pre><code>aws s3 ls --profile mfa</code></pre>
+
+        <h2 id="mfa-with-iam-roles">Programmatic access and MFA with IAM roles</h2>
+            <p>Using AWS roles for CLI access is described here: <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html">https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html</a></p>
+            <h3 id="setup-of-iam-role-and-user">Setup of IAM role and user</h3>
+            <p>Let&#39;s first create a simple role in AWS giving access to S3. When creating a role, we choose <strong>custom trust policy</strong>:</p>
+            <pre><code>{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "Statement1",
+                "Effect": "Allow",
+                "Principal": {"AWS": "arn:aws:iam::033174738912:root"},
+                "Action": "sts:AssumeRole"
+            }
+        ]
+    }</code></pre>
+
+        <p>And add permission with a policy such as:</p>
+            <pre><code>{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "s3:ListAllMyBuckets",
+                    "s3:ListBucket",
+                    "iam:ListMFADevices"
+                ],
+                "Resource": "*"
+            }
+        ]
+    }</code></pre>
+
+        <p>Then, we give it a name, such as: Test_S3_Role_Remove</p>
+            <p>Now, we need to have a user, and give him permission to switch to this role, plus, as before, access to S3 buckets:</p>
+            <pre><code>{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": "sts:AssumeRole",
+                "Resource": "arn:aws:iam::033174738912:role/Test_S3_Role_Remove"
+            }
+        ]
+    }</code></pre>
+
+        <p>We call this policy Test_IAM_Role_Policy_Remove.</p>
+            <p>The first setup is to use an IAM role without MFA access. In this case, the credentials file will contain an entry such as:</p>
+            <pre><code>[coderazzi2]
+    aws_access_key_id = AKIAQPOK6K7QEHQHIOXJ
+    aws_secret_access_key = 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
+
+    [iamrole]
+    role_arn = arn:aws:iam::033174738912:role/Test_S3_Role_Remove
+    source_profile = coderazzi2</code></pre>
+
+        <p>So we can try:</p>
+            <pre><code>aws s3 ls --profile coderazzi2</code></pre>
+
+        <p>This will fail, access denied. But the following call:</p>
+            <pre><code>aws s3 ls --profile iamrole</code></pre>
+
+        <p>succeeds, listing the S3 buckets as expected.</p>
+            <h3 id="updating-role-ro-require-mfa">Updating role ro require MFA</h3>
+            <p>In this case, we update the trust policy we had already created:</p>
+            <pre><code>    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "Statement1",
+                "Effect": "Allow",
+                "Principal": {"AWS": "arn:aws:iam::033174738912:root"},
+                "Action": "sts:AssumeRole",
+               "Condition": { "Bool": { "aws:multifactorAuthPresent": true } }
+            }
+        ]
+    }</code></pre>
+
+        <p>We have just added one line, the condition, to require MFA. But this cannot be tested immediately, as when the user assumes a role, it is assumed by default for one hour. This can be checked in CloudTrail, Event History, filtering by AWS::STS::AssumedRole.</p>
+            <p>When the user needs to assume again the role, it will fail, not authorized. We need to allocate a MFA device to this user, as done before for the first user, and we get the identity: arn:aws:iam::033174738912:mfa/coderazzi2@gmail.com</p>
+            <p>We modify now the credential file to add this mfa serial number:</p>
+            <pre><code>[iamrole]
+    role_arn = arn:aws:iam::033174738912:role/Test_S3_Role_Remove
+    source_profile = coderazzi2
+    mfa_serial = arn:aws:iam::033174738912:mfa/coderazzi2@gmail.com
+
+    [coderazzi2]
+    aws_access_key_id = AKIAQPOK6K7QEHQHIOXJ
+    aws_secret_access_key = 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</code></pre>
+
+        <p>When we do now:</p>
+            <pre><code>    aws s3 ls --profile iamrole</code></pre>
+
+        <p>AWS will ask: <strong>Enter MFA code for arn:aws:iam::033174738912:mfa/coderazzi2@gmail.com:</strong>
+            If the token matches, the user can assume the role and list the tokens. </p>
+            <p>As before, this role is now assumed for one hour, so next calls with this profile will not prompt the user to enter a new MFA code.</p>
+
+
+    </div></div>
+</body>
+</html>
+
+

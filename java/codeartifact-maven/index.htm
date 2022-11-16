@@ -90,13 +90,24 @@
       &lt;USER-HOME&gt;/.aws/config, &lt;USER-HOME&gt;/.aws/credentials, &lt;AWS_CONFIG_FILE&gt;,
       &lt;AWS_SHARED_CREDENTIALS_FILE&gt;</li>
    <li><b>Maven settings file</b>: the location of the maven settings file, usually under ~/.m2</li>
-   <li><b>AWS cli path</b>: the location of the aws executable, cabe specified as aws if it can be found in the path</li>
+   <li><b>AWS cli path</b>: the location of the aws executable, can be specified as aws if it can be found in the path</li>
   </ul>
 
   <p>The button Generate credentials will initiate the requests of a token to AWS and its inclusion in the maven settings file</p>
 
+     <h2>MFA support</h2>
+
+     <p>From version 3.0.0, the plugin includes support for MFA, prompting the user to enter the MFA token if required.<p>
+     <p>Currently, only MFA based on roles is supported, where the chosen profile identifies a IAM role, not a IAM user.<br>
+        For more information on the distinction between role-based-MFA and user-based-MFA, check
+         <a href="https://coderazzi.net/cloud/aws/mfa">https://coderazzi.net/cloud/aws/mfa</a></p>
+
+
      <h2>Versions</h2>
      <ul>
+         <li>Version 3.0.0-beta : 16th Nov 2022: Added support for MFA (role based)</li>
+         <li>Version 2.2.0 : 30th Oct 2022: Added hint in case of missing region configuration (<a href="https://github.com/coderazzi/aws_codeartifact_maven/issues/8">issue #8</a> in Github).</li>
+         <li>Version 2.1.1 : 29th Jan 2022: if profile is default, do not include it when getting credentials.</li>
          <li>Version 2.1.0 : 27th Jan 2022: Added AWS profile management.</li>
          <li>Version 2.0.1 : 27th Nov 2021: Removed use of deprecated API, improved dialog layout.</li>
          <li>Version 2.0.0 : 24th Nov 2021: Changed GUI to use dropdowns with serverIds extracted from maven settings file.</li>

@@ -99,6 +99,7 @@
     <menu id='menu'>
         <group name='Blog'>
             <item name='Current' file='index.htm'/>
+            <item name='2016-2020' file='blog_2016_2020.html'/>
             <item name='2011-2015' file='blog_2011_2015.html'/>
             <item name='-2010' file='blog_2010.html'/>
         </group>
@@ -158,6 +159,9 @@
             <item name='Code Prettify' file='javascript/prettify/index.html'/>
         </group>
         <group name='net + cloud'>
+            <group name='AWS'>
+                <item name='MFA cli' file='cloud/aws/mfa/index.html'/>
+            </group>
             <group name='Kubernetes'>
                 <item name='Kubegres - PVC isue' file='cloud/kubernetes/kubegres/index.html'/>
             </group>
