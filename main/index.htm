@@ -481,7 +481,8 @@ main(sys.argv[1], sys.argv[2])</pre>
          ALT+TAB would just show me the processes in Windows, not those in Citrix. Likewise, all hotkeys would be
          captured by the Windows virtual machine, rendering them mostly useless.
          Citrix to the <a href="https://support.citrix.com/article/CTX232298">rescue</a>: open regedit in the Windows
-         virtual machine and set the value <b>Remote</b> in the following two keys:
+         virtual machine and set the value <b>Remote</b> for name <b>TransparentKeyPassthrough </b>
+         in the following two keys:
          <ul>
             <li>HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Citrix\ICA Client\Engine\Lockdown Profiles\All Regions\Lockdown\Virtual Channels\Keyboard</li>
             <li>HKEY_CURRENT_USER\SOFTWARE\Citrix\ICAClient\Engine\Lockdown Profiles\All Regions\Lockdown\Virtual Channels\Keyboard\ </li>
