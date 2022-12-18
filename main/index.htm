@@ -1,12 +1,207 @@
 <html>
 
 <head>
- <title>Coderazzi - Luis M. Pena's home page</title>
+    <title>Coderazzi - Luis M. Pena's home page</title>
+    <link rel="stylesheet" type="text/css" href="./css/sunburst.css">
+    <script type="text/javascript" src='./js/prettify/run_prettify.js'></script>
 </head>
 
 <body>
  <div id='body'>
  <div id='content'>
+
+     <p class="blog-entry"><span class="blog-entry-date">17th Dec 2022</span>Always humble</p>
+
+     <p><img src="images/humble.jpeg" alt="humble icon" class="blog"> I had some time off and decided to do a bit
+         from <a href="https://adventofcode.com/2021/day/14>"Advent Of Code</a>.
+         I am one year behind -and more-, so I was on day 14 of year 2021.</p>
+
+     <p>The first part, as usual, was easy, and the second part could not be
+         solved using the basic approach, as the final string would require
+         some terabytes of memory, plus all the CPU resources to generate it. </p>
+
+     <p>Basically, we would start with a short string, 4 to 20 characters,
+         and its length would be doubled on each iteration, for a total of 40
+         iterations.</p>
+
+     <p>I had the idea of a division and conquer method, as the string could be
+         split and each part handled separately. This solved indeed the problem:
+         I first obtained all the basic strings of a 8k characters that were
+         generated after 13 iterations, and all the next iterations would
+         produce some of those basic blocks. Then, I had just 27 iterations
+         to handle, still long computation time, but manageable.
+         My solution was a bit complex, the code not very long, and it required
+         just over four minutes:</p>
+
+     <pre class='prettyprint'>import re
+
+def get_input(test_mod=""):
+    with open('input/%s%s.input' % (__file__[-5:-3], test_mod)) as f:
+        return [x.strip() for x in f.readlines()]
+
+
+def read_input(lines):
+    pattern = re.compile('^([A-Z]{2}) -> ([A-Z])$')
+    rules = {}
+    for each in lines[2:]:
+        match = pattern.match(each)
+        rules[match.group(1)] = match.group(2)
+    return lines[0], rules
+
+
+def basic(template, rules, times):
+    for _ in range(times):
+        applied = [[a + rules[a+b], b] for a, b in zip(template, template[1:])]
+        template = ''.join([x[0] for x in applied] + [applied[-1][1]])
+    return {c: template.count(c) for c in sorted(set(template))}
+
+
+def dividing(template, rules, times):
+
+    def apply_rules(base):
+        applied = [[a + rules[a+b], b] for a, b in zip(base, base[1:])]
+        return ''.join([x[0] for x in applied] + [applied[-1][1]])
+
+    def find_all_units(base):
+        mem_length, memory, stack = len(template), {}, set([base])
+        while stack:
+            use = stack.pop()
+            if use not in memory:
+                applied = apply_rules(use)
+                pre, suf = applied[:mem_length], applied[mem_length-1:]
+                memory[use] = (pre, suf, {c: use.count(c) for c in set(use)})
+                stack.add(pre)
+                stack.add(suf)
+        # convert the strings to integers, easing up comparisons....
+        intern = {s: j for j, s in enumerate(memory.keys())}
+        memory = {intern[k]: (intern[v[0]], intern[v[1]], v[1][0], v[2])
+                  for k, v in memory.items()}
+        return memory, intern[base]
+
+    def apply_with_cache(base, t, memory):
+        frequencies, stack = {c: 0 for c in rules.values()}, [base]
+        use = 1
+        while t > 0:
+            current, stack = stack[:use], stack[use:]
+            t, use = t - 1, use * 2
+            for each in current:
+                assoc = memory[each]
+                stack.append(assoc[0])
+                stack.append(assoc[1])
+                frequencies[assoc[2]] -= 1
+        for each in stack:
+            for c, f in memory[each][3].items():
+                frequencies[c] += f
+        return frequencies
+
+    # let's apply rules a number of times. We apply first 13 times the rules,
+    # that will produce a template of length 2^13 multiples by the original
+    # length (8192 x original length)
+    for iteration in range(13):
+        template = apply_rules(template)
+        if iteration == times-1:
+            break
+
+    # now, template has odd length. To calculate its next step, we can
+    # divide in two parts of the same length as the current template. And to
+    # calculate the next step, we divide again, now in four parts of the
+    # current template. The advantage is that eventually, all divisions are
+    # just evolution of the same strings. Let's first calculate all the base
+    # strings (all with length 8192 x original length)
+    cache, start = find_all_units(template)
+
+    # now, we decompose continuously the template in two parts, until we reach
+    # the given number.
+    return apply_with_cache(start, times-iteration-1, cache)
+
+
+def solve(frequencies):
+    times = sorted([f for f in frequencies.values() if f])
+    return times[-1] - times[0]
+
+
+def main(cases):
+    for test in cases:
+        if test:
+            use, echo = '.test.%d' % test, 'Test %d : ' % test
+        else:
+            use = echo = ''
+        template, rules = read_input(get_input(use))
+        print('2021 - %s02.1 :' % echo, solve(basic(template, rules, 10)))
+        print('2021 - %s02.2 :' % echo, solve(dividing(template, rules, 40)))
+
+
+main([1, 0])</pre>
+
+     <p> Still, I was not happy with the solution. Then I looked into a hint
+         on this problem, about focusing on the generated pairs themselves,
+         and it was enough to create this other solution, much more elegant,
+         much simpler, and faster.</p>
+
+     <pre class='prettyprint'>import re
+
+
+ def get_input(test_mod=""):
+     with open('input/%s%s.input' % ('14', test_mod)) as f:
+         return [x.strip() for x in f.readlines()]
+
+
+ def read_input(lines):
+     pattern = re.compile('^([A-Z]{2}) -> ([A-Z])$')
+     rules = {}
+     for each in lines[2:]:
+         match = pattern.match(each)
+         rules[match.group(1)] = match.group(2)
+     return lines[0], rules
+
+
+ def pairs(template, rules, times):
+     def inc_dict(d, k, v=1):
+         d[k] = d.get(k, 0) + v
+
+     base = {}
+     for a, b in zip(template, template[1:]):
+         inc_dict(base, a+b)
+
+     for i in range(times):
+         update = {}
+         for bk, bv in base.items():
+             inc_dict(update, bk[0] + rules[bk], bv)
+             inc_dict(update, rules[bk] + bk[1], bv)
+         base = update
+
+     frequencies = {template[-1]: 1}
+     for bk, bv in base.items():
+         inc_dict(frequencies, bk[0], bv)
+     times = sorted([f for f in frequencies.values() if f])
+     return times[-1] - times[0]
+
+
+ def main(cases):
+     for test in cases:
+         if test:
+             use, echo = '.test.%d' % test, 'Test %d : ' % test
+         else:
+             use = echo = ''
+         template, rules = read_input(get_input(use))
+         print('2021 - %s02.1 :' % echo, pairs(template, rules, 10))
+         print('2021 - %s02.2 :' % echo, pairs(template, rules, 40))
+
+
+ main([1, 0])</pre>
+
+     <p>I had really spent some time figuring out the original solution:
+         I saw a process (dividing the complexity to solve it), and focused
+         into it, instead of backpedaling and trying to figure out a different
+         focus. Why? I guess that because my initial solution was manageable,
+         although barely (42 or 44 iterations instead of 40 and my solution
+         would have made it useless).</p>
+
+     <p>
+         Lesson learnt (again :-) on finding alternate solutions....
+     </p>
+
+
 
      <p class="blog-entry"><span class="blog-entry-date">16th Nov 2022</span>CodeArtifact and MFA</p>
 
