@@ -78,7 +78,7 @@
   <p>After installation, a menu entry appear under Tools: <b>Generate AWS CodeArtifact credentials for Maven</b></p>
 
   <p>When selected, a window appears to enter the required details:</p>
-  <img class='centered' src="window-2-1-0.png">
+  <img class='centered' src="window-3-1-0.png">
   <ul>
    <li><b>Domain</b>: the domain in AWS</li>
    <li><b>Domain Owner</b>: the account owner, something like 023174738914</li>
@@ -89,7 +89,9 @@
   <li><b>AWS profile</b>: the profile to use to obtain the credentials, obtained from any of the files
       &lt;USER-HOME&gt;/.aws/config, &lt;USER-HOME&gt;/.aws/credentials, &lt;AWS_CONFIG_FILE&gt;,
       &lt;AWS_SHARED_CREDENTIALS_FILE&gt;</li>
+   <li><b>Region</b>: the target region. If specified, it overrides the region given by the profile -if any-</li>
    <li><b>Maven settings file</b>: the location of the maven settings file, usually under ~/.m2</li>
+
    <li><b>AWS cli path</b>: the location of the aws executable, can be specified as aws if it can be found in the path</li>
   </ul>
 
@@ -105,6 +107,7 @@
 
      <h2>Versions</h2>
      <ul>
+         <li>Version 3.1.0-beta : 27th Mar 2023: User can optionally specify the target region</li>
          <li>Version 3.0.0 : 04th Dec 2022: Added support for MFA (role based)</li>
          <li>Version 2.2.0 : 30th Oct 2022: Added hint in case of missing region configuration (<a href="https://github.com/coderazzi/aws_codeartifact_maven/issues/8">issue #8</a> in Github).</li>
          <li>Version 2.1.1 : 29th Jan 2022: if profile is default, do not include it when getting credentials.</li>
