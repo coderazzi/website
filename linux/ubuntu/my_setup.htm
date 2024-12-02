@@ -202,6 +202,39 @@ gsettings set org.gnome.nautilus.list-view default-zoom-level small</pre>
 
         <p>I use different keys for other services, like git. To generate any additional key with a comment</p>
         <pre>ssh-keygen -t rsa -b 4096 -f hg_id_rsa -C coderazzi@summer-git,hg</pre>
+
+        <h2>Using onedrive</h2>
+
+        <ul>
+            <li>Execute onedrive-cli: This will require the credentials via the browser</li>
+            <li>The onedrive folder is restricted, due to snap confinment, to an internal folder (~/snap/onedrive-cli/14/OneDrive)
+<pre>mv ~/snap/onedrive-cli/14/OneDrive ~
+echo sync_dir=/home/coderazzi/OneDrive >> /home/coderazzi/snap/onedrive-cli/current/.config/onedrive/config</pre></li>
+            <li>Perform an initial synchronization
+                <pre>monedrive-cli --monitor --verbose</pre></li>
+            <li>Use onedrive as a service
+                <ul><li>Create a file ~/.config/systemd/user/onedrive.service as
+<pre>
+[Unit]
+Description=OneDrive Free Client
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/snap/bin/onedrive-cli --monitor
+Restart=on-failure
+RestartSec=3
+RestartPreventExitStatus=3
+
+[Install]
+WantedBy=default.target
+</pre>
+                </li><li>Then:
+<pre>systemctl --user start onedrive
+systemctl --user enable onedrive</pre></li>
+            <li>To check the status:
+                <pre>journalctl --user-unit onedrive -f</pre></li>
+        </ul>
     </div>
 </div>
 </body>
