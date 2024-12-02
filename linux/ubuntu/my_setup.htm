@@ -13,13 +13,21 @@
 <div id='body'>
     <div id='content'>
 
-        <p class='timestamp'>12th April 2017<span class="timestamp_update">, updated:</span>10th May 2020</p>
+        <p class='timestamp'>12th April 2017<span class="timestamp_update">, updated:</span>1st Dec 2024</p>
 
         <h1>My own setup for Ubuntu</h1>
 
         <p>These are the steps I normally use to setup a Ubuntu desktop distribution,
-            currently up to Focal Fossa (20.04). For previous Ubuntu distributions, see this
-            previous <a href="my_setup_17_04.htm">version</a>.
+            currently up to Noble Numbat (24.04). For previous Ubuntu distributions, see this
+            previous <a href="my_setup_20_04.htm">version</a>.
+
+        <p>My focus is to have all my linux boxes having a similar configuration and packages installed. And
+            that the configuration matches as well my MacOS configurations, using same shortcuts and workflows.
+            For example, I use workspaces, which I define statically in MacOS and in Linux, and define the same
+            shortcuts, when possible, to use them (it is possible to switch workspaces using the same keyboard
+            shortcuts, but the movement of windows between workspaces cannot be equally defined). On the other
+            side, I do not switch the Alt-Cmd keys, somehow I keep good enough muscle memory to key the correct
+            combinations. </p>
 
         <p>This setup only defines the initial installations and basic system configuration, not all the programs
             that I eventually install.</p>
@@ -31,37 +39,29 @@
                 updates during the installation and to install 3rd party software.</li>
 
             <li>Install basic applications from the command line:
-                <pre>sudo apt install -y gnome-tweaks git make dconf-editor guake vim curl exfat-utils exfat-fuse</pre>
-            </li>
-            <li>Install sensors applications, from the command line:
-                <pre>sudo apt install -y lm-sensors psensor</pre>
-                <pre>sudo sensors-detect</pre>
-                <pre>/etc/init.d/kmod start</pre>
+                <pre>sudo apt install -y gnome-tweaks git gettext make dconf-editor guake vim curl exfat-fuse</pre>
             </li>
             <li>Install additional applications from the command line: JDK, virtualbox, mono:
                 <pre>sudo apt install virtualbox default-jdk mono-runtime</pre>
                 <pre>sudo apt install virtualbox-ext-pack</pre>
             </li>
-            <li>Install applications using the Ubuntu Software Center:
+            <li>Install applications using the AppCenter (most are snap versions):
                 <ul>
-                    <li>Authy</li>
+                    <li>Brave</li>
                     <li>Gimp</li>
                     <li>Intellij Idea Ultimate</li>
-                    <li>KeePassXC (snap version)</li>
-                    <li>LibreOffice</li>
-                    <li>Slack</li>
+                    <li>KeePassXC</li>
+                    <li>onedrive-cli</li>
                     <li>Thunderbird</li>
+                    <li>Transmission</li>
+                    <li>Vivaldi</li>
                     <li>VLC</li>
+                    <li>XSane</li>
                 </ul>
             </li>
             <li>Install applications using their own installers / instructions:
                 <ul>
                     <li><a="https://www.dropbox.com/install">Dropbox</a></li>
-                    <li><a href="https://brave.com/download/">Brave browser</a></li>
-                    <li><a href="https://www.google.com/chrome/">Chrome browser</a></li>
-                    <li><a href="https://www.opera.com/download">Opera browser</a></li>
-                    <li><a href="https://vivaldi.com/download/">Vivaldi browser</a></li>
-                    <li><a href="https://slack.com/intl/en-lu/downloads/linux">Slack</a></li>
                     <li><a href="https://www.sublimetext.com/3">Sublime text 3</a>. Once opened, it will ask to
                     download a new version: answer no, then enter the licence for Sublime 3, go to preferences / settings
                     and enter <b>{"update_check": false}</b> in the user settings</li>
@@ -70,47 +70,17 @@
             </li>
         </ul>
 
-        <h2>Nvidia</h2>
-
-        <p>I keep using either Intel embedded GPUs or Nvidia cards. For the computers with Nvidia cards,
-            I find myself sometimes in a 640x480 resolution. This normally requires re-installing the nvidia driver
-            (which I normally install instead of the nouveau driver). The reinstallation can be done:
-        </p>
-        <ul>
-            <li>Opening the "Additional Drivers" application, going to "Additional Drivers" and selecting the
-                    preferred option (difficult to see in a 640x480 resolution).
-            </li>
-            <li>
-                In a terminal window, issuing: <code>sudo apt-get install nvidia-driver-460</code>
-                (or whichever is the current version)
-            </li>
-        </ul>
-
         <h2>Configuration</h2>
 
         <ul>
-            <li><b>Regional format:</b>I live in Luxembourg, but want to use standard English formats.
-                I found that the best choice is to select English (Ireland) as regional format.
-                Press the Super Key and enter in the search textbox 'Language support',
-                then go to the Regional Formats tab in the application and choose English (Ireland),
-                then apply system-wide. This step will require a logout / login.</li>
 
             <li><b>Desktop configuration</b>: open <b>Tweaks</b> application
                 <ul>
-                    <li>Extensions - <b>desktop icons</b>: set to off, and press the configuration button:
-                        hide  personal folder and trash</li>
-                    <li><b>Workspaces</b>: Disable dynamic workspaces, enable 4 static workspaces</li>
-                    <li><b>Keyboard and Mouse</b>:
+                    <li><b>Keyboard</b>:
                         <ul>
                             <li><b>Overview Shortcut</b>: Right Super. The original, Left Super, I
                                 use it better for switching workspaces, as it is done on Mac</li>
-                            <li>Additional layout options:
-                                <ul>
-                                    <li><b>Miscellaneous compatibility options</b>:
-                                        Numeric Keypad always enter digits</li>
-                                    <li><b>Caps lock behaviour</b>: Caps lock is disabled (not the Disable option)</li>
-                                </ul>
-                            </li>
+                            <li><b>Additional layout options</b>: Compatibility options: Numeric Keypad always enter digits</li>
                         </ul>
                     </li>
                 </ul>
@@ -134,32 +104,51 @@
                 </ul>
             </li>
 
-            <li>Open <b>settings</b> application.
-                <ul>
-                    <li>Appearance: Dock : Autohide</li>
-                    <li>Search : Only enable files and calculator</li>
-                    <li>Power : Power Button Action : Suspend</li>
-                    <li>Power: Power saving: 4 minutes</li>
-                    <li>Privacy / Screen Lock / Blank screen delay: 4 minutes</li>
-                    <li>Privacy / Screen Lock / Automatic Screen lock delay: 30 minutes</li>
-                    <li>Keyboard shorcuts
-                        <ul>
-                            <li>Home folder: Windows E</li>
-                            <li>Switch to next input source : Disable (backspace).
-                                Otherwise,it uses Super + Space</li>
-                            <li>Switch to workspace 1: Super + 1</li>
-                            <li>Switch to workspace 2: Super + 2</li>
-                            <li>Switch to workspace 3: Super + 3</li>
-                            <li>Switch to workspace 4: Super + 4</li>
-                            <li>Move window to workspace 1: Shift + Super + 1</li>
-                            <li>Move window to workspace 2: Shift + Super + 2</li>
-                            <li>Move window to workspace 3: Shift + Super + 3</li>
-                            <li>Move window to workspace 4: Shift + Super + 4</li>
-                        </ul>
-                        Note that Super + S allows a workspace view
-                    </li>
-                </ul>
-            </li>
+            <li>Open <b>Settings</b> application.
+                <li>Keyboard/Keyboard shortcuts<ul>
+                    <li>Launchers<ul>
+                        <li>Home Folder: Command + E</li>
+                    </ul></li>
+                    <li>Navigation<ul>
+                        <li>Move window to monitor xxxx : Remove it  (4 shortcuts)</li>
+                        <li>Move window one worspace to the left: Remove it</li>
+                        <li>Move window one worspace to the right: Remove it</li>
+                        <li>Move window to last workspace: Remove it</li>
+                        <li>Move window to workspace 1: Alt Command 1</li>
+                        <li>Move window to workspace 2: Alt Command 2</li>
+                        <li>Move window to workspace 3: Alt Command 3</li>
+                        <li>Move window to workspace 4: Alt Command 4</li>
+                        <li>Switch to last workspace: Remove it</li>
+                        <li>Switch to workspace on the left: Remove it</li>
+                        <li>Switch to workspace on the right: Remove it</li>
+                        <li>Switch to workspace 1: Command 1</li>
+                        <li>Switch to workspace 2: Command 2</li>
+                        <li>Switch to workspace 3: Command 3</li>
+                        <li>Switch to workspace 4: Command 4</li>
+                    </ul></li>
+                    <li>System<ul>
+                        <li>Lock Screen: Remove it</li>
+                        <li>Restore the keyboard shortcuts: Remove it</li>
+                    </ul></li>
+                    <li>Typing<ul>
+                        <li>Switch to next input source: Remove it</li>
+                        <li>Switch to previous input source: Remove it</li>
+                    </ul></li>
+                </ul></li>
+                <li>Ubuntu Desktop<ul>
+                    <li>Multitasking / Active Screen Edges OFF</li>
+                </ul></li>
+                <li>Multitasking<ul>
+                    <li>Active Screen Edges OFF</li>
+                    <li>Workspaces: Fixed number of workspaces (set it to default, 4)</li>
+                </ul></li>
+                <li>Search: enable only Files and Calculator</li>
+                <li>Power:<ul>
+                    <li>Power button actionL Suspend</li>
+                </ul></li>
+                <li>Privacy & Security<ul>
+                    <li>Automatic Screen Lock Delay: 30 minutes</li>
+                </ul></li>
 
             <li><b>Cleanup dock</b>: remove any applications not required, like Ubuntu software, help, etc, and
                 add any new ones</li>
@@ -191,8 +180,8 @@ gsettings set org.gnome.nautilus.list-view default-zoom-level small</pre>
                 </ul>
             </li>
 
-            <li><b>Start guake at login</b>: Open Startup Applications (use launcher), press add, enter
-                Guake as name, and /usr/bin/guake as command</li>
+            <li><b>Start guake at login</b>: The usual way of launching 'Startup Applications' and adding Guake is not useful: guake removes itself!
+                What is needed is to start guake (usr/bin/guake), open preferences, and, in General / General, select the checkbox 'Start Guake at login'</li>
 
             <li>On a Mac keyboard, avoid having to press Fn to key F1 to F12:
                 <pre>
@@ -202,88 +191,8 @@ gsettings set org.gnome.nautilus.list-view default-zoom-level small</pre>
 
             </li>
 
-            <li><b>Hide top bar in Gnome desktop</b>: open a terminal, and enter:
-                <pre>mkdir -p ~/.local/share/gnome-shell/extensions/
-cd ~/.local/share/gnome-shell/extensions/
-git clone https://github.com/mlutfy/hidetopbar.git hidetopbar@mathieu.bidon.ca
-cd hidetopbar@mathieu.bidon.ca
-make schemas
-cd ..
-gnome-extensions enable hidetopbar@mathieu.bidon.ca
-</pre>
-            </li>
         </ul>
 
-        <h2>Browsers configuration</h2>
-
-        <ul>
-            <li><b>Block notifications across the browsers, and maximize privacy</b>:
-                <ul>
-                    <li>Brave:
-                        <ul>
-                            <li>Settings:
-                                <ul>
-                                    <li>Sync: activate it across devices, syncing bookmarks, extensions, settings and theme</li>
-                                    <li>Shields: Trackers & ads blocking: aggressive</li>
-                                    <li>Social media blocking: disable Facebook, Linkedin</li>
-                                    <li>Additional settings: autofill: passwords: do not offer to save passwords</li>
-                                </ul>
-                            </li>
-                            <li>Extensions: include uBlocker (Adblock tool for Chrome)</li>
-                            <li>settings / Additional settings / Privacy and security /
-                                Site and Shield settings / Notifications: set off
-                                <b>Sites can ask to send notifications</b>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>Chrome: enable synchronization using account.
-                        <ul>
-                            <li>Settings:
-                                <ul>
-                                    <li>autofill / passwords: do not offer to save passwords</li>
-                                    <li>security / safe browsing: standard protection</li>
-                                    <li>privacy and security / Site Settings / Notifications:
-                                        <b>Don't allow sites to send notifications</b>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>Firefox: enable synchronization with firefox login.
-                        <ul>
-                            <li>Enable bookmarks: mouse right-click at the right of the URL bar, select
-                            Bookmark toolbar, click on Always Show</li>
-                            <li>Settings / Privacy and security:
-                                <ul>
-                                    <li>Enhanced tracking protection: Strict</li>
-                                    <li>Logins and passwords: uncheck Ask to save logins and passwords for websites</li>
-                                    <li>Permissions: Notifications: set the checkbox
-                                        <b>Block new requests asking to allow notifications</b>, then save the changes
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>Opera:
-                        <ul>
-                            <li>Advanced settings: Privacy protection</li>
-                            <ul>
-                                <li>Block ads</li>
-                                <li>Block trackers</li>
-                            </ul>
-                            <li>enter the URL: opera://settings/content/notifications , then set
-                                <b>Sites can ask to send notifications</b> off
-                            </li>
-                        </ul>
-                    </li>
-                    <li>Vivaldi:
-                        <ul>
-                            <li>Webpages, notifications: block</li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
 
         <h2>SSH settings</h2>
 
@@ -293,9 +202,6 @@ gnome-extensions enable hidetopbar@mathieu.bidon.ca
 
         <p>I use different keys for other services, like git. To generate any additional key with a comment</p>
         <pre>ssh-keygen -t rsa -b 4096 -f hg_id_rsa -C coderazzi@summer-git,hg</pre>
-
-
-        <p>Finally, reboot the system for all configuration changes to take place.</p>
     </div>
 </div>
 </body>
