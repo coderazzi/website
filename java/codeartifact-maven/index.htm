@@ -112,13 +112,33 @@
 
      <p>From version 3.0.0, the plugin includes support for MFA, prompting the user to enter the MFA token if required.<p>
      <p>Currently, only MFA based on roles is supported, where the chosen profile identifies a IAM role, not a IAM user.<br>
-        For more information on the distinction between role-based-MFA and user-based-MFA, check
+         For more information on the distinction between role-based-MFA and user-based-MFA, check
          <a href="https://coderazzi.net/cloud/aws/mfa">https://coderazzi.net/cloud/aws/mfa</a></p>
 
 
+     <h2>SSO support</h2>
+
+     <p>From version 4.1.0, the plugin includes support for SSO.<p>
+     <p>If a token request appears during the token generation, the plugin will start automatically the SSO login procedure.</p>
+     <p>The AWS cli displays then a URL, where the user will enter his SSO credentials, and a security code.
+         The OS will automatically open the URL in the default browser, and will present the same security code.</p>
+     <p>These operations happen automatically in the background, the plugin generation's window will only display
+         this security code:</p>
+
+     <img class='centered' src="detail-sso-4-1-0.png" width="800px">
+
+     <p>
+         From that moment, the browser's UI handles the whole process, with as many attempts from the
+         user as required. This can end with success, or with a timeout, although the user can cancel
+         the plugin' progress at any moment
+     </p>
+
      <h2>Versions</h2>
      <ul>
-         <li>Version 4.0.2 : 5th Dec 2024: Improved documentation, released as non beta</li>
+         <li>Version 4.1.1 : 16th Dec 2024: Display SSO info in separate message.
+             Use AWS path for SSO login as defined in the configuration window</li>
+         <li>Version 4.1.0 : 14th Dec 2024: SSO support</li>
+         <li>Version 4.0.2 : 05th Dec 2024: Improved documentation, released as non beta</li>
          <li>Version 4.0.1 : 18th Nov 2024: Handle properly a generation dialog too big</li>
          <li>Version 4.0.0 : 17th Nov 2024: Support multiple repositories at once</li>
          <li>Version 3.3.2 : 16th Nov 2024: Revert partially changes in version 3.3.1, MFA and reload

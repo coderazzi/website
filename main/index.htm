@@ -10,6 +10,84 @@
  <div id='body'>
  <div id='content'>
 
+     <p class="blog-entry"><span class="blog-entry-date">14th December 2024</span>SSO on AWS plugin</p>
+
+     <p><img src="codeartifact-maven/icon.svg" alt="codeartifact+maven icon" class="blog">
+         A user of my <a href="codeartifact-maven/index.htm">AWS CodeArtifact Idea plugin</a>
+         requested the authentication token through a SSO account, so he was forced to
+         periodically access the command line and do the AWS SSO login process. He asked to
+         include the login in the plugin, and that is the core functionality added in version 4.1.0
+     </p>
+     <p>
+         During the SSO login process, AWS displays a URL to initiate the SSO login, and emits a
+         security code; the plugin just displays this security code:
+         <img class='centered' src="codeartifact-maven/detail-sso-4-1-0.png" width="600px'">
+     </p>
+
+     <p>
+         From that moment, the browser's UI handles the whole process, with as many attempts from the
+         user as required. This can end with success, or with a timeout, although the user can cancel
+         the plugin' progress at any moment
+     </p>
+
+     <p>
+         For the time being, this update is only available in the beta channel.
+     </p>
+
+     <p class="blog-entry"><span class="blog-entry-date">12th December 2024</span>Attack attempts</p>
+
+     <p><img src="images/selfkill.png" alt="big error" class="blog">
+         I have a VM hosted in Hetzner, running debian.
+         I enabled fail2ban long time ago, to get IPs banned on failed remote logins.
+         I had also enabled two-factor authentication at some point, but more recently,
+         I had decided to disable password authentication and require only SSH keys.
+     </p>
+
+     <p>After getting a new laptop, I generated new ssh keys, but, of course,
+         I could not login in the remote server, as I would first need to add my SSH key.
+         The best way to do it seemed to be using the Hetzner console,
+         but that was in fact a difficult task, as the console automatically
+         displayed a German keyboard. </p>
+
+     <p>Rushing to have the task done, I ended up removing by mistake the authorized_keys file.
+         Not a big issue, but the fastest course of action at that point was to enable password
+         authentication: I disabled fail2ban, enabled password authentication,
+         removed the two-factor authentication, and added the required keys.</p>
+
+     <p>But with some social interactions in between, the full security was only placed again
+         almost 12 hours later. Big error on my side, so my rush ended up requiring more work,
+         removing the VM and restoring it with a recent backup.</p>
+
+     <p>Before removing the VM, I checked the auth.log:
+         I saw 6338 failed attempts to login to the machine, in 11.5 hours. The main offenders were:
+         <ul>
+            <li>root : 4058 times</li>
+            <li>debian : 189 times</li>
+            <li>postgres : 38 times</li>
+        </ul>
+     </p>
+     <p>But the whole list included other 249 users: *****,123,1234,12345,123456,abc,abc1,adm,admin,Admin,admin01,
+         admin1,admin2,admin4,administrador,administrator,adminsys,adminuser,agouser,alex,ali,alina,amir,
+         amit,anonymous,ansible,aoki,app,arma3server,avalanche,backup,bin,bitnami,bitrix,bnb,bot,centos,chris,cisco,
+         cloudroot,config,cs2server,csgo,csgoserver,csserver,cssserver,cumulus,customer,danial,dante,
+         DAppNode,data,david,db2fenc1,db2inst,db2inst1,dbadmin,dbus,default,dell,demo,demo2,denis,deploy,
+         deployer,dev,develop,developer,development,device,devops,dhis,discordbot,dixell,docker,
+         dockerroot,dspace,elasticsearch,elrond,endo,enomoto,eos,es,esadmin,ess,ethereum,filecoin,
+         frappe,ftp,ftpadmin,ftp-test,ftp-user,ftp_user,ftpuser,ftpuser1,ftpuser2,gitlab,gpadmin,guest,
+         Guest,guest1,guest2,gyoumu,hadoop,haraguchi,helpdesk,hmr,ikeda,imd,ingres,installer,james,
+         jeffrey,jenkins,jim,kali,lab,laravel,latha,lighthouse,linaro,lotus,manager,marc,market,media,
+         mike,MikroTikSystem,milad,min,minecraft,miningpool,msfadmin,musicbot,mykim,myra,mysql,naveen,
+         netadm,newuser,nexus,noc,node,nodemanager,nuucp,odoo,odoouser,odroid,oozie,openhabian,openvpn,
+         oper,operator,oracle,osmc,pi,proftpd,prueba,ps,qwerty,ravencoin,reza,root1,root123,rooter,RPM,
+         rust,samba,sammy,sanjay,scanner,scylla,sdadmin,serena,server,service,setup,sftpadmin,sftp_user,
+         sftpuser,sinus,sinusbot,sol,sshd,staff,steam,steam1,stefan,student,student10,supervisor,support,
+         sysadmin,system,te,teamspeak,teamspeak3,tech,telecomadmin,test,test001,test01,test1,test123,
+         test2,test3,test4,testdb,teste,tester,testftp,testing,tests,testssh,testtest,test-user,
+         testuser,tiger,trade-bot,ts3,ts3bot,ts3server,ts3srv,tym,ubnt,ubuntu,ubuntuserver,user,
+         user002,user01,user03,user1,user14,user2,user21,user3,user5,userftp,USERID,username,username1,
+         uucp, validator,watanabe,web3,webadmin,x,xdc,zabbix
+     </p>
+
      <p class="blog-entry"><span class="blog-entry-date">6th December 2024</span>Idea plugin update</p>
 
      <p><img src="codeartifact-maven/icon.svg" alt="codeartifact+maven icon" class="blog">
