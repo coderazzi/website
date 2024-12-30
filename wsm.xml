@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 
-<wsm path='website'>
+<wsm path='../coderazzi.github.io'>
 <transform source='.'>
     <alltemplates cssMoldClass='wsmreplace'>
         <replace what='cssdir' withdir='css'/>
