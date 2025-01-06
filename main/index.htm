@@ -10,7 +10,131 @@
  <div id='body'>
  <div id='content'>
 
-     <p class="blog-entry"><span class="blog-entry-date">14th December 2024</span>SSO on AWS plugin</p>
+     <p class="blog-entry"><span class="blog-entry-date">06th January 2025</span>Old code</p>
+
+     <p>
+         <img src="images/java.gif" alt="Java icon" class="blog">As part of my migration to host my repositories
+         in Github, I came across an <a href="cmdlinker/index.htm">old Java program</a> I had developed in 2007.
+     </p>
+     <p>
+         The program I developed was quite helpful for the task I was doing at the moment.
+         It allowed me to launch a set of tasks on multiple tabs in a single window,
+         set up several virtual network connections, etc.
+     </p>
+     <p>
+         I chose to write the program in Java, the only easy option to have it developed quickly
+         and with a proper associated GUI. Back then, I was an experienced C++ developer,
+         and little did I know that the position I had left a few months ago would be the last
+         time I had to do any professional C++ programming. Since then, everything has been
+         mostly Java, C, and Python, with some Smalltalk to salt it.
+     </p>
+     <p>
+         I made this program publicly available around 2010 and have never received any feedback from it.
+         I really doubt that anybody would have found it useful, even if I had added the documentation
+         that it lacked, and, still, I have spent the past weekend just dusting it off,
+         maveninizing it, and correcting many issues that I found.
+     </p>
+     <p>
+         I have rewritten a lot of it, marveled at the stupidity of my old me at some decisions,
+         and was surprised to find some programming techniques that I consider sound.
+         This is a rewrite of a code that I know I will not use, yet it has brought some fun to my weekend.
+         I guess I can still marvel at the stupidity of my current me :-)
+     </p>
+
+
+    <p class="blog-entry"><span class="blog-entry-date">31st December 2024</span>Blog hosting</p>
+
+    <p>
+        <img src="images/blog.png" alt="Blog icon" class="blog">After my previous entry on blog hosting, I started looking for alternatives. My blog is static 
+        -I have my own dynamic generator-, so <a href='https://pages.github.com/'>Github Pages</a> is definitely an option. 
+        Mostly when the other usage I have for my VPS is hosting git repositories, probably a match for Github :-)
+    </p>
+
+    <p>
+        The step is easy enough, just create a Github repository with my github' user name and suffix <b>.github.io</b>, 
+        so, in my case: <b>coderazzi.github.io</b>.  The site will be automatically visible as <b>https://coderazzi.github.io</b>
+    </p>
+    <p>
+        The produced website is not just a link to the HTML pages in the repository. 
+        Under the hood, Github sets up a job to build a website based on Jekyll, then uploads the produced artifact. 
+        To disable this, add a .nojekyll page to the repository root.
+    </p>
+    <p>
+        It is possible to see what GitHub is doing with the page at the 
+        <a href="https://github.com/coderazzi/coderazzi.github.io/actions">actions</a> page.
+         When changes are pushed to the repository, a new entry will appear here, with queue status. 
+         For my pages, it requires around 28 seconds for the deployment process
+    </p>
+    <p>
+        Now, I would like to use my own custom domain. Again, this is easy enough: go to user's settings, 
+        choose Pages and validate the associated domain; in my case, coderazzi.com. 
+        This requires adding a TXT record on your domain, as specified in the validation pages.
+    </p>
+    <p>
+        Then got to the repository for the webpage, go to settings / Pages and set the custom domain. 
+        This will obviously fail in a short time, but it creates a commit in the repository, 
+        a new file CNAME that just contains the given custom domain. 
+    </p>
+    <p>
+        The DNS provider must be updated to point to Github's servers. 
+        In the DNS provider, using the following Github's information (
+        <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site">Github Pages</a>), 
+        we add these recordss:
+        <ul>
+            <li>185.199.108.153</li>
+            <li>185.199.109.153</li>
+            <li>185.199.110.153</li>
+            <li>185.199.111.153</li>
+        </ul>
+        Plus a CNAME record www -> coderazzi.github.io.  And that is all, now my blog lives under Github, 
+        one less thing to worry about on my VPS.
+    </p>
+
+    <p class="blog-entry"><span class="blog-entry-date">30th December 2024</span>VPS providers</p>
+
+    <p><img src="images/vps.png" alt="VPS icon" class="blog">I have been using <a href='https://www.hetzner.com/'>Hetzner</a> 
+        since 2018, where I got a basic server,  with 1 vCpu, 20 Gb and 2 Gb RAM. 
+        At that time, I paid 2.91 EUR per month, about 35 EUR per year. 
+        Service has always been top-notch, and I have seen how they have expanded, 
+        offering a great API and an increasing set of services. 
+        I am awed by Hetzner; recently, I started using storage services to mount additional disk space: very smooth, no hiccups at all.
+    </p>
+    <p>On the negative side, the price has steadily increased, and I am now paying 4.43 EUR for the same machine I purchased initially. 
+        In truth, Hetzner now offers a more powerful machine for the same price -2vCpu, 4Gb RAM and 40 Gb disk space-, 
+        but that's it: there is no cheaper offering for a less powerful machine. 
+    </p>
+    <p>I use a VPS mostly to store my git repositories and serve this blog. 
+        The Hetzner minimal offering is way overpowered, and I have to pay the associated cost. 
+        I can play along, or find a better choice.
+    </p>
+    <p>Just before Hetzner, I was using <a href='https://www.ovhcloud.com'>OVH</a>. 
+        I checked today its page, the cloud offering exhibits a great AWS-style offering, and matching prices! 
+        They have as well basic VPS, billed by the month, and the minimum price for a VPS is 4.60 UER / month, 
+        reduced to 0.81 EUR/month for the first year. This offer, limited in time, is fantastic value.
+    </p>
+    <p>Before OVH, I used to check <a href='https://lowendbox.com/'>lowendbox</a>, 
+        where I purchased many VPSs over the years. 
+        I never had any problem with them. Sometimes I would get picky and wanted to get a KVM machine, 
+        but otherwise, I always got great service, sometimes paying as little as 1$/month. 
+    </p>
+    <p>The best offer I found today is 10 pounds/year, with <a href='https://my.veloxmedia.co.uk'>Veloxmedia</a>. 
+        For that price, I just get 1 Gb RAM and 10 Gb disk. The Web access is primitive at best. 
+        You get a KVM machine already spinning a Debian 12 OS. 
+        The underlying CPU is a CPU E5-2660, well over 10 years old. 
+        Compared to Hetzner, it has a slower network, slower hard disk, faster CPU, and no linux distribution choice. 
+        But, on the paper, it is all that I need.
+    </p>
+    <p>    
+        In practice, the reality is slightly uglier. In six days, it has gone offline twice. 
+        Once for 16 minutes, once for 28 minutes, with VPS reboot. This is 99.5% uptime, 
+        so it is still a great SLA. Still, worse than the 100% uptime I experienced with Hetzner over many years.
+    </p>
+    <p>
+        I will be checking this VPS this year, but I am now decided to find another solution for my VPS' needs
+    </p>
+
+
+    <p class="blog-entry"><span class="blog-entry-date">14th December 2024</span>SSO on AWS plugin</p>
 
      <p><img src="codeartifact-maven/icon.svg" alt="codeartifact+maven icon" class="blog">
          A user of my <a href="codeartifact-maven/index.htm">AWS CodeArtifact Idea plugin</a>

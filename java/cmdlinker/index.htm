@@ -9,7 +9,7 @@
 <body>
  <div id='body'>
  <div id='content'>
-<p class="timestamp">20th April 2007</p>  
+<p class="timestamp">20th April 2007<span class="timestamp_update">, updated:</span>5th January 2025</p>
  <h1>CmdLinker</h1>
  <h2>Tool to handle multiple command line programs</h2>
 
@@ -37,7 +37,7 @@ non interactive command-line programs in order to achieve some predefined functi
 where I must setup two open virtual networks, and run a set of delegate scripts that allow me to forward 
 network connections between the two virtual networks.
 Without <span class='mark'>CmdLinker</span>, such setup requires opening 4 command line windows, where I
-execute the scripts that start the open virtual network conenctions, plus the scripts to run the delegate 
+execute the scripts that start the open virtual network connections, plus the scripts to run the delegate
 scripts that perform the network forwarding. Then , my desktop becomes cluttered with 4 windows or icons 
 that are logically associated together!</p>
 <p><span class='mark'>CmdLinker</span> allows me to keep those linked commands under one only window. 
@@ -50,28 +50,18 @@ those programs, as I can stop all of them at once, or just restart them if neede
 run on its own tab window.</p>
 
 <h2><a name='Version'>Version / Requirements</a></h2>
-<p>The current version of <span class='mark'>CmdLinker</span>, is the 0.9.7. 
-This version includes all the functionality that I considered required for a 1.0 version.
-This is a well tested version, run in Windows XP, Mac Os X 10.4 and Linux (Ubuntu 7.0.4).
-Would you run into problems, please send me a mail to my <b>coderazzi</b> address listed
-at the bottom of this page.</p>
-<p>The current version is developed in Java. I use Eclipse with JDK 1.6, and you will need at least JDK 1.5
-to run or execute it. If you plan to edit / modify the code, note that <span class='mark'>CmdLinker</span>
-does not have further dependencies, it is just a simple Swing application.</p>
-
-<p>I am not sure whether future versions will be developed in Java, or I will 
-return to my initial approach using .Net with IronPython. Please not that all the consoles are used directly by
-the operative system, and CmdLinker only displays the produced output, in a really optimised way, so there is
-not real performance problem on using Java; my idea to use eventually Python is just based 
-on possible improvements to the scripting support.</p>
+<p>The current version of <span class='mark'>CmdLinker</span>, is 0.9.8.</p>
+<p>This is a rewrite I have done in 2025 over the initial version that I wrote in 2007;
+    that year, this program turned out to be quite useful to me: I had to open several terminals and
+    execute some scripts in parallel, and having multiple terminals were an added distraction.
+    So I preferred the distraction of writing this Java program, and then forget about it for the best of 18 years.</p>
 
 <h2><a name='LicenseAndDownload'>License and download</a></h2>
 <p><span class='mark'>CmdLinker</span> is delivered as it, without
-any responsabilities on the author. It is open source, it can be used or
+any responsibilities on the author. It is open source, it can be used or
 modified without any limitations.</p>
 
-<p>The program is provided as .zip or .jar format. If you plan to just run the application, use the .jar format.
-The .zip format allows you to browse/edit the source code (it includes project files to access it from Eclipse).</p>
+<p>The program is provided in .jar format, or as a reference to the GitHub repository</p>
 <ul>
 	<li>Version 0.97. (22/07/07).
 	<ul>
@@ -79,6 +69,12 @@ The .zip format allows you to browse/edit the source code (it includes project f
 		<li><a href="cmdlinker-0-97.jar">cmdlinker-0-97.jar</a></li>
 	</ul>
 	</li>
+    <li>Version 0.98. (05/01/25).
+        <ul>
+            <li><a href="cmdlinker-0.98.jar">cmdlinker-0.98.jar</a></li>
+            <li><a href="https://github.com/coderazzi/cmdlinker">Source</a></li>
+        </ul>
+    </li>
 </ul>
 </p>
 
@@ -113,24 +109,27 @@ basic operations:
 the specific script syntax. For example, the following script executes 3 different .sh scripts on 3 consoles:</p>
 
 <pre>
-/home/users/luismi/batch1.sh
-/home/users/luismi/openvpn/asConnect.sh
-/home/users/luismi/openvpn/viConnect.sh
+EXECUTE /home/users/luismi/batch1.sh
+EXECUTE /home/users/luismi/openvpn/asConnect.sh
+EXECUTE /home/users/luismi/openvpn/viConnect.sh
 </pre>
 
 <p>Easy, not? This script could be customized as follows, to use specific font size, and different colors on each
 console:</p>
 
 <pre>
-font monospaced bold 12
-createTab CheckConnection
-colors white black
-/home/users/luismi/batch1.sh
-createTab Basic conenction
-colors white blue
-/home/users/luismi/openvpn/asConnect.sh
-/home/users/luismi/openvpn/viConnect.sh
-colors cyan blue
+FONT monospaced bold 12
+TAB CheckConnection
+FOREGROUND white
+BACKGROUND black
+EXECUTE /home/users/luismi/batch1.sh
+
+TAB Basic connnction
+FOREGROUND white
+BACKGROUND blue
+EXECUTE /home/users/luismi/openvpn/asConnect.sh
+BACKGROUND cyan
+EXECUTE /home/users/luismi/openvpn/viConnect.sh
 </pre>
 
 
@@ -146,7 +145,7 @@ to check quickly the status of each command by the icon on the tab. The icons ar
 </ul>
 
 <p>The program should be easily used through the intuitive graphical interface. It must be specifically noted
-that, to mofify the font size and colors used by the program on each tab, it is needed to use the Options.. Display
+that, to modify the font size and colors used by the program on each tab, it is needed to use the Options.. Display
 menu element. Changing the font size on the main window only modifies the font size of the tab console being displayed.</p>
 
 <p>Under options, it is possible to specify whether to save the options or not. When saved, the options are kept
