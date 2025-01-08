@@ -139,6 +139,7 @@
             <item name='SplitImage' file='splitimage/index.htm'/>
         </group>
         <group name='python'>
+            <item name='djmovies' file='python/djmovies/index.htm'/>
             <item name='openapi4aws' file='python/openapi4aws/index.htm'/>
             <item name='optmatch' file='python/optmatch/index.htm'/>
             <item name='Gimp / PythonFu' file='python/gimp/pythonfu.html'/>

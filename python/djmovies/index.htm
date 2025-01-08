@@ -1,0 +1,40 @@
+<html>
+<head>
+	<title>djmovies - Personal movie catalog</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta name="Keywords" content="movies catalog">
+	<link rel="stylesheet" type="text/css" href="../../css/global.css">
+</head>
+<body>
+<div id='body'>
+	<div id='content'>
+		<p class='timestamp'>4th May 2014<span class="timestamp_update">, updated:</span>8th January 2025</p>
+		<h1>DJMovies - Django Movies</h1>
+
+		<p>
+			<b>DJMovies</b> is a django application that I started writing on April 1st 2013, to handle my
+			private catalog of movies. In addition to catalog the movies, it exposes through its web interface
+			multiple tools to handle them: homogenize video and audio formats, subtitles handling, etc.
+		</p>
+		<img alt='screenshot' src='djmovies.png' class="centered">
+		<p>
+			<b>DJMovies</b> accesses external services, like <a href="https://www.imdb.com/">IMDb</a>
+			to retrieve movie information, or <a href="https://www.moviesubtitles.org/">Moviesubtitles.org</a> to
+			download subtitles.
+		</p>
+		<p>
+			Precisely this dependency on external services makes the project eternally unfinished. The access
+			to the services scraps the information, but those services keep updating the appearance of their
+			pages, requiring a regular update to the scraping process. Most of the changes implemented since
+			2014 relate exclusively to these updates.
+		</p>
+		<p>
+			As part of my process to stop using private repositories in my own VPSs, I am now including these
+			repositories in Github.
+		</p>
+
+	</div>
+</div>
+</body>
+</html>
+
