@@ -29,10 +29,60 @@
 			2014 relate exclusively to these updates.
 		</p>
 		<p>
-			As part of my process to stop using private repositories in my own VPSs, I am now including these
-			repositories in Github.
+			As part of my process to stop using private repositories in my own VPSs,
+			I am now making these repositories public. <b>DJMovies</b> is available from:
+			<a href="https://github.com/coderazzi/djmovies">GitHub</a>, and the data associated to
+			my own catalog lives in a separate private
+			<a href="https://github.com/coderazzi/djmovies-userdate">repository</a>.
+		</p>
+		<p>
+			I am quite astonished of the short time I have needed to migrate this application to the latest
+			python version (3.13.1 as of today) and Django version (5.1.4), as I was using before Django
+			3.0.5. However, I have not tested the application in full, so additional changes will likely be
+			required in the close future. Very specifically, the access to external services is likely
+			not working now.
 		</p>
 
+		<h2>Installation instructions</h2>
+
+		<h3>OS: install packages</h3>
+
+			<h4>linux</h4>
+
+				<pre>sudo apt-get install mediainfo unrar imagemagick libxml2-dev libxslt-dev zlib1g-dev ffmpeg mkvtoolnix  </pre>
+
+			<h4>MacOS</h4>
+
+				<pre>brew install mediainfo rar freetype imagemagick@6 ffmpeg</pre>
+
+		<h3>Python setup</h3>
+
+<pre> git clone https://github.com/coderazzi/djmovies
+ cd djmovies
+ python3 -m venv venv
+ source venv/bin/activate
+ pip3 install -r requirements.txt</pre>
+
+		<h3>Application initialization</h3>
+
+		<p>I keep my data in a private repository, so I can initialize the application doing:</p>
+
+		<pre>git clone https://github.com/coderazzi/djmovies-userdata userdata
+ln -sf ../../userdata/mov_imgs movies/static </pre>
+
+		<p>Otherwise, it is needed to setup the initial database:</p>
+
+		<pre>mkdir -p userdata/mov_imgs
+sqlite3 userdata/db_movies.sqlite < db_schema
+ln -sf ../../userdata/mov_imgs movies/static </pre>
+
+		<p>This userdata folder can then managed as a separate git repository</p>
+
+		<h2>Execution</h2>
+
+		<pre>./go.sh</pre>
+
+		<p>This will open a web page pointing out to http://127.0.0.1:8000</p>
 	</div>
 </div>
 </body>
