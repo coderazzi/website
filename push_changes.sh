@@ -12,9 +12,9 @@ fi
 
 cd ${LOCAL} 2> /dev/null || die "Cannot access $LOCAL"
 
-if  false ; then
+if  true ; then
   # push to own server
-  host=coderazzi.net
+  host=ludwig.coderazzi.net
   user='coderazzi'
   REMOTE='/home/coderazzi/www/coderazzi.net/public/'
 
