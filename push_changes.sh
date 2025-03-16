@@ -36,5 +36,6 @@ MESSAGE=$(git log --since="$DATE" --pretty=%s  | sort -u | paste -sd "|" -)
 cd ${LOCAL}
 git add -A
 git commit -m "$MESSAGE"
-git push
+git push github
+git push coderazzi
 echo Changes pushed, commited with message $MESSAGE
