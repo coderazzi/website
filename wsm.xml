@@ -218,7 +218,9 @@
         <group name='Misc'>
             <item name='Obsidian' file='misc/obsidian/obsidian.html'/>
         </group>
-        <group name='Os X'>
+        <group name='MacOS'>
+            <item name='Keyboard mapping' file='howto/osx/keyboard/index.html'/>
+            <item name='Unsupported printers' file='howto/osx/unsupported_printers/index.html'/>
             <item name='Nginx' file='howto/osx/nginx.html'/>
             <item name='PostgreSQL / Rails' file='howto/osx/pg_rails.html'/>
             <group name='Hackintosh'>

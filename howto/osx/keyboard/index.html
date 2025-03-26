@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <title>Installing Nginx in Os X</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/global.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <meta name="Keywords" content="keyboard mapping macos">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class='timestamp'>26th March 2025</p>
+        <h1>Apple keyboard remapping</h1>
+
+        <p>I bought an Apple magic keyboard with numeric pad,
+            to pair with my new Mac Mini M4.
+            I felt stupid to purchase the keyboard with keys in black, costing 30 euros more for the sake of it,
+            but I have been using the old good keyboard in white for many many years, and I wanted to have some differentiation.
+            With all my attention focused on the colours, I committed the mistake of requesting the US layout,
+            when all my previous keyboards had the English International layout. I was totally unaware of the small but
+            essential differences between both layouts. This is the US layout:
+        </p>
+
+        <img class="centered" src="us-layout.jpg" alt="us layout apple keyboard" >
+
+        <p>And this is the English international one.</p>
+
+        <img class="centered" src="intl-layout.jpg" alt="english international layout apple keyboard" >
+
+        <p>My muscle memory had a field day trying to hit the ENTER key. After too many backslashes -no pun-, I decided that I
+            should better exchange the keyboard. However, one key still kept me in awed state: the function key.
+            This is the usual layout of an Apple keyboard without Touch Id:
+        </p>
+
+        <img class="centered" src="usual-layout.jpg" alt="usual layout apple keyboard" >
+
+        <p>You see, the left bottom corner has control, option, command keys, while the new Touch Id keyboard adds a
+            Function button on the very left corner, which is prime real state! I have a Macbook Pro M3, and the
+            function key is on the same position. Yet I do not press it usually, but with the extended keyboard
+            having almost the same layout as the old one except for this key, I kept pressing it whenever I need the
+            control key. It was driving me mad (mostly, because I still use the older keyboard with other computers).
+        </p>
+
+        <p>I wanted to use this left bottom key just as a Control key. This is easy: just go to
+            <b>System Settings / Keyboard / Keyboard shortcuts</b>. Select modifier keys on the left panel, you can set
+            the Globe key as Control function. The problem is, which is then function key? This
+            <a href='https://medium.com/ryan-hanson/key-remapping-built-into-macos-c7953b1a62e4'>blog entry</a> gave me
+            a hint to the solution, via this <a href='https://hidutil-generator.netlify.app/'>utility page</a>
+        </p>
+
+        <p>My keyboard looks like this: </p>
+
+        <img class="centered" src="keys.jpg" alt="keys in use" >
+
+        <p>The key under the F13 key has a strange symbol that seems to be a menu key. In fact, it is a
+            contextual menu key, and it is not included in the hidutil generator application linked above.
+            To remap this key (that used to be the function key) to function key, it is needed to do:
+        </p>
+
+        <pre>hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000065,"HIDKeyboardModifierMappingDst":0xFF00000003}]}'</pre>
+
+        <p>Btw, if this breaks havoc, the return to normality is achieved doing:</p>
+
+        <pre>hidutil property --set '{"UserKeyMapping":[]}'</pre>
+
+        <p>Finally, this is just working until the next reboot; to have a persistent change, as the
+            <a href='https://hidutil-generator.netlify.app/'>hidutil utility</a> shows, you need to copy to
+            <code>~/Library/LaunchAgents/com.local.KeyRemapping.plist</code> the following content:</p>
+
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+    &lt;key&gt;Label&lt;/key&gt;
+    &lt;string&gt;com.local.KeyRemapping&lt;/string&gt;
+    &lt;key&gt;ProgramArguments&lt;/key&gt;
+    &lt;array&gt;
+        &lt;string&gt;/usr/bin/hidutil&lt;/string&gt;
+        &lt;string&gt;property&lt;/string&gt;
+        &lt;string&gt;--set&lt;/string&gt;
+        &lt;string&gt;{&quot;UserKeyMapping&quot;:[
+            {
+              &quot;HIDKeyboardModifierMappingSrc&quot;: 0x700000065,
+              &quot;HIDKeyboardModifierMappingDst&quot;: 0xFF00000003
+            }
+        ]}&lt;/string&gt;
+    &lt;/array&gt;
+    &lt;key&gt;RunAtLoad&lt;/key&gt;
+    &lt;true/&gt;
+&lt;/dict&gt;
+</pre>
+
+    </div>
+</div>
+</body>
+
+
+
+
