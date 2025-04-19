@@ -219,6 +219,7 @@
             <item name='Obsidian' file='misc/obsidian/obsidian.html'/>
         </group>
         <group name='MacOS'>
+            <item name='Truecrypt' file='howto/osx/truecrypt.html'/>
             <item name='Keyboard mapping' file='howto/osx/keyboard/index.html'/>
             <item name='Unsupported printers' file='howto/osx/unsupported_printers/index.html'/>
             <item name='Nginx' file='howto/osx/nginx.html'/>

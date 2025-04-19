@@ -1,0 +1,192 @@
+<html>
+
+<head>
+    <title>Truecrypt in MacOS Silicon</title>
+    <link rel="stylesheet" type="text/css" href="../../css/global.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+    <meta name="Keywords" content="macos silicon truecrypt">
+</head>
+
+<body>
+<div id='body'>
+    <div id='content'>
+
+        <p class='timestamp'>19th April 2025</p>
+        <h1>Truecrypt in MacOS silicon</h1>
+
+            <p>I have a bunch of hard disks with Truecryt volumes, and I use a USB 3.0 SATA
+                docking station to make them available. I have tried recently Veracrypt, but it
+                couldn't open those drives. I didn't want to install yet an unknown executable
+                (Veracrypt or Truecrypt) plus MacFuse, etc on my new Mac Mini, so I though on using a Linux virtual
+                machine: I had just set one up to access the printer, so why not using it to
+                access these drives?
+            </p>
+            <p>
+                So I switched on the USB device, and I added a USB filter to make it accessible
+                from my virtual machine. When I insert the harddisk, MacOS will report an error
+                that it cannot read the drive: press Eject.
+            </p>
+            <p>
+                Alas, virtualbox is unable to access the USB / disk: Failed to create a proxy
+                device for the USB device. (Error: VERR_SHARING_VIOLATION). This requires a
+                <a href="https://www.virtualbox.org/ticket/21218">workaround</a> to work:
+            </p>
+            <pre>sudo chmod u+s /Applications/VirtualBox.app/Contents/MacOS/VBoxHeadless</pre>
+            <p>
+                In Sonoma, this fails because the terminal is prevented from making changes to
+                other programs. You need to go to Settings/Privacy & Security/App Management,
+                and ensure that Terminal is allowed to update or delete other applications (I
+                toggled this on, this the change, and toggle it back off).
+                Afterwards, the disk will appear in the virtual machine. In my case, as /dev/sdb
+            </p>
+            <p>
+                Truecrypt is not available in the debian repository, but we can use tcplay instead:
+            </p>
+<pre>sudo apt-get install tcplay
+sudo mkdir /mnt/vm-shared/disk
+
+sudo losetup /dev/loop0 /dev/sdb
+
+sudo tcplay -m container.tc -d /dev/loop0
+   <i>Passphrase:
+   All ok!</i>
+sudo mount -o nodev,nosuid,uid=1000,gid=100 /dev/mapper/container.tc /mnt/vm-shared/disk</pre>
+
+            <p>
+                The truecrypt volume is now mounted in the shared folder location, but the host
+                cannot see it. The solution I pursued was creating a network share. My first
+                attempt was NFS, but we cannot create a NFS share on the mounted truecrypt
+                volume either. Samba is possibly a worse solution for this share, but it works
+                perfectly:
+            </p>
+<pre>sudo apt install samba
+sudo vi /etc/samba/smb.conf</pre>
+
+            <p>Add the following lines as the end:</p>
+<pre>[sambashare]
+        comment = Truecrypt share
+        path = /mnt/vm-shared/disk
+        read only = no
+        browsable = yes</pre>
+
+            <p>We restart now samba:</p>
+<pre>sudo systemctl restart smbd </pre>
+
+            <p>
+                Finally, we need to add the user and enter a password. I use the same user id
+                as in MacOS; the password will be saved by MacOS in the keyring, so no need to
+                make this fully public.
+            </p>
+        <pre>sudo smbpasswd -a coderazzi</pre>
+
+    <h2>Automatic truecrypt mounting</h2>
+
+        <p>Now, the interesting thing would be mounting the disk automagically: enter <b>UDEV</b rules.</p>
+
+        <p>We can create a udev rule <b><code>/etc/udev/rules.d/99-truecrypt.rules</code></b> with content:</p>
+<pre>SUBSYSTEM=="block", ENV{DEVNAME}=="/dev/sdb", RUN+="/usr/bin/truecrypt_auto.sh"</pre>
+
+        <p>
+            The invoked script, <b><code>/usr/bin/truecrypt_auto.sh</code></b> is triggered
+            by the udev rule, and a udev rule <a
+                href="https://wiki.archlinux.org/title/Udev#Mounting_drives_in_rules">cannot
+            invoke mount</a>, but we can use systemd-mount (and systemd-umount) instead. An
+            initial version of this script looks like:
+        </p>
+<pre>#!/usr/bin/bash
+
+NAME=container.tc
+LOOP=/dev/loop0
+DISK=sdb
+MOUNT=/mnt/vm-shared/disk
+PASSWORD=..........
+
+systemctl stop smbd
+
+umount -q $MOUNT
+dmsetup ls | grep $NAME && dmsetup remove $NAME
+losetup -l | grep $LOOP && losetup -d $LOOP
+
+lsblk | grep $DISK || exit 0
+
+losetup $LOOP /dev/$DISK
+echo $PASSWORD | tcplay -m $NAME -d $LOOP
+systemd-mount -o nodev,nosuid,uid=1000,gid=1000 /dev/mapper/$NAME $MOUNT
+systemctl start smbd</pre>
+
+        <p>We need to reload the rules now:</p>
+        <pre>udevadm control --reload-rules</pre>
+
+        <p>
+            As you can see, there is some code to stop the mounting, and then some code to
+            restart it. It can be invoked when the harddisk is added or removed. And it
+            only works for <b>ONE</b> hard disk. But not always :-(
+        </p>
+        <p>
+            The problem is that the Linux kernel will not name consistently the device as
+            /dev/sdb, even when inserting the same harddisk. As far as I can see, it
+            switches, at least,  between /dev/sdb and /dev/sdc. Fortunately, udev rules
+            support some regex matching, and we can pass parameters to the underlying
+            script; let's change the
+            <b><code>/etc/udev/rules.d/99-truecrypt.rules</code></b> rule into:
+        </p>
+<pre>#!/usr/bin/bash
+
+[ -z "$1" ] && echo Missing disk parameter && exit 1
+
+NAME=container.tc
+LOOP=/dev/loop0
+DEV_DISK=$1
+DISK=$(echo $DEV_DISK | cut -d/ -f3)
+MOUNT=/mnt/vm-shared/disk
+PASSWORD=.............
+
+systemctl stop smbd
+
+systemd-umount -q $MOUNT
+dmsetup ls | grep $NAME && dmsetup remove $NAME
+losetup -l | grep $LOOP && losetup -d $LOOP
+
+lsblk | grep $DISK || exit 0
+
+losetup $LOOP $DEV_DISK
+echo $PASSWORD | tcplay -m $NAME -d $LOOP
+systemd-mount -o nodev,nosuid,uid=1000,gid=1000 /dev/mapper/$NAME $MOUNT
+systemctl start smbd</pre>
+
+        <p>We need to reload the rules again:</p>
+        <pre>udevadm control --reload-rules</pre>
+
+        <p>
+            This works quite consistently for me: I can stop, restart the USB device,
+            change the inserted hard disk, and the volume is mounted as expected.
+            Occasionally, the share volume appears empty, and the log files show an error
+            such as:
+        </p>
+<pre>Unit mnt-vm\x2dshared-disk.mount was already loaded or has a fragment file.
+Job for smbd.service canceled.</pre>
+
+        <p>
+            This overall approach works as well if the Truecrypt volumes are directly USB
+            drives (instead of hard disks inserted into a USB docking station), but then I
+            would need to create a USB filter in virtualbox for each of them.
+        </p><p>
+            To use with the docker station hard disks that have no truecrypt volumes, I
+            just need to stop first the virtual machine, so that the filter in Virtualbox
+            does not apply.
+        </p><p>
+            The part that I dislike here is the unmounting process: the UDEV rule is
+            triggered when the hard disk is ejected (or the USB station switched off), so I
+            could lose information that I have written to the volume. The way that
+            Truecrypt works, this won't be a problem if the network operation (as it is via
+            Samba) is well completed and you let some minor time for any buffering to
+            complete. So: after writing anything in the volume, do not rush to switch it
+            off!
+        </p>
+    </div>
+</div>
+</body>
+
+
+
+
