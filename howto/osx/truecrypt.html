@@ -114,8 +114,9 @@ echo $PASSWORD | tcplay -m $NAME -d $LOOP
 systemd-mount -o nodev,nosuid,uid=1000,gid=1000 /dev/mapper/$NAME $MOUNT
 systemctl start smbd</pre>
 
-        <p>We need to reload the rules now:</p>
-        <pre>udevadm control --reload-rules</pre>
+        <p>This script should be read only; then, We need to reload the rules now:</p>
+<pre>chmod 700 /usr/bin/truecrypt_auto.sh
+ udevadm control --reload-rules</pre>
 
         <p>
             As you can see, there is some code to stop the mounting, and then some code to
@@ -130,6 +131,9 @@ systemctl start smbd</pre>
             script; let's change the
             <b><code>/etc/udev/rules.d/99-truecrypt.rules</code></b> rule into:
         </p>
+<pre>SUBSYSTEM=="block", ENV{DEVNAME}=="/dev/sd[b-z]", RUN+="/usr/bin/truecrypt_auto.sh '%E{DEVNAME}'"</pre>
+
+        <p>and the <b><code>/usr/bin/truecrypt_auto.sh</code></b> script into:</p>
 <pre>#!/usr/bin/bash
 
 [ -z "$1" ] && echo Missing disk parameter && exit 1
@@ -170,6 +174,13 @@ Job for smbd.service canceled.</pre>
             This overall approach works as well if the Truecrypt volumes are directly USB
             drives (instead of hard disks inserted into a USB docking station), but then I
             would need to create a USB filter in virtualbox for each of them.
+        </p><p>
+            All the hard disks that I use attached to my docking station share the same
+            password, so the solution is simple, as far as I can store the password in
+            a shell script (with read only protection, only readable by root). To use
+            different passwords for each hard disk, we could make a more complex script
+            where we try different passwords, or associate specific passwords for specific
+            hard disk types.
         </p><p>
             To use with the docker station hard disks that have no truecrypt volumes, I
             just need to stop first the virtual machine, so that the filter in Virtualbox
